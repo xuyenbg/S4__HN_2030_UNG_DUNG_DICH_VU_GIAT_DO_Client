@@ -1,11 +1,14 @@
 package datn.fpoly.myapplication.utils
 
+import android.app.Activity
 import android.location.Location
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.google.android.material.snackbar.Snackbar
+import datn.fpoly.myapplication.R
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -47,4 +50,17 @@ fun <T : Fragment> AppCompatActivity.addFragmentToBackstack(
         option?.invoke(this)
         replace(frameId, fragmentClass,null, tag).addToBackStack(tag)
     }
+}
+/**
+ * Show snackbar
+ */
+fun Activity.snackbar(message: String, action: (() -> Unit)? = null) {
+    val snackbar =
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+    action?.let {
+        snackbar.setAction("Thử lại") {
+            it()
+        }
+    }
+    snackbar.show()
 }

@@ -56,7 +56,7 @@ abstract class BaseActivity<VB: ViewBinding> : AppCompatActivity(), HasScreenInj
     protected val viewModelProvider
         get() = ViewModelProvider(this, viewModelFactory)
 
-    protected fun <T : QLBHViewEvents> ViewModel<*, *, T>.observeViewEvents(observer: (T?) -> Unit) {
+    protected fun <T : ViewEvents> BaseViewModel<*, *, T>.observeViewEvents(observer: (T?) -> Unit) {
         viewEvents
                 .observe()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -74,14 +74,14 @@ abstract class BaseActivity<VB: ViewBinding> : AppCompatActivity(), HasScreenInj
 
     // For debug only
 
-    private lateinit var mitaComponent: AppComponent
+    private lateinit var appComponent: AppComponent
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.i("onCreate Activity ${javaClass.simpleName}")
 
-        mitaComponent= DaggerAppComponent.factory().create(this)
+        appComponent= DaggerAppComponent.factory().create(this)
         val timeForInjection = measureTimeMillis {
-            injectWith(mitaComponent)
+            injectWith(appComponent)
         }
         Timber.v("Injecting dependencies into ${javaClass.simpleName} took $timeForInjection ms")
         super.onCreate(savedInstanceState)
@@ -170,7 +170,7 @@ abstract class BaseActivity<VB: ViewBinding> : AppCompatActivity(), HasScreenInj
     }
 
     override fun injector(): AppComponent {
-        return mitaComponent
+        return appComponent
     }
 
     protected open fun injectWith(injector: AppComponent) = Unit

@@ -28,8 +28,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.airbnb.mvrx.BaseMvRxFragment
 import datn.fpoly.myapplication.core.BaseActivity
-import datn.fpoly.myapplication.core.QLBHViewEvents
-import datn.fpoly.myapplication.core.ViewModel
+import datn.fpoly.myapplication.core.BaseViewModel
+import datn.fpoly.myapplication.core.ViewEvents
 import datn.fpoly.myapplication.di.AppComponent
 import datn.fpoly.myapplication.di.HasScreenInjector
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -162,7 +162,7 @@ abstract class BaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasScreenInje
      * ViewEvents
      * ========================================================================================== */
 
-    protected fun <T : QLBHViewEvents> ViewModel<*, *, T>.observeViewEvents(observer: (T) -> Unit) {
+    protected fun <T : ViewEvents> BaseViewModel<*, *, T>.observeViewEvents(observer: (T) -> Unit) {
         viewEvents
                 .observe()
                 .observeOn(AndroidSchedulers.mainThread())

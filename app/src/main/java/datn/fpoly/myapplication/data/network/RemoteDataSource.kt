@@ -2,19 +2,21 @@ package datn.fpoly.myapplication.data.network
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.databinding.ktx.BuildConfig
 import com.google.gson.GsonBuilder
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
+import datn.fpoly.myapplication.BuildConfig
 import datn.fpoly.myapplication.utils.format
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 import java.net.CookieManager
 import java.net.CookiePolicy
 import java.util.*
@@ -24,8 +26,8 @@ import javax.inject.Singleton
 @Singleton
 class RemoteDataSource {
     companion object {
-        public const val BASE_URL =
-            "http://10.24.22.49:3000"
+        const val BASE_URL =
+            "https://65126588b8c6ce52b3959442.mockapi.io/"
         private const val DEFAULT_USER_AGENT = "QLBH-Android"
         private const val DEFAULT_CONTENT_TYPE = "application/json"
     }
@@ -34,6 +36,8 @@ class RemoteDataSource {
         api: Class<Api>,
         context: Context
     ): Api {
+        Log.d("Log", "buildApi: ")
+        Timber.tag("Timber").d("buildApi: ")
         val gson = GsonBuilder()
             .registerTypeAdapter(Date::class.java, UnitEpochDateTypeAdapter())
             .setLenient()

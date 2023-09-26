@@ -1,15 +1,16 @@
 package datn.fpoly.myapplication
 
 import android.app.Application
-import androidx.databinding.ktx.BuildConfig
-import datn.fpoly.myapplication.utils.LocalHelper
 import datn.fpoly.myapplication.di.AppComponent
 import datn.fpoly.myapplication.di.DaggerAppComponent
+import datn.fpoly.myapplication.utils.LocalHelper
 import timber.log.Timber
+import timber.log.Timber.Forest.plant
 import javax.inject.Inject
 
+
 open class AppApplication: Application() {
-    private val appComponent: AppComponent by lazy {
+    val appComponent: AppComponent by lazy {
         initializeComponent()
     }
 
@@ -22,10 +23,10 @@ open class AppApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appComponent.inject(this)
         if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
+            plant(Timber.DebugTree())
         }
+        appComponent.inject(this)
     }
 
 }

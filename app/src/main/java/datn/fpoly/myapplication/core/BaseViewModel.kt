@@ -23,7 +23,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 
 
-abstract class ViewModel<S : MvRxState, VA : QLBHViewAction, VE : QLBHViewEvents>(initialState: S)
+abstract class BaseViewModel<S : MvRxState, VA : ViewAction, VE : ViewEvents>(initialState: S)
     : BaseMvRxViewModel<S>(initialState, false) {
 
     interface Factory<S : MvRxState> {
