@@ -8,4 +8,6 @@
     <string name="do_not_have_an_account">Bạn chưa có tài khoản?</string>
     <string name="sign_up_account">Đăng ký tài khoản</string>
     <string name="not_image">not image</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
