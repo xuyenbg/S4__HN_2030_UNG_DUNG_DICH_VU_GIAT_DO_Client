@@ -14,6 +14,9 @@ open class AppApplication: Application() {
         initializeComponent()
     }
 
+
+
+
     @Inject
     lateinit var localHelper: LocalHelper
 
