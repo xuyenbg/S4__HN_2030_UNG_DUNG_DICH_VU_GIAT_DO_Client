@@ -33,8 +33,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.example.ql_ban_hang.core.BaseFragment
+import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.di.AppComponent
-import datn.fpoly.myapplication.di.DaggerAppComponent
 import datn.fpoly.myapplication.di.HasScreenInjector
 import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
@@ -79,7 +79,7 @@ abstract class BaseActivity<VB: ViewBinding> : AppCompatActivity(), HasScreenInj
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.i("onCreate Activity ${javaClass.simpleName}")
 
-        appComponent= DaggerAppComponent.factory().create(this)
+//        appComponent= DaggerAppComponent.factory().create(this)
         val timeForInjection = measureTimeMillis {
             injectWith(appComponent)
         }
@@ -87,6 +87,7 @@ abstract class BaseActivity<VB: ViewBinding> : AppCompatActivity(), HasScreenInj
         super.onCreate(savedInstanceState)
 
         doBeforeSetContentView()
+        Hawk.init(this)
 
         // Hack for font size
         applyFontSize()

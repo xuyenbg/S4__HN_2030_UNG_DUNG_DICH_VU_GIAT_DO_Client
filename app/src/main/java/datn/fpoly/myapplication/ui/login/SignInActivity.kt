@@ -30,20 +30,20 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Fac
 
     override fun initUiAndData() {
         super.initUiAndData()
-        views.loginSubmit.setOnClickListener { login() }
+//        views.loginSubmit.setOnClickListener { login() }
         viewModel.subscribe(this){
             updateWithState(it)
         }
     }
 
     private fun login() {
-        val username = views.username.text.toString();
-        val password = views.password.text.toString();
-        if(username.isBlank() || password.isBlank()){
-            Toast.makeText(this, "Vui lòng không để trống", Toast.LENGTH_SHORT).show()
-            return
-        }
-        viewModel.handle(LoginViewAction.LoginAction(username, password))
+//        val username = views.username.text.toString();
+//        val password = views.password.text.toString();
+//        if(username.isBlank() || password.isBlank()){
+//            Toast.makeText(this, "Vui lòng không để trống", Toast.LENGTH_SHORT).show()
+//            return
+//        }
+//        viewModel.handle(LoginViewAction.LoginAction(username, password))
     }
 
     private fun updateWithState(state: LoginViewState) {

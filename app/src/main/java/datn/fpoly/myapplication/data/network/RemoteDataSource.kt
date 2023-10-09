@@ -4,12 +4,12 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.airbnb.mvrx.BuildConfig
 import com.google.gson.GsonBuilder
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
-import datn.fpoly.myapplication.BuildConfig
 import datn.fpoly.myapplication.utils.format
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor

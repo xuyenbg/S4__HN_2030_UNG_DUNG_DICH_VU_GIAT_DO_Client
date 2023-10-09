@@ -8,6 +8,26 @@
     <string name="do_not_have_an_account">Bạn chưa có tài khoản?</string>
     <string name="sign_up_account">Đăng ký tài khoản</string>
     <string name="not_image">not image</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="your_phone_number">Số điện thoại của bạn</string>
+    <string name="rules1">Tôi đồng ý với</string>
+    <string name="rules2">Điều khoản &amp; điều kiện.</string>
+    <string name="I_am_a_shop"> Tôi là cửa tiệm.</string>
+    <string name="next">Tiếp tục</string>
+    <string name="sign_up">Đăng ký</string>
+    <string name="register_as_a_store.">Đăng ký vai trò là cửa tiệm.</string>
+    <string name="verification">Xác minh</string>
+    <string name="remaining">Còn lại:</string>
+    <string name="send_to">Gửi lại</string>
+    <string name="title_otp">Kiểm tra mã OTP</string>
+    <string name="content_otp">Chúng tôi đã gửi mã  tới số điện thoại của bạn</string>
+    <string name="current_possition">Vị trí hiện tại </string>
+    <string name="or">Hoặc</string>
+    <string name="pick_possition_in_map">Chọn trên bản đồ</string>
+    <string name="your_fullname">Nhập tên của bạn</string>
+    <string name="your_store">Nhập tên cửa tiệm</string>
+    <string name="avata_store">Ảnh đại diện cửa tiệm</string>
+    <string name="chosse_image">Chọn ảnh để tải lên</string>
+    <string name="settting_possition_store">Cài đặt vị trí cửa tiệm</string>
+    <string name="pick_image">Chọn ảnh</string>
+
 </resources>
