@@ -22,8 +22,6 @@ open class AppApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        if (BuildConfig.DEBUG) {
-        }
         appComponent.inject(this)
         Hawk.init(this)
     }
