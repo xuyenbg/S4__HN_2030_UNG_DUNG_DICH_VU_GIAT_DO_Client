@@ -77,6 +77,11 @@ abstract class BaseActivity<VB: ViewBinding> : AppCompatActivity(), HasScreenInj
     private lateinit var appComponent: AppComponent
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
+<<<<<<< HEAD
+=======
+        Timber.i("onCreate Activity ${javaClass.simpleName}")
+
+>>>>>>> origin/dung_service_store
         appComponent= DaggerAppComponent.factory().create(this)
         val timeForInjection = measureTimeMillis {
             injectWith(appComponent)
