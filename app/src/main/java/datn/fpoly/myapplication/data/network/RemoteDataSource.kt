@@ -16,7 +16,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import timber.log.Timber
 import java.net.CookieManager
 import java.net.CookiePolicy
 import java.util.*
@@ -37,7 +36,7 @@ class RemoteDataSource {
         context: Context
     ): Api {
         Log.d("Log", "buildApi: ")
-        Timber.tag("Timber").d("buildApi: ")
+
         val gson = GsonBuilder()
             .registerTypeAdapter(Date::class.java, UnitEpochDateTypeAdapter())
             .setLenient()

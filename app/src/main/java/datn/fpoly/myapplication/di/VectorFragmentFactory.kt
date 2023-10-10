@@ -19,7 +19,7 @@ package datn.fpoly.myapplication.di
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
-import timber.log.Timber
+
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -34,7 +34,7 @@ class VectorFragmentFactory @Inject constructor(
         val fragmentClass = loadFragmentClass(classLoader, className)
         val creator: Provider<out Fragment>? = creators[fragmentClass]
         return if (creator == null) {
-            Timber.v("Unknown model class: $className, fallback to default instance")
+
             super.instantiate(classLoader, className)
         } else {
             creator.get()

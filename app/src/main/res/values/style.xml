@@ -42,4 +42,19 @@
         <item name="fontFamily">@font/inter_regular</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+
+    <style name="item_bottom_avigation_custom">
+        <item name="android:textColor">@color/gray</item>
+        <item name="fontFamily">@font/inter_semi_bold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="item_bottom_avigation_custom_selected">
+        <item name="android:textColor">@color/colorPriamry</item>
+        <item name="fontFamily">@font/inter_semi_bold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:gravity">center</item>
+
+    </style>
 </resources>
