@@ -35,9 +35,9 @@ import androidx.viewbinding.ViewBinding
 import com.example.ql_ban_hang.core.BaseFragment
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.di.AppComponent
+import datn.fpoly.myapplication.di.DaggerAppComponent
 import datn.fpoly.myapplication.di.HasScreenInjector
 import io.reactivex.android.schedulers.AndroidSchedulers
-import timber.log.Timber
 import kotlin.system.measureTimeMillis
 
 abstract class BaseActivity<VB: ViewBinding> : AppCompatActivity(), HasScreenInjector {
@@ -77,15 +77,11 @@ abstract class BaseActivity<VB: ViewBinding> : AppCompatActivity(), HasScreenInj
     private lateinit var appComponent: AppComponent
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
-        Timber.i("onCreate Activity ${javaClass.simpleName}")
-
-//        appComponent= DaggerAppComponent.factory().create(this)
+        appComponent= DaggerAppComponent.factory().create(this)
         val timeForInjection = measureTimeMillis {
             injectWith(appComponent)
         }
-        Timber.v("Injecting dependencies into ${javaClass.simpleName} took $timeForInjection ms")
         super.onCreate(savedInstanceState)
-
         doBeforeSetContentView()
         Hawk.init(this)
 
@@ -122,14 +118,14 @@ abstract class BaseActivity<VB: ViewBinding> : AppCompatActivity(), HasScreenInj
 
     override fun onDestroy() {
         super.onDestroy()
-        Timber.i("onDestroy Activity ${javaClass.simpleName}")
+
 
     }
 
 
     override fun onResume() {
         super.onResume()
-        Timber.i("onResume Activity ${javaClass.simpleName}")
+
 
     }
 
@@ -148,7 +144,7 @@ abstract class BaseActivity<VB: ViewBinding> : AppCompatActivity(), HasScreenInj
 
     override fun onPause() {
         super.onPause()
-        Timber.i("onPause Activity ${javaClass.simpleName}")
+
 
     }
 
@@ -166,7 +162,6 @@ abstract class BaseActivity<VB: ViewBinding> : AppCompatActivity(), HasScreenInj
             super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig)
         }
 
-        Timber.w("onMultiWindowModeChanged. isInMultiWindowMode: $isInMultiWindowMode")
 //        bugReporter.inMultiWindowMode = isInMultiWindowMode
     }
 
@@ -201,9 +196,6 @@ abstract class BaseActivity<VB: ViewBinding> : AppCompatActivity(), HasScreenInj
         }
     }
 
-    /* ==========================================================================================
-     * MENU MANAGEMENT
-     * ========================================================================================== */
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val menuRes = getMenuRes()

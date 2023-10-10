@@ -14,7 +14,6 @@ import datn.fpoly.myapplication.databinding.ActivitySignInBinding
 import datn.fpoly.myapplication.ui.dashboard.DashboardActivity
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import timber.log.Timber
 import javax.inject.Inject
 
 class SignInActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Factory {
@@ -31,9 +30,9 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Fac
     override fun initUiAndData() {
         super.initUiAndData()
 //        views.loginSubmit.setOnClickListener { login() }
-        viewModel.subscribe(this){
-            updateWithState(it)
-        }
+//        viewModel.subscribe(this){
+//            updateWithState(it)
+//        }
     }
 
     private fun login() {
@@ -50,7 +49,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Fac
         when (state.stateLogin) {
             is Success -> {
                 runBlocking {
-                    Timber.tag("Log In: ").d("LogIn...")
                     launch {
                         state.stateLogin.invoke()?.let{ listUser ->
                             if (listUser != null && listUser.isNotEmpty()) {

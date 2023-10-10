@@ -6,7 +6,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
 import datn.fpoly.myapplication.data.repository.AuthRepo
-import timber.log.Timber
+
 
 class LoginViewModel @AssistedInject constructor(
     @Assisted state: LoginViewState,

@@ -1,4 +1,5 @@
 <resources>
+    <string name="key_map">AIzaSyC1sswvFkexF72r2-UWCwPM1vPmW_QHo84</string>
     <string name="app_name">WashNow</string>
     <string name="WashNow">WashNow</string>
     <string name="sign_in">Đăng nhập</string>
@@ -29,5 +30,6 @@
     <string name="chosse_image">Chọn ảnh để tải lên</string>
     <string name="settting_possition_store">Cài đặt vị trí cửa tiệm</string>
     <string name="pick_image">Chọn ảnh</string>
+    <string name="chosse_possition">Chọn vị trí</string>
 
 </resources>
