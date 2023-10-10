@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toobar"
+        layout="@layout/toobar_fragment" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="50dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="22dp"
+                android:layout_marginBottom="50dp"
+                android:src="@drawable/add_image" />
+
+            <TextView
+                android:id="@+id/tv_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/t_n_lo_i_d_ch_v"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/boder_edittex"
+                android:elevation="10dp"
+                android:paddingStart="8dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="Giặt Là"
+                app:layout_constraintTop_toBottomOf="@+id/tv_service" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/boder_button"
+                android:text="@string/themdichvu"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="Danh Sách Loại Dịch Vụ"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"
+                tools:listitem="@layout/item_category_service" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

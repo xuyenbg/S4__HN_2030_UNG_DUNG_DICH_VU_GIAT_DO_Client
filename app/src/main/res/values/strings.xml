@@ -29,5 +29,19 @@
     <string name="chosse_image">Chọn ảnh để tải lên</string>
     <string name="settting_possition_store">Cài đặt vị trí cửa tiệm</string>
     <string name="pick_image">Chọn ảnh</string>
+    <string name="danh_s_ch_d_ch_v">Danh Sách dịch vụ</string>
+    <string name="tendichvu">Tên dịch vụ:</string>
+    <string name="loaidichvu">Loại dịch vụ</string>
+    <string name="dichvuthem">Dịch vụ thêm :</string>
+    <string name="giátien">Giá Tiền :</string>
+    <string name="them">Thêm</string>
+    <string name="gia">Giá (VNĐ):</string>
+    <string name="sale">Sale(%):</string>
+    <string name="themdichvu">Thêm Dịch Vụ</string>
+    <string name="themloaidichvu">Thêm Loại Dịch Vụ</string>
+    <string name="status">Status:</string>
+    <string name="hoatdong">Hoạt Động</string>
+    <string name="khonghoatdong">Không Hoạt Động</string>
+    <string name="t_n_lo_i_d_ch_v">Tên Loại Dịch Vụ:</string>
 
 </resources>
