@@ -5,9 +5,4 @@
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.CartFragment">
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/dung_service_store
-
 </FrameLayout>

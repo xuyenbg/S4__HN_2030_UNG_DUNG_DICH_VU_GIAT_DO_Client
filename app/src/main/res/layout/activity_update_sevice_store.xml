@@ -38,7 +38,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/tendichvu"
+                android:text="@string/service_name"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -62,7 +62,7 @@
                 android:layout_marginTop="21dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/loaidichvu"
+                android:text="@string/service_type"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -88,7 +88,7 @@
                 android:layout_marginTop="21dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/dichvuthem"
+                android:text="@string/service_add"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -121,7 +121,7 @@
                         android:layout_marginStart="24dp"
                         android:layout_marginEnd="24dp"
                         android:layout_marginBottom="8dp"
-                        android:text="@string/tendichvu"
+                        android:text="@string/service_name"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -153,7 +153,7 @@
                         android:layout_marginStart="12dp"
                         android:layout_marginEnd="24dp"
                         android:layout_marginBottom="8dp"
-                        android:text="@string/giátien"
+                        android:text="@string/price"
                         android:textStyle="bold" />
 
                     <androidx.appcompat.widget.AppCompatEditText
@@ -179,7 +179,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/boder_button"
-                android:text="@string/them"
+                android:text="@string/add"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -191,7 +191,7 @@
                 android:layout_marginTop="21dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/gia"
+                android:text="@string/price_vnd"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -306,13 +306,13 @@
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/hoatdong"
+                    android:text="@string/activity"
                     android:layout_marginEnd="16dp"
                     />
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/khonghoatdong"
+                    android:text="@string/no_activity"
                     />
             </RadioGroup>
             <androidx.appcompat.widget.AppCompatButton
@@ -322,7 +322,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/boder_button"
-                android:text="@string/themdichvu"
+                android:text="@string/service_add"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>
