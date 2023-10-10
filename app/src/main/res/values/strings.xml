@@ -31,5 +31,16 @@
     <string name="settting_possition_store">Cài đặt vị trí cửa tiệm</string>
     <string name="pick_image">Chọn ảnh</string>
     <string name="chosse_possition">Chọn vị trí</string>
+    <string name="content_dialog_disconnect_internet">Không có Internet. Vui lòng thử lại.!</string>
+    <string name="content_dialog_gps">Bạn chưa bật dịch vụ vị trí. Vui lòng bật dịch vụ vị trí trước khi sử dụng tính năng</string>
+    <string name="try_again">Thử lại</string>
+    <string name="turn_on_location_service">Bật dịch vụ vị trí</string>
+    <string name="cancel">Hủy</string>
+    <string name="no">Không</string>
 
+    <string name="home">Trang chủ</string>
+    <string name="cart">Giỏ hàng</string>
+    <string name="order">Đơn hàng</string>
+    <string name="post">Bài đăng</string>
+    <string name="profile">Cá nhân</string>
 </resources>

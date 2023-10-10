@@ -29,7 +29,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBinding>(), OnMapReadyCallback {
+class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBinding>(),
+    OnMapReadyCallback {
     private lateinit var fusedLoaction: FusedLocationProviderClient
     private lateinit var mapFragment: SupportMapFragment
     private var ggMap: GoogleMap? = null
@@ -38,21 +39,31 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
         super.onCreate(savedInstanceState)
         setContentView(views.root)
         fusedLoaction = LocationServices.getFusedLocationProviderClient(this)
-        if(Common.isNetwork(this)&& Common.checkPermission(this)&& Common.isGpsEnabled(this)){
-            getCurrentLocation()
-        }else{
-            // xử lý phần chưa đủ điều kiện
-            if(!Common.isNetwork(this)){
-                startActivityForResult(
-                    Intent(Settings.ACTION_WIFI_SETTINGS),
-                    Common.REQUEST_ACTIVITY_RESULT
-                )
-            }else if(!Common.checkPermission(this)){
-                    Common.repuestPermission(this)
-            }else if(!Common.isGpsEnabled(this)){
-                Common.turnOnLocationService(this)
-            }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getCurrentLocation()
+
+    }
+    fun requestGetCurrentLocation(){
+        if (Common.isNetwork(this) && Common.checkPermission(this) && Common.isGpsEnabled(this)) {
+            getCurrentLocation()
+        } else {
+            if (!Common.isNetwork(this)) {
+                Common.dialogDisconnectWifi(this)
+            }else{
+                if (!Common.checkPermission(this)) {
+                    Common.repuestPermission(this)
+                } else {
+                    if (!Common.isGpsEnabled(this)) {
+                       Common.dialogLocationService(this)
+                    }
+
+                }
+            }
+            // xử lý phần chưa đủ điều kiện
         }
     }
 
@@ -88,7 +99,8 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
                     mapFragment.getMapAsync(this)
 //                    Common.setCurrentLocation(LatLng(it.latitude, it.longitude))
                     runOnUiThread {
-                        views.tvCurrentAdress.text = Common.getAddress(myLocation!!, this@PickPossitionInMapActivity)
+                        views.tvCurrentAdress.text =
+                            Common.getAddress(myLocation!!, this@PickPossitionInMapActivity)
                     }
                 }
             }.addOnCompleteListener() {
@@ -99,7 +111,8 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
         }
 
     }
-    fun setPossition(){
+
+    fun setPossition() {
         views.btnChossePossition.setOnClickListener {
 
         }
@@ -115,15 +128,22 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
         ggMap?.setMaxZoomPreference(10000F);
         ggMap?.setOnCameraChangeListener {
             val posCamera = it.target
-            Log.e("AAAAAAAAAAAA", "onMapReady: latitude: "+posCamera.latitude+" longtitude: "+posCamera.longitude)
+            Log.e(
+                "AAAAAAAAAAAA",
+                "onMapReady: latitude: " + posCamera.latitude + " longtitude: " + posCamera.longitude
+            )
             CoroutineScope(Dispatchers.IO).launch {
                 val adreess = Common.getAddress(posCamera, this@PickPossitionInMapActivity)
-              runOnUiThread {
-                  views.tvCurrentAdress.text = adreess
-              }
+                runOnUiThread {
+                    views.tvCurrentAdress.text = adreess
+                }
             }
         }
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             ggMap?.isMyLocationEnabled = false
             ggMap?.uiSettings?.isMyLocationButtonEnabled = false
         }
@@ -132,6 +152,17 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
             ggMap?.animateCamera(cameraUpdate)
         }
 
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == RESULT_OK){
+            requestGetCurrentLocation()
+        }
     }
 
 }
