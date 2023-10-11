@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "26387313902",
+    "project_id": "washnow-3e740",
+    "storage_bucket": "washnow-3e740.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:26387313902:android:08da409e881c2b6eb8efff",
+        "android_client_info": {
+          "package_name": "datn.fpoly.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfzATOwCrpyT3rcfDt4mlFapNmLt6j1FY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
+import datn.fpoly.myapplication.data.model.User
 import datn.fpoly.myapplication.databinding.ActivitySignInBinding
 import datn.fpoly.myapplication.ui.dashboard.DashboardActivity
 import kotlinx.coroutines.launch
@@ -29,10 +31,10 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Fac
 
     override fun initUiAndData() {
         super.initUiAndData()
-//        views.loginSubmit.setOnClickListener { login() }
-//        viewModel.subscribe(this){
-//            updateWithState(it)
-//        }
+        views.btnContinue.setOnClickListener { login() }
+        viewModel.subscribe(this){
+            updateWithState(it)
+        }
     }
 
     private fun login() {
@@ -42,7 +44,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Fac
 //            Toast.makeText(this, "Vui lòng không để trống", Toast.LENGTH_SHORT).show()
 //            return
 //        }
-//        viewModel.handle(LoginViewAction.LoginAction(username, password))
+        viewModel.handle(LoginViewAction.LoginAction("admin", "12345"))
     }
 
     private fun updateWithState(state: LoginViewState) {
@@ -63,8 +65,10 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Fac
                             }
                         }
                     }
-
                 }
+            }
+            is Loading ->{
+                //Xoay tròn indicate
             }
 
             else -> {}
