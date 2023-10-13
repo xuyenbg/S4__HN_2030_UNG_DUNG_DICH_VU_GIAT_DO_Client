@@ -21,7 +21,6 @@ open class AppApplication: Application() {
     open fun initializeComponent(): AppComponent {
         return DaggerAppComponent.factory().create(applicationContext)
     }
-
     override fun onCreate() {
         if (BuildConfig.DEBUG) {
             plant(Timber.DebugTree())

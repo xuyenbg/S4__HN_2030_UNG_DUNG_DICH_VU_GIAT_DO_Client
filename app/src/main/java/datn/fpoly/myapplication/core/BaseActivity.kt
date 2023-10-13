@@ -83,7 +83,7 @@ abstract class BaseActivity<VB: ViewBinding> : AppCompatActivity(), HasScreenInj
         }
         super.onCreate(savedInstanceState)
         doBeforeSetContentView()
-        Hawk.init(this)
+
 
         // Hack for font size
         applyFontSize()

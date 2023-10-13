@@ -72,4 +72,7 @@
     <string name="phone_number_example"><![CDATA[<u>0987654321</u>]]></string>
     <string name="waiting_confirm">Chờ xác nhận</string>
     <string name="received">Nhận đồ</string>
+    <string name="title_permission">Xin quyền try cập vị trị</string>
+    <string name="content_permission">Vui lòng cấp “Quyền vị trí” để cho phép xác định và vị trí của bạn</string>
+    <string name="go_to_setting">Đi đến cài đặt</string>
 </resources>
