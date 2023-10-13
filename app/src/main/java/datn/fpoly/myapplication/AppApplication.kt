@@ -19,7 +19,6 @@ open class AppApplication: Application() {
     open fun initializeComponent(): AppComponent {
         return DaggerAppComponent.factory().create(applicationContext)
     }
-
     override fun onCreate() {
         super.onCreate()
         appComponent.inject(this)

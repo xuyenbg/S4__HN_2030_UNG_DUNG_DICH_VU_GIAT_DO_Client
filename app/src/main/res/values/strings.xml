@@ -57,4 +57,7 @@
     <string name="post">Bài đăng</string>
     <string name="profile">Cá nhân</string>
     <string name="list_service_type">Danh Sách Loại Dịch Vụ</string>
+    <string name="title_permission">Xin quyền try cập vị trị</string>
+    <string name="content_permission">Vui lòng cấp “Quyền vị trí” để cho phép xác định và vị trí của bạn</string>
+    <string name="go_to_setting">Đi đến cài đặt</string>
 </resources>

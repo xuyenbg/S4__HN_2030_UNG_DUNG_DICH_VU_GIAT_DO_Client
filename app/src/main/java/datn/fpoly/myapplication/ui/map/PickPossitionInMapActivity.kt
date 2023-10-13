@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
+import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
@@ -39,26 +40,27 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
         super.onCreate(savedInstanceState)
         setContentView(views.root)
         fusedLoaction = LocationServices.getFusedLocationProviderClient(this)
-
+        setPossition()
     }
 
     override fun onResume() {
         super.onResume()
-        getCurrentLocation()
+        requestGetCurrentLocation()
 
     }
-    fun requestGetCurrentLocation(){
+
+    fun requestGetCurrentLocation() {
         if (Common.isNetwork(this) && Common.checkPermission(this) && Common.isGpsEnabled(this)) {
             getCurrentLocation()
         } else {
             if (!Common.isNetwork(this)) {
                 Common.dialogDisconnectWifi(this)
-            }else{
+            } else {
                 if (!Common.checkPermission(this)) {
                     Common.repuestPermission(this)
                 } else {
                     if (!Common.isGpsEnabled(this)) {
-                       Common.dialogLocationService(this)
+                        Common.dialogLocationService(this)
                     }
 
                 }
@@ -97,11 +99,15 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
                     myLocation = LatLng(it.latitude, it.longitude)
                     loadFragmentMap()
                     mapFragment.getMapAsync(this)
-//                    Common.setCurrentLocation(LatLng(it.latitude, it.longitude))
-                    runOnUiThread {
-                        views.tvCurrentAdress.text =
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val address =
                             Common.getAddress(myLocation!!, this@PickPossitionInMapActivity)
+                        runOnUiThread {
+                            views.tvCurrentAdress.text = address
+
+                        }
                     }
+
                 }
             }.addOnCompleteListener() {
                 if (it.isSuccessful) {
@@ -132,6 +138,8 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
                 "AAAAAAAAAAAA",
                 "onMapReady: latitude: " + posCamera.latitude + " longtitude: " + posCamera.longitude
             )
+            myLocation = it.target
+//            Hawk.put(Common.KEY_LOCATION,it.target)
             CoroutineScope(Dispatchers.IO).launch {
                 val adreess = Common.getAddress(posCamera, this@PickPossitionInMapActivity)
                 runOnUiThread {
@@ -144,10 +152,11 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            ggMap?.isMyLocationEnabled = false
+            ggMap?.isMyLocationEnabled = true
             ggMap?.uiSettings?.isMyLocationButtonEnabled = false
+            ggMap?.uiSettings?.isCompassEnabled = false
         }
-        val cameraUpdate = myLocation?.let { CameraUpdateFactory.newLatLngZoom(it, 500f) }
+        val cameraUpdate = myLocation?.let { CameraUpdateFactory.newLatLngZoom(it, 400f) }
         cameraUpdate?.let {
             ggMap?.animateCamera(cameraUpdate)
         }
@@ -160,7 +169,7 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode == RESULT_OK){
+        if (requestCode == RESULT_OK) {
             requestGetCurrentLocation()
         }
     }
