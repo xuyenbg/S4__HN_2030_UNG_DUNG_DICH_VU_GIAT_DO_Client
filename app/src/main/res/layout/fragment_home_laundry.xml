@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FDFDFD"
+    android:background="@color/white"
     android:paddingHorizontal="16dp">
 
     <com.google.android.material.textview.MaterialTextView
@@ -26,8 +26,7 @@
         android:layout_height="44dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_notification"
-        />
+        app:srcCompat="@drawable/ic_notification" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/layout_status"
@@ -35,7 +34,7 @@
         android:layout_height="48dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="1dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="14dp"
         android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@id/tv_name_laundry">
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,8 +66,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="14dp"
-        android:layout_marginTop="8dp"
+        android:paddingVertical="8dp"
+        android:layout_marginTop="14dp"
         android:background="@drawable/bg_statistics_home_laundry"
         app:layout_constraintTop_toBottomOf="@id/layout_status">
 
@@ -84,7 +83,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/price_today"
-            style="@style/font_18_white_bold"
+            style="@style/font_20_white_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tv_today"
@@ -117,7 +116,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/price_week"
-            style="@style/font_18_white_bold"
+            style="@style/font_20_white_bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
@@ -128,7 +127,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/price_month"
-            style="@style/font_18_white_bold"
+            style="@style/font_20_white_bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
