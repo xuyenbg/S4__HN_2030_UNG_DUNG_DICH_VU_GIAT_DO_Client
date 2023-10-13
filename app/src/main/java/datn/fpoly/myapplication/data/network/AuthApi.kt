@@ -8,8 +8,6 @@ import retrofit2.http.Query
 
 interface AuthApi {
     @GET("login")
-    fun login(
-        @Query("username") username : String,
-        @Query("password") password : String ) : Observable<List<User>>
+    fun login(@Query("username") username : String, @Query("password") password : String ) : Observable<List<User>>
 
 }
