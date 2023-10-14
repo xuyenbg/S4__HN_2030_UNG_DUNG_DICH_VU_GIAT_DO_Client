@@ -75,4 +75,7 @@
     <string name="title_permission">Xin quyền try cập vị trị</string>
     <string name="content_permission">Vui lòng cấp “Quyền vị trí” để cho phép xác định và vị trí của bạn</string>
     <string name="go_to_setting">Đi đến cài đặt</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="content">Nội dung:</string>
+    <string name="addpost">Đăng</string>
 </resources>

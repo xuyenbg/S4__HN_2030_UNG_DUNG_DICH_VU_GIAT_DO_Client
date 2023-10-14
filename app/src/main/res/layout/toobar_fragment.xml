@@ -23,7 +23,7 @@
         android:textColor="@color/colorPriamry"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="18dp"
+        android:textSize="@dimen/_18sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent" />
     <ImageView

@@ -25,10 +25,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.poststore.AddPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.poststore.PostStoreActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.home.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.map.PickPossitionInMapActivity"
             android:exported="false" />
         <activity
             android:name=".ui.dashboard.DashboardActivity"
@@ -37,7 +43,7 @@
             android:name=".ui.login.SignInActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.map.PickPossitionInMapActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
