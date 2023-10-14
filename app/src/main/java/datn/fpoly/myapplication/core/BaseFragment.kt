@@ -35,6 +35,7 @@ import datn.fpoly.myapplication.di.HasScreenInjector
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import timber.log.Timber
 
 abstract class BaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasScreenInjector {
 
@@ -89,7 +90,7 @@ abstract class BaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasScreenInje
     }
 
     final override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
+        Timber.i("onCreateView Fragment ${javaClass.simpleName}")
         _binding = getBinding(inflater, container)
         Intent()
         return views.root
@@ -101,24 +102,24 @@ abstract class BaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasScreenInje
     @CallSuper
     override fun onResume() {
         super.onResume()
-
+        Timber.i("onResume Fragment ${javaClass.simpleName}")
     }
 
     @CallSuper
     override fun onPause() {
         super.onPause()
-
+        Timber.i("onPause Fragment ${javaClass.simpleName}")
     }
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Timber.i("onViewCreated Fragment ${javaClass.simpleName}")
     }
 
     @CallSuper
     override fun onDestroyView() {
-
+        Timber.i("onDestroyView Fragment ${javaClass.simpleName}")
         uiDisposables.clear()
         _binding = null
         super.onDestroyView()
@@ -126,7 +127,7 @@ abstract class BaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasScreenInje
 
     @CallSuper
     override fun onDestroy() {
-
+        Timber.i("onDestroy Fragment ${javaClass.simpleName}")
         uiDisposables.dispose()
         super.onDestroy()
     }
@@ -141,7 +142,7 @@ abstract class BaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasScreenInje
 
     override fun invalidate() {
         // no-ops by default
-
+        Timber.v("invalidate() method has not been implemented")
     }
     protected fun dismissLoadingDialog() {
         progress?.dismiss()

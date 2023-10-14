@@ -18,6 +18,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.CookieManager
 import java.net.CookiePolicy
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -35,8 +36,6 @@ class RemoteDataSource {
         api: Class<Api>,
         context: Context
     ): Api {
-        Log.d("Log", "buildApi: ")
-
         val gson = GsonBuilder()
             .registerTypeAdapter(Date::class.java, UnitEpochDateTypeAdapter())
             .setLenient()
@@ -51,12 +50,15 @@ class RemoteDataSource {
     }
 
     inner class UnitEpochDateTypeAdapter : TypeAdapter<Date>() {
-        @RequiresApi(Build.VERSION_CODES.O)
         override fun write(out: JsonWriter?, value: Date?) {
             if (value == null) {
                 out?.nullValue()
             } else {
-                out?.value(value.format("yyyy-MM-dd"))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    out?.value(value.format("yyyy-MM-dd'T'HH:mm'Z'"))
+                }else{
+                    out?.value(SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'",Locale.ROOT).format(value))
+                }
             }
         }
         override fun read(_in: JsonReader?) =
@@ -65,7 +67,11 @@ class RemoteDataSource {
                     _in.nextNull()
                     null
                 } else {
-                    Date(_in.nextLong())
+                    try {
+                        SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'",Locale.ROOT).parse(_in.nextString())
+                    }catch (e:Exception){
+                        null
+                    }
                 }
             } else null
     }
