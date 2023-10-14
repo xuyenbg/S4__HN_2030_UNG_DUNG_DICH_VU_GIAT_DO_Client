@@ -68,8 +68,10 @@
     <string name="status_name_order_example">Chờ nhận đồ(10)</string>
     <string name="datetime_example">11:00 11/07/2023</string>
     <string name="order_id_example">#ahfdlfl0132355465</string>
+    <string name="order_id_example2">ahfdlfl0132355465</string>
     <string name="full_name_example">Nguyễn Văn Trường</string>
     <string name="phone_number_example"><![CDATA[<u>0987654321</u>]]></string>
+    <string name="phone_number_example2">0987654321</string>
     <string name="waiting_confirm">Chờ xác nhận</string>
     <string name="received">Nhận đồ</string>
     <string name="title_permission">Xin quyền try cập vị trị</string>
@@ -78,4 +80,18 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="content">Nội dung:</string>
     <string name="addpost">Đăng</string>
+    <string name="title">Title</string>
+    <string name="order_code">Mã đơn hàng:</string>
+    <string name="time_order">Thời gian đặt hàng:</string>
+    <string name="address_detail">Địa chỉ chi tiết:</string>
+    <string name="address_example">123 Trịnh Văn Bô, Hà Nội</string>
+    <string name="status_pair_example">Chưa thanh toán</string>
+    <string name="laundry_example">Tiệm giặt Ánh Sao Xanh</string>
+    <string name="note">Ghi chú</string>
+    <string name="note_content_example">Mình chỉ ở nhà vào buổi tối. Bạn vui lòng gọi điện cho mình trước khi giao hàng</string>
+    <string name="order_detail">Đơn hàng chi tiết</string>
+    <string name="back">Back</string>
+    <string name="notification">Notification</string>
+    <string name="detail_order">Chi tiết đơn hàng</string>
+    <string name="service_number_example">2 dịch vụ</string>
 </resources>

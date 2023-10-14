@@ -39,17 +39,48 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="font_16_black_bold" parent="font_14_black_bold">
+    <style name="font_16_black_bold" parent="text_font_inter_bold">
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="font_16_black_medium" parent="text_font_inter_medium">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="font_16_black_regular" parent="text_font_inter_regular">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="font_16_primary_regular" parent="text_font_inter_regular">
+        <item name="android:textColor">@color/colorPriamry</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="font_16_primary_medium" parent="text_font_inter_medium">
+        <item name="android:textColor">@color/colorPriamry</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
     <style name="font_14_black_medium" parent="text_font_inter_medium">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="font_14_black_regular" parent="text_font_inter_regular">
         <item name="android:textSize">14sp</item>
     </style>
 
     <style name="font_14_primary_medium" parent="text_font_inter_medium">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/colorPriamry</item>
+    </style>
+
+    <style name="font_18_primary_medium" parent="text_font_inter_medium">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorPriamry</item>
+    </style>
+    <style name="font_18_black_medium" parent="text_font_inter_medium">
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="font_14_dask_blue_medium" parent="text_font_inter_medium">
