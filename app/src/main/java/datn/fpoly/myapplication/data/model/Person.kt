@@ -1,7 +1,9 @@
 package datn.fpoly.myapplication.data.model
 
 import com.google.gson.annotations.SerializedName
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 data class Person (
 
@@ -12,6 +14,6 @@ data class Person (
 
 ) {
     override fun toString(): String {
-        return "Person(createdAt=$createdAt, name=$name, avatar=$avatar, id=$id)"
+        return "Person(createdAt=${SimpleDateFormat("dd/MM/yyyy", Locale.ROOT).format(createdAt ?: Date())}, name=$name, avatar=$avatar, id=$id)"
     }
 }

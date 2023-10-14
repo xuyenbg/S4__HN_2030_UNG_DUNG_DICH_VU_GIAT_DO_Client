@@ -22,7 +22,7 @@ class DemoActivity : BaseActivity<ActivityDemoBinding>(), DemoViewModel.Factory 
     lateinit var demoViewModelFactory: DemoViewModel.Factory
     private val viewModel: DemoViewModel by viewModel()
     private lateinit var adapter:ArrayAdapter<String>;
-    private var listString:List<String> = arrayListOf();
+    private var listString:List<String> = arrayListOf("1","2","3");
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ class DemoActivity : BaseActivity<ActivityDemoBinding>(), DemoViewModel.Factory 
     override fun initUiAndData() {
         super.initUiAndData()
         views.progressCircular.visibility = View.GONE
-        adapter = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, listString);
+        adapter = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, listString)
         views.recyclerView.adapter = adapter
         views.button.setOnClickListener {
             viewModel.handle(DemoViewAction.GetListPersonAction)
@@ -51,7 +51,7 @@ class DemoActivity : BaseActivity<ActivityDemoBinding>(), DemoViewModel.Factory 
                     launch {
                         state.stateGetListPerson.invoke()?.let{ listPerson ->
                             listString = listPerson.map { person ->  person.toString() }.toList()
-                            adapter.notifyDataSetChanged()
+                            views.recyclerView.adapter = ArrayAdapter(this@DemoActivity, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, listString)
                         }
                     }
                 }
