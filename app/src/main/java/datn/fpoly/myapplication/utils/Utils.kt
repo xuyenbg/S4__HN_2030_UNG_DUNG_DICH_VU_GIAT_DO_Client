@@ -23,7 +23,7 @@ fun Location?.toText(): String {
 @RequiresApi(Build.VERSION_CODES.O)
 fun Date.format(format: String? = null): String {
     val ld = toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-    return ld.format(DateTimeFormatter.ofPattern(format ?: "dd/MM/yyyy"))
+    return ld.format(DateTimeFormatter.ofPattern(format ?: "yyyy-MM-dd'T'HH:mm'Z'"))
 }
 fun AppCompatActivity.addFragment(
     frameId: Int,

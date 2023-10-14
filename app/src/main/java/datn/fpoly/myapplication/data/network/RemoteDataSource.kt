@@ -2,7 +2,6 @@ package datn.fpoly.myapplication.data.network
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.airbnb.mvrx.BuildConfig
 import com.google.gson.GsonBuilder
@@ -16,8 +15,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 import java.net.CookieManager
 import java.net.CookiePolicy
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -35,12 +36,11 @@ class RemoteDataSource {
         api: Class<Api>,
         context: Context
     ): Api {
-        Log.d("Log", "buildApi: ")
-
         val gson = GsonBuilder()
             .registerTypeAdapter(Date::class.java, UnitEpochDateTypeAdapter())
             .setLenient()
             .create()
+
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(getRetrofitClient())
@@ -56,7 +56,7 @@ class RemoteDataSource {
             if (value == null) {
                 out?.nullValue()
             } else {
-                out?.value(value.format("yyyy-MM-dd"))
+                out?.value(value.format("yyyy-MM-dd'T'HH:mm'Z'"))
             }
         }
         override fun read(_in: JsonReader?) =
@@ -65,7 +65,11 @@ class RemoteDataSource {
                     _in.nextNull()
                     null
                 } else {
-                    Date(_in.nextLong())
+                    try {
+                        SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'",Locale.ROOT).parse(_in.nextString())
+                    }catch (e:Exception){
+                        null
+                    }
                 }
             } else null
     }
@@ -77,6 +81,7 @@ class RemoteDataSource {
             .connectTimeout(15, TimeUnit.SECONDS)
             .cookieJar(cookieJar())
             .addNetworkInterceptor(customInterceptor())
+            .addNetworkInterceptor(loggingInterceptor())
             .also {
                 if (BuildConfig.DEBUG) {
                     it.addInterceptor(loggingInterceptor())
