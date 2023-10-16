@@ -100,4 +100,6 @@
     <string name="total">TỔNG TIỀN:</string>
     <string name="total_price_example">1.153.000 Đ</string>
     <string name="receipt_clothing">Nhận đồ giặt</string>
+    <string name="price_d_kg_example">5.000 đ/kg</string>
+    <string name="pick_image_when_weight_clothing">Chụp ảnh khi cân dồ giặt:</string>
 </resources>
