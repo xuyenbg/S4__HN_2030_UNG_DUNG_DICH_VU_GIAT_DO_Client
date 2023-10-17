@@ -25,6 +25,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.service.DetailServiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.detailstore.DetailStoreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.rate.ListRateActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.poststore.AddPostActivity"
             android:exported="false" />
         <activity

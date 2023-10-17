@@ -3,28 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/dark_blue"
+    android:background="@drawable/img_bg_profile"
     android:layout_height="match_parent">
-
-    <ImageView
-        android:layout_width="280dp"
-        android:layout_height="match_parent"
-        android:src="@drawable/bg_profile_1" />
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="95dp"
-        android:src="@drawable/bg_profile_2" />
-    <ImageView
-        android:layout_width="250dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="170dp"
-        android:src="@drawable/bg_profile_3" />
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView_avatar"
-        android:layout_width="105dp"
-        android:layout_height="105dp"
-        app:cardCornerRadius="100dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        app:cardCornerRadius="55dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         >

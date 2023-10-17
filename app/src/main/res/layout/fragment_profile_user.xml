@@ -8,9 +8,9 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView_avatar"
-        android:layout_width="105dp"
-        android:layout_height="105dp"
-        app:cardCornerRadius="100dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        app:cardCornerRadius="55dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         >
