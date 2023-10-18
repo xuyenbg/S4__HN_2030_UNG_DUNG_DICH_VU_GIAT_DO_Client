@@ -27,9 +27,9 @@ import javax.inject.Singleton
 class RemoteDataSource {
     companion object {
         const val BASE_URL =
-            "https://65126588b8c6ce52b3959442.mockapi.io/"
-        private const val DEFAULT_USER_AGENT = "QLBH-Android"
-        private const val DEFAULT_CONTENT_TYPE = "application/json"
+            "https://s4-hn-2030-ung-dung-dich-vu-giat-do.onrender.com/api/"
+        const val DEFAULT_USER_AGENT = "QLBH-Android"
+        const val DEFAULT_CONTENT_TYPE = "application/json"
     }
 
     fun <Api> buildApi(

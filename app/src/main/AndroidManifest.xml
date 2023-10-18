@@ -31,7 +31,7 @@
             android:name=".ui.poststore.PostStoreActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.home.HomeActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".ui.map.PickPossitionInMapActivity"
@@ -43,7 +43,8 @@
             android:name=".ui.login.SignInActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.home.HomeActivity"
+
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

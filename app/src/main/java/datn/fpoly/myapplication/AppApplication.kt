@@ -27,7 +27,7 @@ open class AppApplication: Application() {
         }
         super.onCreate()
         appComponent.inject(this)
-        Hawk.init(this)
+        Hawk.init(this).build()
     }
 
 }
