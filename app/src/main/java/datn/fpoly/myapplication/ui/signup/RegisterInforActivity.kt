@@ -1,6 +1,5 @@
 package datn.fpoly.myapplication.ui.signup
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -53,8 +52,8 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
         phonenumber?.let {
             uid?.let { it1 ->
                 SignUpViewAction.SignUpAction(
-                    it,
-                    it1,
+                    "0936634938",
+                    "A12345678907",
                     views.edFullname.text.toString().trim(),
                     "6522667961b6e95df121642e",
                     favoriteStore,
@@ -67,36 +66,37 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
         Log.d("RegisterInforActivity", "updateWithState: ${state.stateSignUp}")
         when (state.stateSignUp) {
             is Success -> {
-                runBlocking {
-                    launch {
-                        state.stateSignUp.invoke()?.let { s ->
-                            Log.d("RegisterInforActivity", "updateWithState: $s")
-                            if (s == "Đăng kí thành công") {
-
-                                Log.d("Log In", "Log in successful $s")
-
-                                Toast.makeText(
-                                    this@RegisterInforActivity,
-                                    "Đăng Kí thành công",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                startActivity(
-                                    Intent(
-                                        this@RegisterInforActivity,
-                                        HomeActivity::class.java
-                                    )
-                                )
-                            } else {
-                                Log.d("Log In", "Sai tài khoản hoặc mật khẩu")
-                                Toast.makeText(
-                                    this@RegisterInforActivity,
-                                    "Sai tài khoản hoặc mật khẩu",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                    }
-                }
+                Log.d("Success", "Đăng kí thành công: ")
+//                runBlocking {
+//                    launch {
+//                        state.stateSignUp.invoke()?.let { s ->
+//                            Log.d("RegisterInforActivity", "updateWithState: $s")
+//                            if (s == "Đăng kí thành công") {
+//
+//                                Log.d("Log In", "Log in successful $s")
+//
+//                                Toast.makeText(
+//                                    this@RegisterInforActivity,
+//                                    "Đăng Kí thành công",
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
+//                                startActivity(
+//                                    Intent(
+//                                        this@RegisterInforActivity,
+//                                        HomeActivity::class.java
+//                                    )
+//                                )
+//                            } else {
+//                                Log.d("Log In", "Sai tài khoản hoặc mật khẩu")
+//                                Toast.makeText(
+//                                    this@RegisterInforActivity,
+//                                    "Sai tài khoản hoặc mật khẩu",
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
+//                            }
+//                        }
+//                    }
+//                }
             }
 
             is Loading -> {
@@ -105,6 +105,12 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
             }
 
             is Fail -> {
+                runBlocking {
+                    launch {
+                        Log.d("state", "state: " + state.stateSignUp.invoke())
+                    }
+                }
+                Log.d("Fail", "Đăng ký thất bại ")
                 Log.e("signupViewModelFactory", "error")
             }
 

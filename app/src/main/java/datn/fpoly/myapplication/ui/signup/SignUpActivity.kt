@@ -22,7 +22,7 @@ import datn.fpoly.myapplication.ui.otp.AuthenticationOtpActivity
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class SignUpActivity : BaseActivity<ActivitySignUpBinding>() {
+class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
     private lateinit var number: String
     private lateinit var auth: FirebaseAuth
 

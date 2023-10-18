@@ -18,12 +18,14 @@ class SignUpViewModel @AssistedInject constructor(
             is SignUpViewAction.SignUpAction -> {
                 handleSignUp(action.phone,action.passwd,action.fullname,action.idRole,action.favouriteStores)
             }
+
+            else -> {}
         }
     }
 
     private fun handleSignUp(phone : String, passwd : String, fullname: String, idRole: String, favouriteStores : List<String>? ) {
         setState { copy(stateSignUp = Loading()) }
-        repository.register(phone,passwd,fullname,idRole,favouriteStores)?.execute { copy(stateSignUp = it) }
+        repository.register(phone,passwd,fullname,idRole,favouriteStores).execute { copy(stateSignUp = it) }
     }
 
     @AssistedFactory

@@ -18,6 +18,8 @@ class LoginViewModel @AssistedInject constructor(
             is LoginViewAction.LoginAction -> {
                 handleLogin(action.username, action.password)
             }
+
+            else -> {}
         }
     }
 

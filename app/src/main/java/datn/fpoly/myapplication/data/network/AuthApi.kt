@@ -1,7 +1,9 @@
 package datn.fpoly.myapplication.data.network
 
+import datn.fpoly.myapplication.data.model.AccountModel
 import datn.fpoly.myapplication.data.model.User
 import io.reactivex.Observable
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -15,14 +17,9 @@ interface AuthApi {
         @Query("password") password: String
     ): Observable<List<User>>
 
-    @FormUrlEncoded
     @POST("api/register")
     fun register(
-        @Field("phone") phone:String,
-        @Field("passwd") passwd:String,
-        @Field("fullname") fullname:String,
-        @Field("idRole") idRole:String,
-        @Field("favouriteStores") favouriteStores: List<String>,
+        @Body body:AccountModel
     ): Observable<String>
 
 }

@@ -1,7 +1,9 @@
 package datn.fpoly.myapplication.data.repository
 
+import datn.fpoly.myapplication.data.model.AccountModel
 import datn.fpoly.myapplication.data.model.User
 import datn.fpoly.myapplication.data.network.AuthApi
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -20,7 +22,5 @@ class AuthRepo @Inject constructor(
         fullname: String,
         idRole: String,
         favouriteStores: List<String>?
-    ): Observable<String>? = favouriteStores?.let {
-        api.register(phone, passwd, fullname, idRole, it).subscribeOn(Schedulers.io())
-    }
+    ): Observable<String> = api.register(AccountModel(phone,passwd,fullname,phone,idRole, favouriteStores?: arrayListOf("") , null)).subscribeOn(Schedulers.io())
 }
