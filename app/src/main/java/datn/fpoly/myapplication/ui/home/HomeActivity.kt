@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
+import com.google.firebase.auth.FirebaseAuth
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivityHomeBinding
@@ -14,6 +15,11 @@ class HomeActivity: BaseActivity<ActivityHomeBinding>() {
         setContentView(views.root)
         setViewNavigation()
 
+    }
+
+    override fun initUiAndData() {
+        super.initUiAndData()
+        FirebaseAuth.getInstance().signOut()
     }
     fun setViewNavigation(){
 //        views.vp2Home.setCurrentItem(0, true)
