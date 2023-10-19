@@ -80,11 +80,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="content">Nội dung:</string>
     <string name="addpost">Đăng</string>
-<<<<<<< HEAD
     <string name="category">Danh Mục</string>
     <string name="see_more">Xem tất cả</string>
     <string name="near_store">Cửa Hàng Gần đây</string>
-=======
     <string name="title">Title</string>
     <string name="order_code">Mã đơn hàng:</string>
     <string name="time_order">Thời gian đặt hàng:</string>
@@ -108,5 +106,4 @@
     <string name="price_d_kg_example">5.000 đ/kg</string>
     <string name="pick_image_when_weight_clothing">Chụp ảnh khi cân dồ giặt:</string>
     <string name="price_example">100.000 đ</string>
->>>>>>> order-detail-laundry
 </resources>
