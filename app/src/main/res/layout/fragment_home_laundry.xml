@@ -27,7 +27,7 @@
         android:paddingHorizontal="16dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_notification" />
+        app:srcCompat="@drawable/ic_notification_2" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/layout_status"
