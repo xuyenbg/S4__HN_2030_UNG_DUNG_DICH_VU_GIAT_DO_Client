@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar_custom"
@@ -254,8 +255,10 @@
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:orientation="vertical" />
+                    tools:listitem="@layout/item_cart_item"
+                    tools:itemCount="2"/>
             </androidx.cardview.widget.CardView>
 
             <com.google.android.material.divider.MaterialDivider
