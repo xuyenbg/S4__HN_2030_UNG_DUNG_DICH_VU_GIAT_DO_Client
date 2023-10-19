@@ -3,14 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:paddingHorizontal="16dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_name_laundry"
         style="@style/font_16_black_bold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:text="@string/name_laundry_demo"
         android:paddingVertical="10dp"
         android:drawableStart="@drawable/ic_laundry"
@@ -24,6 +25,7 @@
         android:id="@+id/ic_notification"
         android:layout_width="0dp"
         android:layout_height="44dp"
+        android:paddingHorizontal="16dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_notification" />
@@ -34,6 +36,7 @@
         android:layout_height="48dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="1dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="14dp"
         android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@id/tv_name_laundry">
@@ -64,6 +67,8 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_card"
+        android:layout_marginHorizontal="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="8dp"
@@ -149,7 +154,36 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tab_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/layout_card"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_home_laundry_order"/>
 
-    
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_order"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/tab_view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_order_home_laundry"/>
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/label_list_empty"
+        style="@style/font_14_gray_medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Danh sách trống"
+        android:layout_marginTop="6dp"
+        app:layout_constraintTop_toBottomOf="@id/tab_view"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

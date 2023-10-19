@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#F8F8F8">
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/add_on_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/font_14_black_regular"
+        android:layout_marginStart="8dp"
+        android:paddingVertical="8dp"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/ic_circle_small"
+        android:text="Giặt đồ riêng:" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/add_on_price"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        style="@style/font_14_black_regular"
+        android:textAlignment="textEnd"
+        android:drawableStart="@drawable/ic_operator_add"
+        android:paddingVertical="8dp"
+        android:text="@string/price_example" />
+</LinearLayout>
