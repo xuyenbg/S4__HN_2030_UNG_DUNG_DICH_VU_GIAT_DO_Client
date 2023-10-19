@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import datn.fpoly.myapplication.data.network.APICategory
+import datn.fpoly.myapplication.data.network.APIStore
 import datn.fpoly.myapplication.data.network.AuthApi
 import datn.fpoly.myapplication.data.network.RemoteDataSource
 import datn.fpoly.myapplication.utils.LocalHelper
@@ -23,6 +24,10 @@ object AppModule {
     @Provides
     fun providerApiCategory(remoteDataSource: RemoteDataSource, context: Context) : APICategory{
         return remoteDataSource.buildApi( APICategory::class.java , context)
+    }
+    @Provides
+    fun providerApiStore(remoteDataSource: RemoteDataSource, context: Context) : APIStore{
+        return remoteDataSource.buildApi( APIStore::class.java , context)
     }
 
 }

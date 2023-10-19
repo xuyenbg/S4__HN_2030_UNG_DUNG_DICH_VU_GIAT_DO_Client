@@ -6,24 +6,33 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
 import datn.fpoly.myapplication.data.repository.CategoryRepo
+import datn.fpoly.myapplication.data.repository.StoreRepo
 import datn.fpoly.myapplication.ui.login.LoginViewModel
 import datn.fpoly.myapplication.ui.login.LoginViewState
 
 class HomeUserViewModel @AssistedInject constructor(
     @Assisted state: HomeViewState,
-    private val response: CategoryRepo
+    private val responseCategory: CategoryRepo,
+    private val responseStore: StoreRepo
 ) : BaseViewModel<HomeViewState, HomeViewAction, HomeViewEvent>(state) {
     override fun handle(action: HomeViewAction) {
         when (action) {
             is HomeViewAction.HomeActionCategory -> {
                 hanlderGetListCategory()
             }
+            is HomeViewAction.HomeActionGetListStore->{
+                hanlderGetListStore()
+            }
         }
     }
 
     private fun hanlderGetListCategory() {
         setState { copy(stateCategory = Loading()) }
-        response.getDataCategory().execute { copy(stateCategory = it) }
+        responseCategory.getDataCategory().execute { copy(stateCategory = it) }
+    }
+    private fun hanlderGetListStore(){
+        setState { copy(stateStore = Loading()) }
+        responseStore.getDataStore().execute { copy(stateStore = it) }
     }
 
     @AssistedFactory

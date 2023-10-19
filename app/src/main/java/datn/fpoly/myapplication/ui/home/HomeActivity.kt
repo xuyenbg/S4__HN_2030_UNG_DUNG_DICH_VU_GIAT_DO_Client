@@ -15,6 +15,7 @@ import datn.fpoly.myapplication.ui.fragment.homeUser.HomeUserFragment
 import datn.fpoly.myapplication.ui.fragment.postclient.PostClientFragment
 import datn.fpoly.myapplication.ui.fragment.setting.FragmentSetting
 import javax.inject.Inject
+import com.airbnb.mvrx.viewModel
 
 class HomeActivity: BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Factory {
     @Inject
@@ -29,6 +30,9 @@ class HomeActivity: BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Facto
         super.onCreate(savedInstanceState)
         setContentView(views.root)
         setViewNavigation()
+        viewModel.observeViewEvents {
+
+        }
 
     }
     fun setViewNavigation(){
