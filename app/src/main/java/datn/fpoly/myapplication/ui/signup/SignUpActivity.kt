@@ -1,10 +1,8 @@
-package datn.fpoly.myapplication.ui.login
+package datn.fpoly.myapplication.ui.signup
 
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -18,19 +16,18 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
-import datn.fpoly.myapplication.databinding.ActivitySignIn2Binding
+import datn.fpoly.myapplication.databinding.ActivitySignUpBinding
 import datn.fpoly.myapplication.ui.home.HomeActivity
 import datn.fpoly.myapplication.ui.otp.AuthenticationOtpActivity
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
+class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
     private lateinit var number: String
     private lateinit var auth: FirebaseAuth
-    private var checkStrore = false
 
-    override fun getBinding(): ActivitySignIn2Binding {
-        return ActivitySignIn2Binding.inflate(layoutInflater)
+    override fun getBinding(): ActivitySignUpBinding {
+        return ActivitySignUpBinding.inflate(layoutInflater)
     }
 
     override fun initUiAndData() {
@@ -46,10 +43,6 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
             } else {
                 views.btnContinue.setTextColor(getColor(R.color.white))
             }
-        }
-        views.cbShop.setOnCheckedChangeListener { _, isChecked ->
-            // Cập nhật trạng thái của button dựa trên checkbox
-           checkStrore = isChecked
         }
 
         views.btnContinue.setOnClickListener {
@@ -97,10 +90,19 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
     private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+            // This callback will be invoked in two situations:
+            // 1 - Instant verification. In some cases the phone number can be instantly
+            //     verified without needing to send or enter a verification code.
+            // 2 - Auto-retrieval. On some devices Google Play services can automatically
+            //     detect the incoming verification SMS and perform verification without
+            //     user action.
             Log.d(ContentValues.TAG, "onVerificationCompleted:$credential")
             signInWithPhoneAuthCredential(credential)
         }
+
         override fun onVerificationFailed(e: FirebaseException) {
+            // This callback is invoked in an invalid request for verification is made,
+            // for instance if the the phone number format is not valid.
             Log.w("TAG", "onVerificationFailed", e)
 
             if (e is FirebaseAuthInvalidCredentialsException) {
@@ -120,12 +122,15 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
             verificationId: String,
             token: PhoneAuthProvider.ForceResendingToken,
         ) {
+            // The SMS verification code has been sent to the provided phone number, we
+            // now need to ask the user to enter the code and then construct a credential
+            // by combining the code with a verification ID
+            // Save verification ID and resending token so we can use them later
             Timber.d("OTP", verificationId)
-            val intent = Intent(this@SignInActivity, OTPLoginActivity::class.java)
+            val intent = Intent(this@SignUpActivity, AuthenticationOtpActivity::class.java)
             intent.putExtra("OTP", verificationId)
             intent.putExtra("resendToken", token)
             intent.putExtra("phone", number)
-            intent.putExtra("CHECKSTORE", checkStrore)
             startActivity(intent)
             views.progressPhone.visibility = View.INVISIBLE
         }

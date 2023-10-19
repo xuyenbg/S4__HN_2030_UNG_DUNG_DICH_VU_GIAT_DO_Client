@@ -1,4 +1,4 @@
-package datn.fpoly.myapplication.ui.login
+package datn.fpoly.myapplication.ui.signup
 
 import com.airbnb.mvrx.*
 import dagger.assisted.Assisted
@@ -8,37 +8,37 @@ import datn.fpoly.myapplication.core.BaseViewModel
 import datn.fpoly.myapplication.data.repository.AuthRepo
 
 
-class LoginViewModel @AssistedInject constructor(
-    @Assisted state: LoginViewState,
+class SignUpViewModel @AssistedInject constructor(
+    @Assisted state: SignUpViewState,
     private val repository: AuthRepo,
-): BaseViewModel<LoginViewState,LoginViewAction,LoginViewEvent>(state) {
+): BaseViewModel<SignUpViewState,SignUpViewAction,SignUpViewEvent>(state) {
 
-    override fun handle(action: LoginViewAction) {
+    override fun handle(action: SignUpViewAction) {
         when (action){
-            is LoginViewAction.LoginAction -> {
-                handleLogin(action.phone, action.userId)
+            is SignUpViewAction.SignUpAction -> {
+                handleSignUp(action.phone,action.passwd,action.fullname,action.idRole,action.favouriteStores)
             }
 
             else -> {}
         }
     }
 
-    private fun handleLogin(phone: String, userId: String) {
-        setState { copy(stateLogin = Loading()) }
-        repository.login(phone, userId).execute { copy(stateLogin = it) }
+    private fun handleSignUp(phone : String, passwd : String, fullname: String, idRole: String, favouriteStores : List<String>? ) {
+        setState { copy(stateSignUp = Loading()) }
+        repository.register(phone,passwd,fullname,idRole,favouriteStores).execute { copy(stateSignUp = it) }
     }
 
     @AssistedFactory
     interface Factory {
-        fun create(initialState: LoginViewState): LoginViewModel
+        fun create(initialState: SignUpViewState): SignUpViewModel
     }
 
-    companion object : MvRxViewModelFactory<LoginViewModel, LoginViewState> {
+    companion object : MvRxViewModelFactory<SignUpViewModel, SignUpViewState> {
         @JvmStatic
         override fun create(
             viewModelContext: ViewModelContext,
-            state: LoginViewState
-        ): LoginViewModel {
+            state: SignUpViewState
+        ): SignUpViewModel {
             val factory =
                 when (viewModelContext) {
                     is FragmentViewModelContext -> viewModelContext.fragment as? Factory
