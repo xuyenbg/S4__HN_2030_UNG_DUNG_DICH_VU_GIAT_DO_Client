@@ -32,9 +32,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Fac
     override fun initUiAndData() {
         super.initUiAndData()
         views.btnContinue.setOnClickListener { login() }
-        viewModel.subscribe(this){
-            updateWithState(it)
-        }
     }
 
     private fun login() {
