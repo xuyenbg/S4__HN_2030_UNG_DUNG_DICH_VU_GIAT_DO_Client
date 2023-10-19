@@ -18,7 +18,11 @@
     <color name="dark_blue">#186993</color>
     <color name="gray">#828282</color>
     <color name="gray_2">#ECECEC</color>
+<<<<<<< HEAD
     <color name="gray_3">#DFDFDF</color>
+=======
+    <color name="gray_6">#F2F2F2</color>
+>>>>>>> order-detail-laundry
 
 
 <!--    color text -->
