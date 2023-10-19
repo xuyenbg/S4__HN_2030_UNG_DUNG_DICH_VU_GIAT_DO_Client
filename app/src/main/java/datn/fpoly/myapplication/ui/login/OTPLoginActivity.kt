@@ -1,7 +1,8 @@
-package datn.fpoly.myapplication.ui.otp
+package datn.fpoly.myapplication.ui.login
 
 import android.content.ContentValues
 import android.content.Intent
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
@@ -9,6 +10,10 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.viewModel
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
@@ -16,30 +21,47 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
-import datn.fpoly.myapplication.MainActivity
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
-import datn.fpoly.myapplication.databinding.ActivityAuthenticationOtpBinding
+import datn.fpoly.myapplication.data.model.account.LoginResponse
+import datn.fpoly.myapplication.databinding.ActivityOtpLoginBinding
 import datn.fpoly.myapplication.ui.home.HomeActivity
-import datn.fpoly.myapplication.ui.signup.RegisterInforActivity
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>() {
+class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel.Factory {
+    @Inject
+    lateinit var loginViewModelFactory: LoginViewModel.Factory
+    private val viewModel: LoginViewModel by viewModel()
     private lateinit var auth: FirebaseAuth
     private lateinit var OTP: String
+    private var check = false
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var phoneNumber: String
-    override fun getBinding(): ActivityAuthenticationOtpBinding {
-        return ActivityAuthenticationOtpBinding.inflate(layoutInflater)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        (applicationContext as AppApplication).appComponent.inject(this);
+        super.onCreate(savedInstanceState)
+        setContentView(views.root)
     }
 
     override fun initUiAndData() {
         super.initUiAndData()
         auth = FirebaseAuth.getInstance()
+
         OTP = intent.getStringExtra("OTP").toString()
         resendToken = intent.getParcelableExtra("resendToken")!!
         phoneNumber = intent.getStringExtra("phone")!!
+        check = intent.getBooleanExtra("CHECKSTORE", false)
         views.progressPhone.visibility = View.INVISIBLE
+        viewModel.subscribe(this) {
+            updateWithState(it)
+        }
         addTextChangeListener()
         resendOTPTvVisibility()
         views.btnVeri.setOnClickListener {
@@ -68,6 +90,75 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
             resendOTPTvVisibility()
         }
     }
+
+    private fun login(uID: String) {
+        viewModel.handle(LoginViewAction.LoginAction(phoneNumber, uID))
+    }
+
+    private fun updateWithState(state: LoginViewState) {
+        Timber.tag("LogIn").d("Log in successful ${state.stateLogin}")
+        when (state.stateLogin) {
+            is Success -> {
+                runBlocking {
+                    launch {
+                        state.stateLogin.invoke()?.let { result ->
+                            Timber.tag("LogIn").d("Log in successful ${result.body()}}")
+
+                            // account chứ cả đối tượng và message
+                            val account = result.body()?.let { parseJsonToAccountList(it.string()) }
+                            if (account?.message == "Đăng nhập thành công") {
+                                Log.d("Log In", "Log in successful")
+                                //snackbar("Đăng nhập thành công")
+                                Toast.makeText(
+                                    this@OTPLoginActivity,
+                                    "Đăng nhập thành công",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                if (!check) {
+                                    startActivity(
+                                        Intent(
+                                            this@OTPLoginActivity,
+                                            HomeActivity::class.java
+                                        )
+                                    )
+                                } else {
+
+                                }
+
+                            } else {
+                                Log.d("Log In", "Sai tài khoản hoặc mật khẩu")
+                                Toast.makeText(
+                                    this@OTPLoginActivity,
+                                    "Sai tài khoản hoặc mật khẩu",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
+                }
+            }
+
+            is Loading -> {
+                //Xoay tròn indicate
+            }
+
+            is Fail -> {
+                Timber.tag("OTPLogin").e("updateWithState: ")
+            }
+
+            else -> {}
+        }
+    }
+
+    private fun parseJsonToAccountList(json: String): LoginResponse {
+        val gson = Gson()
+        val type = object : TypeToken<LoginResponse>() {}.type
+        return gson.fromJson(json, type)
+    }
+
+    override fun getBinding() = ActivityOtpLoginBinding.inflate(layoutInflater)
+
+    override fun create(initialState: LoginViewState) = loginViewModelFactory.create(initialState)
 
     private fun resendOTPTvVisibility() {
         views.edOtp1.setText("")
@@ -176,14 +267,9 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     views.progressPhone.visibility = View.VISIBLE
-
                     val user = task.result?.user
-                    Log.d("signInWithCredential", "signInWithPhoneAuthCredential: ${user?.uid}")
-                    Toast.makeText(this, "Thành Công", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this,RegisterInforActivity::class.java)
-                    intent.putExtra("PHONE",phoneNumber)
-                    intent.putExtra("UID", user?.uid)
-                    startActivity(intent)
+                    Timber.tag("OTPLoginActivity").d("initUiAndData: ${phoneNumber}")
+                    login(user!!.uid)
 
                 } else {
                     // Sign in failed, display a message and update the UI

@@ -2,13 +2,12 @@ package datn.fpoly.myapplication.ui.login
 
 import android.content.ContentValues
 import android.content.Intent
+import android.graphics.Color
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.viewModel
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
@@ -17,38 +16,42 @@ import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
-import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
-import datn.fpoly.myapplication.data.model.User
-import datn.fpoly.myapplication.databinding.ActivitySignInBinding
-import datn.fpoly.myapplication.ui.dashboard.DashboardActivity
+import datn.fpoly.myapplication.databinding.ActivitySignIn2Binding
 import datn.fpoly.myapplication.ui.home.HomeActivity
 import datn.fpoly.myapplication.ui.otp.AuthenticationOtpActivity
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
-class SignInActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Factory {
-    @Inject
-    lateinit var loginViewModelFactory: LoginViewModel.Factory
-    private val viewModel:LoginViewModel by viewModel()
+class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
     private lateinit var number: String
     private lateinit var auth: FirebaseAuth
-    override fun onCreate(savedInstanceState: Bundle?) {
-        (applicationContext as AppApplication).appComponent.inject(this);
-        super.onCreate(savedInstanceState)
-        setContentView(views.root)
+    private var checkStrore = false
+
+    override fun getBinding(): ActivitySignIn2Binding {
+        return ActivitySignIn2Binding.inflate(layoutInflater)
     }
 
     override fun initUiAndData() {
         super.initUiAndData()
-        views.btnContinue.setOnClickListener { login() }
-        viewModel.subscribe(this){
-            updateWithState(it)
+        views.progressPhone.visibility = View.INVISIBLE
+        auth = FirebaseAuth.getInstance()
+
+        views.cbRule.setOnCheckedChangeListener { _, isChecked ->
+            // Cập nhật trạng thái của button dựa trên checkbox
+            views.btnContinue.isEnabled = isChecked
+            if (!isChecked) {
+                views.btnContinue.setTextColor(Color.GRAY)
+            } else {
+                views.btnContinue.setTextColor(getColor(R.color.white))
+            }
         }
+        views.cbShop.setOnCheckedChangeListener { _, isChecked ->
+            // Cập nhật trạng thái của button dựa trên checkbox
+           checkStrore = isChecked
+        }
+
         views.btnContinue.setOnClickListener {
             number = views.phoneNumber.text.toString().trim()
             if (number.isNotEmpty()) {
@@ -71,47 +74,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Fac
         }
     }
 
-    private fun login() {
-//        val username = views.username.text.toString();
-//        val password = views.password.text.toString();
-//        if(username.isBlank() || password.isBlank()){
-//            Toast.makeText(this, "Vui lòng không để trống", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-        viewModel.handle(LoginViewAction.LoginAction("admin", "12345"))
-    }
-
-    private fun updateWithState(state: LoginViewState) {
-        when (state.stateLogin) {
-            is Success -> {
-                runBlocking {
-                    launch {
-                        state.stateLogin.invoke()?.let{ listUser ->
-                            if (listUser != null && listUser.isNotEmpty()) {
-                                Log.d("ListData", listUser.toString())
-                                Log.d("Log In", "Log in successful")
-                                //snackbar("Đăng nhập thành công")
-                                Toast.makeText(this@SignInActivity, "Đăng nhập thành công", Toast.LENGTH_SHORT).show()
-                                startActivity(Intent(this@SignInActivity, DashboardActivity::class.java))
-                            }else{
-                                Log.d("Log In", "Sai tài khoản hoặc mật khẩu")
-                                Toast.makeText(this@SignInActivity, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    }
-                }
-            }
-            is Loading ->{
-                //Xoay tròn indicate
-            }
-
-            else -> {}
-        }
-    }
-
-    override fun getBinding() = ActivitySignInBinding.inflate(layoutInflater)
-
-    override fun create(initialState: LoginViewState) = loginViewModelFactory.create(initialState)
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
@@ -135,19 +97,10 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Fac
     private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-            // This callback will be invoked in two situations:
-            // 1 - Instant verification. In some cases the phone number can be instantly
-            //     verified without needing to send or enter a verification code.
-            // 2 - Auto-retrieval. On some devices Google Play services can automatically
-            //     detect the incoming verification SMS and perform verification without
-            //     user action.
             Log.d(ContentValues.TAG, "onVerificationCompleted:$credential")
             signInWithPhoneAuthCredential(credential)
         }
-
         override fun onVerificationFailed(e: FirebaseException) {
-            // This callback is invoked in an invalid request for verification is made,
-            // for instance if the the phone number format is not valid.
             Log.w("TAG", "onVerificationFailed", e)
 
             if (e is FirebaseAuthInvalidCredentialsException) {
@@ -167,15 +120,12 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Fac
             verificationId: String,
             token: PhoneAuthProvider.ForceResendingToken,
         ) {
-            // The SMS verification code has been sent to the provided phone number, we
-            // now need to ask the user to enter the code and then construct a credential
-            // by combining the code with a verification ID
-            // Save verification ID and resending token so we can use them later
             Timber.d("OTP", verificationId)
-            val intent = Intent(this@SignInActivity, AuthenticationOtpActivity::class.java)
+            val intent = Intent(this@SignInActivity, OTPLoginActivity::class.java)
             intent.putExtra("OTP", verificationId)
             intent.putExtra("resendToken", token)
             intent.putExtra("phone", number)
+            intent.putExtra("CHECKSTORE", checkStrore)
             startActivity(intent)
             views.progressPhone.visibility = View.INVISIBLE
         }

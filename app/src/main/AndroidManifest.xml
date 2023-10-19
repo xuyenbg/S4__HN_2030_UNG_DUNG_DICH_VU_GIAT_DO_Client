@@ -37,10 +37,13 @@
             android:name=".ui.map.PickPossitionInMapActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.login.OTPLoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.dashboard.DashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.login.SignInActivity"
+            android:name=".ui.signup.SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -52,7 +55,7 @@
             android:name=".ui.signup.RegisterInforActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.signup.SignUpActivity"
+            android:name=".ui.login.SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

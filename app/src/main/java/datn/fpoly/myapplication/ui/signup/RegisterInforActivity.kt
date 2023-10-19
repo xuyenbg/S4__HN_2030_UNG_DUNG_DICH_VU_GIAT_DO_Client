@@ -14,6 +14,7 @@ import datn.fpoly.myapplication.databinding.ActivityRegiterInforAccountUserBindi
 import datn.fpoly.myapplication.ui.home.HomeActivity
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 import javax.inject.Inject
 
 class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBinding>(),
@@ -52,8 +53,8 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
         phonenumber?.let {
             uid?.let { it1 ->
                 SignUpViewAction.SignUpAction(
-                    "0936634938",
-                    "A12345678907",
+                    phonenumber!!,
+                    uid!!,
                     views.edFullname.text.toString().trim(),
                     "6522667961b6e95df121642e",
                     favoriteStore,
@@ -63,40 +64,40 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
     }
 
     private fun updateWithState(state: SignUpViewState) {
-        Log.d("RegisterInforActivity", "updateWithState: ${state.stateSignUp}")
+        Log.d("RegisterInforActivity", "updateWithState: ${state.stateSignUp.invoke()?.body()}")
         when (state.stateSignUp) {
             is Success -> {
-                Log.d("Success", "Đăng kí thành công: ")
-//                runBlocking {
-//                    launch {
-//                        state.stateSignUp.invoke()?.let { s ->
-//                            Log.d("RegisterInforActivity", "updateWithState: $s")
-//                            if (s == "Đăng kí thành công") {
-//
-//                                Log.d("Log In", "Log in successful $s")
-//
-//                                Toast.makeText(
-//                                    this@RegisterInforActivity,
-//                                    "Đăng Kí thành công",
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
-//                                startActivity(
-//                                    Intent(
-//                                        this@RegisterInforActivity,
-//                                        HomeActivity::class.java
-//                                    )
-//                                )
-//                            } else {
-//                                Log.d("Log In", "Sai tài khoản hoặc mật khẩu")
-//                                Toast.makeText(
-//                                    this@RegisterInforActivity,
-//                                    "Sai tài khoản hoặc mật khẩu",
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
-//                            }
-//                        }
-//                    }
-//                }
+                runBlocking {
+                    launch {
+                        state.stateSignUp.invoke().let { s ->
+                            Timber.tag("RegisterInforActivity")
+                                .d("updateWithState đăng kí: " + s?.code())
+                            val check = s?.code()
+                            if (check == 200) {
+
+                                Log.d("Log In", "Log in successful $s")
+
+                                Toast.makeText(
+                                    this@RegisterInforActivity,
+                                    "Đăng ký thành công",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                startActivity(
+                                    Intent(
+                                        this@RegisterInforActivity,
+                                        HomeActivity::class.java
+                                    )
+                                )
+                            } else {
+                                Toast.makeText(
+                                    this@RegisterInforActivity,
+                                    "Số điện thoại đã được sử dụng",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
+                }
             }
 
             is Loading -> {
@@ -107,7 +108,7 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
             is Fail -> {
                 runBlocking {
                     launch {
-                        Log.d("state", "state: " + state.stateSignUp.invoke())
+                        Log.d("state", "state: ")
                     }
                 }
                 Log.d("Fail", "Đăng ký thất bại ")

@@ -16,16 +16,16 @@ class LoginViewModel @AssistedInject constructor(
     override fun handle(action: LoginViewAction) {
         when (action){
             is LoginViewAction.LoginAction -> {
-                handleLogin(action.username, action.password)
+                handleLogin(action.phone, action.userId)
             }
 
             else -> {}
         }
     }
 
-    private fun handleLogin(username: String, password: String) {
+    private fun handleLogin(phone: String, userId: String) {
         setState { copy(stateLogin = Loading()) }
-        repository.login(username, password).execute { copy(stateLogin = it) }
+        repository.login(phone, userId).execute { copy(stateLogin = it) }
     }
 
     @AssistedFactory
