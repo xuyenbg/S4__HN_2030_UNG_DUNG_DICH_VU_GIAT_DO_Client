@@ -25,13 +25,23 @@ class AdapterCategory(var limits: Int) : Adapter<AdapterCategory.ViewHolderItemC
         return ViewHolderItemCategory(ItemCategoryServiceBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
-    override fun getItemCount(): Int = if(limits==0) listCategoryService.size else limits
+    override fun getItemCount(): Int {
+        if(limits==0){
+           return listCategoryService.size
+        }else if(limits<=listCategoryService.size){
+            return limits
+        }else{
+           return listCategoryService.size
+        }
+    }
     override fun onBindViewHolder(holder: ViewHolderItemCategory, position: Int) {
-        val index = position
-        val item = listCategoryService[index]
-        holder.bind(item)
-        holder.itemView.setOnClickListener {
-            listener?.onClickCate(item)
+        if(listCategoryService.size!=0){
+            val index = position
+            val item = listCategoryService[index]
+            holder.bind(item)
+            holder.itemView.setOnClickListener {
+                listener?.onClickCate(item)
+            }
         }
     }
     inner class ViewHolderItemCategory(val binding: ItemCategoryServiceBinding): ViewHolder(binding.root){

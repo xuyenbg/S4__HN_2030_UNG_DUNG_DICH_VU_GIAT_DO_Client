@@ -269,6 +269,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                     views.progressPhone.visibility = View.VISIBLE
                     val user = task.result?.user
                     Timber.tag("OTPLoginActivity").d("initUiAndData: ${phoneNumber}")
+                    Timber.tag("OTPLoginActivity").d("initUiAndData:uid ${user?.uid}")
                     login(user!!.uid)
 
                 } else {

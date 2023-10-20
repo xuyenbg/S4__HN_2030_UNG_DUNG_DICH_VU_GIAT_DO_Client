@@ -26,15 +26,26 @@ class AdapterStore(val limit: Int) : Adapter<AdapterStore.ViewHolderItemStore>()
            LayoutInflater.from(parent.context)
        ))
 
-    override fun getItemCount(): Int = if (limit == 0) listStore.size else limit
+    override fun getItemCount(): Int {
+        if(limit==0){
+            return listStore.size
+        }else if(limit<=listStore.size){
+            return limit
+        }else{
+            return listStore.size
+        }
+    }
 
     override fun onBindViewHolder(holder: ViewHolderItemStore, position: Int) {
-        val index = position
-        val itemStore= listStore[index]
-        holder.bind(itemStore)
-        holder.itemView.setOnClickListener {
-
+        if(!listStore.isEmpty()){
+            val index = position
+            val itemStore= listStore[index]
+            holder.bind(itemStore)
+            holder.itemView.setOnClickListener {
+                storeListener?.onClickStoreListener(itemStore)
+            }
         }
+
     }
 
     inner class ViewHolderItemStore(val binding: ItemStoreBinding) : ViewHolder(binding.root){
@@ -42,6 +53,7 @@ class AdapterStore(val limit: Int) : Adapter<AdapterStore.ViewHolderItemStore>()
             binding.tvNameStore.text = item.name
             binding.tvRate.text = item.rate.toString()
             binding.tvLocation.text = item.idAddress?.adress
+            binding.tvPhoneStore.text = item.iduser?.phone
         }
     }
     interface StoreListener{

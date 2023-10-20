@@ -6,7 +6,7 @@ import io.reactivex.Observable
 import retrofit2.http.GET
 
 interface APIStore {
-    @GET("stores/list")
+    @GET("api/stores/list")
     fun getListCategory(): Observable<MutableList<StoreModel>>
 
 }

@@ -20,6 +20,7 @@ import datn.fpoly.myapplication.ui.adapter.AdapterStore
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
+import timber.log.Timber
 
 
 class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
@@ -36,6 +37,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.handle(HomeViewAction.HomeActionCategory)
+        viewModel.handle(HomeViewAction.HomeActionGetListStore)
         adapterCate = AdapterCategory(6)
         views.rcvListCategory.adapter = adapterCate
         adapterCate.setListener(object : AdapterCategory.CategoryListener {
@@ -63,19 +65,19 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
             is Success->{
                 runBlocking {
                     launch {
-                        it.stateCategory.invoke()?.let{
+                        it.stateCategory.invoke()?.let {
                             adapterCate.updateData(it)
-                            Log.e("AAAAAAAAAAAAAA", "invalidate: "+it.size )
+                            Timber.tag("AAAAAAAAAAAAAA").e("invalidate: " + it.size)
                         }
                     }
 
                 }
             }
-            is Loading->{
-                Log.e("AAAAAAAAAAAAAAA", "getListCategory: loading" )
+            is Loading-> {
+                Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: loading")
             }
-            is Fail->{
-                Log.e("AAAAAAAAAAAAAAA", "getListCategory: Fail" )
+            is Fail-> {
+                Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: Fail")
             }
             else -> {
 
@@ -84,20 +86,21 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     }
     fun getListStore(state: HomeViewState){
         when(state.stateStore){
-            is Loading->{
-
+            is Loading-> {
+                Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: loading")
             }
             is Success->{
                     runBlocking {
                         launch {
                             state.stateStore.invoke()?.let {
                                 adapterStore.setData(it)
+                                Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: size" + it.size)
                             }
                         }
                     }
             }
-            is Fail->{
-
+            is Fail-> {
+                Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: fail")
             }
             else->{
 
