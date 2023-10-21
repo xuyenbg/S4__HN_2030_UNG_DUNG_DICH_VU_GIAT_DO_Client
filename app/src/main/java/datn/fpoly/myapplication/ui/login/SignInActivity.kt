@@ -25,6 +25,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
+
     private lateinit var number: String
     private lateinit var auth: FirebaseAuth
     private var checkStrore = false

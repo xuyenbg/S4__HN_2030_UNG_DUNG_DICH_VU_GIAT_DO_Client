@@ -1,8 +1,10 @@
 package datn.fpoly.myapplication.di
 
 import android.content.Context
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
+import datn.fpoly.myapplication.data.model.roomdb.RoomDb
 import datn.fpoly.myapplication.data.network.APICategory
 import datn.fpoly.myapplication.data.network.APIStore
 import datn.fpoly.myapplication.data.network.AuthApi
@@ -29,5 +31,8 @@ object AppModule {
     fun providerApiStore(remoteDataSource: RemoteDataSource, context: Context) : APIStore{
         return remoteDataSource.buildApi( APIStore::class.java , context)
     }
-
+    @Provides
+    fun providerRoomDb(context: Context): RoomDb = RoomDb.getDatabase(context)
+    @Provides
+    fun providerGson():Gson = Gson()
 }

@@ -26,7 +26,13 @@ import com.google.gson.reflect.TypeToken
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
+import datn.fpoly.myapplication.data.model.Attribute
+import datn.fpoly.myapplication.data.model.ItemService
+import datn.fpoly.myapplication.data.model.Order
+import datn.fpoly.myapplication.data.model.Sale
+import datn.fpoly.myapplication.data.model.Service
 import datn.fpoly.myapplication.data.model.account.LoginResponse
+import datn.fpoly.myapplication.data.repository.RoomDbRepo
 import datn.fpoly.myapplication.databinding.ActivityOtpLoginBinding
 import datn.fpoly.myapplication.ui.home.HomeActivity
 import kotlinx.coroutines.launch
@@ -38,6 +44,8 @@ import javax.inject.Inject
 class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel.Factory {
     @Inject
     lateinit var loginViewModelFactory: LoginViewModel.Factory
+//    @Inject
+//    lateinit var dbRepo: RoomDbRepo
     private val viewModel: LoginViewModel by viewModel()
     private lateinit var auth: FirebaseAuth
     private lateinit var OTP: String
@@ -52,6 +60,43 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
 
     override fun initUiAndData() {
         super.initUiAndData()
+        //code test Cart
+//        dbRepo.insertCart(Order(
+//            idUser = "idUser",
+//            idStore = "idStore",
+//            total = 100000.0,
+//            note = "note",
+//            transportType = "transportType",
+//            methodPaymentType = "methodPaymentType",
+//            feeDelivery = 20000.0,
+//            status = 1,
+//            idAddress = "idAddress",
+//            isPaid = false,
+//            listItem = arrayListOf(
+//                ItemService(
+//                    number = 1.3,
+//                    total = 13000.0,
+//                    image = "image",
+//                    idOrder = null,
+//                    service = Service(
+//                        id = "idService",
+//                        name = "name service",
+//                        idStore = "idStore",
+//                        attributeList = arrayListOf(Attribute(id = "id Attribute", name = "name attr", price = 3000.0)),
+//                        idCategory = "id category",
+//                        isActive = true,
+//                        unit = "unit service",
+//                        idSale = "id sale",
+//                        sale = Sale(id = "id sale", unit = "unit sale", value = 3000.0)
+//                    ),
+//                )
+//            )
+//        ))
+//        val order = dbRepo.getCart("idUser")
+//        order.note = "note after update"
+//        dbRepo.updateCart(order)
+//        val order2 = dbRepo.getCart("idUser")
+
         auth = FirebaseAuth.getInstance()
 
         OTP = intent.getStringExtra("OTP").toString()
