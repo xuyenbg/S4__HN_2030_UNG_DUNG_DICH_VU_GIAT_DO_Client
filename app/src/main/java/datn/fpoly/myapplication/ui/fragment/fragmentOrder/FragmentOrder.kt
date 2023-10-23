@@ -1,4 +1,4 @@
-package datn.fpoly.myapplication.ui.fragment.FragmentOrder
+package datn.fpoly.myapplication.ui.fragment.fragmentOrder
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,6 +1,5 @@
 package datn.fpoly.myapplication.ui.home
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -10,7 +9,7 @@ import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivityHomeBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterViewPage
-import datn.fpoly.myapplication.ui.fragment.FragmentOrder.FragmentOrder
+import datn.fpoly.myapplication.ui.fragment.fragmentOrder.FragmentOrder
 import datn.fpoly.myapplication.ui.fragment.cart.CartFragment
 import datn.fpoly.myapplication.ui.fragment.homeUser.HomeUserFragment
 import datn.fpoly.myapplication.ui.fragment.postclient.PostClientFragment

@@ -186,7 +186,7 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/img"
+        android:src="@drawable/img_back_down"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.038"
         app:layout_constraintStart_toEndOf="@+id/tv_des"

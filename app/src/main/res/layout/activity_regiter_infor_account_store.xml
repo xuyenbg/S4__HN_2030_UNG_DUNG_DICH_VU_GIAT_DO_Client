@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="16dp"
-                android:hint="@string/your_fullname"
+                android:hint="@string/your_store"
                 android:textColorHint="@color/color_text_hint"
                 app:boxCornerRadiusBottomEnd="8dp"
                 app:boxCornerRadiusBottomStart="8dp"
