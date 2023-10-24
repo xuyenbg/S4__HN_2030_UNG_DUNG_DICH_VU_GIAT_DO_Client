@@ -17,6 +17,7 @@ import com.airbnb.mvrx.activityViewModel
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.ui.adapter.AdapterCategory
 import datn.fpoly.myapplication.ui.adapter.AdapterStore
+import datn.fpoly.myapplication.ui.fragment.postclient.adapter.PostClientAdapter
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
@@ -25,7 +26,7 @@ import timber.log.Timber
 
 class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
 
-    private  val viewModel: HomeUserViewModel by activityViewModel()
+    private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var adapterCate: AdapterCategory
     private lateinit var adapterStore: AdapterStore
     override fun getBinding(
@@ -47,7 +48,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         })
         adapterStore = AdapterStore(6)
         views.rcvListStore.adapter = adapterStore
-        adapterStore.setListener(object : AdapterStore.StoreListener{
+        adapterStore.setListener(object : AdapterStore.StoreListener {
             override fun onClickStoreListener(storeModel: StoreModel) {
 
             }
@@ -56,13 +57,14 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
 
     }
 
-    override fun invalidate() : Unit = withState(viewModel){
-       getListCate(it)
+    override fun invalidate(): Unit = withState(viewModel) {
+        getListCate(it)
         getListStore(it)
     }
-    fun getListCate(it: HomeViewState){
-        when(it.stateCategory){
-            is Success->{
+
+    fun getListCate(it: HomeViewState) {
+        when (it.stateCategory) {
+            is Success -> {
                 runBlocking {
                     launch {
                         it.stateCategory.invoke()?.let {
@@ -73,44 +75,48 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
 
                 }
             }
-            is Loading-> {
+
+            is Loading -> {
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: loading")
             }
-            is Fail-> {
+
+            is Fail -> {
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: Fail")
             }
+
             else -> {
 
             }
         }
     }
-    fun getListStore(state: HomeViewState){
-        when(state.stateStore){
-            is Loading-> {
+
+    fun getListStore(state: HomeViewState) {
+        when (state.stateStore) {
+            is Loading -> {
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: loading")
             }
-            is Success->{
-                    runBlocking {
-                        launch {
-                            state.stateStore.invoke()?.let {
-                                adapterStore.setData(it)
-                                Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: size" + it.size)
-                            }
+
+            is Success -> {
+                runBlocking {
+                    launch {
+                        state.stateStore.invoke()?.let {
+                            adapterStore.setData(it)
+                            Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: size" + it.size)
                         }
                     }
+                }
             }
-            is Fail-> {
+
+            is Fail -> {
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: fail")
             }
-            else->{
+
+            else -> {
 
             }
         }
 
     }
-
-
-
 
 
 }

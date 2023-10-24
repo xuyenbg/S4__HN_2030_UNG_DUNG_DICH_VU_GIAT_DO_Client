@@ -40,7 +40,7 @@ class HomeActivity: BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Facto
 
     override fun initUiAndData() {
         super.initUiAndData()
-        FirebaseAuth.getInstance().signOut()
+//        FirebaseAuth.getInstance().signOut()
     }
     fun setViewNavigation(){
         listFragment.add(0, HomeUserFragment())
@@ -95,7 +95,7 @@ class HomeActivity: BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Facto
             views.tvPost.setTextAppearance(R.style.item_bottom_avigation_custom)
             views.tvProfile.setTextAppearance(R.style.item_bottom_avigation_custom)
             views.icHome.setImageResource(R.drawable.home)
-            views.icCart.setImageResource(R.drawable.document)
+            views.icCart.setImageResource(R.drawable.document_selected)
             views.icOrder.setImageResource(R.drawable.ic_store)
             views.icPost.setImageResource(R.drawable.chat)
             views.icProfile.setImageResource(R.drawable.profile_gray)
@@ -115,7 +115,7 @@ class HomeActivity: BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Facto
             views.tvProfile.setTextAppearance(R.style.item_bottom_avigation_custom)
             views.icHome.setImageResource(R.drawable.home)
             views.icCart.setImageResource(R.drawable.document)
-            views.icOrder.setImageResource(R.drawable.ic_store)
+            views.icOrder.setImageResource(R.drawable.order_selected)
             views.icPost.setImageResource(R.drawable.chat)
             views.icProfile.setImageResource(R.drawable.profile_gray)
         }
@@ -135,7 +135,7 @@ class HomeActivity: BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Facto
             views.icHome.setImageResource(R.drawable.home)
             views.icCart.setImageResource(R.drawable.document)
             views.icOrder.setImageResource(R.drawable.ic_store)
-            views.icPost.setImageResource(R.drawable.chat)
+            views.icPost.setImageResource(R.drawable.chat_selected)
             views.icProfile.setImageResource(R.drawable.profile_gray)
         }
         views.llItem5.setOnClickListener {

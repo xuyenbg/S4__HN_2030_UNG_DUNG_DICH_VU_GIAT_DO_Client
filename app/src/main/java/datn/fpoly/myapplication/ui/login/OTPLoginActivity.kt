@@ -1,8 +1,10 @@
 package datn.fpoly.myapplication.ui.login
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
@@ -23,12 +25,14 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.account.LoginResponse
 import datn.fpoly.myapplication.databinding.ActivityOtpLoginBinding
 import datn.fpoly.myapplication.ui.home.HomeActivity
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -58,7 +62,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
         resendToken = intent.getParcelableExtra("resendToken")!!
         phoneNumber = intent.getStringExtra("phone")!!
         check = intent.getBooleanExtra("CHECKSTORE", false)
-        views.progressPhone.visibility = View.INVISIBLE
+
         viewModel.subscribe(this) {
             updateWithState(it)
         }
@@ -75,7 +79,8 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                     val credential: PhoneAuthCredential = PhoneAuthProvider.getCredential(
                         OTP, typeOTP
                     )
-                    views.progressPhone.visibility = View.VISIBLE
+//                    views.progressPhone.visibility = View.VISIBLE
+                    Dialog_Loading.getInstance().show(supportFragmentManager,"LoginLoading")
                     signInWithPhoneAuthCredential(credential)
                 } else {
                     Toast.makeText(this, "Vui lòng nhập lại OTP", Toast.LENGTH_SHORT).show()
@@ -104,10 +109,13 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                         state.stateLogin.invoke()?.let { result ->
                             Timber.tag("LogIn").d("Log in successful ${result.body()}}")
 
-                            // account chứ cả đối tượng và message
+                            // account chứa cả đối tượng và message
                             val account = result.body()?.let { parseJsonToAccountList(it.string()) }
+                            Hawk.put("Account", account?.user)
+                            Hawk.put("CheckLogin", true)
                             if (account?.message == "Đăng nhập thành công") {
                                 Log.d("Log In", "Log in successful")
+
                                 //snackbar("Đăng nhập thành công")
                                 Toast.makeText(
                                     this@OTPLoginActivity,
@@ -127,6 +135,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
 
                             } else {
                                 Log.d("Log In", "Sai tài khoản hoặc mật khẩu")
+
                                 Toast.makeText(
                                     this@OTPLoginActivity,
                                     "Sai tài khoản hoặc mật khẩu",
@@ -140,6 +149,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
 
             is Loading -> {
                 //Xoay tròn indicate
+
             }
 
             is Fail -> {
@@ -170,10 +180,22 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
         views.tvSendTo.visibility = View.INVISIBLE
         views.tvSendTo.isEnabled = false
 
-        Handler(Looper.myLooper()!!).postDelayed(Runnable {
-            views.tvSendTo.visibility = View.VISIBLE
-            views.tvSendTo.isEnabled = true
-        }, 60000)
+       val countdownTimer = object : CountDownTimer(60000, 1000) {
+            @SuppressLint("SetTextI18n")
+            override fun onTick(millisUntilFinished: Long) {
+                views.tvTimeCount.text = "Còn lại : ${(millisUntilFinished / 1000)}"
+            }
+
+            override fun onFinish() {
+                views.tvSendTo.visibility = View.VISIBLE
+                views.tvSendTo.isEnabled = true
+            }
+        }
+        countdownTimer.start()
+//        Handler(Looper.myLooper()!!).postDelayed(Runnable {
+//            views.tvSendTo.visibility = View.VISIBLE
+//            views.tvSendTo.isEnabled = true
+//        }, 60000)
     }
 
     private fun addTextChangeListener() {
@@ -244,7 +266,8 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                 // The SMS quota for the project has been exceeded
                 Log.d("TAG", "onVerificationFailed: ${e.toString()}")
             }
-            views.progressPhone.visibility = View.VISIBLE
+//            views.progressPhone.visibility = View.VISIBLE
+//            dialogLoading.show(supportFragmentManager, "LoadingAccount")
             // Show a message and update the UI
         }
 
@@ -266,12 +289,13 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    views.progressPhone.visibility = View.VISIBLE
+//                    views.progressPhone.visibility = View.VISIBLE
+
                     val user = task.result?.user
                     Timber.tag("OTPLoginActivity").d("initUiAndData: ${phoneNumber}")
                     Timber.tag("OTPLoginActivity").d("initUiAndData:uid ${user?.uid}")
                     login(user!!.uid)
-
+//                    Dialog_Loading.getInstance().show(supportFragmentManager,"LoginLoading")
                 } else {
                     // Sign in failed, display a message and update the UI
                     Log.w(ContentValues.TAG, "signInWithCredential:failure", task.exception)

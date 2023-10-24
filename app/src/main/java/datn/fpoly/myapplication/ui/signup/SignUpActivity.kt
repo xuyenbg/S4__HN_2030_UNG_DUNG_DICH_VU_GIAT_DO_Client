@@ -19,13 +19,14 @@ import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivitySignUpBinding
 import datn.fpoly.myapplication.ui.home.HomeActivity
 import datn.fpoly.myapplication.ui.otp.AuthenticationOtpActivity
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
     private lateinit var number: String
     private lateinit var auth: FirebaseAuth
-
     override fun getBinding(): ActivitySignUpBinding {
         return ActivitySignUpBinding.inflate(layoutInflater)
     }
@@ -35,22 +36,24 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
         views.progressPhone.visibility = View.INVISIBLE
         auth = FirebaseAuth.getInstance()
 
-        views.cbRule.setOnCheckedChangeListener { _, isChecked ->
-            // Cập nhật trạng thái của button dựa trên checkbox
-            views.btnContinue.isEnabled = isChecked
-            if (!isChecked) {
-                views.btnContinue.setTextColor(Color.GRAY)
-            } else {
-                views.btnContinue.setTextColor(getColor(R.color.white))
-            }
-        }
+//        views.cbRule.setOnCheckedChangeListener { _, isChecked ->
+//            // Cập nhật trạng thái của button dựa trên checkbox
+//            views.btnContinue.isEnabled = isChecked
+//            if (!isChecked) {
+//                views.btnContinue.setTextColor(Color.GRAY)
+//            } else {
+//                views.btnContinue.setTextColor(getColor(R.color.white))
+//            }
+//        }
 
         views.btnContinue.setOnClickListener {
             number = views.phoneNumber.text.toString().trim()
             if (number.isNotEmpty()) {
                 if (number.length == 10) {
                     number = "+84$number"
-                    views.progressPhone.visibility = View.VISIBLE
+//                    views.progressPhone.visibility = View.VISIBLE
+                    Dialog_Loading.getInstance().show(supportFragmentManager,"SignUpLoading")
+
                     val options = PhoneAuthOptions.newBuilder(auth)
                         .setPhoneNumber(number) // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
@@ -83,7 +86,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
                     }
                     // Update UI
                 }
-                views.progressPhone.visibility = View.INVISIBLE
+//                views.progressPhone.visibility = View.INVISIBLE
             }
     }
 
@@ -114,7 +117,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
             } else if (e is FirebaseAuthMissingActivityForRecaptchaException) {
                 // reCAPTCHA verification attempted with null Activity
             }
-            views.progressPhone.visibility = View.VISIBLE
+//            views.progressPhone.visibility = View.VISIBLE
+            Dialog_Loading.getInstance().show(supportFragmentManager,"SignUpLoading")
             // Show a message and update the UI
         }
 
@@ -132,14 +136,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
             intent.putExtra("resendToken", token)
             intent.putExtra("phone", number)
             startActivity(intent)
-            views.progressPhone.visibility = View.INVISIBLE
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (auth.currentUser != null) {
-            startActivity(Intent(this, HomeActivity::class.java))
         }
     }
 }

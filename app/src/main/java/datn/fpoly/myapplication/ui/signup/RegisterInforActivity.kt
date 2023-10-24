@@ -8,10 +8,12 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
+import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivityRegiterInforAccountUserBinding
 import datn.fpoly.myapplication.ui.home.HomeActivity
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -82,6 +84,7 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
                                     "Đăng ký thành công",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                Hawk.put("CheckLogin", true)
                                 startActivity(
                                     Intent(
                                         this@RegisterInforActivity,
@@ -103,6 +106,7 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
             is Loading -> {
                 //Xoay tròn indicate
                 Log.d("RegisterInforActivity", "loading: ")
+                Dialog_Loading.getInstance().show(supportFragmentManager,"SignUpLoading")
             }
 
             is Fail -> {

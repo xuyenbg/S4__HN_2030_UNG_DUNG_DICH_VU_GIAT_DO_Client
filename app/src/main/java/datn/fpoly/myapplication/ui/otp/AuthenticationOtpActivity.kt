@@ -1,7 +1,9 @@
 package datn.fpoly.myapplication.ui.otp
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
@@ -22,6 +24,7 @@ import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivityAuthenticationOtpBinding
 import datn.fpoly.myapplication.ui.home.HomeActivity
 import datn.fpoly.myapplication.ui.signup.RegisterInforActivity
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import java.util.concurrent.TimeUnit
 
 class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>() {
@@ -53,7 +56,8 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
                     val credential: PhoneAuthCredential = PhoneAuthProvider.getCredential(
                         OTP, typeOTP
                     )
-                    views.progressPhone.visibility = View.VISIBLE
+//                    views.progressPhone.visibility = View.VISIBLE
+                    Dialog_Loading.getInstance().show(supportFragmentManager,"SignUpLoading")
                     signInWithPhoneAuthCredential(credential)
                 } else {
                     Toast.makeText(this, "Vui lòng nhập lại OTP", Toast.LENGTH_SHORT).show()
@@ -78,11 +82,18 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
         views.edOtp6.setText("")
         views.tvSendTo.visibility = View.INVISIBLE
         views.tvSendTo.isEnabled = false
+        val countdownTimer = object : CountDownTimer(60000, 1000) {
+            @SuppressLint("SetTextI18n")
+            override fun onTick(millisUntilFinished: Long) {
+                views.tvTimeCount.text = "Còn lại : ${(millisUntilFinished / 1000)}"
+            }
 
-        Handler(Looper.myLooper()!!).postDelayed(Runnable {
-            views.tvSendTo.visibility = View.VISIBLE
-            views.tvSendTo.isEnabled = true
-        }, 60000)
+            override fun onFinish() {
+                views.tvSendTo.visibility = View.VISIBLE
+                views.tvSendTo.isEnabled = true
+            }
+        }
+        countdownTimer.start()
     }
 
     private fun addTextChangeListener() {
@@ -153,7 +164,8 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
                 // The SMS quota for the project has been exceeded
                 Log.d("TAG", "onVerificationFailed: ${e.toString()}")
             }
-            views.progressPhone.visibility = View.VISIBLE
+//            views.progressPhone.visibility = View.VISIBLE
+//            dialogLoading.show(supportFragmentManager, "LoadingAccount")
             // Show a message and update the UI
         }
 
@@ -175,8 +187,7 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    views.progressPhone.visibility = View.VISIBLE
-
+//                    views.progressPhone.visibility = View.VISIBLE
                     val user = task.result?.user
                     Log.d("signInWithCredential", "signInWithPhoneAuthCredential: ${user?.uid}")
                     Toast.makeText(this, "Thành Công", Toast.LENGTH_SHORT).show()
@@ -184,7 +195,6 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
                     intent.putExtra("PHONE",phoneNumber)
                     intent.putExtra("UID", user?.uid)
                     startActivity(intent)
-
                 } else {
                     // Sign in failed, display a message and update the UI
                     Log.w(ContentValues.TAG, "signInWithCredential:failure", task.exception)
