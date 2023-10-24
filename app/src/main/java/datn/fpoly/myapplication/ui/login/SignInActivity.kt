@@ -16,11 +16,16 @@ import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
+import datn.fpoly.myapplication.data.model.account.AccountResponse
+import datn.fpoly.myapplication.data.model.account.LoginResponse
 import datn.fpoly.myapplication.databinding.ActivitySignIn2Binding
 import datn.fpoly.myapplication.ui.home.HomeActivity
 import datn.fpoly.myapplication.ui.otp.AuthenticationOtpActivity
+import datn.fpoly.myapplication.ui.signup.SignUpActivity
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -36,7 +41,6 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
 
     override fun initUiAndData() {
         super.initUiAndData()
-        views.progressPhone.visibility = View.INVISIBLE
         auth = FirebaseAuth.getInstance()
 
         views.cbRule.setOnCheckedChangeListener { _, isChecked ->
@@ -53,12 +57,16 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
            checkStrore = isChecked
         }
 
+        views.btnSignUp.setOnClickListener {
+            startActivity(Intent(this,SignUpActivity::class.java))
+        }
         views.btnContinue.setOnClickListener {
             number = views.phoneNumber.text.toString().trim()
             if (number.isNotEmpty()) {
                 if (number.length == 10) {
                     number = "+84$number"
-                    views.progressPhone.visibility = View.VISIBLE
+//                    views.progressPhone.visibility = View.VISIBLE
+                    Dialog_Loading.getInstance().show(supportFragmentManager,"LoginLoading")
                     val options = PhoneAuthOptions.newBuilder(auth)
                         .setPhoneNumber(number) // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
@@ -91,7 +99,8 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
                     }
                     // Update UI
                 }
-                views.progressPhone.visibility = View.INVISIBLE
+//                views.progressPhone.visibility = View.INVISIBLE
+
             }
     }
 
@@ -113,7 +122,8 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
             } else if (e is FirebaseAuthMissingActivityForRecaptchaException) {
                 // reCAPTCHA verification attempted with null Activity
             }
-            views.progressPhone.visibility = View.VISIBLE
+//            views.progressPhone.visibility = View.VISIBLE
+            Dialog_Loading.getInstance().show(supportFragmentManager,"LoginLoading")
             // Show a message and update the UI
         }
 
@@ -128,13 +138,15 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
             intent.putExtra("phone", number)
             intent.putExtra("CHECKSTORE", checkStrore)
             startActivity(intent)
-            views.progressPhone.visibility = View.INVISIBLE
+//            views.progressPhone.visibility = View.INVISIBLE
+
         }
     }
 
     override fun onStart() {
         super.onStart()
-        if (auth.currentUser != null) {
+        val user : Boolean = Hawk.get("CheckLogin",false)
+        if (auth.currentUser != null && user) {
             startActivity(Intent(this, HomeActivity::class.java))
         }
     }

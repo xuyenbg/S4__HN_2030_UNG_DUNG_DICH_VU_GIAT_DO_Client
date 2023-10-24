@@ -8,6 +8,7 @@ import datn.fpoly.myapplication.ui.dashboard.DashboardActivity
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
 import datn.fpoly.myapplication.ui.home.HomeActivity
 import datn.fpoly.myapplication.ui.login.OTPLoginActivity
+import datn.fpoly.myapplication.ui.poststore.AddPostActivity
 import datn.fpoly.myapplication.ui.signup.RegisterInforActivity
 import datn.fpoly.myapplication.ui.signup.SignUpActivity
 import javax.inject.Singleton
@@ -27,7 +28,11 @@ interface AppComponent {
     fun inject(signUpActivity: SignUpActivity)
     fun inject(registerInforActivity: RegisterInforActivity)
     fun inject(homeUser: HomeActivity)
+<<<<<<< HEAD
     fun inject(detailStore: DetailStoreActivity)
+=======
+    fun inject(addPostActivity: AddPostActivity)
+>>>>>>> origin/dung_post_user
 
     @Component.Factory
     interface Factory {

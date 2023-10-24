@@ -6,12 +6,12 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
 import datn.fpoly.myapplication.data.repository.CategoryRepo
+import datn.fpoly.myapplication.data.repository.PostRepo
 import datn.fpoly.myapplication.data.repository.StoreRepo
-import datn.fpoly.myapplication.ui.login.LoginViewModel
-import datn.fpoly.myapplication.ui.login.LoginViewState
 
 class HomeUserViewModel @AssistedInject constructor(
     @Assisted state: HomeViewState,
+    private val responsePost: PostRepo,
     private val responseCategory: CategoryRepo,
     private val responseStore: StoreRepo
 ) : BaseViewModel<HomeViewState, HomeViewAction, HomeViewEvent>(state) {
@@ -23,6 +23,9 @@ class HomeUserViewModel @AssistedInject constructor(
             is HomeViewAction.HomeActionGetListStore->{
                 hanlderGetListStore()
             }
+            is HomeViewAction.PostClientActionList -> {
+                handlerGetPost()
+            }
         }
     }
 
@@ -33,6 +36,11 @@ class HomeUserViewModel @AssistedInject constructor(
     private fun hanlderGetListStore(){
         setState { copy(stateStore = Loading()) }
         responseStore.getDataStore().execute { copy(stateStore = it) }
+    }
+
+    private fun handlerGetPost() {
+        setState { copy(statePost = Loading()) }
+        responsePost.getListPost().execute { copy(statePost = it) }
     }
 
     @AssistedFactory

@@ -9,7 +9,7 @@
    <TextView
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:text="Bài Đăng"
+       android:text="@string/post"
        android:padding="16dp"
        android:textAlignment="center"
        android:textSize="@dimen/_18sp"
@@ -19,12 +19,16 @@
        />
 
   <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recycleview_Post"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+      android:scrollbars="none"
+      app:spanCount="1"
+      android:overScrollMode="never"
       android:orientation="vertical"
       tools:listitem="@layout/item_post"
       android:layout_marginTop="16dp"
-      android:scrollbars="none"
+      tools:itemCount="4"
       />
 </LinearLayout>
