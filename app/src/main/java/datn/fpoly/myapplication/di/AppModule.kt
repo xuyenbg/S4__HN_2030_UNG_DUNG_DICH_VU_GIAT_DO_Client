@@ -27,15 +27,16 @@ object AppModule {
     fun providerAuthApi(remoteDataSource: RemoteDataSource, context: Context): AuthApi {
         return remoteDataSource.buildApi(AuthApi::class.java, context)
     }
-<<<<<<< HEAD
     @Provides
     fun providerRoomDb(context: Context): RoomDb = RoomDb.getDatabase(context)
+
     @Provides
     fun providerGson():Gson = Gson()
+
     @Provides
-    fun providerApiService(remoteDataSource: RemoteDataSource, context: Context) : APIService{
-        return remoteDataSource.buildApi( APIService::class.java , context)
-=======
+    fun providerApiService(remoteDataSource: RemoteDataSource, context: Context) : APIService {
+        return remoteDataSource.buildApi(APIService::class.java, context)
+    }
 
     @Provides
     fun providerApiCategory(remoteDataSource: RemoteDataSource, context: Context): APICategory {
@@ -50,6 +51,5 @@ object AppModule {
     @Provides
     fun providerApiPost(remoteDataSource: RemoteDataSource, context: Context): APIPost {
         return remoteDataSource.buildApi(APIPost::class.java, context)
->>>>>>> origin/dung_post_user
     }
 }

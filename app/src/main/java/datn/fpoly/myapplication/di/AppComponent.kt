@@ -28,11 +28,8 @@ interface AppComponent {
     fun inject(signUpActivity: SignUpActivity)
     fun inject(registerInforActivity: RegisterInforActivity)
     fun inject(homeUser: HomeActivity)
-<<<<<<< HEAD
     fun inject(detailStore: DetailStoreActivity)
-=======
     fun inject(addPostActivity: AddPostActivity)
->>>>>>> origin/dung_post_user
 
     @Component.Factory
     interface Factory {
