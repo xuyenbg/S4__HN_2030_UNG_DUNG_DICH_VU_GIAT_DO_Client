@@ -4,15 +4,12 @@ import android.content.Context
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
-<<<<<<< HEAD
 import datn.fpoly.myapplication.data.model.roomdb.RoomDb
 import datn.fpoly.myapplication.data.network.APICategory
 import datn.fpoly.myapplication.data.network.APIStore
 import datn.fpoly.myapplication.data.network.AuthApi
 import datn.fpoly.myapplication.data.network.RemoteDataSource
-=======
 import datn.fpoly.myapplication.data.network.*
->>>>>>> origin/detail_store
 import datn.fpoly.myapplication.utils.LocalHelper
 
 @Module
@@ -36,13 +33,11 @@ object AppModule {
         return remoteDataSource.buildApi( APIStore::class.java , context)
     }
     @Provides
-<<<<<<< HEAD
     fun providerRoomDb(context: Context): RoomDb = RoomDb.getDatabase(context)
     @Provides
     fun providerGson():Gson = Gson()
-=======
+    @Provides
     fun providerApiService(remoteDataSource: RemoteDataSource, context: Context) : APIService{
         return remoteDataSource.buildApi( APIService::class.java , context)
     }
->>>>>>> origin/detail_store
 }
