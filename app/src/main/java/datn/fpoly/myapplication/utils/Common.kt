@@ -31,6 +31,8 @@ object Common {
     val KEY_CURRENT_ADRESS ="current_adress"
     val REQUEST_CODE_LOCATION =100
     val REQUEST_ACTIVITY_RESULT = 101
+    val KEY_STORE_DETAIL="store_detail"
+    val KEY_SERVICE_DETAIL="service_detail"
 
     fun checkPermission(context: Context): Boolean = PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context,  android.Manifest.permission.ACCESS_FINE_LOCATION)
     fun repuestPermission(activity: Activity){

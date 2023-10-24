@@ -55,6 +55,9 @@
             android:name=".ui.signup.RegisterInforActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.detailstore.DetailStoreActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.login.SignInActivity"
             android:exported="true">
             <intent-filter>

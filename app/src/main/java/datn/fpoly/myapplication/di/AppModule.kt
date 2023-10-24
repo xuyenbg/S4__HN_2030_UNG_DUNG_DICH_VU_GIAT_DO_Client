@@ -3,10 +3,7 @@ package datn.fpoly.myapplication.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import datn.fpoly.myapplication.data.network.APICategory
-import datn.fpoly.myapplication.data.network.APIStore
-import datn.fpoly.myapplication.data.network.AuthApi
-import datn.fpoly.myapplication.data.network.RemoteDataSource
+import datn.fpoly.myapplication.data.network.*
 import datn.fpoly.myapplication.utils.LocalHelper
 
 @Module
@@ -29,5 +26,8 @@ object AppModule {
     fun providerApiStore(remoteDataSource: RemoteDataSource, context: Context) : APIStore{
         return remoteDataSource.buildApi( APIStore::class.java , context)
     }
-
+    @Provides
+    fun providerApiService(remoteDataSource: RemoteDataSource, context: Context) : APIService{
+        return remoteDataSource.buildApi( APIService::class.java , context)
+    }
 }

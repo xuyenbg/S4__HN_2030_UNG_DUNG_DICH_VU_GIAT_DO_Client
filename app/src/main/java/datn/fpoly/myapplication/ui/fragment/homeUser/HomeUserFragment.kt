@@ -1,6 +1,7 @@
 package datn.fpoly.myapplication.ui.fragment.homeUser
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,12 +15,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import com.airbnb.mvrx.activityViewModel
+import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.ui.adapter.AdapterCategory
 import datn.fpoly.myapplication.ui.adapter.AdapterStore
+import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
+import datn.fpoly.myapplication.utils.Common
 import timber.log.Timber
 
 
@@ -49,7 +53,8 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         views.rcvListStore.adapter = adapterStore
         adapterStore.setListener(object : AdapterStore.StoreListener{
             override fun onClickStoreListener(storeModel: StoreModel) {
-
+                Hawk.put(Common.KEY_STORE_DETAIL, storeModel)
+                requireContext().startActivity(Intent(requireContext(), DetailStoreActivity::class.java))
             }
         })
 
