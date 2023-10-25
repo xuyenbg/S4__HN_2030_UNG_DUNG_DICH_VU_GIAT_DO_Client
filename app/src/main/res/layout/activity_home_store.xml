@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:orientation="vertical"
+    tools:context=".ui.home.HomeActivity">
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp2_home"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/botna_container"/>
+    <LinearLayout
+        android:id="@+id/botna_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingHorizontal="4dp"
+        android:paddingVertical="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <LinearLayout
+            android:id="@+id/ll_item_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp">
+
+                <View
+                    android:id="@+id/view_bg_item"
+                    android:layout_width="64dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_item_botna"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ic_home"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/home_selected"
+                    app:layout_constraintBottom_toBottomOf="@+id/view_bg_item"
+                    app:layout_constraintLeft_toLeftOf="@+id/view_bg_item"
+                    app:layout_constraintRight_toRightOf="@+id/view_bg_item"
+                    app:layout_constraintTop_toTopOf="@+id/view_bg_item" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_home"
+                style="@style/item_bottom_avigation_custom_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/home"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_item_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp">
+
+                <View
+                    android:id="@+id/view_bg_item_2"
+                    android:layout_width="64dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_item_botna"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ic_order"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_store"
+                    app:layout_constraintBottom_toBottomOf="@+id/view_bg_item_2"
+                    app:layout_constraintLeft_toLeftOf="@+id/view_bg_item_2"
+                    app:layout_constraintRight_toRightOf="@+id/view_bg_item_2"
+                    app:layout_constraintTop_toTopOf="@+id/view_bg_item_2" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_order"
+                style="@style/item_bottom_avigation_custom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/order" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_item_4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp">
+
+                <View
+                    android:id="@+id/view_bg_item_3"
+                    android:layout_width="64dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_item_botna"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ic_post"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/chat"
+                    app:layout_constraintBottom_toBottomOf="@+id/view_bg_item_3"
+                    app:layout_constraintLeft_toLeftOf="@+id/view_bg_item_3"
+                    app:layout_constraintRight_toRightOf="@+id/view_bg_item_3"
+                    app:layout_constraintTop_toTopOf="@+id/view_bg_item_3" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_post"
+                style="@style/item_bottom_avigation_custom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/post" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_item_5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp">
+
+                <View
+                    android:id="@+id/view_bg_item_4"
+                    android:layout_width="64dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_item_botna"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ic_profile"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/profile_gray"
+                    app:layout_constraintBottom_toBottomOf="@+id/view_bg_item_4"
+                    app:layout_constraintLeft_toLeftOf="@+id/view_bg_item_4"
+                    app:layout_constraintRight_toRightOf="@+id/view_bg_item_4"
+                    app:layout_constraintTop_toTopOf="@+id/view_bg_item_4" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_profile"
+                style="@style/item_bottom_avigation_custom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/profile" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

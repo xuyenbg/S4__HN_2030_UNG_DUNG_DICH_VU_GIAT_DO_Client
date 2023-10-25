@@ -1,4 +1,4 @@
-package datn.fpoly.myapplication.ui.fragment.setting
+package datn.fpoly.myapplication.ui.fragment.settingStore.setting
 
 import android.content.Intent
 import android.os.Bundle
