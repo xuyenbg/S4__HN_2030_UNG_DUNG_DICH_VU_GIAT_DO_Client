@@ -10,6 +10,7 @@ import datn.fpoly.myapplication.ui.home.HomeActivity
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreActivity
 import datn.fpoly.myapplication.ui.login.OTPLoginActivity
 import datn.fpoly.myapplication.ui.poststore.AddPostActivity
+import datn.fpoly.myapplication.ui.service.DetailServiceActivity
 import datn.fpoly.myapplication.ui.signup.RegisterInforActivity
 import datn.fpoly.myapplication.ui.signup.SignUpActivity
 import javax.inject.Singleton
@@ -32,7 +33,7 @@ interface AppComponent {
     fun inject(detailStore: DetailStoreActivity)
     fun inject(addPostActivity: AddPostActivity)
     fun inject(homeStore: HomeStoreActivity)
-
+    fun inject(detailService: DetailServiceActivity)
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance context: Context): AppComponent

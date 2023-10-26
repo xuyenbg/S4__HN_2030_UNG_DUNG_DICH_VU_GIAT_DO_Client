@@ -162,6 +162,10 @@ class HomeActivity: BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Facto
         view.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_item_bot_na_custom))
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
     override fun getBinding(): ActivityHomeBinding = ActivityHomeBinding.inflate(layoutInflater)
     override fun create(initialState: HomeViewState): HomeUserViewModel = homeUserFatory.create(initialState)
 
