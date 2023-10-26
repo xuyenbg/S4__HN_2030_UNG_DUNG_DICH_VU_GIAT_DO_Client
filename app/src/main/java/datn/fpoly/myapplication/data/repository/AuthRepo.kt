@@ -1,6 +1,8 @@
 package datn.fpoly.myapplication.data.repository
 
+import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.account.AccountModel
+import datn.fpoly.myapplication.data.model.account.AccountResponse
 import datn.fpoly.myapplication.data.model.account.AcountLogin
 import datn.fpoly.myapplication.data.network.AuthApi
 import io.reactivex.Observable
@@ -34,4 +36,12 @@ class AuthRepo @Inject constructor(
             null
         )
     ).subscribeOn(Schedulers.io())
+
+    fun saveUser(accountResponse: AccountResponse) = Hawk.put("Account",accountResponse)
+
+    fun getUser():AccountResponse? = Hawk.get<AccountResponse?>("Account")
+
+    fun isLogging():Boolean = Hawk.get("CheckLogin",false)
+
+    fun setLogin(isLogin:Boolean) = Hawk.put("CheckLogin",isLogin)
 }

@@ -10,7 +10,7 @@ class RoomDbRepo @Inject constructor(
     private val roomDb: RoomDb,
     private val gson: Gson
 ) {
-    fun getCart(key:String):Order = gson.fromJson(roomDb.roomDAO().getCart(key),Order::class.java)
+    fun getCart(key:String):Order? = gson.fromJson(roomDb.roomDAO().getCart(key),Order::class.java)
 
     fun insertCart(order: Order) = roomDb.roomDAO().insert(RoomDbModel(key = order.idUser ?: "empty", value = gson.toJson(order)))
 

@@ -35,6 +35,7 @@ import datn.fpoly.myapplication.data.model.Order
 import datn.fpoly.myapplication.data.model.Sale
 import datn.fpoly.myapplication.data.model.Service
 import datn.fpoly.myapplication.data.model.account.LoginResponse
+import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.data.repository.RoomDbRepo
 import datn.fpoly.myapplication.databinding.ActivityOtpLoginBinding
 import datn.fpoly.myapplication.ui.home.HomeActivity
@@ -48,8 +49,10 @@ import javax.inject.Inject
 class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel.Factory {
     @Inject
     lateinit var loginViewModelFactory: LoginViewModel.Factory
-//    @Inject
-//    lateinit var dbRepo: RoomDbRepo
+    @Inject
+    lateinit var dbRepo: RoomDbRepo
+    @Inject
+    lateinit var authRepo: AuthRepo
     private val viewModel: LoginViewModel by viewModel()
     private lateinit var auth: FirebaseAuth
     private lateinit var OTP: String
@@ -149,6 +152,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
         Timber.tag("LogIn").d("Log in successful ${state.stateLogin}")
         when (state.stateLogin) {
             is Success -> {
+                Dialog_Loading.getInstance().dismiss()
                 runBlocking {
                     launch {
                         state.stateLogin.invoke()?.let { result ->
@@ -156,18 +160,22 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
 
                             // account chứa cả đối tượng và message
                             val account = result.body()?.let { parseJsonToAccountList(it.string()) }
-                            Hawk.put("Account", account?.user)
-                            Hawk.put("CheckLogin", true)
                             if (account?.message == "Đăng nhập thành công") {
-                                Log.d("Log In", "Log in successful")
-
-                                //snackbar("Đăng nhập thành công")
+                                authRepo.saveUser(accountResponse = account.user)
+                                authRepo.setLogin(isLogin = true)
+                                val cart = dbRepo.getCart(key = account.user._id!!)
+                                if(cart == null){
+                                    dbRepo.insertCart(order = Order(idUser = account.user._id!!, status = 1))
+                                }
                                 Toast.makeText(
                                     this@OTPLoginActivity,
                                     "Đăng nhập thành công",
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 if (!check) {
+
+
+
                                     startActivity(
                                         Intent(
                                             this@OTPLoginActivity,
@@ -198,6 +206,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
             }
 
             is Fail -> {
+                Dialog_Loading.getInstance().dismiss()
                 Timber.tag("OTPLogin").e("updateWithState: ")
             }
 
