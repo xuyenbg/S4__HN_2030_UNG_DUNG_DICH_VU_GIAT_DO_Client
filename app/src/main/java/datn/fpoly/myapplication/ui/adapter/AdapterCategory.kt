@@ -26,13 +26,14 @@ class AdapterCategory(var limits: Int) : Adapter<AdapterCategory.ViewHolderItemC
     }
 
     override fun getItemCount(): Int {
-        if(limits==0){
-           return listCategoryService.size
-        }else if(limits<=listCategoryService.size){
-            return limits
-        }else{
-           return listCategoryService.size
-        }
+//        if(limits==0){
+//           return listCategoryService.size
+//        }else if(limits<=listCategoryService.size){
+//            return limits
+//        }else{
+//           return listCategoryService.size
+//        }
+        return listCategoryService.size
     }
     override fun onBindViewHolder(holder: ViewHolderItemCategory, position: Int) {
         if(listCategoryService.size!=0){

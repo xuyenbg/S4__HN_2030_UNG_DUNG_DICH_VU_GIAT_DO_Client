@@ -28,7 +28,7 @@ import datn.fpoly.myapplication.utils.Common
 import timber.log.Timber
 
 
-class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
+class HomeUserFragment  : BaseFragment<FragmentHomeUserBinding>() {
 
     private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var adapterCate: AdapterCategory
@@ -38,11 +38,9 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         container: ViewGroup?
     ): FragmentHomeUserBinding = FragmentHomeUserBinding.inflate(layoutInflater)
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.handle(HomeViewAction.HomeActionCategory)
-        viewModel.handle(HomeViewAction.HomeActionGetListStore)
+
         adapterCate = AdapterCategory(6)
         views.rcvListCategory.adapter = adapterCate
         adapterCate.setListener(object : AdapterCategory.CategoryListener {
@@ -60,6 +58,13 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         })
 
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.handle(HomeViewAction.HomeActionCategory)
+        viewModel.handle(HomeViewAction.HomeActionGetListStore)
     }
 
     override fun invalidate(): Unit = withState(viewModel) {
@@ -70,8 +75,11 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     fun getListCate(it: HomeViewState) {
         when (it.stateCategory) {
             is Success -> {
+                Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: Success")
                 runBlocking {
+                    Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: Success2")
                     launch {
+                        Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: Success3")
                         it.stateCategory.invoke()?.let {
                             adapterCate.updateData(it)
                             Timber.tag("AAAAAAAAAAAAAA").e("invalidate: " + it.size)
@@ -102,8 +110,11 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
             }
 
             is Success -> {
+                Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: Success")
                 runBlocking {
+                    Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: Success2")
                     launch {
+                        Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: Success3")
                         state.stateStore.invoke()?.let {
                             adapterStore.setData(it)
                             Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: size" + it.size)

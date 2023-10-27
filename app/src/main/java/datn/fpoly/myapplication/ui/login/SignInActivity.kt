@@ -147,7 +147,7 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
         super.onStart()
         val user : Boolean = Hawk.get("CheckLogin",false)
         if (auth.currentUser != null && user) {
-            startActivity(Intent(this, HomeActivity::class.java))
+            startActivity(Intent(this, HomeActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
         }
     }
 }

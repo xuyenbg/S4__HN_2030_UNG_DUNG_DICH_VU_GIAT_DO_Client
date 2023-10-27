@@ -218,23 +218,24 @@ abstract class BaseActivity<VB: ViewBinding> : AppCompatActivity(), HasScreenInj
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            onBackPressed(true)
+//            onBackPressed(true)
             return true
         }
 
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
-        onBackPressed(false)
-    }
+//    override fun onBackPressed() {
+//        onBackPressed(false)
+//    }
 
-    private fun onBackPressed(fromToolbar: Boolean) {
-        val handled = recursivelyDispatchOnBackPressed(supportFragmentManager, fromToolbar)
-        if (!handled) {
-            super.onBackPressed()
-        }
-    }
+
+//    private fun onBackPressed(fromToolbar: Boolean) {
+//        val handled = recursivelyDispatchOnBackPressed(supportFragmentManager, fromToolbar)
+//        if (!handled) {
+//            super.onBackPressed()
+//        }
+//    }
 
     private fun recursivelyDispatchOnBackPressed(fm: FragmentManager, fromToolbar: Boolean): Boolean {
         val reverseOrder = fm.fragments.filterIsInstance<BaseFragment<*>>().reversed()

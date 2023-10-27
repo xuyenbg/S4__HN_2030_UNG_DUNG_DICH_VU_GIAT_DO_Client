@@ -26,6 +26,12 @@ class FragmentOrder: BaseFragment<FragmentOrderBinding>() {
         listFragment.add(1, OrderCompletedFragment())
         listFragment.add(2, OrderCancelledFragment())
         adapterVp = AdapterViewPage(listFragment, requireActivity())
+        views.vp2Order.isUserInputEnabled = false
+        views.vp2Order.setCurrentItem(0, true)
+        views.viewBgItem1.visibility = View.VISIBLE
+        views.viewBgItem2.visibility = View.INVISIBLE
+        views.viewBgItem3.visibility = View.INVISIBLE
+        views.vp2Order.adapter = adapterVp
         views.itemUpcoming.setOnClickListener {
             views.vp2Order.setCurrentItem(0, true)
             views.viewBgItem1.visibility = View.VISIBLE

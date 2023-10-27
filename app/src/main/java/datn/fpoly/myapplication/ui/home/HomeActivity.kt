@@ -37,10 +37,7 @@ class HomeActivity: BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Facto
 
     }
 
-    override fun initUiAndData() {
-        super.initUiAndData()
-//        FirebaseAuth.getInstance().signOut()
-    }
+
     fun setViewNavigation(){
         listFragment.add(0, HomeUserFragment())
         listFragment.add(1, CartFragment())
@@ -164,7 +161,7 @@ class HomeActivity: BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Facto
 
     override fun onBackPressed() {
         super.onBackPressed()
-        finish()
+//        finish()
     }
     override fun getBinding(): ActivityHomeBinding = ActivityHomeBinding.inflate(layoutInflater)
     override fun create(initialState: HomeViewState): HomeUserViewModel = homeUserFatory.create(initialState)

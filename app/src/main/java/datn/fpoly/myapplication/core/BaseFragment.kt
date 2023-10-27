@@ -120,15 +120,15 @@ abstract class BaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasScreenInje
     @CallSuper
     override fun onDestroyView() {
         Timber.i("onDestroyView Fragment ${javaClass.simpleName}")
-//        uiDisposables.clear()
-//        _binding = null
+        uiDisposables.clear()
+        _binding = null
         super.onDestroyView()
     }
 
     @CallSuper
     override fun onDestroy() {
         Timber.i("onDestroy Fragment ${javaClass.simpleName}")
-//        uiDisposables.dispose()
+        uiDisposables.dispose()
         super.onDestroy()
     }
 
