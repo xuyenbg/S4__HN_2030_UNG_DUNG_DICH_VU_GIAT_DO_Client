@@ -67,42 +67,6 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
 
     override fun initUiAndData() {
         super.initUiAndData()
-        //code test Cart
-//        dbRepo.insertCart(Order(
-//            idUser = "idUser",
-//            idStore = "idStore",
-//            total = 100000.0,
-//            note = "note",
-//            transportType = "transportType",
-//            methodPaymentType = "methodPaymentType",
-//            feeDelivery = 20000.0,
-//            status = 1,
-//            idAddress = "idAddress",
-//            isPaid = false,
-//            listItem = arrayListOf(
-//                ItemService(
-//                    number = 1.3,
-//                    total = 13000.0,
-//                    image = "image",
-//                    idOrder = null,
-//                    service = Service(
-//                        id = "idService",
-//                        name = "name service",
-//                        idStore = "idStore",
-//                        attributeList = arrayListOf(Attribute(id = "id Attribute", name = "name attr", price = 3000.0)),
-//                        idCategory = "id category",
-//                        isActive = true,
-//                        unit = "unit service",
-//                        idSale = "id sale",
-//                        sale = Sale(id = "id sale", unit = "unit sale", value = 3000.0)
-//                    ),
-//                )
-//            )
-//        ))
-//        val order = dbRepo.getCart("idUser")
-//        order.note = "note after update"
-//        dbRepo.updateCart(order)
-//        val order2 = dbRepo.getCart("idUser")
 
         auth = FirebaseAuth.getInstance()
 
@@ -163,10 +127,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                             if (account?.message == "Đăng nhập thành công") {
                                 authRepo.saveUser(accountResponse = account.user)
                                 authRepo.setLogin(isLogin = true)
-                                val cart = dbRepo.getCart(key = account.user._id!!)
-                                if(cart == null){
-                                    dbRepo.insertCart(order = Order(idUser = account.user._id!!, status = 1))
-                                }
+                                dbRepo.getCart()
                                 Toast.makeText(
                                     this@OTPLoginActivity,
                                     "Đăng nhập thành công",

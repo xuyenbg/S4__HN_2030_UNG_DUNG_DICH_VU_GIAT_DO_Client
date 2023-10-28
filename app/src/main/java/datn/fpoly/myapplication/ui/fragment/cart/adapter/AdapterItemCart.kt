@@ -1,4 +1,4 @@
-package datn.fpoly.myapplication.ui.fragment.cart
+package datn.fpoly.myapplication.ui.fragment.cart.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,10 +8,9 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import datn.fpoly.myapplication.data.model.ItemService
 import datn.fpoly.myapplication.databinding.ItemOrderCartBinding
-import datn.fpoly.myapplication.databinding.ItemStoreBinding
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 
-class AdapterItemCart(private val limit: Int, private val context: Context) : Adapter<AdapterItemCart.ViewHolderItemStore>() {
+class AdapterItemCart(private val context: Context) : Adapter<AdapterItemCart.ViewHolderItemStore>() {
     private val list = mutableListOf<ItemService>()
     private var storeListener: ItemCartListener? = null
 
@@ -30,13 +29,7 @@ class AdapterItemCart(private val limit: Int, private val context: Context) : Ad
        ViewHolderItemStore(ItemOrderCartBinding.inflate(LayoutInflater.from(parent.context),parent,false))
 
     override fun getItemCount(): Int {
-        if(limit==0){
-            return list.size
-        }else if(limit<=list.size){
-            return limit
-        }else{
-            return list.size
-        }
+      return list.size
     }
 
     override fun onBindViewHolder(holder: ViewHolderItemStore, position: Int) {
@@ -47,7 +40,6 @@ class AdapterItemCart(private val limit: Int, private val context: Context) : Ad
                 storeListener?.onClickStoreListener(item)
             }
         }
-
     }
 
     inner class ViewHolderItemStore(val binding: ItemOrderCartBinding) : ViewHolder(binding.root){
@@ -57,10 +49,8 @@ class AdapterItemCart(private val limit: Int, private val context: Context) : Ad
                 binding.tvName.text = it.name ?: ""
                 binding.tvPrice.text = it.price?.formatCurrency(unit = item.service!!.unit) ?: ""
                 binding.tvUnit.text = it.unit ?: ""
-                binding.tvQuantity.text = it.
+                binding.tvQuantity.text = if( item.number == null) "-" else item.number!!.toInt().toString()
             }
-
-
         }
     }
     interface ItemCartListener{

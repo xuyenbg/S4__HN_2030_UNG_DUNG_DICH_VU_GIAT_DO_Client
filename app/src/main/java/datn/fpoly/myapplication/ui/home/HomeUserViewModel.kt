@@ -5,15 +5,19 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
+import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.data.repository.CategoryRepo
 import datn.fpoly.myapplication.data.repository.PostRepo
+import datn.fpoly.myapplication.data.repository.RoomDbRepo
 import datn.fpoly.myapplication.data.repository.StoreRepo
 
 class HomeUserViewModel @AssistedInject constructor(
     @Assisted state: HomeViewState,
     private val responsePost: PostRepo,
     private val responseCategory: CategoryRepo,
-    private val responseStore: StoreRepo
+    private val responseStore: StoreRepo,
+    private val dbRepo: RoomDbRepo,
+    private val authRepo: AuthRepo
 ) : BaseViewModel<HomeViewState, HomeViewAction, HomeViewEvent>(state) {
     override fun handle(action: HomeViewAction) {
         when (action) {
@@ -42,6 +46,8 @@ class HomeUserViewModel @AssistedInject constructor(
         setState { copy(statePost = Loading()) }
         responsePost.getListPost().execute { copy(statePost = it) }
     }
+
+    fun getCart() = dbRepo.getCart()
 
     @AssistedFactory
     interface Factory {

@@ -2,6 +2,7 @@ package datn.fpoly.myapplication.di
 
 import datn.fpoly.myapplication.AppApplication
 import android.content.Context
+import androidx.fragment.app.FragmentFactory
 import dagger.BindsInstance
 import dagger.Component
 import datn.fpoly.myapplication.ui.dashboard.DashboardActivity
