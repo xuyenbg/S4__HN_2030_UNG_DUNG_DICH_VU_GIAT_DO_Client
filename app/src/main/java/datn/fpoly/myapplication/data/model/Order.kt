@@ -14,4 +14,8 @@ data class Order(
     @SerializedName("idAddress") var idAddress: String? = null,
     @SerializedName("isPaid") var isPaid: Boolean? = null,
     @SerializedName("listItem") var listItem: MutableList<ItemService> = arrayListOf()
-)
+) {
+    override fun toString(): String {
+        return "Order(idUser=$idUser, idStore=$idStore, total=$total, note=$note, transportType=$transportType, methodPaymentType=$methodPaymentType, feeDelivery=$feeDelivery, status=$status, idAddress=$idAddress, isPaid=$isPaid, listItem=$listItem)"
+    }
+}

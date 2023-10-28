@@ -20,5 +20,7 @@ data class Service(
     @SerializedName("idSale")
     var idSale: String? = null,
     @SerializedName("sale")
-    var sale: Sale? = null
+    var sale: Sale? = null,
+    @SerializedName("price")
+    var price: Double? = null
 )

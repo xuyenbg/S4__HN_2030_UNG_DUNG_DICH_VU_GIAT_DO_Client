@@ -26,7 +26,7 @@ class HomeActivity: BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Facto
     private val viewModel :HomeUserViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (applicationContext as AppApplication).appComponent.inject(this);
+        (applicationContext as AppApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(views.root)
         setViewNavigation()

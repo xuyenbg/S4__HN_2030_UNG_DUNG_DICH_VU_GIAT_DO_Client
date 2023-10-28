@@ -1,5 +1,6 @@
 package datn.fpoly.myapplication.data.model.roomdb
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -14,5 +15,5 @@ interface RoomDbDAO {
     fun update(roomDbModel: RoomDbModel)
 
     @Query("select RoomDbModel.value from RoomDbModel where RoomDbModel.`key` = :key limit 1")
-    fun getCart(key:String):String?
+    fun getCart(key:String):LiveData<String?>
 }

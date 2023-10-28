@@ -130,4 +130,38 @@ object Common {
         alertDialog.show()
     }
 
+    fun Int.formatCurrency(unit: String?): String {
+        val formatted = StringBuilder()
+        val numberString = this.toString()
+
+        var count = 0
+        for (i in numberString.length - 1 downTo 0) {
+            formatted.append(numberString[i])
+            count++
+            if (count == 3 && i > 0) {
+                formatted.append(".")
+                count = 0
+            }
+        }
+
+        return formatted.reverse().append(" ${unit?:'đ'}").toString()
+    }
+
+    fun Double.formatCurrency(unit: String?): String {
+        val formatted = StringBuilder()
+        val numberString = this.toInt().toString()
+
+        var count = 0
+        for (i in numberString.length - 1 downTo 0) {
+            formatted.append(numberString[i])
+            count++
+            if (count == 3 && i > 0) {
+                formatted.append(".")
+                count = 0
+            }
+        }
+
+        return formatted.reverse().append(" ${unit?:'đ'}").toString()
+    }
+
 }
