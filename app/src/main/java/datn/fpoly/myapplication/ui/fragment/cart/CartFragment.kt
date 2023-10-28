@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.example.ql_ban_hang.core.BaseFragment
@@ -35,6 +37,7 @@ class CartFragment :BaseFragment<FragmentCart2Binding>() {
         viewModel.getCart().observe(viewLifecycleOwner) {
             Timber.tag("CART").d("observe")
             if (it != null) {
+                Timber.tag("CART").d(it.toString())
                 adapter.setData(it.listItem)
             }
         }

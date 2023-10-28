@@ -48,8 +48,9 @@ class AdapterItemCart(private val context: Context) : Adapter<AdapterItemCart.Vi
             item.service?.let {
                 binding.tvName.text = it.name ?: ""
                 binding.tvPrice.text = it.price?.formatCurrency(unit = item.service!!.unit) ?: ""
-                binding.tvUnit.text = it.unit ?: ""
+                binding.tvUnitQuantity.text = it.unit ?: ""
                 binding.tvQuantity.text = if( item.number == null) "-" else item.number!!.toInt().toString()
+                binding.tvPriceTotal.text = item.total?.formatCurrency(null)
             }
         }
     }

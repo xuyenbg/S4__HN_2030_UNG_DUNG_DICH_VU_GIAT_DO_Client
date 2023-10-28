@@ -144,7 +144,7 @@ object Common {
             }
         }
 
-        return formatted.reverse().append(" ${unit?:'đ'}").toString()
+        return formatted.reverse().append(" ${if (unit != null) "đ/${unit}" else 'đ'}").toString()
     }
 
     fun Double.formatCurrency(unit: String?): String {
@@ -161,7 +161,7 @@ object Common {
             }
         }
 
-        return formatted.reverse().append(" ${unit?:'đ'}").toString()
+        return formatted.reverse().append(" ${if (unit != null) "đ/${unit}" else 'đ'}").toString()
     }
 
 }

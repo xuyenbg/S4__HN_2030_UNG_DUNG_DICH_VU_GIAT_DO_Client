@@ -5,8 +5,6 @@ import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -25,15 +23,9 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
-import datn.fpoly.myapplication.data.model.Attribute
-import datn.fpoly.myapplication.data.model.ItemService
-import datn.fpoly.myapplication.data.model.Order
-import datn.fpoly.myapplication.data.model.Sale
-import datn.fpoly.myapplication.data.model.Service
 import datn.fpoly.myapplication.data.model.account.LoginResponse
 import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.data.repository.RoomDbRepo
@@ -116,7 +108,6 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
         Timber.tag("LogIn").d("Log in successful ${state.stateLogin}")
         when (state.stateLogin) {
             is Success -> {
-                Dialog_Loading.getInstance().dismiss()
                 runBlocking {
                     launch {
                         state.stateLogin.invoke()?.let { result ->

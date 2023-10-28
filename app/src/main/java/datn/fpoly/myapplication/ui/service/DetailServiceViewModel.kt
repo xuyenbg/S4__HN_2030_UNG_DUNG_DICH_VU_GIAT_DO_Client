@@ -5,11 +5,14 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
+import datn.fpoly.myapplication.data.model.Order
+import datn.fpoly.myapplication.data.repository.RoomDbRepo
 import datn.fpoly.myapplication.data.repository.ServiceRepo
 
 class DetailServiceViewModel @AssistedInject constructor(
     @Assisted state: DetailServiceViewState,
-    private var repo: ServiceRepo
+    private var repo: ServiceRepo,
+    private val dbRepo: RoomDbRepo
 ) : BaseViewModel<DetailServiceViewState, DetailServiceViewAction, DetailServiceViewEvent>(state) {
     override fun handle(action: DetailServiceViewAction) {
         when(action){
@@ -23,6 +26,9 @@ class DetailServiceViewModel @AssistedInject constructor(
         repo.getListServiceByStore(id).execute { copy(stateService = it) }
     }
 
+    fun getCart() = dbRepo.getCart()
+
+    fun updateCart(order: Order) = dbRepo.updateCart(order)
 
     @AssistedFactory
     interface Factory {

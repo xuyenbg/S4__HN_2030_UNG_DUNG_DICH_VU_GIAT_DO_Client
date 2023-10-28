@@ -2,10 +2,8 @@ package datn.fpoly.myapplication.di
 
 import datn.fpoly.myapplication.AppApplication
 import android.content.Context
-import androidx.fragment.app.FragmentFactory
 import dagger.BindsInstance
 import dagger.Component
-import datn.fpoly.myapplication.ui.dashboard.DashboardActivity
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
 import datn.fpoly.myapplication.ui.home.HomeActivity
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreActivity
@@ -27,7 +25,6 @@ import javax.inject.Singleton
 interface AppComponent {
     fun inject(application: AppApplication)
     fun inject(otpLoginActivity: OTPLoginActivity)
-    fun inject(dashboardActivity: DashboardActivity)
     fun inject(signUpActivity: SignUpActivity)
     fun inject(registerInforActivity: RegisterInforActivity)
     fun inject(homeUser: HomeActivity)

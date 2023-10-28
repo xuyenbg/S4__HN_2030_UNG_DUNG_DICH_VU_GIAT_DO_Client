@@ -43,9 +43,6 @@
             android:name=".ui.login.OTPLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.dashboard.DashboardActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.signup.SignUpActivity"
             android:exported="false" />
         <activity

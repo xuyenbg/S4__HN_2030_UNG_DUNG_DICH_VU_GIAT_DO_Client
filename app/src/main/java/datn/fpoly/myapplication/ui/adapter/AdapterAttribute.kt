@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import datn.fpoly.myapplication.data.model.AttributeModel
 import datn.fpoly.myapplication.databinding.ItemAttributeBinding
+import datn.fpoly.myapplication.utils.Common.formatCurrency
 
 class AdapterAttribute: Adapter<AdapterAttribute.ViewHolderItemAttribute>() {
     private val listAttribute= mutableListOf<AttributeModel>()
@@ -53,7 +54,7 @@ class AdapterAttribute: Adapter<AdapterAttribute.ViewHolderItemAttribute>() {
     }
     inner class ViewHolderItemAttribute(val bingind: ItemAttributeBinding): ViewHolder(bingind.root){
         fun bind(item: AttributeModel){
-            bingind.tvPrice.text = item.price
+            bingind.tvPrice.text = item.price.formatCurrency(null)
             bingind.cbAttribute1.text = item.name
             bingind.cbAttribute1.isChecked = false
         }

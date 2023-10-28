@@ -16,8 +16,7 @@ class HomeUserViewModel @AssistedInject constructor(
     private val responsePost: PostRepo,
     private val responseCategory: CategoryRepo,
     private val responseStore: StoreRepo,
-    private val dbRepo: RoomDbRepo,
-    private val authRepo: AuthRepo
+    private val dbRepo: RoomDbRepo
 ) : BaseViewModel<HomeViewState, HomeViewAction, HomeViewEvent>(state) {
     override fun handle(action: HomeViewAction) {
         when (action) {
