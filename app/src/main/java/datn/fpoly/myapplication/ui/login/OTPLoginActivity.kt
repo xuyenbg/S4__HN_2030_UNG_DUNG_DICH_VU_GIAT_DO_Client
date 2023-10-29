@@ -38,6 +38,7 @@ import datn.fpoly.myapplication.data.model.account.LoginResponse
 import datn.fpoly.myapplication.data.repository.RoomDbRepo
 import datn.fpoly.myapplication.databinding.ActivityOtpLoginBinding
 import datn.fpoly.myapplication.ui.home.HomeActivity
+import datn.fpoly.myapplication.ui.homeStore.HomeStoreActivity
 import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -168,6 +169,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 if (!check) {
+                                    Hawk.put("Manage",0)
                                     startActivity(
                                         Intent(
                                             this@OTPLoginActivity,
@@ -175,7 +177,13 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                                         )
                                     )
                                 } else {
-
+                                    Hawk.put("Manage",1)
+                                    startActivity(
+                                        Intent(
+                                            this@OTPLoginActivity,
+                                            HomeStoreActivity::class.java
+                                        )
+                                    )
                                 }
 
                             } else {

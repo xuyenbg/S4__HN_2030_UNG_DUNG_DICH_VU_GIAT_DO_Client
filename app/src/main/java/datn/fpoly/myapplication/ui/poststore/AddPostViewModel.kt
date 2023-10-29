@@ -6,6 +6,8 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
 import datn.fpoly.myapplication.data.repository.PostRepo
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 
 class AddPostViewModel @AssistedInject constructor(
@@ -16,21 +18,21 @@ class AddPostViewModel @AssistedInject constructor(
     override fun handle(action: AddPostViewAction) {
         when (action) {
             is AddPostViewAction.AddPostAction -> {
-                handleLogin(action.idStore, action.title, action.content, action.image)
+                handleAddPost(action.idStore, action.title, action.content, action.image)
             }
-
             else -> {}
         }
     }
 
-    private fun handleLogin(
-        idStore: String,
-        title: String,
-        content: String,
-        image: String?
+    private fun handleAddPost(
+        idStore: RequestBody,
+        title: RequestBody,
+        content: RequestBody,
+        image: MultipartBody.Part?
     ) {
         setState { copy(stateAddPost = Loading()) }
-        repository.addListPost(idStore, title, content, image).execute { copy(stateAddPost = it) }
+            repository.addListPost(idStore, title, content,image
+            ).execute { copy(stateAddPost = it) }
     }
 
     @AssistedFactory

@@ -13,6 +13,8 @@ data class PostModel(
     @SerializedName("content")
     val content: String?,
     @SerializedName("image")
-    val image: String?
+    val image: String?,
+    @SerializedName("createAt")
+    val date : String
 ) {
 }

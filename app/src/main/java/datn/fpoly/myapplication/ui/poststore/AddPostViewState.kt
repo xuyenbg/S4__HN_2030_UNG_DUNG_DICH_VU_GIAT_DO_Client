@@ -7,5 +7,5 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 
 data class AddPostViewState (
-    var stateAddPost: Async<Response<ResponseBody>> = Uninitialized
+    var stateAddPost: Async<Response<ResponseBody>> = Uninitialized,
 ): MvRxState

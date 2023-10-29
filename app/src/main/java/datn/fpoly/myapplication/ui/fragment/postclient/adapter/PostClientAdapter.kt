@@ -1,12 +1,14 @@
 package datn.fpoly.myapplication.ui.fragment.postclient.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 import com.bumptech.glide.Glide
 import datn.fpoly.myapplication.data.model.post.PostModel
 import datn.fpoly.myapplication.databinding.ItemPostBinding
+import datn.fpoly.myapplication.utils.Common
 import javax.inject.Inject
 
 class PostClientAdapter @Inject constructor() :
@@ -41,9 +43,13 @@ class PostClientAdapter @Inject constructor() :
                     postlistener?.onClickPost(itemPost)
                 }
                 holder.binding.apply {
+                    if (itemPost.image=="") {
+                        imagePostClient.visibility = View.GONE
+                    }
                     tvName.text = itemPost.idStore.name
                     tvTitle.text = itemPost.title
                     tvContent.text = itemPost.content
+                    tvDate.text = Common.convertISO8601ToCustomFormat(itemPost.date)
                     Glide.with(holder.itemView.context)
                         .load(itemPost.image)
                         .into(imagePostClient)

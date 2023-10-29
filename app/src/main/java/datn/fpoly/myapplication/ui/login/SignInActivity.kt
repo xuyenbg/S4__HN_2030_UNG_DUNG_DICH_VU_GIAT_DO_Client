@@ -23,6 +23,7 @@ import datn.fpoly.myapplication.data.model.account.AccountResponse
 import datn.fpoly.myapplication.data.model.account.LoginResponse
 import datn.fpoly.myapplication.databinding.ActivitySignIn2Binding
 import datn.fpoly.myapplication.ui.home.HomeActivity
+import datn.fpoly.myapplication.ui.homeStore.HomeStoreActivity
 import datn.fpoly.myapplication.ui.otp.AuthenticationOtpActivity
 import datn.fpoly.myapplication.ui.signup.SignUpActivity
 import datn.fpoly.myapplication.utils.Dialog_Loading
@@ -56,7 +57,7 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
             // Cập nhật trạng thái của button dựa trên checkbox
            checkStrore = isChecked
         }
-
+        Log.d("SignInActivity", "checkstore: $checkStrore")
         views.btnSignUp.setOnClickListener {
             startActivity(Intent(this,SignUpActivity::class.java))
         }
@@ -131,6 +132,7 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
             verificationId: String,
             token: PhoneAuthProvider.ForceResendingToken,
         ) {
+            checkStrore = views.cbShop.isChecked
             Timber.d("OTP", verificationId)
             val intent = Intent(this@SignInActivity, OTPLoginActivity::class.java)
             intent.putExtra("OTP", verificationId)
@@ -138,16 +140,20 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
             intent.putExtra("phone", number)
             intent.putExtra("CHECKSTORE", checkStrore)
             startActivity(intent)
-//            views.progressPhone.visibility = View.INVISIBLE
-
         }
     }
 
     override fun onStart() {
         super.onStart()
         val user : Boolean = Hawk.get("CheckLogin",false)
+        val manege : Int = Hawk.get("Manage",0)
         if (auth.currentUser != null && user) {
-            startActivity(Intent(this, HomeActivity::class.java))
+            if (manege ==0) {
+                startActivity(Intent(this, HomeActivity::class.java))
+            } else {
+                startActivity(Intent(this, HomeStoreActivity::class.java))
+            }
+
         }
     }
 }
