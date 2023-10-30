@@ -1,6 +1,5 @@
 package datn.fpoly.myapplication.ui.homeStore
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -11,15 +10,15 @@ import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivityHomeStoreBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterViewPage
 import datn.fpoly.myapplication.ui.fragment.cart.CartFragment
-import datn.fpoly.myapplication.ui.fragment.fragmentOrder.FragmentOrder
 import datn.fpoly.myapplication.ui.fragment.homeStore.FragmentHomeStore
-import datn.fpoly.myapplication.ui.fragment.homeUser.HomeUserFragment
-import datn.fpoly.myapplication.ui.fragment.postclient.PostClientFragment
 import datn.fpoly.myapplication.ui.fragment.settingStore.FragmentSettingStore
-import datn.fpoly.myapplication.ui.fragment.settingStore.setting.FragmentSetting
-import datn.fpoly.myapplication.ui.poststore.FragmentPostStore
+import datn.fpoly.myapplication.ui.fragment.postStore.FragmentPostStore
+import datn.fpoly.myapplication.ui.home.HomeUserViewModel
+import javax.inject.Inject
 
-class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() {
+class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreViewModel.Factory{
+    @Inject
+    lateinit var homeStoreFatory: HomeStoreViewModel.Factory
     private lateinit var adapterVp: AdapterViewPage
     private val listFragment= mutableListOf<Fragment>()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +31,7 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() {
     }
     fun setViewNavigation(){
         listFragment.add(0, FragmentHomeStore())
-//        listFragment.add(1, CartFragment())
+        listFragment.add(1, CartFragment())
         listFragment.add(2, FragmentPostStore())
         listFragment.add(3,FragmentSettingStore())
         adapterVp = AdapterViewPage(listFragment, this)
@@ -122,4 +121,5 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() {
     }
 
     override fun getBinding(): ActivityHomeStoreBinding = ActivityHomeStoreBinding.inflate(layoutInflater)
+    override fun create(initialState: HomeStoreState): HomeStoreViewModel = homeStoreFatory.create(initialState)
 }

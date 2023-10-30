@@ -24,6 +24,7 @@ import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.databinding.DialogGpsBinding
 import datn.fpoly.myapplication.databinding.DialogInternetBinding
+import java.text.SimpleDateFormat
 import java.util.*
 
 object Common {
@@ -33,6 +34,7 @@ object Common {
     val REQUEST_ACTIVITY_RESULT = 101
     val KEY_STORE_DETAIL="store_detail"
     val KEY_SERVICE_DETAIL="service_detail"
+    const val baseUrl = "https://s4-hn-2030-ung-dung-dich-vu-giat-do.onrender.com"
 
     fun checkPermission(context: Context): Boolean = PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context,  android.Manifest.permission.ACCESS_FINE_LOCATION)
     fun repuestPermission(activity: Activity){
@@ -128,6 +130,23 @@ object Common {
         val alertDialog: AlertDialog = builder.create()
         alertDialog.window?.setDimAmount(1f)
         alertDialog.show()
+    }
+    @SuppressLint("SimpleDateFormat")
+    fun convertISO8601ToCustomFormat(iso8601String: String): String {
+        val customFormat = "yyyy-MM-dd"
+        val iso8601Format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        val customDateFormat = SimpleDateFormat(customFormat)
+
+        // Set the time zone to UTC to match the input string
+        iso8601Format.timeZone = TimeZone.getTimeZone("UTC")
+
+        return try {
+            val date: Date = iso8601Format.parse(iso8601String) as Date
+            customDateFormat.format(date)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ""
+        }
     }
 
     fun Int.formatCurrency(unit: String?): String {

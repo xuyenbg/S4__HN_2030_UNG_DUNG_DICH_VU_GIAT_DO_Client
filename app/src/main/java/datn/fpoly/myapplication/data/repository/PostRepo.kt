@@ -5,6 +5,8 @@ import datn.fpoly.myapplication.data.model.post.PostModel
 import datn.fpoly.myapplication.data.network.APIPost
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import javax.inject.Inject
@@ -16,17 +18,12 @@ class PostRepo @Inject constructor(
         api.getPost().subscribeOn(Schedulers.io())
 
     fun addListPost(
-        idStore: String,
-        title: String,
-        content: String,
-        image: String?
-    ): Observable<Response<ResponseBody>> = api.addPost(
-        PostAddModel(
-            idStore,
-            title,
-            content,
-            image ?: ""
-        )
+        idStore: RequestBody,
+        title: RequestBody,
+        content: RequestBody,
+        image: MultipartBody.Part?
+    ): Observable<Response<ResponseBody>> = api.addPostImage(
+       idStore,title,content,image
     ).subscribeOn(Schedulers.io())
 
 }
