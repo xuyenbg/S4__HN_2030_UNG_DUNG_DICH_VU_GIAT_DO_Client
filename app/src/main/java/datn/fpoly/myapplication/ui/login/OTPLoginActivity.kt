@@ -23,6 +23,7 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
@@ -126,13 +127,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 if (!check) {
-<<<<<<< HEAD
-
-
-
-=======
                                     Hawk.put("Manage",0)
->>>>>>> origin/dung_add_post_hoanthien
                                     startActivity(
                                         Intent(
                                             this@OTPLoginActivity,
