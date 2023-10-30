@@ -68,7 +68,12 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
         views.btnPost.setOnClickListener {
             addPost()
         }
+        views.toobar.icBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+        views.toobar.tvTitleTooobal.text = "Add Post"
     }
+
     private fun getRealPathFromUri(uri: Uri): String? {
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = contentResolver.query(uri, projection, null, null, null)
@@ -120,6 +125,11 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
         }
     }
 
+    private fun setClear() {
+        views.edContent.setText("")
+        views.edTitle.setText("")
+    }
+
     private fun updateWithState(state: AddPostViewState) {
         Timber.tag("AddPostActivity").d("chậgdhasjd: ")
         when (state.stateAddPost) {
@@ -134,6 +144,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
                                     "Thêm thành công",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                onBackPressedDispatcher.onBackPressed()
                             } else {
                                 Toast.makeText(this@AddPostActivity, "Thất Bại", Toast.LENGTH_SHORT)
                                     .show()
@@ -155,6 +166,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
             else -> {}
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
@@ -166,6 +178,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
             Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
         }
     }
+
     override fun create(initialState: AddPostViewState) = addPosFactory.create(initialState)
 
 

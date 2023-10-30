@@ -43,7 +43,7 @@ class PostClientAdapter @Inject constructor() :
                     postlistener?.onClickPost(itemPost)
                 }
                 holder.binding.apply {
-                    if (itemPost.image=="") {
+                    if (itemPost.image == null) {
                         imagePostClient.visibility = View.GONE
                     }
                     tvName.text = itemPost.idStore.name
@@ -51,7 +51,7 @@ class PostClientAdapter @Inject constructor() :
                     tvContent.text = itemPost.content
                     tvDate.text = Common.convertISO8601ToCustomFormat(itemPost.date)
                     Glide.with(holder.itemView.context)
-                        .load(itemPost.image)
+                        .load(Common.baseUrl + itemPost.image)
                         .into(imagePostClient)
                 }
             }
