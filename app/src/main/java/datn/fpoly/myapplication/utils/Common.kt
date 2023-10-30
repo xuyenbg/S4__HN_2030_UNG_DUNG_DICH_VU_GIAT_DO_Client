@@ -33,6 +33,7 @@ object Common {
     val REQUEST_ACTIVITY_RESULT = 101
     val KEY_STORE_DETAIL="store_detail"
     val KEY_SERVICE_DETAIL="service_detail"
+    val KEY_SEE_MORE="see_more"
 
     fun checkPermission(context: Context): Boolean = PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context,  android.Manifest.permission.ACCESS_FINE_LOCATION)
     fun repuestPermission(activity: Activity){

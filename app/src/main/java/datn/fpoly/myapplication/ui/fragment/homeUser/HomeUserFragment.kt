@@ -24,7 +24,9 @@ import datn.fpoly.myapplication.ui.fragment.postclient.adapter.PostClientAdapter
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
+import datn.fpoly.myapplication.ui.seeMore.SeeMoreActivity
 import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.GetListRaw
 import timber.log.Timber
 
 
@@ -41,7 +43,7 @@ class HomeUserFragment  : BaseFragment<FragmentHomeUserBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapterCate = AdapterCategory(6)
+        adapterCate = AdapterCategory(6, false)
         views.rcvListCategory.adapter = adapterCate
         adapterCate.setListener(object : AdapterCategory.CategoryListener {
             override fun onClickCate(categoryModel: CategoryModel) {
@@ -56,6 +58,18 @@ class HomeUserFragment  : BaseFragment<FragmentHomeUserBinding>() {
                 requireContext().startActivity(Intent(requireContext(), DetailStoreActivity::class.java))
             }
         })
+        views.tvSeeMore.setOnClickListener {
+            GetListRaw.setDataCategory(adapterCate.getListCate)
+            val intent = Intent(requireContext(), SeeMoreActivity::class.java)
+            intent.putExtra(Common.KEY_SEE_MORE, 1)
+            requireContext().startActivity(intent)
+        }
+        views.tvSeeMoreStore.setOnClickListener {
+            GetListRaw.setDataStore(adapterStore.getListStore)
+            val intent = Intent(requireContext(), SeeMoreActivity::class.java)
+            intent.putExtra(Common.KEY_SEE_MORE, 2)
+            requireContext().startActivity(intent)
+        }
 
 
 
