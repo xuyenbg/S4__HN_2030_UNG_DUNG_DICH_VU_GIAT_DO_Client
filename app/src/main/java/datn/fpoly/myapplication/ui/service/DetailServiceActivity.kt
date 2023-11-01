@@ -91,7 +91,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
             }
             Toast.makeText(this, "list attribute select: size: "+adapterAttribute.listAttributeSelect.size, Toast.LENGTH_SHORT).show()
             if(serviceModel != null){
-                if (!cart.idStore.equals(serviceModel!!.idStore)){
+                if (!cart.idStore?.equals(serviceModel!!.idStore)!!){
                     Toast.makeText(this, "Bạn có chắc chắn muốn đặt lại không? Nếu bạn tiếp tục, giỏ hàng của bạn sẽ bị xóa.", Toast.LENGTH_SHORT).show()
                     cart.idStore = serviceModel!!.idStore
                     cart.listItem.clear()
@@ -126,9 +126,11 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
     override fun onResume() {
         super.onResume()
         serviceModel?.idStore?.let {
-            DetailServiceViewAction.GetListServiceByStore(
-                it
-            )
+            serviceModel?.id?.let { it1 ->
+                DetailServiceViewAction.GetListServiceByStore(
+                    it, it1
+                )
+            }
         }?.let { viewModel.handle(it) }
     }
     fun getListService( state: DetailServiceViewState){

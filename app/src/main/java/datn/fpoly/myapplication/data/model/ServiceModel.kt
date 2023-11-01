@@ -10,19 +10,19 @@ class ServiceModel(
     @SerializedName("idStore")
     var idStore: String? = null,
     @SerializedName("attributeList")
-    var attributeList: MutableList<AttributeModel> = arrayListOf(),
-//    @SerializedName("idCategory")
+    var attributeList: MutableList<AttributeModel>? = null,
+    @SerializedName("idCategory")
 //    var idCategory: String? = null,
 //    @SerializedName("category")
-//    var category: CategoryModel? = null,
+    var category: CategoryModel? = null,
     @SerializedName("isActive")
     var isActive: Boolean? = null,
     @SerializedName("unit")
     var unit: String? = null,
-//    @SerializedName("idSale")
+    @SerializedName("idSale")
 //    var idSale: String? = null,
 //    @SerializedName("sale")
-//    var sale: Sale? = null,
+    var sale: Sale? = null,
     @SerializedName("price")
     var price: Double? = null,
     @SerializedName("image")

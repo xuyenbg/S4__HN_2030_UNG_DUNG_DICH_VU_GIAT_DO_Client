@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.seeMore.SeeMoreActivity">
+    tools:context=".ui.listService.ListServiceActivity">
     <LinearLayout
         android:id="@+id/ll_tool_bar"
         android:layout_width="match_parent"
@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorPriamry"
             android:textSize="20sp"
+            android:text="Danh sách dịch vụ"
             android:layout_gravity="center"
             android:gravity="center"
             style="@style/text_font_inter_semi_bold"
@@ -42,6 +43,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

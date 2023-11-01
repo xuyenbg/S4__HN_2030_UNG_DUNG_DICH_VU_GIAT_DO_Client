@@ -17,13 +17,13 @@ class DetailServiceViewModel @AssistedInject constructor(
     override fun handle(action: DetailServiceViewAction) {
         when(action){
             is DetailServiceViewAction.GetListServiceByStore->{
-                getListServiceByStore(action.idStore)
+                getListServiceByStore(action.idStore, action.idService)
             }
         }
     }
-    fun getListServiceByStore(id: String){
+    fun getListServiceByStore(id: String, idService: String){
         setState { copy(stateService= Loading()) }
-        repo.getListServiceByStore(id).execute { copy(stateService = it) }
+        repo.getListServiceByStore2(id, idService).execute { copy(stateService = it) }
     }
 
     fun getCart() = dbRepo.getCart()
