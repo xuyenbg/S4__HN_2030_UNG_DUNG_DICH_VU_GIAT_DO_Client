@@ -5,6 +5,7 @@ import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
+import datn.fpoly.myapplication.ui.fragment.fragmentOrder.FragmentOrder
 import datn.fpoly.myapplication.ui.home.HomeActivity
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreActivity
 import datn.fpoly.myapplication.ui.listService.ListServiceActivity
@@ -34,6 +35,8 @@ interface AppComponent {
     fun inject(homeStore: HomeStoreActivity)
     fun inject(detailService: DetailServiceActivity)
     fun inject(listService: ListServiceActivity)
+
+    fun inject(orderFragment: FragmentOrder);
 
     @Component.Factory
     interface Factory {

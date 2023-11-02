@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:id="@+id/tv_default_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:text="Tổ dân phố Số 3 - Mỏ Gang, Số nhà 34, Thị trấn Phúc Thọ, Huyện Phúc Thọ, Thành Phố Hà Nội"
+        android:textColor="@color/gray"
+        android:textSize="16dp"
+        android:lineSpacingExtra="8dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_gray"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/gray_2"
+        android:layout_marginTop="15dp"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_default_address" />
+</androidx.constraintlayout.widget.ConstraintLayout>
