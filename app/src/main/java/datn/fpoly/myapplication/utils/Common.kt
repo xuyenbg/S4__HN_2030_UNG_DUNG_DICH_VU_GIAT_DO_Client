@@ -35,6 +35,7 @@ object Common {
     val KEY_STORE_DETAIL="store_detail"
     val KEY_SERVICE_DETAIL="service_detail"
     const val baseUrl = "https://s4-hn-2030-ung-dung-dich-vu-giat-do.onrender.com"
+    val KEY_SEE_MORE="see_more"
 
     fun checkPermission(context: Context): Boolean = PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context,  android.Manifest.permission.ACCESS_FINE_LOCATION)
     fun repuestPermission(activity: Activity){

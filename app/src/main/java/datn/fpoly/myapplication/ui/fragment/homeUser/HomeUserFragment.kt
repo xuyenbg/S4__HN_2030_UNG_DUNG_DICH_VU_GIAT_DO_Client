@@ -3,7 +3,6 @@ package datn.fpoly.myapplication.ui.fragment.homeUser
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,18 +12,19 @@ import datn.fpoly.myapplication.data.model.CategoryModel
 import datn.fpoly.myapplication.databinding.FragmentHomeUserBinding
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
 import com.airbnb.mvrx.activityViewModel
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.ui.adapter.AdapterCategory
 import datn.fpoly.myapplication.ui.adapter.AdapterStore
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
-import datn.fpoly.myapplication.ui.fragment.postclient.adapter.PostClientAdapter
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
+import datn.fpoly.myapplication.ui.listService.ListServiceActivity
+import datn.fpoly.myapplication.ui.seeMore.SeeMoreActivity
 import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.DataRaw
 import timber.log.Timber
 
 
@@ -41,11 +41,12 @@ class HomeUserFragment  : BaseFragment<FragmentHomeUserBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapterCate = AdapterCategory(6)
+        adapterCate = AdapterCategory(6, false)
         views.rcvListCategory.adapter = adapterCate
         adapterCate.setListener(object : AdapterCategory.CategoryListener {
             override fun onClickCate(categoryModel: CategoryModel) {
-
+                categoryModel.id?.let { DataRaw.setDataIdCategory(it) }
+                requireContext().startActivity(Intent(requireContext(), ListServiceActivity::class.java))
             }
         })
         adapterStore = AdapterStore(6)
@@ -56,6 +57,19 @@ class HomeUserFragment  : BaseFragment<FragmentHomeUserBinding>() {
                 requireContext().startActivity(Intent(requireContext(), DetailStoreActivity::class.java))
             }
         })
+        views.tvSeeMore.setOnClickListener {
+            DataRaw.setDataCategory(adapterCate.getListCate)
+            val intent = Intent(requireContext(), SeeMoreActivity::class.java)
+            intent.putExtra(Common.KEY_SEE_MORE, 1)
+            requireContext().startActivity(intent)
+
+        }
+        views.tvSeeMoreStore.setOnClickListener {
+            DataRaw.setDataStore(adapterStore.getListStore)
+            val intent = Intent(requireContext(), SeeMoreActivity::class.java)
+            intent.putExtra(Common.KEY_SEE_MORE, 2)
+            requireContext().startActivity(intent)
+        }
 
 
 

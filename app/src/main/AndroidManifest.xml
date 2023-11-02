@@ -28,6 +28,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.listService.ListServiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.seeMore.SeeMoreActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.homeStore.HomeStoreActivity"
             android:exported="false" />
         <activity

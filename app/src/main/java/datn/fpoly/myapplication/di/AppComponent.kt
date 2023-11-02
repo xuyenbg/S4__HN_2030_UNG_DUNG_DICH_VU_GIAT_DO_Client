@@ -7,6 +7,7 @@ import dagger.Component
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
 import datn.fpoly.myapplication.ui.home.HomeActivity
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreActivity
+import datn.fpoly.myapplication.ui.listService.ListServiceActivity
 import datn.fpoly.myapplication.ui.login.OTPLoginActivity
 import datn.fpoly.myapplication.ui.poststore.AddPostActivity
 import datn.fpoly.myapplication.ui.service.DetailServiceActivity
@@ -32,6 +33,8 @@ interface AppComponent {
     fun inject(addPostActivity: AddPostActivity)
     fun inject(homeStore: HomeStoreActivity)
     fun inject(detailService: DetailServiceActivity)
+    fun inject(listService: ListServiceActivity)
+
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance context: Context): AppComponent

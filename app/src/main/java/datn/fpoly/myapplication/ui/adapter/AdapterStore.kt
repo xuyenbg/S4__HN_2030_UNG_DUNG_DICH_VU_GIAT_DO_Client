@@ -19,7 +19,7 @@ class AdapterStore(val limit: Int) : Adapter<AdapterStore.ViewHolderItemStore>()
     fun setListener(listener: StoreListener){
         this.storeListener = listener
     }
-
+    val getListStore: MutableList<StoreModel> = listStore
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderItemStore =
        ViewHolderItemStore(ItemStoreBinding.inflate(
