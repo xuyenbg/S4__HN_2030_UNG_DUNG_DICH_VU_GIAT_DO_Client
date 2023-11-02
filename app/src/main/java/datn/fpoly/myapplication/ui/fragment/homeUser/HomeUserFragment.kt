@@ -3,7 +3,6 @@ package datn.fpoly.myapplication.ui.fragment.homeUser
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +12,12 @@ import datn.fpoly.myapplication.data.model.CategoryModel
 import datn.fpoly.myapplication.databinding.FragmentHomeUserBinding
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
 import com.airbnb.mvrx.activityViewModel
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.ui.adapter.AdapterCategory
 import datn.fpoly.myapplication.ui.adapter.AdapterStore
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
-import datn.fpoly.myapplication.ui.fragment.postclient.adapter.PostClientAdapter
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState

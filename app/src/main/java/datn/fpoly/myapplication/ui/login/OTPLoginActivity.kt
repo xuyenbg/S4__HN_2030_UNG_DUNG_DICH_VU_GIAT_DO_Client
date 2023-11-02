@@ -164,7 +164,6 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
             }
 
             is Fail -> {
-                Dialog_Loading.getInstance().dismiss()
                 Timber.tag("OTPLogin").e("updateWithState: ")
             }
 

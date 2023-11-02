@@ -1,4 +1,4 @@
-package datn.fpoly.myapplication.ui.fragment.cart.adapter
+package datn.fpoly.myapplication.ui.home.fragment.cart.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
