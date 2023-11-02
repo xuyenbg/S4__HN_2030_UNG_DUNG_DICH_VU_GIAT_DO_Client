@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.address.AddressActivity">
+
+    <ImageView
+        android:id="@+id/img_back"
+        android:layout_width="14dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icon_back_profile_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.04"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="12dp"
+        android:text="ĐỊA CHỈ CỦA TÔI"
+        android:textColor="@color/colorPriamry"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.449"
+        app:layout_constraintStart_toEndOf="@+id/img_back"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@color/gray_6"
+        android:padding="10dp"
+        android:text="Địa chỉ"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <LinearLayout
+        android:id="@+id/ln_default_address"
+        android:layout_width="match_parent"
+        android:layout_height="108dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <TextView
+            android:id="@+id/tv_default_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:lineSpacingExtra="8dp"
+            android:layout_marginTop="3dp"
+            android:text="Tổ dân phố Số 3 - Mỏ Gang, Số nhà 34, Thị trấn Phúc Thọ, Huyện Phúc Thọ, Thành Phố Hà Nội"
+            android:textColor="@color/gray"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_item_defaut_address"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="1dp"
+            android:text="Mặc định"
+            android:textColor="@color/colorPriamry"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/gray_2" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_add_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_add_address"
+        android:gravity="center"
+        android:paddingHorizontal="110dp"
+        android:paddingVertical="10dp"
+        android:text="Thêm Địa Chỉ Mới"
+        android:textColor="@color/colorPriamry"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ln_default_address" />
+
+    <TextView
+        android:id="@+id/tv_gray"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/gray_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_add_address" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_address"
+        android:layout_width="match_parent"
+        android:layout_height="476dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_list_address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_gray" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
