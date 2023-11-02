@@ -13,6 +13,7 @@ import datn.fpoly.myapplication.ui.fragment.cart.CartFragment
 import datn.fpoly.myapplication.ui.fragment.homeStore.FragmentHomeStore
 import datn.fpoly.myapplication.ui.fragment.settingStore.FragmentSettingStore
 import datn.fpoly.myapplication.ui.fragment.postStore.FragmentPostStore
+import datn.fpoly.myapplication.ui.fragment.settingStore.setting.FragmentSetting
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import javax.inject.Inject
 
@@ -31,7 +32,7 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
     }
     fun setViewNavigation(){
         listFragment.add(0, FragmentHomeStore())
-        listFragment.add(1, CartFragment())
+        listFragment.add(1, FragmentSetting())
         listFragment.add(2, FragmentPostStore())
         listFragment.add(3,FragmentSettingStore())
         adapterVp = AdapterViewPage(listFragment, this)

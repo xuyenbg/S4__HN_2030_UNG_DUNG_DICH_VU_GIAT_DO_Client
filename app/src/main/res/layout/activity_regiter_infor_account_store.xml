@@ -42,10 +42,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
+        android:layout_marginBottom="10dp"
         android:fillViewport="true"
         android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:scrollbars="vertical"
-        android:layout_marginBottom="10dp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@+id/btn_regiter_account"
         app:layout_constraintTop_toBottomOf="@+id/ll_tool_bar_container">
 
@@ -60,6 +60,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:hint="@string/your_fullname"
                 android:textColorHint="@color/color_text_hint"
+                android:visibility="gone"
                 app:boxCornerRadiusBottomEnd="8dp"
                 app:boxCornerRadiusBottomStart="8dp"
                 app:boxCornerRadiusTopEnd="8dp"
@@ -79,7 +80,8 @@
                     android:imeOptions="actionDone"
                     android:inputType="phone"
                     android:textColor="@color/color_text_black"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:visibility="gone" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -104,11 +106,12 @@
                 app:startIconDrawable="@drawable/ic_store">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_name"
                     style="@style/text_font_inter_semi_bold"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:imeOptions="actionDone"
-                    android:inputType="phone"
+                    android:inputType="text"
                     android:textColor="@color/color_text_black"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -148,16 +151,14 @@
                         android:layout_marginTop="22dp"
                         android:background="@drawable/image_outline">
 
-                        <ImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/imageView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="76dp"
-                            android:layout_marginHorizontal="93dp"
-                            android:layout_marginTop="47dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
                             android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
                             android:src="@drawable/image_no_pick"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
@@ -167,6 +168,7 @@
                             android:layout_marginTop="10dp"
                             android:text="@string/chosse_image"
                             android:textColor="@color/color_text_gray2"
+                            android:visibility="gone"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -182,7 +184,7 @@
                         android:background="@drawable/bg_button_color_primary_100"
                         android:text="@string/pick_image"
                         android:textAllCaps="false"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -232,41 +234,44 @@
                 android:textColor="@color/colorPriamry"
                 app:layout_constraintLeft_toRightOf="@+id/TextView3"
                 app:layout_constraintTop_toTopOf="@+id/tv_current_possition" />
-                <androidx.cardview.widget.CardView
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="10dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_current_possition">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardElevation="3dp"
-                    android:layout_marginTop="14dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginHorizontal="20dp"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_current_possition"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:cardCornerRadius="8dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="7dp"
-                        android:orientation="horizontal">
-                        <ImageView
-                            android:src="@drawable/location"
-                            android:layout_width="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:layout_height="wrap_content"
-                            />
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="469 Nguyễn Trãi, Thanh Xuan, Ha Noi,..."
-                            android:id="@+id/tv_adress"
-                            style="@style/text_font_inter_regular"
-                            android:textColor="@color/color_gray3"
-                            android:textSize="14sp"/>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                    android:layout_height="match_parent"
+                    android:layout_margin="7dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/location" />
+
+                    <TextView
+                        android:id="@+id/tv_adress"
+                        style="@style/text_font_inter_regular"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="469 Nguyễn Trãi, Thanh Xuan, Ha Noi,..."
+                        android:textColor="@color/color_gray3"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
@@ -277,13 +282,13 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="28dp"
+        android:layout_marginBottom="25dp"
         android:background="@drawable/bg_button_color_primary_8"
         android:text="@string/sign_up_account"
         android:textColor="@color/white"
         android:textSize="14sp"
-        android:layout_marginBottom="25dp"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

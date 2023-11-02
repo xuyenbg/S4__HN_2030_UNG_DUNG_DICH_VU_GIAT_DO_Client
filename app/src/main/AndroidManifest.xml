@@ -37,6 +37,9 @@
             android:name=".ui.homeStore.HomeStoreActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.registerstore.RegisterStoreActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.poststore.AddPostActivity"
             android:exported="false" />
         <activity
