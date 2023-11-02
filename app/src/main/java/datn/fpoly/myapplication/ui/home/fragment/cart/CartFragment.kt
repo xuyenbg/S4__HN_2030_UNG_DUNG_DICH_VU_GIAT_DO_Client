@@ -1,5 +1,6 @@
 package datn.fpoly.myapplication.ui.home.fragment.cart
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,7 @@ import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.example.ql_ban_hang.core.BaseFragment
 import datn.fpoly.myapplication.databinding.FragmentCart2Binding
-import datn.fpoly.myapplication.ui.home.fragment.cart.adapter.AdapterItemCart
+import datn.fpoly.myapplication.ui.check_out.CheckOutActivity
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 import timber.log.Timber
@@ -29,6 +30,10 @@ class CartFragment :BaseFragment<FragmentCart2Binding>() {
                 views.tvQuantity.text = it.listItem.size.toString()
                 views.tvPrice.text = it.total?.formatCurrency(null) ?: "0"
             }
+        }
+
+        views.btnOrder.setOnClickListener {
+            startActivity(Intent(activity,CheckOutActivity::class.java))
         }
 
     }
