@@ -74,15 +74,6 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
         views.toobar.tvTitleTooobal.text = "Add Post"
     }
 
-    private fun getRealPathFromUri(uri: Uri): String? {
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = contentResolver.query(uri, projection, null, null, null)
-        return cursor?.use {
-            it.moveToFirst()
-            it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
-        }
-    }
-
     private fun addPost() {
 
         val title = views.edTitle.text.toString()

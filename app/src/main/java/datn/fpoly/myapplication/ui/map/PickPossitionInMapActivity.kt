@@ -1,6 +1,7 @@
 package datn.fpoly.myapplication.ui.map
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -24,6 +25,7 @@ import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivityPickPossitionInMapBinding
+import datn.fpoly.myapplication.ui.registerstore.RegisterStoreActivity
 import datn.fpoly.myapplication.utils.Common
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,11 +38,25 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
     private lateinit var mapFragment: SupportMapFragment
     private var ggMap: GoogleMap? = null
     private var myLocation: LatLng? = null
+
+    object dataAdress {
+        var pick_address: String = ""
+        var longitude: Double = 0.0
+        var latitude: Double = 0.0
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(views.root)
         fusedLoaction = LocationServices.getFusedLocationProviderClient(this)
         setPossition()
+    }
+
+    override fun initUiAndData() {
+        super.initUiAndData()
+        views.btnChossePossition.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     override fun onResume() {
@@ -102,9 +118,9 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
                     CoroutineScope(Dispatchers.IO).launch {
                         val address =
                             Common.getAddress(myLocation!!, this@PickPossitionInMapActivity)
+                        dataAdress.pick_address = address
                         runOnUiThread {
                             views.tvCurrentAdress.text = address
-
                         }
                     }
 
@@ -119,9 +135,9 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
     }
 
     fun setPossition() {
-        views.btnChossePossition.setOnClickListener {
-
-        }
+//        views.btnChossePossition.setOnClickListener {
+//
+//        }
     }
 
 
@@ -134,6 +150,8 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
         ggMap?.setMaxZoomPreference(10000F);
         ggMap?.setOnCameraChangeListener {
             val posCamera = it.target
+            dataAdress.longitude = posCamera.longitude
+            dataAdress.latitude = posCamera.latitude
             Log.e(
                 "AAAAAAAAAAAA",
                 "onMapReady: latitude: " + posCamera.latitude + " longtitude: " + posCamera.longitude
@@ -142,6 +160,7 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
 //            Hawk.put(Common.KEY_LOCATION,it.target)
             CoroutineScope(Dispatchers.IO).launch {
                 val adreess = Common.getAddress(posCamera, this@PickPossitionInMapActivity)
+                adreess
                 runOnUiThread {
                     views.tvCurrentAdress.text = adreess
                 }

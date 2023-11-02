@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.databinding.FragmentProfileUserBinding
 import datn.fpoly.myapplication.ui.login.SignInActivity
+import datn.fpoly.myapplication.ui.registerstore.RegisterStoreActivity
 
 class FragmentSetting: BaseFragment<FragmentProfileUserBinding>() {
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentProfileUserBinding = FragmentProfileUserBinding.inflate(layoutInflater)
@@ -24,6 +25,9 @@ class FragmentSetting: BaseFragment<FragmentProfileUserBinding>() {
             Hawk.delete("Account");
             Hawk.put("CheckLogin", false)
             startActivity(Intent(requireContext(),SignInActivity::class.java))
+        }
+        views.tvRegisterStore.setOnClickListener {
+            startActivity(Intent(requireContext(),RegisterStoreActivity::class.java))
         }
     }
 

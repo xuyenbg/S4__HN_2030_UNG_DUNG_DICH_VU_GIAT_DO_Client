@@ -16,9 +16,13 @@ import android.net.Uri
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.WindowManager.LayoutParams
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.activity.ComponentActivity
 import com.google.android.gms.maps.model.LatLng
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.R
@@ -28,29 +32,49 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object Common {
-    val KEY_LOCATION ="Current_location";
-    val KEY_CURRENT_ADRESS ="current_adress"
-    val REQUEST_CODE_LOCATION =100
+    val KEY_LOCATION = "Current_location";
+    val KEY_CURRENT_ADRESS = "current_adress"
+    val REQUEST_CODE_LOCATION = 100
     val REQUEST_ACTIVITY_RESULT = 101
-    val KEY_STORE_DETAIL="store_detail"
-    val KEY_SERVICE_DETAIL="service_detail"
+    val KEY_STORE_DETAIL = "store_detail"
+    val KEY_SERVICE_DETAIL = "service_detail"
     const val baseUrl = "https://s4-hn-2030-ung-dung-dich-vu-giat-do.onrender.com"
+    const val LATIU = "latitude"
+    const val LONGTIU = "longitude"
+    const val ADDRESS = "address"
 
-    fun checkPermission(context: Context): Boolean = PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context,  android.Manifest.permission.ACCESS_FINE_LOCATION)
-    fun repuestPermission(activity: Activity){
-        if(ActivityCompat.shouldShowRequestPermissionRationale(activity, android.Manifest.permission.ACCESS_FINE_LOCATION)){
-            ActivityCompat.requestPermissions(activity,
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
-                , REQUEST_CODE_LOCATION)
-        }else{
+
+    fun ComponentActivity.registerStartForActivityResult(onResult: (ActivityResult) -> Unit): ActivityResultLauncher<Intent> {
+        return registerForActivityResult(ActivityResultContracts.StartActivityForResult(), onResult)
+    }
+
+    fun checkPermission(context: Context): Boolean =
+        PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+            context,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        )
+
+    fun repuestPermission(activity: Activity) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                activity,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        ) {
+            ActivityCompat.requestPermissions(
+                activity,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_LOCATION
+            )
+        } else {
             dialogGotoSetting(activity)
         }
     }
+
     fun isGpsEnabled(context: Context): Boolean {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
-    fun turnOnLocationService(activity: Activity){
+
+    fun turnOnLocationService(activity: Activity) {
         val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
         activity.startActivity(intent)
     }
@@ -67,14 +91,16 @@ object Common {
             "Unknown"
         }
     }
+
     fun isNetwork(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(AppCompatActivity.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = connectivityManager.activeNetworkInfo
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting
     }
+
     @SuppressLint("ResourceType")
-    fun dialogDisconnectWifi(context: Context){
+    fun dialogDisconnectWifi(context: Context) {
         val dialog = Dialog(context)
         val binding = DialogInternetBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(binding.root)
@@ -89,12 +115,13 @@ object Common {
             )
             dialog.dismiss()
         }
-        if(!dialog.isShowing){
+        if (!dialog.isShowing) {
             dialog.show()
         }
     }
+
     @SuppressLint("ResourceType")
-    fun dialogLocationService(context: Context){
+    fun dialogLocationService(context: Context) {
         val dialog = Dialog(context)
         val binding = DialogGpsBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(binding.root)
@@ -109,21 +136,24 @@ object Common {
         binding.btnCancel.setOnClickListener {
             dialog.dismiss()
         }
-        if(!dialog.isShowing){
+        if (!dialog.isShowing) {
             dialog.show()
         }
     }
-    fun dialogGotoSetting(context: Context){
+
+    fun dialogGotoSetting(context: Context) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
         builder.setTitle(R.string.title_permission)
         builder.setMessage(R.string.content_permission)
-        builder.setPositiveButton(R.string.go_to_setting, DialogInterface.OnClickListener { dialog, which ->
-            val packageName = context.packageName
-            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            intent.data = Uri.fromParts("package", packageName, null)
-            context.startActivity(intent)
-            dialog.dismiss()
-        })
+        builder.setPositiveButton(
+            R.string.go_to_setting,
+            DialogInterface.OnClickListener { dialog, which ->
+                val packageName = context.packageName
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                intent.data = Uri.fromParts("package", packageName, null)
+                context.startActivity(intent)
+                dialog.dismiss()
+            })
         builder.setNegativeButton(R.string.cancel,
             DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
         builder.setCancelable(false)
@@ -131,6 +161,7 @@ object Common {
         alertDialog.window?.setDimAmount(1f)
         alertDialog.show()
     }
+
     @SuppressLint("SimpleDateFormat")
     fun convertISO8601ToCustomFormat(iso8601String: String): String {
         val customFormat = "yyyy-MM-dd"

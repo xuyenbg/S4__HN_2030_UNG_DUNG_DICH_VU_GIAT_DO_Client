@@ -39,7 +39,7 @@ class AuthRepo @Inject constructor(
 
     fun saveUser(accountResponse: AccountResponse) = Hawk.put("Account",accountResponse)
 
-    fun getUser():AccountResponse? = Hawk.get<AccountResponse?>("Account")
+    fun getUser():AccountResponse? = Hawk.get<AccountResponse?>("Account",null)
 
     fun isLogging():Boolean = Hawk.get("CheckLogin",false)
 

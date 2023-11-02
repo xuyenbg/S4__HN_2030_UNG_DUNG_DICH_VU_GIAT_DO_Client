@@ -98,7 +98,6 @@ class RemoteDataSource {
             val request: Request = original.newBuilder()
                 .header("User-Agent", DEFAULT_USER_AGENT)
                 .header("Accept", DEFAULT_CONTENT_TYPE)
-//                .header("Content-Type", DEFAULT_CONTENT_TYPE)
                 .method(original.method, original.body)
                 .build()
             chain.proceed(request)
