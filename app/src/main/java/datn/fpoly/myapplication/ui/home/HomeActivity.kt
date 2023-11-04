@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
-import com.google.firebase.auth.FirebaseAuth
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivityHomeBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterViewPage
 import datn.fpoly.myapplication.ui.fragment.fragmentOrder.FragmentOrder
-import datn.fpoly.myapplication.ui.fragment.cart.CartFragment
+import datn.fpoly.myapplication.ui.home.cart.CartFragment
 import datn.fpoly.myapplication.ui.fragment.homeUser.HomeUserFragment
 import datn.fpoly.myapplication.ui.fragment.postclient.PostClientFragment
 import datn.fpoly.myapplication.ui.fragment.settingStore.setting.FragmentSetting
