@@ -21,6 +21,8 @@ class CheckOutViewModel @AssistedInject constructor(
 
     }
 
+    fun getCart() = dbRepo.getCart()
+
     @AssistedFactory
     interface Factory {
         fun create(initialState: CheckOutViewState): CheckOutViewModel

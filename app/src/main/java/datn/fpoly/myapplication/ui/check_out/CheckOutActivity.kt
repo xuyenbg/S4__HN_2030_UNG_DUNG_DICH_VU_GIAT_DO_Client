@@ -2,10 +2,13 @@ package datn.fpoly.myapplication.ui.check_out
 
 
 import android.os.Bundle
+import android.view.View
+import androidx.lifecycle.Observer
 import com.airbnb.mvrx.viewModel
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivityCheckOutBinding
+import datn.fpoly.myapplication.utils.Common.formatCurrency
 import javax.inject.Inject
 
 class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewModel.Factory {
@@ -28,6 +31,21 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
         super.initUiAndData()
         viewModel.subscribe(this) {
             updateWithState(it)
+        }
+        viewModel.getCart().observe(this, Observer {
+            if (it != null && it.listItem.isNotEmpty()) {
+                views.total.text = it.total?.formatCurrency(null) ?: "- đ"
+                views.recyclerView.adapter = AdapterItemCart2(this, it.listItem, eventClick = {})
+            }
+        })
+        views.toolbar.title.text = "ĐẶT ĐƠN"
+        views.toolbar.btnBack.setOnClickListener {
+            this.finish()
+        }
+        views.toolbar.btnNotification.visibility = View.INVISIBLE
+        views.btnAction.text = "Xác nhận"
+        views.btnAction.setOnClickListener {
+
         }
     }
 

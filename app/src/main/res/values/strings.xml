@@ -96,12 +96,12 @@
     <string name="back">Back</string>
     <string name="notification">Notification</string>
     <string name="detail_order">Chi tiết đơn hàng</string>
-    <string name="service_number_example">2 dịch vụ</string>
+    <string name="service_number_example">2 Dịch vụ</string>
     <string name="method_payment">Phương thức thanh toán</string>
     <string name="cash_on_delivery">Thanh toán tiền mặt</string>
     <string name="note_total_example">Lưu ý: Tổng tiền được tính khi bạn nhập cân nặng đồ giặt</string>
     <string name="total">TỔNG TIỀN:</string>
-    <string name="total_price_example">1.153.000 Đ</string>
+    <string name="total_price_example">1.153.000 đ</string>
     <string name="receipt_clothing">Nhận đồ giặt</string>
     <string name="price_d_kg_example">5.000 đ/kg</string>
     <string name="pick_image_when_weight_clothing">Chụp ảnh khi cân dồ giặt:</string>

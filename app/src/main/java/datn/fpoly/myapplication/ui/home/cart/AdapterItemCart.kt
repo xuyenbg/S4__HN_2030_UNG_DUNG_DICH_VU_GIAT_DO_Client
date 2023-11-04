@@ -1,4 +1,4 @@
-package datn.fpoly.myapplication.ui.home.fragment.cart
+package datn.fpoly.myapplication.ui.home.cart
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
+import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.ItemService
 import datn.fpoly.myapplication.databinding.ItemOrderCartBinding
 import datn.fpoly.myapplication.utils.Common.formatCurrency
@@ -44,7 +45,7 @@ class AdapterItemCart(private val context: Context) : Adapter<AdapterItemCart.Vi
 
     inner class ViewHolderItemStore(val binding: ItemOrderCartBinding) : ViewHolder(binding.root){
         fun bind(item: ItemService, context: Context){
-            Glide.with(context).load(item.image ?: "").into(binding.imgAvatar)
+            Glide.with(context).load(item.image ?: "").error(R.drawable.image_no_pick).into(binding.imgAvatar)
             item.service?.let {
                 binding.tvName.text = it.name ?: ""
                 binding.tvPrice.text = it.price?.formatCurrency(unit = item.service!!.unit) ?: ""
