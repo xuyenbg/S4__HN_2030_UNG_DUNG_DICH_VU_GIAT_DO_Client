@@ -38,7 +38,7 @@ interface AppComponent {
     fun inject(listService: ListServiceActivity)
     fun inject(registerStore: RegisterStoreActivity)
     fun inject(activity: CheckOutActivity)
-    
+
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance context: Context): AppComponent

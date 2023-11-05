@@ -49,10 +49,10 @@ class AdapterItemCart2(
                 binding.price.text = it.price?.formatCurrency(it.unit) ?: "-"
                 binding.priceService.text =
                     (item.number?.times(it.price ?: 0.0) ?: 0.0).formatCurrency(null)
-                if (it.attributeList.isNotEmpty()) {
-                    binding.recyclerViewAddOn.adapter = AdapterAddOn(context, it.attributeList)
+                if (it.attributeList?.isNotEmpty() == true) {
+                    binding.recyclerViewAddOn.adapter = AdapterAddOn(context, it.attributeList!!)
                 }
-                binding.groupAddOn.visibility = if (it.attributeList.isNotEmpty()) View.VISIBLE else View.GONE
+                binding.groupAddOn.visibility = if (it.attributeList?.isNotEmpty() == true) View.VISIBLE else View.GONE
             }
             binding.total.text = item.total?.formatCurrency(null) ?: "-"
             Glide.with(context).load(item.service?.image).error(R.drawable.image_no_pick).into(binding.image)
