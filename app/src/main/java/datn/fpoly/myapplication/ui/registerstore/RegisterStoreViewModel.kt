@@ -25,7 +25,7 @@ class RegisterStoreViewModel @AssistedInject constructor(
         rate: RequestBody,
         idUser: RequestBody,
         status: RequestBody,
-        transportTypeList: RequestBody,
+        transportTypeList: Map<String, String>,
         imageQRCode: MultipartBody.Part?,
         longitude: RequestBody,
         latitude: RequestBody,

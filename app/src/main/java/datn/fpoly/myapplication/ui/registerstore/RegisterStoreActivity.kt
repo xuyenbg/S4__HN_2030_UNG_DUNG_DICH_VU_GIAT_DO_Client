@@ -12,6 +12,7 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
 import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.gson.Gson
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.repository.AuthRepo
@@ -22,6 +23,7 @@ import datn.fpoly.myapplication.utils.Common.registerStartForActivityResult
 import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -95,8 +97,11 @@ class RegisterStoreActivity : BaseActivity<ActivityRegiterInforAccountStoreBindi
         val image = MultipartBody.Part.createFormData("imageQRCode", file.name, requestFile)
 
         val namePart = name.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val transportTypeRequestBody =
-            transportType.joinToString(",").toRequestBody("multipart/form-data".toMediaTypeOrNull())
+
+        val stringMap = HashMap<String, String>()
+        transportType.forEachIndexed { index, item ->
+            stringMap["transportTypeList[$index]"] = item
+        }
 
         val idUserPart = idUser.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
         val isDefaultPart =
@@ -113,7 +118,7 @@ class RegisterStoreActivity : BaseActivity<ActivityRegiterInforAccountStoreBindi
                 ratePart,
                 idUserPart,
                 statusPart,
-                transportTypeRequestBody,
+                stringMap,
                 lat,
                 long,
                 addressPart,

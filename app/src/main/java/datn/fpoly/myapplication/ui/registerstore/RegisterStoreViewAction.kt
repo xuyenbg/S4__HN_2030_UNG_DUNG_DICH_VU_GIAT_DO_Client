@@ -11,7 +11,7 @@ sealed class RegisterStoreViewAction : ViewAction {
         val rate: RequestBody,
         val idUser: RequestBody,
         val status: RequestBody,
-        val transportTypeList: RequestBody,
+        val transportTypeList: Map<String, String>,
         val longitude: RequestBody,
         val latitude: RequestBody,
         val address: RequestBody,

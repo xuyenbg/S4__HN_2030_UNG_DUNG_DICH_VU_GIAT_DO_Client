@@ -10,6 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.PartMap
 
 interface APIStore {
     @GET("api/stores/list")
@@ -22,7 +23,7 @@ interface APIStore {
         @Part("rate") rate: RequestBody,
         @Part("idUser") idUser: RequestBody,
         @Part("status") status: RequestBody,
-        @Part("transportTypeList") transportTypeList: RequestBody,
+        @PartMap transportTypeList: Map<String, String>,
         @Part("longitude") longitude: RequestBody,
         @Part("latitude") latitude: RequestBody,
         @Part("address") address: RequestBody,

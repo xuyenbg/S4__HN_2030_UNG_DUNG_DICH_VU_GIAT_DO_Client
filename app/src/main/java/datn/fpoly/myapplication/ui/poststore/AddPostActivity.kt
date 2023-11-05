@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
+import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.databinding.ActivityAddPostBinding
 import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.coroutines.launch
@@ -39,7 +40,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
     }
 
     private var imageUri: Uri? = null
-
+    private var isValidate = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
@@ -74,46 +75,65 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
         views.toobar.tvTitleTooobal.text = "Add Post"
     }
 
-    private fun addPost() {
-
-        val title = views.edTitle.text.toString()
-        val content = views.edContent.text.toString()
-        val idStore = "6526030046da31c065b7ae17"
-        Log.d("AddPostActivity", "addPost: $imageUri")
-        if (imageUri != null) {
-
-//
-//            val realPath = getRealPathFromUri(imageUri!!)
-//            val file = File(realPath!!)
-            val file = File(imageUri!!.path!!) // Chuyển URI thành File
-
-            val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
-
-            val title = title.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val content = content.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val idStore = idStore.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            viewModel.handle(
-                AddPostViewAction.AddPostAction(
-                    idStore,
-                    title,
-                    content,
-                    image
-                )
-            )
+    private fun validate() {
+        if (views.edTitle.text.toString().isEmpty()) {
+            views.edTitle.error = "Vui lòng không để trống tiêu đề !"
+            isValidate++
         } else {
-            val title_1 = title.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val content_1 = content.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val idStore_1 = idStore.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            viewModel.handle(
-                AddPostViewAction.AddPostAction(
-                    idStore_1,
-                    title_1,
-                    content_1,
-                    null
-                )
-            )
+            views.edTitle.error = ""
+            isValidate = 0
         }
+
+        if (views.edContent.text.toString().isEmpty()) {
+            views.edContent.error = "Vui lòng không để trống nội dung !"
+            isValidate++
+        } else {
+            views.edContent.error = ""
+            isValidate = 0
+        }
+    }
+
+    private fun addPost() {
+        validate()
+        if (isValidate ==0) {
+            val title = views.edTitle.text.toString()
+            val content = views.edContent.text.toString()
+            val idStore = "6526030046da31c065b7ae17"
+
+
+            if (imageUri != null) {
+
+                val file = File(imageUri!!.path!!) // Chuyển URI thành File
+
+                val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
+
+                val title = title.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val content = content.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val idStore = idStore.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                viewModel.handle(
+                    AddPostViewAction.AddPostAction(
+                        idStore,
+                        title,
+                        content,
+                        image
+                    )
+                )
+            } else {
+                val title_1 = title.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val content_1 = content.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val idStore_1 = idStore.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                viewModel.handle(
+                    AddPostViewAction.AddPostAction(
+                        idStore_1,
+                        title_1,
+                        content_1,
+                        null
+                    )
+                )
+            }
+        }
+
     }
 
     private fun setClear() {

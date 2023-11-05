@@ -39,7 +39,7 @@ class PostClientAdapter @Inject constructor() :
             if (listPost.isNotEmpty()) {
                 val itemPost = listPost[position]
 
-                holder.itemView.setOnClickListener {
+                holder.binding.imageAvt.setOnClickListener {
                     postlistener?.onClickPost(itemPost)
                 }
                 holder.binding.apply {

@@ -9,7 +9,6 @@ import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivityHomeStoreBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterViewPage
-import datn.fpoly.myapplication.ui.fragment.cart.CartFragment
 import datn.fpoly.myapplication.ui.fragment.homeStore.FragmentHomeStore
 import datn.fpoly.myapplication.ui.fragment.settingStore.FragmentSettingStore
 import datn.fpoly.myapplication.ui.fragment.postStore.FragmentPostStore

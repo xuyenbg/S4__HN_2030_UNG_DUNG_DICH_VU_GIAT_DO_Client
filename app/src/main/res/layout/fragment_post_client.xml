@@ -31,7 +31,6 @@
       android:orientation="vertical"
       android:paddingBottom="@dimen/_16dp"
       tools:listitem="@layout/item_post"
-      android:layout_marginTop="16dp"
       tools:itemCount="4"
       />
 </LinearLayout>

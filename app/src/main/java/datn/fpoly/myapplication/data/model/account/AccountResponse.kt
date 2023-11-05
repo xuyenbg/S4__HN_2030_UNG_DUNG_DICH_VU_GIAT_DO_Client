@@ -15,7 +15,7 @@ data class AccountResponse(
     var passwd : String?,
     @SerializedName("fullname")
     var fullname : String?,
-    @SerializedName("username")
+    @SerializedName("idRole")
     var idRole : String?,
     @SerializedName("favouriteStores")
     var favouriteStores : List<String>?,

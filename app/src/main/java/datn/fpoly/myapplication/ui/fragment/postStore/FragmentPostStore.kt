@@ -19,6 +19,7 @@ import com.airbnb.mvrx.withState
 import com.example.ql_ban_hang.core.BaseFragment
 import datn.fpoly.myapplication.data.model.post.PostModel
 import datn.fpoly.myapplication.databinding.ActivityPostStoreBinding
+import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
 import datn.fpoly.myapplication.ui.fragment.postclient.adapter.PostClientAdapter
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
@@ -49,11 +50,12 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
             startActivity(Intent(requireContext(), AddPostActivity::class.java))
         }
         postClientAdapter = PostClientAdapter()
-        val itemDecoration = ItemSpacingDecoration(16)
+        val itemDecoration = ItemSpacingDecoration(32)
         views.recyclerViewPostStore.addItemDecoration(itemDecoration)
         postClientAdapter.setListener(object : PostClientAdapter.PostListener {
             override fun onClickPost(postModel: PostModel) {
-
+                val intent = Intent(requireContext(),DetailStoreActivity::class.java)
+                startActivity(intent)
             }
         })
 
