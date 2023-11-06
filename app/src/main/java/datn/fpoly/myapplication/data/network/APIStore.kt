@@ -11,10 +11,13 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.PartMap
+import retrofit2.http.Path
 
 interface APIStore {
     @GET("api/stores/list")
     fun getListCategory(): Observable<MutableList<StoreModel>>
+    @GET("api/stores/store-by-iduse/{idUser}")
+    fun getStoreByIdUser(@Path("idUser") idUser: String): Observable<StoreModel>
 
     @Multipart
     @POST("api/stores/register-store")

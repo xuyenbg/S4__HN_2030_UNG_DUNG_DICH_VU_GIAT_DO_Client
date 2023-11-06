@@ -2,7 +2,6 @@ package datn.fpoly.myapplication.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog.Builder
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
@@ -24,7 +23,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.activity.ComponentActivity
 import com.google.android.gms.maps.model.LatLng
-import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.databinding.DialogGpsBinding
 import datn.fpoly.myapplication.databinding.DialogInternetBinding
@@ -43,6 +41,8 @@ object Common {
     const val LATIU = "latitude"
     const val LONGTIU = "longitude"
     const val ADDRESS = "address"
+    val KEY_LIST_CATE="list_category"
+    val KEY_STORE="get_store"
 
 
     fun ComponentActivity.registerStartForActivityResult(onResult: (ActivityResult) -> Unit): ActivityResultLauncher<Intent> {

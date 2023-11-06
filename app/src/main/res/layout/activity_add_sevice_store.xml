@@ -20,10 +20,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="50dp"
-            >
+            android:paddingBottom="50dp">
 
             <ImageView
+                android:id="@+id/img_select_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -42,17 +42,26 @@
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/ed_name_service"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginHorizontal="24dp"
                 android:background="@drawable/boder_edittex"
                 android:elevation="10dp"
                 android:paddingStart="8dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:text="hagshd"
                 app:layout_constraintTop_toBottomOf="@+id/tv_service" />
+
+            <TextView
+                android:id="@+id/tv_error_name_service"
+                style="@style/text_font_inter_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:textColor="@color/red_2"
+                android:textSize="12sp"
+                android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/tv_category_service"
@@ -67,9 +76,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <Spinner
+                android:id="@+id/spinner_cate"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/boder_edittex"
@@ -77,8 +87,7 @@
                 android:paddingStart="8dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:text="hagshd"
-                />
+                android:spinnerMode="dropdown" />
 
             <TextView
                 android:id="@+id/tv_services"
@@ -94,12 +103,15 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_list_attribute"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:elevation="10dp"
+                android:orientation="vertical"
                 android:paddingBottom="12dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@+id/tv_service"
                 tools:listitem="@layout/item_extra_service" />
 
@@ -127,6 +139,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/ed_name_attribute"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
@@ -136,8 +149,7 @@
                         android:elevation="10dp"
                         android:paddingStart="8dp"
                         android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:text="hagshd" />
+                        android:paddingBottom="12dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -157,6 +169,7 @@
                         android:textStyle="bold" />
 
                     <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/ed_price_attribute"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
@@ -167,12 +180,23 @@
                         android:inputType="number"
                         android:paddingStart="8dp"
                         android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:text="hagshd" />
+                        android:paddingBottom="12dp" />
                 </LinearLayout>
+
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_error_attribute"
+                style="@style/text_font_inter_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:textColor="@color/red_2"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_add_attribute"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -205,6 +229,7 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/btn_unit1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/radio_button_selecor"
@@ -215,6 +240,7 @@
                     android:textColor="@color/radio_selector" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/btn_unit2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -225,6 +251,7 @@
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/btn_unit3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -235,6 +262,7 @@
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/btn_unit4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -244,45 +272,92 @@
                     android:text="Gói"
                     android:textStyle="bold" />
             </RadioGroup>
+
             <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/ed_price_service"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
                 android:layout_marginTop="12dp"
+                android:layout_marginEnd="24dp"
                 android:background="@drawable/boder_edittex"
                 android:elevation="10dp"
+                android:inputType="number"
                 android:paddingStart="8dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:text="hagshd"
+                android:text="0"
                 app:layout_constraintTop_toBottomOf="@+id/tv_service" />
+
             <TextView
-                android:id="@+id/tv_sale_service"
+                android:id="@+id/tv_error_price_service"
+                style="@style/text_font_inter_regular"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:textColor="@color/red_2"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="21dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/sale"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_sale_service"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/sale"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                    android:id="@+id/spinner_unit_sale"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/boder_edittex"
+                    android:elevation="10dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/ed_price_sale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/boder_edittex"
                 android:elevation="10dp"
+                android:inputType="number"
                 android:paddingStart="8dp"
                 android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:text="hagshd"
-                />
+                android:paddingBottom="12dp" />
+
+            <TextView
+                android:id="@+id/tv_error_price_sale"
+                style="@style/text_font_inter_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:textColor="@color/red_2"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_insert_service"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"

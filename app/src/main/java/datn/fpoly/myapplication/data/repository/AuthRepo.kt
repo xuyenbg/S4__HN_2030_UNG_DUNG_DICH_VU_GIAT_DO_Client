@@ -36,7 +36,6 @@ class AuthRepo @Inject constructor(
             null
         )
     ).subscribeOn(Schedulers.io())
-
     fun saveUser(accountResponse: AccountResponse) = Hawk.put("Account",accountResponse)
 
     fun getUser():AccountResponse? = Hawk.get<AccountResponse?>("Account",null)
