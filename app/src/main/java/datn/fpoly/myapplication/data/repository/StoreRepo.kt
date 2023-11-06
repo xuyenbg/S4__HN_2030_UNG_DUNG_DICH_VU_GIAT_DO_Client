@@ -12,4 +12,5 @@ class StoreRepo @Inject constructor(
     private val api: APIStore
 ) {
     fun getDataStore(): Observable<MutableList<StoreModel>> = api.getListCategory().subscribeOn(Schedulers.io())
+    fun getStoreByIdUser(idUSer: String): Observable<StoreModel> = api.getStoreByIdUser(idUSer).subscribeOn(Schedulers.io())
 }

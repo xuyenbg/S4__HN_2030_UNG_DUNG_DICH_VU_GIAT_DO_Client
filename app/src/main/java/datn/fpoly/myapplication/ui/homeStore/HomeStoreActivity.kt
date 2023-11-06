@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.Success
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
@@ -13,25 +16,75 @@ import datn.fpoly.myapplication.ui.fragment.cart.CartFragment
 import datn.fpoly.myapplication.ui.fragment.homeStore.FragmentHomeStore
 import datn.fpoly.myapplication.ui.fragment.settingStore.FragmentSettingStore
 import datn.fpoly.myapplication.ui.fragment.postStore.FragmentPostStore
-import datn.fpoly.myapplication.ui.home.HomeUserViewModel
+import com.airbnb.mvrx.viewModel
+import com.orhanobut.hawk.Hawk
+import datn.fpoly.myapplication.data.model.account.AccountResponse
+import datn.fpoly.myapplication.data.repository.AuthRepo
+import datn.fpoly.myapplication.utils.Common
 import javax.inject.Inject
 
 class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreViewModel.Factory{
     @Inject
     lateinit var homeStoreFatory: HomeStoreViewModel.Factory
+    private val viewModel: HomeStoreViewModel by viewModel()
     private lateinit var adapterVp: AdapterViewPage
     private val listFragment= mutableListOf<Fragment>()
+    private lateinit var inforUser: AccountResponse
+    @Inject
+    lateinit var authRepo: AuthRepo
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
         setContentView(views.root)
         setViewNavigation()
+        authRepo.getUser()?.let {
+            inforUser = it
+        }
+        viewModel.handle(HomeStoreViewAction.GetListCategory)
+        inforUser._id?.let { HomeStoreViewAction.GetStoreByIdUser(it) }
+            ?.let { viewModel.handle(it) }
+        viewModel.subscribe(this){
+           getDataCate(it)
+            getDataStore(it)
+        }
 
+    }
+    private fun getDataCate(state: HomeStoreState){
+        when(state.stateCate){
+            is Loading->{
 
+            }
+            is Success->{
+
+                state.stateCate.invoke()?.let {
+                    Hawk.put(Common.KEY_LIST_CATE, it)
+                }
+            }
+            is Fail->{
+
+            }
+            else -> {}
+        }
+    }
+    private fun getDataStore(state: HomeStoreState){
+        when(state.stateGetStore){
+            is Loading->{
+
+            }
+            is Success->{
+                state.stateGetStore.invoke()?.let {
+                    Hawk.put(Common.KEY_STORE, it)
+                }
+            }
+            is Fail->{
+
+            }
+            else -> {}
+        }
     }
     fun setViewNavigation(){
         listFragment.add(0, FragmentHomeStore())
-        listFragment.add(1, CartFragment())
+        listFragment.add(1,FragmentSettingStore())
         listFragment.add(2, FragmentPostStore())
         listFragment.add(3,FragmentSettingStore())
         adapterVp = AdapterViewPage(listFragment, this)

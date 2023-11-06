@@ -44,7 +44,7 @@
     <string name="price">Giá Tiền :</string>
     <string name="add">Thêm</string>
     <string name="price_vnd">Giá (VNĐ):</string>
-    <string name="sale">Sale(%):</string>
+    <string name="sale">Sale:</string>
     <string name="service_add">Thêm Dịch Vụ</string>
     <string name="service_type_add">Thêm Loại Dịch Vụ</string>
     <string name="status">Status:</string>
