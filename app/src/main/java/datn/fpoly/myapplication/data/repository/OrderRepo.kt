@@ -9,6 +9,9 @@ import javax.inject.Inject
 class OrderRepo @Inject constructor(
     private val api: APIOrder
 ){
-    fun getDataOrder(): Observable<MutableList<Order>> = api.getListOrder().subscribeOn(
+    fun getDataOrder(
+        idUser: String,
+        status: Int
+    ): Observable<MutableList<Order>> = api.getListOrder(idUser, status).subscribeOn(
     Schedulers.io())
 }
