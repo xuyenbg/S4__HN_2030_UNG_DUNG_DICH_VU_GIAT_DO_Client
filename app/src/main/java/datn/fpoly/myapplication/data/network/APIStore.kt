@@ -1,5 +1,6 @@
 package datn.fpoly.myapplication.data.network
 
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable.Param
 import datn.fpoly.myapplication.data.model.StoreModel
 import io.reactivex.Observable
 import okhttp3.MultipartBody
@@ -10,6 +11,7 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface APIStore {
     @GET("api/stores/list")
@@ -29,4 +31,7 @@ interface APIStore {
         @Part("isDefault") isDefault: RequestBody,
         @Part imageQRCode: MultipartBody.Part?,
     ): Observable<Response<ResponseBody>>
+
+   @GET("api/stores/store-by-idstore/{idStore}")
+   fun getStoreById(@Path("idStore") idStore:String): Observable<StoreModel>
 }

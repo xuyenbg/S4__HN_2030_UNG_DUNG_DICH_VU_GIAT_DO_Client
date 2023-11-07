@@ -2,7 +2,6 @@ package datn.fpoly.myapplication.data.repository
 
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.account.AccountModel
-import datn.fpoly.myapplication.data.model.account.AccountResponse
 import datn.fpoly.myapplication.data.model.account.AcountLogin
 import datn.fpoly.myapplication.data.network.AuthApi
 import io.reactivex.Observable
