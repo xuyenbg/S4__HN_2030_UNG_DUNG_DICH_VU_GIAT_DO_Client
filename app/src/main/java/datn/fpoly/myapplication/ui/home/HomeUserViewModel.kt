@@ -5,8 +5,8 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
+import datn.fpoly.myapplication.data.model.Order
 import datn.fpoly.myapplication.data.repository.CategoryRepo
-import datn.fpoly.myapplication.data.repository.OrderRepo
 import datn.fpoly.myapplication.data.repository.PostRepo
 import datn.fpoly.myapplication.data.repository.RoomDbRepo
 import datn.fpoly.myapplication.data.repository.StoreRepo
@@ -16,45 +16,41 @@ class HomeUserViewModel @AssistedInject constructor(
     private val responsePost: PostRepo,
     private val responseCategory: CategoryRepo,
     private val responseStore: StoreRepo,
-    private val dbRepo: RoomDbRepo,
-    private val responseOrder: OrderRepo
+    private val dbRepo: RoomDbRepo
 ) : BaseViewModel<HomeViewState, HomeViewAction, HomeViewEvent>(state) {
     override fun handle(action: HomeViewAction) {
         when (action) {
             is HomeViewAction.HomeActionCategory -> {
-                hanlderGetListCategory()
+                handleGetListCategory()
             }
             is HomeViewAction.HomeActionGetListStore->{
-                hanlderGetListStore()
+                handleGetListStore()
             }
             is HomeViewAction.PostClientActionList -> {
-                handlerGetPost()
+                handleGetPost()
             }
-            is HomeViewAction.OrderActionGetList ->{
-                hanlderGetListOrder(action.idUser, action.status)
-            }
+
+            else -> {}
         }
     }
 
-    private fun hanlderGetListCategory() {
+    private fun handleGetListCategory() {
         setState { copy(stateCategory = Loading()) }
         responseCategory.getDataCategory().execute { copy(stateCategory = it) }
     }
-    private fun hanlderGetListStore(){
+    private fun handleGetListStore(){
         setState { copy(stateStore = Loading()) }
         responseStore.getDataStore().execute { copy(stateStore = it) }
     }
 
-    private fun handlerGetPost() {
+    private fun handleGetPost() {
         setState { copy(statePost = Loading()) }
         responsePost.getListPost().execute { copy(statePost = it) }
     }
-    private fun hanlderGetListOrder(idUser: String, status: Int) {
-        setState { copy(stateOrder = Loading()) }
-        responseOrder.getDataOrder(idUser, status).execute { copy(stateOrder = it) }
-    }
 
     fun getCart() = dbRepo.getCart()
+
+    fun updateCart(order: Order) = dbRepo.updateCart(order)
 
     @AssistedFactory
     interface Factory {

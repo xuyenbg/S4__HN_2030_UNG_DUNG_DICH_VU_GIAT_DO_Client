@@ -10,12 +10,10 @@ import android.widget.Toast
 import com.example.ql_ban_hang.core.BaseFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.orhanobut.hawk.Hawk
-import datn.fpoly.myapplication.data.model.account.AccountResponse
-import datn.fpoly.myapplication.data.repository.AuthRepo
+import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.databinding.FragmentProfileUserBinding
 import datn.fpoly.myapplication.ui.login.SignInActivity
 import datn.fpoly.myapplication.ui.registerstore.RegisterStoreActivity
-import javax.inject.Inject
 
 class FragmentSetting : BaseFragment<FragmentProfileUserBinding>() {
 
@@ -30,7 +28,7 @@ class FragmentSetting : BaseFragment<FragmentProfileUserBinding>() {
 
     override fun invalidate() {
         super.invalidate()
-        val account = Hawk.get<AccountResponse>("Account",null)
+        val account = Hawk.get<AccountModel>("Account",null)
         Log.d("FragmentSetting", "invalidate: $account")
 
         views.btnLogOut.setOnClickListener {

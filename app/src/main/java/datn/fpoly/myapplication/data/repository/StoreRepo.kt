@@ -8,7 +8,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.PartMap
 import javax.inject.Inject
 
 class StoreRepo @Inject constructor(
@@ -41,4 +40,6 @@ class StoreRepo @Inject constructor(
         imageQRCode,
         ).subscribeOn(Schedulers.io())
     fun getStoreByIdUser(idUSer: String): Observable<StoreModel> = api.getStoreByIdUser(idUSer).subscribeOn(Schedulers.io())
+
+    fun getStoreById(idStore:String): Observable<StoreModel> = api.getStoreById(idStore).subscribeOn(Schedulers.io())
 }

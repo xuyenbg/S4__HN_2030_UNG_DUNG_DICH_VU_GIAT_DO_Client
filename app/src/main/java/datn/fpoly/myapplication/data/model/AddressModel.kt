@@ -2,7 +2,7 @@ package datn.fpoly.myapplication.data.model
 
 import com.google.gson.annotations.SerializedName
 
-class AdressModel (
+class AddressModel (
     @SerializedName("_id")
     var id: String ?= null,
     @SerializedName("longitude")
@@ -10,9 +10,9 @@ class AdressModel (
     @SerializedName("latitude")
     var latitude: Double=0.0,
     @SerializedName("isDefalt")
-    var isDefalt: Boolean?= null,
+    var isDefault: Boolean?= null,
     @SerializedName("idUser")
     var idUser: String ?= null,
-    @SerializedName("adress")
-    var adress: String?=null
+    @SerializedName("address")
+    var address: String?=null
 )

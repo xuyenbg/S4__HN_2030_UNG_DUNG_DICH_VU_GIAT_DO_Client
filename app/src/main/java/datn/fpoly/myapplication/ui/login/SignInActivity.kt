@@ -3,10 +3,7 @@ package datn.fpoly.myapplication.ui.login
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -19,12 +16,9 @@ import com.google.firebase.auth.PhoneAuthProvider
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
-import datn.fpoly.myapplication.data.model.account.AccountResponse
-import datn.fpoly.myapplication.data.model.account.LoginResponse
 import datn.fpoly.myapplication.databinding.ActivitySignIn2Binding
 import datn.fpoly.myapplication.ui.home.HomeActivity
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreActivity
-import datn.fpoly.myapplication.ui.otp.AuthenticationOtpActivity
 import datn.fpoly.myapplication.ui.signup.SignUpActivity
 import datn.fpoly.myapplication.utils.Dialog_Loading
 import timber.log.Timber

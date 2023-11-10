@@ -13,15 +13,13 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.example.ql_ban_hang.core.BaseFragment
-import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.Order
-import datn.fpoly.myapplication.data.model.account.AccountResponse
+import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.databinding.FragmentOrderUncompingBinding
 import datn.fpoly.myapplication.ui.fragment.fragmentOrder.adapter.OrderAdapter
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
-import datn.fpoly.myapplication.utils.Common
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -31,7 +29,7 @@ class OrderUncompingFragment @Inject constructor() : BaseFragment<FragmentOrderU
     private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var orderAdapter : OrderAdapter
     private var order: Order? = null
-    private var account: AccountResponse? = null
+    private var account: AccountModel? = null
     private var id = "65257a540aa52df907b803cf"
     private var status = 1
     override fun getBinding(

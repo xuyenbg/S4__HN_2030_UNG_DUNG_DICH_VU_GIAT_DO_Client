@@ -93,6 +93,11 @@
         <item name="android:textColor">@color/colorPriamry</item>
     </style>
 
+    <style name="font_14_white_medium" parent="text_font_inter_medium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="font_14_primary_bold" parent="text_font_inter_bold">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/colorPriamry</item>

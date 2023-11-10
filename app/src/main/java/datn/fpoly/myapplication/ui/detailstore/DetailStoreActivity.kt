@@ -39,7 +39,7 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
             onBackPressedDispatcher.onBackPressed()
         }
         views.tvNameStore.text = itemStoreDetail.name
-        views.tvAddress.text = itemStoreDetail.idAddress?.adress
+        views.tvAddress.text = itemStoreDetail.idAddress?.address
         views.tvRate.text= itemStoreDetail.rate.toString()
         views.tvPhone.text= itemStoreDetail.iduser?.phone
         viewModel.subscribe(this){

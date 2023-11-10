@@ -3,7 +3,6 @@ package datn.fpoly.myapplication.ui.fragment.fragmentOrder.orderCompleted
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +13,8 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.example.ql_ban_hang.core.BaseFragment
-import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.Order
-import datn.fpoly.myapplication.data.model.account.AccountResponse
+import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.databinding.FragmentOrderCompletedBinding
 import datn.fpoly.myapplication.ui.fragment.fragmentOrder.adapter.OrderAdapter
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
@@ -30,7 +28,7 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var orderAdapter : OrderAdapter
     private var order: Order? = null
-    private var account: AccountResponse? = null
+    private var account: AccountModel? = null
     private var id = "65257a540aa52df907b803cf"
     private var status = 1
     override fun getBinding(

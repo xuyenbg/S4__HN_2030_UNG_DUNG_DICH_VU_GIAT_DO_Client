@@ -15,9 +15,9 @@ import datn.fpoly.myapplication.utils.Common.formatCurrency
 
 class AdapterItemCart2(
     private val context: Context,
-    val list: List<ItemService>,
+    val list: MutableList<ItemService>,
     val eventClick: (ItemService) -> Unit
-) : Adapter<AdapterItemCart2.ViewHolderItemStore>() {
+) : Adapter<AdapterItemCart2.ViewHolderItemStore>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderItemStore =
         ViewHolderItemStore(
@@ -47,16 +47,16 @@ class AdapterItemCart2(
             item.service?.let {
                 binding.serviceName.text = it.name
                 binding.price.text = it.price?.formatCurrency(it.unit) ?: "-"
-                binding.priceService.text =
-                    (item.number?.times(it.price ?: 0.0) ?: 0.0).formatCurrency(null)
-                if (it.attributeList?.isNotEmpty() == true) {
-                    binding.recyclerViewAddOn.adapter = AdapterAddOn(context, it.attributeList!!)
-                }
+                binding.priceService.text = it.price?.formatCurrency(null) ?: "-"
                 binding.groupAddOn.visibility = if (it.attributeList?.isNotEmpty() == true) View.VISIBLE else View.GONE
+            }
+            if (!item.attributeListExtend.isNullOrEmpty()) {
+                binding.recyclerViewAddOn.adapter = AdapterAddOn(context, item.attributeListExtend!!)
             }
             binding.total.text = item.total?.formatCurrency(null) ?: "-"
             Glide.with(context).load(item.service?.image).error(R.drawable.image_no_pick).into(binding.image)
             binding.number2.text = String.format("SL: %d %s",(item.number ?: 0.0).toInt(), item.service!!.unit)
+            binding.number.text = String.format("%d %s",(item.number ?: 0.0).toInt(), item.service!!.unit)
             //Xử lý click expand
             binding.groupExpand.visibility = View.GONE
             binding.expand.setOnClickListener {

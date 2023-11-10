@@ -33,4 +33,7 @@ interface APIStore {
         @Part("isDefault") isDefault: RequestBody,
         @Part imageQRCode: MultipartBody.Part?,
     ): Observable<Response<ResponseBody>>
+
+    @GET("api/stores/store-by-idstore/{id}")
+    fun getStoreById(@Path("id") id:String) : Observable<StoreModel>
 }

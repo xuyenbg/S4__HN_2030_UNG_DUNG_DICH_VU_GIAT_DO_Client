@@ -18,7 +18,7 @@ import datn.fpoly.myapplication.ui.fragment.postStore.FragmentPostStore
 import datn.fpoly.myapplication.ui.fragment.settingStore.setting.FragmentSetting
 import com.airbnb.mvrx.viewModel
 import com.orhanobut.hawk.Hawk
-import datn.fpoly.myapplication.data.model.account.AccountResponse
+import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.utils.Common
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
     private val viewModel: HomeStoreViewModel by viewModel()
     private lateinit var adapterVp: AdapterViewPage
     private val listFragment= mutableListOf<Fragment>()
-    private lateinit var inforUser: AccountResponse
+    private lateinit var inforUser: AccountModel
     @Inject
     lateinit var authRepo: AuthRepo
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +41,7 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
             inforUser = it
         }
         viewModel.handle(HomeStoreViewAction.GetListCategory)
-        inforUser._id?.let { HomeStoreViewAction.GetStoreByIdUser(it) }
+        inforUser.id?.let { HomeStoreViewAction.GetStoreByIdUser(it) }
             ?.let { viewModel.handle(it) }
         viewModel.subscribe(this){
            getDataCate(it)

@@ -2,8 +2,6 @@ package datn.fpoly.myapplication.data.network
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
 import com.google.gson.GsonBuilder
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader

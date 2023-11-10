@@ -87,7 +87,7 @@ class RegisterStoreActivity : BaseActivity<ActivityRegiterInforAccountStoreBindi
     private fun registerStore() {
         val name = views.edName.text.toString()
         val transportType = listOf<String>("Ship COD", "Lấy Hàng trực tiếp")
-        val idUser = authRepo.getUser()?._id
+        val idUser = authRepo.getUser()?.id
         val isDefault = true
         val status = 1
         val rate = 0.0
