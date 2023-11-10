@@ -26,6 +26,7 @@ class AuthRepo @Inject constructor(
         favouriteStores: List<String>?
     ): Observable<Response<ResponseBody>> = api.register(
         AccountModel(
+            null,
             phone,
             passwd,
             fullname,
@@ -36,9 +37,9 @@ class AuthRepo @Inject constructor(
         )
     ).subscribeOn(Schedulers.io())
 
-    fun saveUser(accountResponse: AccountResponse) = Hawk.put("Account",accountResponse)
+    fun saveUser(accountResponse: AccountModel) = Hawk.put("Account",accountResponse)
 
-    fun getUser():AccountResponse? = Hawk.get<AccountResponse?>("Account",null)
+    fun getUser():AccountModel? = Hawk.get<AccountModel?>("Account",null)
 
     fun isLogging():Boolean = Hawk.get("CheckLogin",false)
 

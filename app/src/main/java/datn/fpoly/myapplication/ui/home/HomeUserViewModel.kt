@@ -5,7 +5,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
-import datn.fpoly.myapplication.data.repository.AuthRepo
+import datn.fpoly.myapplication.data.model.Order
 import datn.fpoly.myapplication.data.repository.CategoryRepo
 import datn.fpoly.myapplication.data.repository.PostRepo
 import datn.fpoly.myapplication.data.repository.RoomDbRepo
@@ -21,32 +21,34 @@ class HomeUserViewModel @AssistedInject constructor(
     override fun handle(action: HomeViewAction) {
         when (action) {
             is HomeViewAction.HomeActionCategory -> {
-                hanlderGetListCategory()
+                handleGetListCategory()
             }
             is HomeViewAction.HomeActionGetListStore->{
-                hanlderGetListStore()
+                handleGetListStore()
             }
             is HomeViewAction.PostClientActionList -> {
-                handlerGetPost()
+                handleGetPost()
             }
         }
     }
 
-    private fun hanlderGetListCategory() {
+    private fun handleGetListCategory() {
         setState { copy(stateCategory = Loading()) }
         responseCategory.getDataCategory().execute { copy(stateCategory = it) }
     }
-    private fun hanlderGetListStore(){
+    private fun handleGetListStore(){
         setState { copy(stateStore = Loading()) }
         responseStore.getDataStore().execute { copy(stateStore = it) }
     }
 
-    private fun handlerGetPost() {
+    private fun handleGetPost() {
         setState { copy(statePost = Loading()) }
         responsePost.getListPost().execute { copy(statePost = it) }
     }
 
     fun getCart() = dbRepo.getCart()
+
+    fun updateCart(order: Order) = dbRepo.updateCart(order)
 
     @AssistedFactory
     interface Factory {

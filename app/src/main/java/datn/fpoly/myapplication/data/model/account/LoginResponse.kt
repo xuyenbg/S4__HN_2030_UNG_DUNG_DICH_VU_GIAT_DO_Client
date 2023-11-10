@@ -6,6 +6,6 @@ data class LoginResponse (
     @SerializedName("message")
     val message : String,
     @SerializedName("user")
-    val user : AccountResponse
+    val user : AccountModel
         ){
 }

@@ -8,23 +8,23 @@ class ServiceModel(
     @SerializedName("name")
     var name: String? = null,
     @SerializedName("idStore")
-    var idStore: String? = null,
+    var idStore: StoreModel? = null,
     @SerializedName("attributeList")
     var attributeList: MutableList<AttributeModel>? = null,
     @SerializedName("idCategory")
-//    var idCategory: String? = null,
-//    @SerializedName("category")
-    var category: CategoryModel? = null,
+    var idCategory: CategoryModel? = null,
     @SerializedName("isActive")
     var isActive: Boolean? = null,
     @SerializedName("unit")
     var unit: String? = null,
     @SerializedName("idSale")
-//    var idSale: String? = null,
-//    @SerializedName("sale")
-    var sale: Sale? = null,
+    var idSale: Sale? = null,
     @SerializedName("price")
     var price: Double? = null,
     @SerializedName("image")
     var image: String? = null
-)
+) {
+    override fun toString(): String {
+        return "ServiceModel(id=$id, name=$name, idStore=$idStore, attributeList=$attributeList, idCategory=$idCategory, isActive=$isActive, unit=$unit, idSale=$idSale, price=$price, image=$image)"
+    }
+}

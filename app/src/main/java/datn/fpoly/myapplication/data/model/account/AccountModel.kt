@@ -14,9 +14,12 @@ data class AccountModel(
     var username: String?,
     @SerializedName("idRole")
     var idRole: String?,
-    @SerializedName("favouriteStores")
-    var favouriteStores : List<String>?,
+    @SerializedName("favoriteStores")
+    var favoriteStores : List<String>?,
     @SerializedName("avatar")
     var avatar : String?
 ) {
+    override fun toString(): String {
+        return "AccountModel(id=$id, phone=$phone, passwd=$passwd, fullname=$fullname, username=$username, idRole=$idRole, favoriteStores=$favoriteStores, avatar=$avatar)"
+    }
 }

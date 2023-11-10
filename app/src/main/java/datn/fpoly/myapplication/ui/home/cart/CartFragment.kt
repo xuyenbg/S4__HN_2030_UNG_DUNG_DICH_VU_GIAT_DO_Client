@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.example.ql_ban_hang.core.BaseFragment
+import datn.fpoly.myapplication.data.model.Order
 import datn.fpoly.myapplication.databinding.FragmentCart2Binding
 import datn.fpoly.myapplication.ui.check_out.AdapterItemCart2
 import datn.fpoly.myapplication.ui.check_out.CheckOutActivity
@@ -19,12 +21,15 @@ import timber.log.Timber
 
 class CartFragment :BaseFragment<FragmentCart2Binding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
+    var cart: Order? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getCart().observe(viewLifecycleOwner) {
-            Timber.tag("CART").d("observe")
+            Timber.tag("CART").d("observe ${it.toString()}")
             if (it != null) {
+                cart = it
                 views.recycleView.adapter = AdapterItemCart2(requireContext(),it.listItem, eventClick = {})
                 views.tvQuantity.text = it.listItem.size.toString()
                 views.tvPrice.text = it.total?.formatCurrency(null) ?: "-"
@@ -36,6 +41,8 @@ class CartFragment :BaseFragment<FragmentCart2Binding>() {
         }
 
         views.toolbar.btnBack.visibility = View.INVISIBLE
+
+        views.toolbar.title.text = "GIỎ HÀNG"
 
         views.recycleView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -49,6 +56,20 @@ class CartFragment :BaseFragment<FragmentCart2Binding>() {
                 }
             }
         })
+
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean { return false }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                cart!!.listItem.removeAt(viewHolder.layoutPosition)
+                viewModel.updateCart(cart!!)
+            }
+        }
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(views.recycleView)
     }
 
     override fun invalidate(): Unit = withState(viewModel) {

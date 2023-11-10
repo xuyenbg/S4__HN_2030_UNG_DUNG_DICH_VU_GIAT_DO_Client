@@ -39,4 +39,6 @@ class StoreRepo @Inject constructor(
         isDefault,
         imageQRCode,
         ).subscribeOn(Schedulers.io())
+
+    fun getStoreById(idStore:String): Observable<StoreModel> = api.getStoreById(idStore).subscribeOn(Schedulers.io())
 }
