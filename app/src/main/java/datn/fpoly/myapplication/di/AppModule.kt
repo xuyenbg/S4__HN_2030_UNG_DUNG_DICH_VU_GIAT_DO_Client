@@ -56,4 +56,10 @@ object AppModule {
     fun providerApiOrder(remoteDataSource: RemoteDataSource,context: Context): APIOrder{
         return remoteDataSource.buildApi(APIOrder::class.java,context)
     }
+
+    @Provides
+    fun providerAddressApi(remoteDataSource: RemoteDataSource, context: Context): APIAddress {
+        return remoteDataSource.buildApi(APIAddress::class.java, context)
+    }
+
 }

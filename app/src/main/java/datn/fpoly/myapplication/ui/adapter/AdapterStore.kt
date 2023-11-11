@@ -52,7 +52,7 @@ class AdapterStore(val limit: Int) : Adapter<AdapterStore.ViewHolderItemStore>()
         fun  bind(item: StoreModel){
             binding.tvNameStore.text = item.name
             binding.tvRate.text = item.rate.toString()
-            binding.tvLocation.text = item.idAddress?.adress
+            binding.tvLocation.text = item.idAddress?.address
             binding.tvPhoneStore.text = item.iduser?.phone
         }
     }

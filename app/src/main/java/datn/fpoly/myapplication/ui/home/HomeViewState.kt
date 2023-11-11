@@ -6,7 +6,6 @@ import com.airbnb.mvrx.Uninitialized
 import datn.fpoly.myapplication.data.model.CategoryModel
 import datn.fpoly.myapplication.data.model.Order
 import datn.fpoly.myapplication.data.model.StoreModel
-import datn.fpoly.myapplication.data.model.User
 import datn.fpoly.myapplication.data.model.post.PostModel
 
 data class HomeViewState (

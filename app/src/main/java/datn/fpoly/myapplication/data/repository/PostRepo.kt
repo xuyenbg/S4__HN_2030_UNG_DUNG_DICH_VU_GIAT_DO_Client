@@ -1,6 +1,5 @@
 package datn.fpoly.myapplication.data.repository
 
-import datn.fpoly.myapplication.data.model.post.PostAddModel
 import datn.fpoly.myapplication.data.model.post.PostModel
 import datn.fpoly.myapplication.data.network.APIPost
 import io.reactivex.Observable

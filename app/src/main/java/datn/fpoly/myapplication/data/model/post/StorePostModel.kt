@@ -1,7 +1,6 @@
 package datn.fpoly.myapplication.data.model.post
 
 import com.google.gson.annotations.SerializedName
-import datn.fpoly.myapplication.data.model.account.AccountResponse
 
 class StorePostModel(
     @SerializedName("_id")

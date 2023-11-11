@@ -1,27 +1,59 @@
 package datn.fpoly.myapplication.ui.check_out
 
-import com.airbnb.mvrx.*
+import com.airbnb.mvrx.ActivityViewModelContext
+import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.ViewModelContext
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
-import datn.fpoly.myapplication.data.repository.CategoryRepo
-import datn.fpoly.myapplication.data.repository.PostRepo
+import datn.fpoly.myapplication.data.model.Order
+import datn.fpoly.myapplication.data.repository.AddressRepo
+import datn.fpoly.myapplication.data.repository.AuthRepo
+import datn.fpoly.myapplication.data.repository.OrderRepo
 import datn.fpoly.myapplication.data.repository.RoomDbRepo
 import datn.fpoly.myapplication.data.repository.StoreRepo
 
 class CheckOutViewModel @AssistedInject constructor(
     @Assisted state: CheckOutViewState,
-    private val responsePost: PostRepo,
-    private val responseCategory: CategoryRepo,
-    private val responseStore: StoreRepo,
+    private val orderRepo: OrderRepo,
+    private val storeRepo: StoreRepo,
+    private val addressRepo: AddressRepo,
+    private val authRepo: AuthRepo,
     private val dbRepo: RoomDbRepo
 ) : BaseViewModel<CheckOutViewState, CheckOutViewAction, CheckOutViewEvent>(state) {
     override fun handle(action: CheckOutViewAction) {
+        when (action) {
+            is CheckOutViewAction.GetStoreById -> handleGetStoreById(action.idStore)
+
+            is CheckOutViewAction.InsertOrder -> handleInsertOrder(action.order)
+
+            is CheckOutViewAction.GetListAddress -> handleGetListAddress()
+        }
 
     }
 
+    private fun handleGetListAddress() {
+        setState { copy(stateGetListAddress = Loading()) }
+        val idUser = authRepo.getUser()?.id ?: "-"
+        addressRepo.getListAddress(idUser).execute { copy(stateGetListAddress = it) }
+    }
+
+    private fun handleInsertOrder(order: Order) {
+        setState { copy(stateInsertOrder = Loading()) }
+        orderRepo.insertOrder(order).execute { copy(stateInsertOrder = it) }
+    }
+
+    private fun handleGetStoreById(idStore: String) {
+        setState { copy(stateGetStoreById = Loading()) }
+        storeRepo.getStoreById(idStore).execute { copy(stateGetStoreById = it) }
+    }
+
     fun getCart() = dbRepo.getCart()
+
+    fun clearCart() = dbRepo.clearCart()
 
     @AssistedFactory
     interface Factory {
