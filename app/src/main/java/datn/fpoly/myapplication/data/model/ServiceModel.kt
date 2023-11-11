@@ -8,7 +8,7 @@ class ServiceModel(
     @SerializedName("name")
     var name: String? = null,
     @SerializedName("idStore")
-    var idStore: String? = null,
+    var idStore: StoreModel? = null,
     @SerializedName("attributeList")
     var attributeList: MutableList<AttributeModel>? = null,
     @SerializedName("idCategory")

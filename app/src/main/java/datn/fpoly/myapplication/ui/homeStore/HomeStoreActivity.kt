@@ -1,6 +1,7 @@
 package datn.fpoly.myapplication.ui.homeStore
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
@@ -20,7 +21,11 @@ import com.airbnb.mvrx.viewModel
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.account.AccountResponse
 import datn.fpoly.myapplication.data.repository.AuthRepo
+import datn.fpoly.myapplication.databinding.FragmentOrderStoreBinding
+import datn.fpoly.myapplication.ui.fragment.orderStore.OrderStoreFragment
+import datn.fpoly.myapplication.ui.fragment.serviceStore.ServicesStoreFragment
 import datn.fpoly.myapplication.utils.Common
+import timber.log.Timber
 import javax.inject.Inject
 
 class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreViewModel.Factory{
@@ -69,24 +74,27 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
     private fun getDataStore(state: HomeStoreState){
         when(state.stateGetStore){
             is Loading->{
-
+                Timber.tag("Loading").e("getDataStore: Loading")
             }
             is Success->{
                 state.stateGetStore.invoke()?.let {
-                    Hawk.put(Common.KEY_STORE, it)
+                    if(it.size>0){
+                        Hawk.put(Common.KEY_STORE, it[0])
+                    }
                 }
             }
-            is Fail->{
-
+            is Fail-> {
+                Timber.tag("ERROR").e("getDataStore: Fail")
             }
             else -> {}
         }
     }
     fun setViewNavigation(){
         listFragment.add(0, FragmentHomeStore())
-        listFragment.add(1, FragmentSetting())
-        listFragment.add(2, FragmentPostStore())
-        listFragment.add(3,FragmentSettingStore())
+        listFragment.add(1,ServicesStoreFragment())
+        listFragment.add(2, OrderStoreFragment())
+        listFragment.add(3, FragmentPostStore())
+        listFragment.add(4,FragmentSettingStore())
         adapterVp = AdapterViewPage(listFragment, this)
         views.vp2Home.adapter = adapterVp
         views.vp2Home.isUserInputEnabled= false
@@ -105,6 +113,9 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
             views.viewBgItem2.visibility = View.INVISIBLE
             views.viewBgItem3.visibility = View.INVISIBLE
             views.viewBgItem4.visibility = View.INVISIBLE
+            views.viewBgItem1.visibility = View.INVISIBLE
+            views.icService.setImageResource(R.drawable.laundry_service)
+            views.tvService.setTextAppearance(R.style.item_bottom_avigation_custom)
             animStart(views.viewBgItem)
             views.tvHome.setTextAppearance(R.style.item_bottom_avigation_custom_selected)
             views.tvOrder.setTextAppearance(R.style.item_bottom_avigation_custom)
@@ -114,15 +125,38 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
             views.icOrder.setImageResource(R.drawable.ic_store)
             views.icPost.setImageResource(R.drawable.chat)
             views.icProfile.setImageResource(R.drawable.profile_gray)
+
+        }
+        views.llItem2.setOnClickListener {
+            views.vp2Home.setCurrentItem(1, true)
+            views.viewBgItem1.visibility = View.VISIBLE
+            views.viewBgItem2.visibility = View.INVISIBLE
+            views.viewBgItem3.visibility = View.INVISIBLE
+            views.viewBgItem4.visibility = View.INVISIBLE
+            views.viewBgItem.visibility = View.INVISIBLE
+            views.icService.setImageResource(R.drawable.laundry_service_selected)
+            views.tvService.setTextAppearance(R.style.item_bottom_avigation_custom_selected)
+            animStart(views.viewBgItem1)
+            views.tvHome.setTextAppearance(R.style.item_bottom_avigation_custom)
+            views.tvOrder.setTextAppearance(R.style.item_bottom_avigation_custom)
+            views.tvPost.setTextAppearance(R.style.item_bottom_avigation_custom)
+            views.tvProfile.setTextAppearance(R.style.item_bottom_avigation_custom)
+            views.icHome.setImageResource(R.drawable.home)
+            views.icOrder.setImageResource(R.drawable.ic_store)
+            views.icPost.setImageResource(R.drawable.chat)
+            views.icProfile.setImageResource(R.drawable.profile_gray)
+
         }
         views.llItem3.setOnClickListener {
-            views.vp2Home.setCurrentItem(1, true)
+            views.vp2Home.setCurrentItem(2, true)
             views.viewBgItem2.visibility = View.VISIBLE
-
             views.viewBgItem.visibility = View.INVISIBLE
             views.viewBgItem3.visibility = View.INVISIBLE
             views.viewBgItem4.visibility = View.INVISIBLE
             animStart(views.viewBgItem2)
+            views.viewBgItem1.visibility = View.INVISIBLE
+            views.icService.setImageResource(R.drawable.laundry_service)
+            views.tvService.setTextAppearance(R.style.item_bottom_avigation_custom)
             views.tvHome.setTextAppearance(R.style.item_bottom_avigation_custom)
             views.tvOrder.setTextAppearance(R.style.item_bottom_avigation_custom_selected)
             views.tvPost.setTextAppearance(R.style.item_bottom_avigation_custom)
@@ -134,7 +168,7 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
             views.icProfile.setImageResource(R.drawable.profile_gray)
         }
         views.llItem4.setOnClickListener {
-            views.vp2Home.setCurrentItem(2, true)
+            views.vp2Home.setCurrentItem(3, true)
             views.viewBgItem3.visibility = View.VISIBLE
 
             views.viewBgItem2.visibility = View.INVISIBLE
@@ -146,13 +180,15 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
             views.tvPost.setTextAppearance(R.style.item_bottom_avigation_custom_selected)
             views.tvProfile.setTextAppearance(R.style.item_bottom_avigation_custom)
             views.icHome.setImageResource(R.drawable.home)
-
             views.icOrder.setImageResource(R.drawable.ic_store)
             views.icPost.setImageResource(R.drawable.chat_selected)
             views.icProfile.setImageResource(R.drawable.profile_gray)
+            views.viewBgItem1.visibility = View.INVISIBLE
+            views.icService.setImageResource(R.drawable.laundry_service)
+            views.tvService.setTextAppearance(R.style.item_bottom_avigation_custom)
         }
         views.llItem5.setOnClickListener {
-            views.vp2Home.setCurrentItem(3, true)
+            views.vp2Home.setCurrentItem(4, true)
             views.viewBgItem4.visibility = View.VISIBLE
             views.viewBgItem2.visibility = View.INVISIBLE
             views.viewBgItem3.visibility = View.INVISIBLE
@@ -166,6 +202,9 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
             views.icOrder.setImageResource(R.drawable.ic_store)
             views.icPost.setImageResource(R.drawable.chat)
             views.icProfile.setImageResource(R.drawable.profile_selected)
+            views.viewBgItem1.visibility = View.INVISIBLE
+            views.icService.setImageResource(R.drawable.laundry_service)
+            views.tvService.setTextAppearance(R.style.item_bottom_avigation_custom)
         }
     }
 

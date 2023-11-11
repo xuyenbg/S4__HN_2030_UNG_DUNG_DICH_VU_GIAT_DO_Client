@@ -17,7 +17,7 @@ interface APIStore {
     @GET("api/stores/list")
     fun getListCategory(): Observable<MutableList<StoreModel>>
     @GET("api/stores/store-by-iduse/{idUser}")
-    fun getStoreByIdUser(@Path("idUser") idUser: String): Observable<StoreModel>
+    fun getStoreByIdUser(@Path("idUser") idUser: String): Observable<List<StoreModel>>
 
     @Multipart
     @POST("api/stores/register-store")
@@ -33,4 +33,6 @@ interface APIStore {
         @Part("isDefault") isDefault: RequestBody,
         @Part imageQRCode: MultipartBody.Part?,
     ): Observable<Response<ResponseBody>>
+    @GET("api/store-by-idstore/{idStore}")
+    fun getStoreById(@Path("idStore") idStore: String): Observable<StoreModel>
 }

@@ -31,19 +31,15 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
-        itemStoreDetail = Hawk.get(Common.KEY_STORE_DETAIL)
         adapterService = AdapterService()
-        itemStoreDetail.id?.let { DetailStoreViewAction.GetListServiceByStore(it) }
-            ?.let { viewModel.handle(it) }
+        intent.getStringExtra(Common.KEY_ID_STORE)?.let { DetailStoreViewAction.GetListServiceByStore(it) }
+        intent.getStringExtra(Common.KEY_ID_STORE)?.let { DetailStoreViewAction.GetStoreById(it) }
         views.imgBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-        views.tvNameStore.text = itemStoreDetail.name
-        views.tvAddress.text = itemStoreDetail.idAddress?.adress
-        views.tvRate.text= itemStoreDetail.rate.toString()
-        views.tvPhone.text= itemStoreDetail.iduser?.phone
         viewModel.subscribe(this){
             getListService(it)
+            getStore(it)
         }
         views.rcvDetailStore.adapter =adapterService
         adapterService.setListenner(object : AdapterService.ServiceListenner{
@@ -65,6 +61,32 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
                         state.stateService.invoke()?.let{
                             adapterService.setData(it)
                             Timber.tag("AAAAAAAAA").e("getListService: list service size: "+it.size )
+                        }
+                    }
+                }
+            }
+            is Loading->{
+                Timber.tag("AAAAAAAAA").e("getListService: Loading")
+            }
+            is Fail-> {
+                Timber.tag("AAAAAAAAA").e("getListService: Call Fail")
+            }
+            else->{
+
+            }
+        }
+    }
+    fun getStore( state: DetailStoreViewState){
+        when(state.stateStore){
+            is Success->{
+                runBlocking {
+                    launch {
+                        state.stateStore.invoke()?.let{
+                            itemStoreDetail = it
+                            views.tvNameStore.text = itemStoreDetail.name
+                            views.tvAddress.text = itemStoreDetail.idAddress?.adress
+                            views.tvRate.text= itemStoreDetail.rate.toString()
+                            views.tvPhone.text= itemStoreDetail.iduser?.phone
                         }
                     }
                 }

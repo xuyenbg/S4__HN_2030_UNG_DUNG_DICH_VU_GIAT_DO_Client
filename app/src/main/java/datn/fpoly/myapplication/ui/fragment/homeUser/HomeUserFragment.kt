@@ -28,7 +28,7 @@ import datn.fpoly.myapplication.utils.DataRaw
 import timber.log.Timber
 
 
-class HomeUserFragment  : BaseFragment<FragmentHomeUserBinding>() {
+class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
 
     private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var adapterCate: AdapterCategory
@@ -46,7 +46,12 @@ class HomeUserFragment  : BaseFragment<FragmentHomeUserBinding>() {
         adapterCate.setListener(object : AdapterCategory.CategoryListener {
             override fun onClickCate(categoryModel: CategoryModel) {
                 categoryModel.id?.let { DataRaw.setDataIdCategory(it) }
-                requireContext().startActivity(Intent(requireContext(), ListServiceActivity::class.java))
+                requireContext().startActivity(
+                    Intent(
+                        requireContext(),
+                        ListServiceActivity::class.java
+                    )
+                )
             }
         })
         adapterStore = AdapterStore(6)
@@ -54,7 +59,12 @@ class HomeUserFragment  : BaseFragment<FragmentHomeUserBinding>() {
         adapterStore.setListener(object : AdapterStore.StoreListener {
             override fun onClickStoreListener(storeModel: StoreModel) {
                 Hawk.put(Common.KEY_STORE_DETAIL, storeModel)
-                requireContext().startActivity(Intent(requireContext(), DetailStoreActivity::class.java))
+                requireContext().startActivity(
+                    Intent(
+                        requireContext(),
+                        DetailStoreActivity::class.java
+                    ).putExtra(Common.KEY_ID_STORE, storeModel.id)
+                )
             }
         })
         views.tvSeeMore.setOnClickListener {
@@ -70,7 +80,6 @@ class HomeUserFragment  : BaseFragment<FragmentHomeUserBinding>() {
             intent.putExtra(Common.KEY_SEE_MORE, 2)
             requireContext().startActivity(intent)
         }
-
 
 
     }

@@ -43,6 +43,8 @@ object Common {
     const val ADDRESS = "address"
     val KEY_LIST_CATE="list_category"
     val KEY_STORE="get_store"
+    val KEY_ID_STORE ="id_store"
+    val KEY_ID_SERVICE="id_service"
 
 
     fun ComponentActivity.registerStartForActivityResult(onResult: (ActivityResult) -> Unit): ActivityResultLauncher<Intent> {

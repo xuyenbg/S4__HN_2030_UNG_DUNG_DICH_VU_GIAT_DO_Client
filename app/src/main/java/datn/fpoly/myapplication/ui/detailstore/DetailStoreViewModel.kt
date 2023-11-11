@@ -11,18 +11,26 @@ import datn.fpoly.myapplication.data.repository.StoreRepo
 
 class DetailStoreViewModel @AssistedInject constructor(
     @Assisted state: DetailStoreViewState,
-    private var repo: ServiceRepo
+    private var repo: ServiceRepo,
+    private var repoStore: StoreRepo
 ) : BaseViewModel<DetailStoreViewState, DetailStoreViewAction, DetailStoreViewEvent>(state) {
     override fun handle(action: DetailStoreViewAction) {
         when(action){
             is DetailStoreViewAction.GetListServiceByStore->{
                 getListServiceByStore(action.idStore)
             }
+            is DetailStoreViewAction.GetStoreById->{
+                getStoreById(action.id)
+            }
         }
     }
     fun getListServiceByStore(id: String){
         setState { copy(stateService= Loading()) }
         repo.getListServiceByStore(id).execute { copy(stateService = it) }
+    }
+    fun getStoreById(id: String){
+        setState { copy(stateStore= Loading()) }
+        repoStore.getStoreById(id).execute { copy(stateStore = it) }
     }
 
 

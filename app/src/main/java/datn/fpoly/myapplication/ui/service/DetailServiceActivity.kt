@@ -93,7 +93,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
             if(serviceModel != null){
                 if (!cart.idStore?.equals(serviceModel!!.idStore)!!){
                     Toast.makeText(this, "Bạn có chắc chắn muốn đặt lại không? Nếu bạn tiếp tục, giỏ hàng của bạn sẽ bị xóa.", Toast.LENGTH_SHORT).show()
-                    cart.idStore = serviceModel!!.idStore
+                    cart.idStore = serviceModel?.idStore?.id
                     cart.listItem.clear()
                     cart.listItem.add(ItemService(service = serviceModel, number = quality, total = getTotalItem(), attributeList = adapterAttribute.listAttributeSelect))
                     viewModel.updateCart(cart)
@@ -125,7 +125,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
 
     override fun onResume() {
         super.onResume()
-        serviceModel?.idStore?.let {
+        serviceModel?.idStore?.id?.let {
             serviceModel?.id?.let { it1 ->
                 DetailServiceViewAction.GetListServiceByStore(
                     it, it1

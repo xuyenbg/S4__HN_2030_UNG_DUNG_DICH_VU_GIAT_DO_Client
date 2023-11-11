@@ -1,5 +1,6 @@
 package datn.fpoly.myapplication.ui.postService
 
+import android.R
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -46,6 +47,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
+        Timber.tag("AAAAAAAAAAAA").e("onCreate: " + Hawk.get<StoreModel>(Common.KEY_STORE).id)
         views.toobar.icBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -84,6 +86,9 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 )
                 adapterAttribute.insertItem(itemInsert)
                 views.tvErrorAttribute.text = ""
+                views.edNameAttribute.setText("")
+                views.edPriceAttribute.setText("")
+
             } else {
                 if (views.edNameAttribute.text.toString().trim().isEmpty()) {
                     views.tvErrorAttribute.text = "Tên dịch vụ thêm không được để trống"
@@ -98,8 +103,8 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
         val items = mutableListOf<String>()
         items.add("%")
         items.add("VNĐ")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val adapter = ArrayAdapter(this, R.layout.simple_spinner_item, items)
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         views.spinnerUnitSale.adapter = adapter
         views.spinnerUnitSale.setSelection(0)
         views.spinnerUnitSale.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -158,9 +163,9 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
     private fun validate(): Boolean {
         var isValidate = false
         if (views.edNameService.text.toString().isNotEmpty() && views.edPriceService.text.toString()
-                .isNotEmpty()
+                .isNotEmpty()&& imageUri!=null
         ) {
-            if (views.edPriceSale.text.toString().isNotEmpty()) {
+            if (views.edPriceSale.text.toString().isEmpty()) {
                 isValidate = true
                 views.tvErrorPriceSale.text = ""
             } else {
@@ -205,6 +210,12 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 isValidate = true
                 views.tvErrorPriceService.text = ""
             }
+            if(imageUri==null){
+                isValidate = false
+                Toast.makeText(this, "Bạn chưa chọn ảnh", Toast.LENGTH_SHORT).show()
+            }else{
+                isValidate = true
+            }
         }
         return isValidate
     }
@@ -218,9 +229,9 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
         val cate = views.spinnerCate.selectedItem as CategoryModel
         val idCate =
             cate.id.toString().trim().toRequestBody("multipart/form-data".toMediaTypeOrNull())
-//        val idStore =
-//            Hawk.get<StoreModel>(Common.KEY_STORE).id.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val idStore ="65475330501201abab1bd500".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+        val idStore =
+            Hawk.get<StoreModel>(Common.KEY_STORE).id.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+//        val idStore ="65475330501201abab1bd500".toRequestBody("multipart/form-data".toMediaTypeOrNull())
         val listAttribute = adapterAttribute.getList()
         val unitSale = views.spinnerUnitSale.selectedItem.toString()
             .toRequestBody("multipart/form-data".toMediaTypeOrNull())
