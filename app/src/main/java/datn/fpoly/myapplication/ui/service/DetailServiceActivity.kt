@@ -94,7 +94,9 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
                 Log.d("USER", authRepo.getUser().toString())
                 if (cart.idStore != null && cart.idStore?.equals(serviceModel!!.idStore?.id) == false){
                     Toast.makeText(this, "Bạn có chắc chắn muốn đặt lại không? Nếu bạn tiếp tục, giỏ hàng của bạn sẽ bị xóa.", Toast.LENGTH_SHORT).show()
-                    cart.idStore = serviceModel!!.idStore?.id
+
+                    cart.idStore = serviceModel?.idStore?.id
+
                     cart.listItem.clear()
                     cart.listItem.add(ItemService(service = serviceModel, idService = serviceModel?.id, number = quality, total = getTotalItem(), attributeListExtend = adapterAttribute.listAttributeSelect, attributeList = adapterAttribute.listAttributeSelect.map { attr ->  attr.id}.toMutableList()))
                     viewModel.updateCart(cart)

@@ -13,9 +13,9 @@ class StoreModel(
     @SerializedName("idAddress")
     var idAddress :AddressModel ?=null,
     @SerializedName("status")
-    var status : Int= -1,
+    var status : Int?,
     @SerializedName("rate")
-    var rate: Double=0.0,
+    var rate: Double?,
     @SerializedName("transportTypeList")
     var transportTypeList: MutableList<String>?=null,
     @SerializedName("imageQRCode")
