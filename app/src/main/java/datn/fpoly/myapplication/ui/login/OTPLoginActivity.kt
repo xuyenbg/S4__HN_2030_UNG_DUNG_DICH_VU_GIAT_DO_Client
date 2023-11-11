@@ -132,7 +132,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                                         Intent(
                                             this@OTPLoginActivity,
                                             HomeActivity::class.java
-                                        )
+                                        ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                                     )
                                 } else {
                                     Hawk.put("Manage",1)
@@ -140,7 +140,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                                         Intent(
                                             this@OTPLoginActivity,
                                             HomeStoreActivity::class.java
-                                        )
+                                        ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                                     )
                                 }
 

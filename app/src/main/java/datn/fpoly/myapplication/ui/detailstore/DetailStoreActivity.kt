@@ -84,7 +84,7 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
                         state.stateStore.invoke()?.let{
                             itemStoreDetail = it
                             views.tvNameStore.text = itemStoreDetail.name
-                            views.tvAddress.text = itemStoreDetail.idAddress?.adress
+                            views.tvAddress.text = itemStoreDetail.idAddress?.address
                             views.tvRate.text= itemStoreDetail.rate.toString()
                             views.tvPhone.text= itemStoreDetail.iduser?.phone
                         }

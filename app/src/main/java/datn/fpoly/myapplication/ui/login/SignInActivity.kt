@@ -143,9 +143,9 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
         val manege : Int = Hawk.get("Manage",0)
         if (auth.currentUser != null && user) {
             if (manege ==0) {
-                startActivity(Intent(this, HomeActivity::class.java))
+                startActivity(Intent(this, HomeActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
             } else {
-                startActivity(Intent(this, HomeStoreActivity::class.java))
+                startActivity(Intent(this, HomeStoreActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
             }
 
         }

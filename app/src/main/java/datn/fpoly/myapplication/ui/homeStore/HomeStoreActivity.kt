@@ -34,7 +34,7 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
     private val viewModel: HomeStoreViewModel by viewModel()
     private lateinit var adapterVp: AdapterViewPage
     private val listFragment= mutableListOf<Fragment>()
-    private lateinit var inforUser: AccountModel
+    private var inforUser: AccountModel?=null
     @Inject
     lateinit var authRepo: AuthRepo
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +46,7 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
             inforUser = it
         }
         viewModel.handle(HomeStoreViewAction.GetListCategory)
-        inforUser.id?.let { HomeStoreViewAction.GetStoreByIdUser(it) }
+        inforUser?.id?.let { HomeStoreViewAction.GetStoreByIdUser(it) }
             ?.let { viewModel.handle(it) }
         viewModel.subscribe(this){
            getDataCate(it)
