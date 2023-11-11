@@ -15,6 +15,7 @@ import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.ServiceModel
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.ui.adapter.AdapterService
+import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
 import datn.fpoly.myapplication.ui.service.DetailServiceActivity
 import datn.fpoly.myapplication.utils.Common
 import kotlinx.coroutines.launch
@@ -32,8 +33,8 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
         adapterService = AdapterService()
-        intent.getStringExtra(Common.KEY_ID_STORE)?.let { DetailStoreViewAction.GetListServiceByStore(it) }
-        intent.getStringExtra(Common.KEY_ID_STORE)?.let { DetailStoreViewAction.GetStoreById(it) }
+        intent.getStringExtra(Common.KEY_ID_STORE)?.let { viewModel.handle(DetailStoreViewAction.GetListServiceByStore(it)) }
+        intent.getStringExtra(Common.KEY_ID_STORE)?.let { viewModel.handle(DetailStoreViewAction.GetStoreById(it)) }
         views.imgBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }

@@ -13,10 +13,14 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
 import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
+import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.databinding.ActivityAddPostBinding
+import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -67,6 +71,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
         }
 
         views.btnPost.setOnClickListener {
+            Dialog_Loading.getInstance().show(supportFragmentManager, "Loading add post")
             addPost()
         }
         views.toobar.icBack.setOnClickListener {
@@ -80,7 +85,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
             views.edTitle.error = "Vui lòng không để trống tiêu đề !"
             isValidate++
         } else {
-            views.edTitle.error = ""
+            views.edTitle.error = null
             isValidate = 0
         }
 
@@ -88,17 +93,17 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
             views.edContent.error = "Vui lòng không để trống nội dung !"
             isValidate++
         } else {
-            views.edContent.error = ""
+            views.edContent.error = null
             isValidate = 0
         }
     }
 
     private fun addPost() {
         validate()
-        if (isValidate ==0) {
+        if (isValidate == 0) {
             val title = views.edTitle.text.toString()
             val content = views.edContent.text.toString()
-            val idStore = "6526030046da31c065b7ae17"
+            val idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
 
 
             if (imageUri != null) {
@@ -110,7 +115,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
 
                 val title = title.toRequestBody("multipart/form-data".toMediaTypeOrNull())
                 val content = content.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-                val idStore = idStore.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val idStore = idStore!!.toRequestBody("multipart/form-data".toMediaTypeOrNull())
                 viewModel.handle(
                     AddPostViewAction.AddPostAction(
                         idStore,
@@ -122,7 +127,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
             } else {
                 val title_1 = title.toRequestBody("multipart/form-data".toMediaTypeOrNull())
                 val content_1 = content.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-                val idStore_1 = idStore.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val idStore_1 = idStore!!.toRequestBody("multipart/form-data".toMediaTypeOrNull())
                 viewModel.handle(
                     AddPostViewAction.AddPostAction(
                         idStore_1,

@@ -134,7 +134,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
             val intent = Intent(this@SignUpActivity, AuthenticationOtpActivity::class.java)
             intent.putExtra("OTP", verificationId)
             intent.putExtra("resendToken", token)
-            intent.putExtra("phone", number)
+            intent.putExtra("phone", views.phoneNumber.text.toString().trim())
             startActivity(intent)
         }
     }

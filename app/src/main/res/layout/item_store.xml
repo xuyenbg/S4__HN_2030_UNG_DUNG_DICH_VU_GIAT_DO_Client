@@ -5,13 +5,14 @@
     android:layout_height="200dp"
     android:padding="4dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img_avate_store"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_radius_8"
         android:src="@drawable/img_demo_store"
         android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/round_image_8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

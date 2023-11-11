@@ -12,21 +12,28 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface APIPost {
     @GET("api/posts/list")
-    fun getPost() : Observable<MutableList<PostModel>>
+    fun getPost(): Observable<MutableList<PostModel>>
+
+    @GET("api/posts/list-post-by-store/{idStore}")
+    fun getPostStore(
+        @Path("idStore") idStore: String
+    ): Observable<MutableList<PostModel>>
 
     @POST("api/posts/insert")
     fun addPost(
         @Body body: PostAddModel
-    ) : Observable<Response<ResponseBody>>
+    ): Observable<Response<ResponseBody>>
+
     @Multipart
     @POST("api/posts/insert")
     fun addPostImage(
-        @Part("idStore") idStore : RequestBody,
-        @Part("title") title : RequestBody,
-        @Part("content") content : RequestBody,
-        @Part image : MultipartBody.Part?
-    ) : Observable<Response<ResponseBody>>
+        @Part("idStore") idStore: RequestBody,
+        @Part("title") title: RequestBody,
+        @Part("content") content: RequestBody,
+        @Part image: MultipartBody.Part?
+    ): Observable<Response<ResponseBody>>
 }

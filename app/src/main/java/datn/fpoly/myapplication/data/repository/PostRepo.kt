@@ -15,7 +15,10 @@ class PostRepo @Inject constructor(
 ) {
     fun getListPost(): Observable<MutableList<PostModel>> =
         api.getPost().subscribeOn(Schedulers.io())
-
+    fun getListPostStore(
+        idStore: String
+    ): Observable<MutableList<PostModel>> =
+        api.getPostStore(idStore).subscribeOn(Schedulers.io())
     fun addListPost(
         idStore: RequestBody,
         title: RequestBody,

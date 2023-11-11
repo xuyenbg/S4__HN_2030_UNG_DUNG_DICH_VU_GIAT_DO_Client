@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.Fail
@@ -23,6 +24,7 @@ import datn.fpoly.myapplication.ui.fragment.postclient.adapter.PostClientAdapter
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
+import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -48,6 +50,13 @@ class PostClientFragment @Inject constructor() : BaseFragment<FragmentPostClient
 
             }
         })
+        views.swipeToRefresh.setOnRefreshListener {
+
+            viewModel.handle(HomeViewAction.PostClientActionList)
+            lifecycleScope.launch {
+
+            }
+        }
     }
 
     override fun invalidate() : Unit = withState(viewModel){
@@ -58,6 +67,7 @@ class PostClientFragment @Inject constructor() : BaseFragment<FragmentPostClient
     private fun getListPost(it: HomeViewState) {
         when (it.statePost) {
             is Success -> {
+                views.swipeToRefresh.isRefreshing = false
                 runBlocking {
                     launch {
                         it.statePost.invoke()?.let {

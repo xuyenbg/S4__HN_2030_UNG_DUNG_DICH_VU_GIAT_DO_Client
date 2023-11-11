@@ -2,6 +2,8 @@ package datn.fpoly.myapplication.ui.fragment.settingStore.setting
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,14 +30,18 @@ class FragmentSetting : BaseFragment<FragmentProfileUserBinding>() {
 
     override fun invalidate() {
         super.invalidate()
-        val account = Hawk.get<AccountModel>("Account",null)
+        val account = Hawk.get<AccountModel>("Account", null)
         Log.d("FragmentSetting", "invalidate: $account")
 
         views.btnLogOut.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            Hawk.delete("Account");
-            Hawk.put("CheckLogin", false)
-            startActivity(Intent(requireContext(), SignInActivity::class.java))
+            val handler = Handler(Looper.getMainLooper())
+            handler.postDelayed({
+                FirebaseAuth.getInstance().signOut()
+                Hawk.delete("Account");
+                Hawk.put("CheckLogin", false)
+                startActivity(Intent(requireContext(), SignInActivity::class.java))
+            }, 3000)
+
         }
         views.tvRegisterStore.setOnClickListener {
             if (account?.idRole == "6522666361b6e95df121642d") {

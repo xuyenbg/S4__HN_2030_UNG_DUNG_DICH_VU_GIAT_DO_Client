@@ -1,6 +1,5 @@
 package datn.fpoly.myapplication.ui.fragment.postStore
 
-import android.R
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
@@ -17,6 +16,8 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.example.ql_ban_hang.core.BaseFragment
+import com.orhanobut.hawk.Hawk
+import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.data.model.post.PostModel
 import datn.fpoly.myapplication.databinding.ActivityPostStoreBinding
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
@@ -25,12 +26,10 @@ import datn.fpoly.myapplication.ui.homeStore.HomeStoreState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewModel
 import datn.fpoly.myapplication.ui.poststore.AddPostActivity
-import kotlinx.coroutines.delay
+import datn.fpoly.myapplication.utils.Common
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withTimeout
 import timber.log.Timber
-import java.util.Collections
 
 
 class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
@@ -43,7 +42,8 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.handle(HomeStoreViewAction.PostStoreActionList)
+        val idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
+        viewModel.handle(HomeStoreViewAction.PostStoreActionList(idStore!!))
 
         views.toobar.tvTitleTooobal.text = "Tạo Bài Viết"
         views.btnAddPost.setOnClickListener {
@@ -54,17 +54,15 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
         views.recyclerViewPostStore.addItemDecoration(itemDecoration)
         postClientAdapter.setListener(object : PostClientAdapter.PostListener {
             override fun onClickPost(postModel: PostModel) {
-                val intent = Intent(requireContext(),DetailStoreActivity::class.java)
+                val intent = Intent(requireContext(), DetailStoreActivity::class.java)
                 startActivity(intent)
             }
         })
 
         views.swipeToRefresh.setOnRefreshListener {
 
-            viewModel.handle(HomeStoreViewAction.PostStoreActionList)
+            viewModel.handle(HomeStoreViewAction.PostStoreActionList(idStore))
             lifecycleScope.launch {
-                delay(1500)
-                views.swipeToRefresh.isRefreshing = false
             }
 
         }
@@ -77,6 +75,7 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
     private fun getListPost(it: HomeStoreState) {
         when (it.statePostStore) {
             is Success -> {
+                views.swipeToRefresh.isRefreshing = false
                 runBlocking {
                     launch {
                         it.statePostStore.invoke()?.let {

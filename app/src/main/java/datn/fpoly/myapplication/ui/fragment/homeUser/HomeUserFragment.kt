@@ -3,20 +3,21 @@ package datn.fpoly.myapplication.ui.fragment.homeUser
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.airbnb.mvrx.*
 import com.example.ql_ban_hang.core.BaseFragment
-import datn.fpoly.myapplication.data.model.CategoryModel
-import datn.fpoly.myapplication.databinding.FragmentHomeUserBinding
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import com.airbnb.mvrx.activityViewModel
 import com.orhanobut.hawk.Hawk
+import datn.fpoly.myapplication.data.model.CategoryModel
 import datn.fpoly.myapplication.data.model.StoreModel
+import datn.fpoly.myapplication.databinding.FragmentHomeUserBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterCategory
 import datn.fpoly.myapplication.ui.adapter.AdapterStore
+import datn.fpoly.myapplication.ui.adapter.SlideImageAdapter
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
@@ -25,6 +26,8 @@ import datn.fpoly.myapplication.ui.listService.ListServiceActivity
 import datn.fpoly.myapplication.ui.seeMore.SeeMoreActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.DataRaw
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 
@@ -33,6 +36,10 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var adapterCate: AdapterCategory
     private lateinit var adapterStore: AdapterStore
+    private lateinit var handler: Handler
+    private var imageList: MutableList<Int> = mutableListOf()
+    private lateinit var adapter: SlideImageAdapter
+
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -40,6 +47,8 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        adapter = SlideImageAdapter(views.vpSlideShow)
 
         adapterCate = AdapterCategory(6, false)
         views.rcvListCategory.adapter = adapterCate
@@ -81,6 +90,8 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
             requireContext().startActivity(intent)
         }
 
+        initSlide()
+
 
     }
 
@@ -88,6 +99,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         super.onResume()
         viewModel.handle(HomeViewAction.HomeActionCategory)
         viewModel.handle(HomeViewAction.HomeActionGetListStore)
+        handler.postDelayed(runnable, 2000)
     }
 
     override fun invalidate(): Unit = withState(viewModel) {
@@ -157,7 +169,39 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
 
     }
 
+    private val runnable = Runnable {
+        if (views.vpSlideShow.currentItem == imageList.size - 1) {
+            views.vpSlideShow.currentItem = 0
+        } else {
+            views.vpSlideShow.currentItem = views.vpSlideShow.currentItem + 1
+        }
+    }
 
+    private fun initSlide() {
+        handler = Handler(Looper.myLooper()!!)
+        imageList.add(datn.fpoly.myapplication.R.drawable.imageslide_1)
+        imageList.add(datn.fpoly.myapplication.R.drawable.imageslide_2)
+        imageList.add(datn.fpoly.myapplication.R.drawable.imageslide3)
+        imageList.add(datn.fpoly.myapplication.R.drawable.imageslide_4)
+        adapter = SlideImageAdapter(views.vpSlideShow)
+        adapter.updateData(imageList)
+        views.vpSlideShow.adapter = adapter
+
+
+        views.circle3.setViewPager(views.vpSlideShow)
+        views.vpSlideShow.registerOnPageChangeCallback(object : OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                handler.removeCallbacks(runnable)
+                handler.postDelayed(runnable, 3000)
+            }
+        })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        handler.removeCallbacks(runnable)
+    }
 }
 
 

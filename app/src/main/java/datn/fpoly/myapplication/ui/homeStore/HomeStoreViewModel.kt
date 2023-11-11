@@ -18,7 +18,7 @@ class HomeStoreViewModel @AssistedInject constructor(
     override fun handle(action: HomeStoreViewAction) {
         when (action) {
             is HomeStoreViewAction.PostStoreActionList -> {
-                handlerGetPost()
+                getPostStore(action.idStore)
             }
             is HomeStoreViewAction.GetListCategory->{
                 getListCate()
@@ -29,9 +29,9 @@ class HomeStoreViewModel @AssistedInject constructor(
         }
     }
 
-    private fun handlerGetPost() {
+    private fun getPostStore(idStore : String) {
         setState { copy(statePostStore = Loading()) }
-        responsePost.getListPost().execute { copy(statePostStore = it) }
+        responsePost.getListPostStore(idStore).execute { copy(statePostStore = it) }
     }
     private fun getListCate(){
         setState { copy(stateCate = Loading()) }
