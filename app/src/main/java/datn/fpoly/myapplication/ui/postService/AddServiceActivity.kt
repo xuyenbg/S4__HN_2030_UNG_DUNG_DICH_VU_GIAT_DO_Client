@@ -31,6 +31,7 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.gson.Gson
 import datn.fpoly.myapplication.data.model.StoreModel
 import com.airbnb.mvrx.viewModel
+import datn.fpoly.myapplication.utils.DataRaw
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -54,10 +55,11 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
         viewModel.subscribe(this) {
             updateStatePost(it)
         }
+        val listCate: MutableList<CategoryModel> = Hawk.get(Common.KEY_LIST_CATE)
         views.toobar.tvTitleTooobal.text = "Thêm dịch vụ"
         val adapterSpinner = AdapterSpinnerCate()
         views.spinnerCate.adapter = adapterSpinner
-        adapterSpinner.setData(Hawk.get(Common.KEY_LIST_CATE))
+        adapterSpinner.setData(listCate)
         views.imgSelectImage.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
@@ -101,6 +103,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
 
         }
         val items = mutableListOf<String>()
+        items.add("")
         items.add("%")
         items.add("VNĐ")
         val adapter = ArrayAdapter(this, R.layout.simple_spinner_item, items)
@@ -152,18 +155,91 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             views.btnUnit4.isChecked = true
         }
         views.btnInsertService.setOnClickListener {
-            if (validate()) {
-                postService()
+
+            if (intent.getBooleanExtra(Common.KEY_UPDATE_SERVICE, false)) {
+                if(validateUpdate()){
+                    updateService()
+                }
+            } else {
+                if(validate()){
+                    postService()
+                }
+
             }
 
 
         }
+        if (intent.getBooleanExtra(Common.KEY_UPDATE_SERVICE, false)) {
+            val modelUpdate = DataRaw.getModelUpdateService()
+            for (index in 0 until listCate.size) {
+                if (modelUpdate?.idCategory?.id == listCate[index].id) {
+                    views.spinnerCate.setSelection(index)
+                    views.spinnerCate.isSelected = true
+                    break
+                }
+            }
+            if (modelUpdate?.idSale != null) {
+                for (index in 0 until items.size) {
+                    if (items[index] == modelUpdate.idSale?.unit) {
+                        views.spinnerUnitSale.setSelection(index)
+                        views.spinnerUnitSale.isSelected = true
+                        break;
+                    }
+                }
+                views.edPriceSale.setText(modelUpdate.idSale?.value.toString())
+            }
+            when (modelUpdate?.unit) {
+                views.btnUnit1.text -> {
+                    unit = views.btnUnit1.text.toString()
+                    views.btnUnit1.isChecked = true
+                    views.btnUnit2.isChecked = false
+                    views.btnUnit3.isChecked = false
+                    views.btnUnit4.isChecked = false
+                }
+                views.btnUnit2.text -> {
+                    unit = views.btnUnit2.text.toString()
+                    views.btnUnit1.isChecked = false
+                    views.btnUnit2.isChecked = true
+                    views.btnUnit3.isChecked = false
+                    views.btnUnit4.isChecked = false
+                }
+                views.btnUnit3.text -> {
+                    unit = views.btnUnit3.text.toString()
+                    views.btnUnit1.isChecked = false
+                    views.btnUnit2.isChecked = false
+                    views.btnUnit3.isChecked = true
+                    views.btnUnit4.isChecked = false
+                }
+                views.btnUnit4.text -> {
+                    unit = views.btnUnit4.text.toString()
+                    views.btnUnit1.isChecked = false
+                    views.btnUnit2.isChecked = false
+                    views.btnUnit3.isChecked = false
+                    views.btnUnit4.isChecked = true
+                }
+            }
+            views.edNameService.setText(modelUpdate?.name)
+            views.edPriceService.setText(modelUpdate?.price.toString())
+            for (index in 0 until modelUpdate?.attributeList?.size!!) {
+                adapterAttribute.insertItem(
+                    PostService.PostAttribute(
+                        modelUpdate.attributeList!![index].name,
+                        modelUpdate.attributeList!![index].price
+                    )
+                )
+            }
+            Glide.with(views.imgSelectImage).load(modelUpdate.image).into(views.imgSelectImage)
+            views.btnInsertService.setText("Lưu")
+        }else{
+            views.btnInsertService.setText("Thêm")
+        }
+
     }
 
     private fun validate(): Boolean {
         var isValidate = false
         if (views.edNameService.text.toString().isNotEmpty() && views.edPriceService.text.toString()
-                .isNotEmpty()&& imageUri!=null
+                .isNotEmpty() && imageUri != null
         ) {
             if (views.edPriceSale.text.toString().isEmpty()) {
                 isValidate = true
@@ -210,11 +286,65 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 isValidate = true
                 views.tvErrorPriceService.text = ""
             }
-            if(imageUri==null){
+            if (imageUri == null) {
                 isValidate = false
                 Toast.makeText(this, "Bạn chưa chọn ảnh", Toast.LENGTH_SHORT).show()
-            }else{
+            } else {
                 isValidate = true
+            }
+        }
+        return isValidate
+    }
+
+    private fun validateUpdate(): Boolean {
+        var isValidate = false
+        if (views.edNameService.text.toString().isNotEmpty() && views.edPriceService.text.toString()
+                .isNotEmpty()
+        ) {
+            if (views.edPriceSale.text.toString().isEmpty()) {
+                isValidate = true
+                views.tvErrorPriceSale.text = ""
+            } else {
+                if (views.spinnerUnitSale.selectedItem.toString() == "%") {
+                    if (views.edPriceSale.text.toString().toDouble() < 0) {
+                        isValidate = false
+                        views.tvErrorPriceSale.text = "Giá trị không được nhỏ hơn 0"
+                    } else if (views.edPriceSale.text.toString().toDouble() > 100) {
+                        isValidate = false
+                        views.tvErrorPriceSale.text = "Giá trị không được vượt quá 100%"
+                    } else {
+                        views.tvErrorPriceSale.text = ""
+                        isValidate = true
+                    }
+                } else {
+                    if (views.edPriceSale.text.toString().toDouble() < 0) {
+                        isValidate = false
+                        views.tvErrorPriceSale.text = "Giá trị không được nhỏ hơn 0"
+                    } else {
+                        views.tvErrorPriceSale.text = ""
+                        isValidate = true
+                    }
+                }
+            }
+            views.tvErrorPriceService.text = ""
+            views.tvErrorNameService.text = ""
+        } else {
+            if (views.edNameService.text.toString().trim().isEmpty()) {
+                isValidate = false
+                views.tvErrorNameService.text = "Tên dịch vụ không được để trống"
+            } else {
+                isValidate = true
+                views.tvErrorNameService.text = ""
+            }
+            if (views.edPriceService.text.toString().isEmpty()) {
+                isValidate = false
+                views.tvErrorPriceService.text = "Giá dịch vụ không được để trống"
+            } else if (views.edPriceService.text.toString().toDouble() < 0) {
+                isValidate = false
+                views.tvErrorPriceService.text = "Giá dịch vụ không được nhỏ hơn 0"
+            } else {
+                isValidate = true
+                views.tvErrorPriceService.text = ""
             }
         }
         return isValidate
@@ -230,7 +360,8 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
         val idCate =
             cate.id.toString().trim().toRequestBody("multipart/form-data".toMediaTypeOrNull())
         val idStore =
-            Hawk.get<StoreModel>(Common.KEY_STORE).id.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            Hawk.get<StoreModel>(Common.KEY_STORE).id.toString()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
 //        val idStore ="65475330501201abab1bd500".toRequestBody("multipart/form-data".toMediaTypeOrNull())
         val listAttribute = adapterAttribute.getList()
         val unitSale = views.spinnerUnitSale.selectedItem.toString()
@@ -263,6 +394,97 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 it
             )
         }
+
+    }
+
+    private fun updateService() {
+        if (imageUri != null) {
+            val file = File(imageUri!!.path!!) // Chuyển URI thành File
+            val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
+            val name = views.tvNameExtraService.text.toString().trim()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val cate = views.spinnerCate.selectedItem as CategoryModel
+            val idCate =
+                cate.id.toString().trim().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val idStore =
+                Hawk.get<StoreModel>(Common.KEY_STORE).id.toString()
+                    .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+//        val idStore ="65475330501201abab1bd500".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val listAttribute = adapterAttribute.getList()
+            val unitSale = views.spinnerUnitSale.selectedItem.toString()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val valueSale = views.edPriceSale.text.toString().trim()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val priceServie = views.edPriceService.text.toString().trim()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val unit = unit.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val isActive = true.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val stringMap = HashMap<String, PostService.PostAttribute>()
+            listAttribute.forEachIndexed { index, item ->
+                stringMap["attributeList[$index]"] = item
+            }
+            idStore.let {
+                AddServiceViewAction.AddService(
+                    image,
+                    name,
+                    priceServie,
+                    stringMap,
+                    isActive,
+                    unit,
+                    idCate,
+                    it,
+                    unitSale,
+                    valueSale
+                )
+            }?.let {
+                viewModel.handle(
+                    it
+                )
+            }
+        } else {
+            val name = views.tvNameExtraService.text.toString().trim()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val cate = views.spinnerCate.selectedItem as CategoryModel
+            val idCate =
+                cate.id.toString().trim().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val idStore =
+                Hawk.get<StoreModel>(Common.KEY_STORE).id.toString()
+                    .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+//        val idStore ="65475330501201abab1bd500".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val listAttribute = adapterAttribute.getList()
+            val unitSale = views.spinnerUnitSale.selectedItem.toString()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val valueSale = views.edPriceSale.text.toString().trim()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val priceServie = views.edPriceService.text.toString().trim()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val unit = unit.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val isActive = true.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val stringMap = HashMap<String, PostService.PostAttribute>()
+            listAttribute.forEachIndexed { index, item ->
+                stringMap["attributeList[$index]"] = item
+            }
+            idStore.let {
+                AddServiceViewAction.AddService(
+                    null,
+                    name,
+                    priceServie,
+                    stringMap,
+                    isActive,
+                    unit,
+                    idCate,
+                    it,
+                    unitSale,
+                    valueSale
+                )
+            }?.let {
+                viewModel.handle(
+                    it
+                )
+            }
+        }
+
 
     }
 

@@ -32,7 +32,7 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
-        adapterService = AdapterService()
+        adapterService = AdapterService(false)
         intent.getStringExtra(Common.KEY_ID_STORE)?.let { viewModel.handle(DetailStoreViewAction.GetListServiceByStore(it)) }
         intent.getStringExtra(Common.KEY_ID_STORE)?.let { viewModel.handle(DetailStoreViewAction.GetStoreById(it)) }
         views.imgBack.setOnClickListener {
@@ -48,6 +48,10 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
                 Hawk.put(Common.KEY_SERVICE_DETAIL, item)
                 val intent = Intent(this@DetailStoreActivity, DetailServiceActivity::class.java)
                 startActivity(intent)
+            }
+
+            override fun EditService(serviceModel: ServiceModel) {
+
             }
         })
 

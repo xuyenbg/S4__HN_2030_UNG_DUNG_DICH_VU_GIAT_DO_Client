@@ -11,6 +11,11 @@ class AdapterPostAttribute(): Adapter<AdapterPostAttribute.ViewHolderItemAttribu
     private val litsAttribute = mutableListOf<PostService.PostAttribute>()
     private var attributeListener: PostAttributeListener?=null
     fun getList(): MutableList<PostService.PostAttribute> = litsAttribute
+    fun initAttribute(list: MutableList<PostService.PostAttribute>){
+        this.litsAttribute.clear()
+        this.litsAttribute.addAll(list)
+        notifyDataSetChanged()
+    }
     fun insertItem(item: PostService.PostAttribute){
         this.litsAttribute.add(item)
         notifyDataSetChanged()

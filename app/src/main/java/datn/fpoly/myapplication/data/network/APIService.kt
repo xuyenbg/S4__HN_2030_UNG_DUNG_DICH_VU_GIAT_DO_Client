@@ -35,5 +35,22 @@ interface APIService {
         @Part("unitSale") unitSale: RequestBody?,  // Đơn vị giảm giá (nếu có)
         @Part("valueSale") valueSale: RequestBody?
     ): io.reactivex.Observable<Response<ResponseBody>>
+    @Multipart
+    @PUT("api/services/update/:{idService}")
+    fun UpdateService(
+        @Path("idService") idService: String,
+        @Part image: MultipartBody.Part?,  // Phần dữ liệu của hình ảnh
+        @Part("name") name: RequestBody,  // Tên sản phẩm
+        @Part("price") price: RequestBody,  // Giá sản phẩm
+        @PartMap attributeList:Map<String, PostService.PostAttribute>,  // Danh sách thuộc tính sản phẩm
+        @Part("isActive") isActive: RequestBody,  // Trạng thái kích hoạt
+        @Part("unit") unit: RequestBody,  // Đơn vị sản phẩm
+        @Part("idCategory") idCategory: RequestBody,  // ID danh mục
+        @Part("idStore") idStore: RequestBody,  // ID cửa hàng
+        @Part("unitSale") unitSale: RequestBody?,  // Đơn vị giảm giá (nếu có)
+        @Part("valueSale") valueSale: RequestBody?
+    ): io.reactivex.Observable<Response<ResponseBody>>
 
+    @GET("api/services/")
+    fun getServiceById(@Path("") idService: String): io.reactivex.Observable<ServiceModel>
 }

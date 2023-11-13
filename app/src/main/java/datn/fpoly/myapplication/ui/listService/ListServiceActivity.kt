@@ -32,7 +32,7 @@ class ListServiceActivity : BaseActivity<ActivityListServiceBinding>(), ListServ
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
         viewModel.handle(ListServiceViewAction.GetListServiceByCategory(DataRaw.getDataIdCategory()))
-        adapter = AdapterService()
+        adapter = AdapterService(false)
         views.rcvList.adapter= adapter
         adapter.setListenner(object :AdapterService.ServiceListenner{
             override fun ServiceOnClick(item: ServiceModel, position: Int) {
@@ -40,6 +40,10 @@ class ListServiceActivity : BaseActivity<ActivityListServiceBinding>(), ListServ
                 val intent = Intent(this@ListServiceActivity, DetailServiceActivity::class.java)
                 startActivity(intent)
                 finish()
+            }
+
+            override fun EditService(serviceModel: ServiceModel) {
+
             }
         })
         viewModel.subscribe(this){

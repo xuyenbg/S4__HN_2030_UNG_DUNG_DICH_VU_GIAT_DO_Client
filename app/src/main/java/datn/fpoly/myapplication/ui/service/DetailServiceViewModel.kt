@@ -12,7 +12,8 @@ import datn.fpoly.myapplication.data.repository.ServiceRepo
 class DetailServiceViewModel @AssistedInject constructor(
     @Assisted state: DetailServiceViewState,
     private var repo: ServiceRepo,
-    private val dbRepo: RoomDbRepo
+    private val dbRepo: RoomDbRepo,
+    private val respoService: ServiceRepo
 ) : BaseViewModel<DetailServiceViewState, DetailServiceViewAction, DetailServiceViewEvent>(state) {
     override fun handle(action: DetailServiceViewAction) {
         when(action){

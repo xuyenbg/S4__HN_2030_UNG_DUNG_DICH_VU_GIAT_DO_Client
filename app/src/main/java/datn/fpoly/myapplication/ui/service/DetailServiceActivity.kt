@@ -64,7 +64,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
         views.imgBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-        adapterService = AdapterService()
+        adapterService = AdapterService(false)
         views.rcvService.adapter = adapterService
         viewModel.getCart().observe(this) {
             if (it != null) {
@@ -77,6 +77,10 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
                 val intent = Intent(this@DetailServiceActivity, DetailServiceActivity::class.java)
                 startActivity(intent)
                 finish()
+            }
+
+            override fun EditService(serviceModel: ServiceModel) {
+
             }
         })
         views.tvNameService.text = serviceModel?.name
