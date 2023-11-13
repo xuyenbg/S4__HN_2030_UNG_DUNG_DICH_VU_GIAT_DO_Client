@@ -17,7 +17,7 @@ interface APIStore {
     @GET("api/stores/list")
     fun getListCategory(): Observable<MutableList<StoreModel>>
     @GET("api/stores/store-by-iduse/{idUser}")
-    fun getStoreByIdUser(@Path("idUser") idUser: String): Observable<List<StoreModel>>
+    fun getStoreByIdUser(@Path("idUser") idUser: String): Observable<StoreModel>
 
     @Multipart
     @POST("api/stores/register-store")

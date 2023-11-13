@@ -43,8 +43,10 @@ import javax.inject.Inject
 class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel.Factory {
     @Inject
     lateinit var loginViewModelFactory: LoginViewModel.Factory
+
     @Inject
     lateinit var dbRepo: RoomDbRepo
+
     @Inject
     lateinit var authRepo: AuthRepo
     private val viewModel: LoginViewModel by viewModel()
@@ -86,7 +88,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                         OTP, typeOTP
                     )
 //                    views.progressPhone.visibility = View.VISIBLE
-                    Dialog_Loading.getInstance().show(supportFragmentManager,"LoginLoading")
+                    Dialog_Loading.getInstance().show(supportFragmentManager, "LoginLoading")
                     signInWithPhoneAuthCredential(credential)
                 } else {
                     Toast.makeText(this, "Vui lòng nhập lại OTP", Toast.LENGTH_SHORT).show()
@@ -117,42 +119,57 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
 
                             // account chứa cả đối tượng và message
                             val account = result.body()?.let { parseJsonToAccountList(it.string()) }
-                            if (account?.message == "Đăng nhập thành công") {
-                                authRepo.saveUser(accountResponse = account.user)
-                                authRepo.setLogin(isLogin = true)
-                                dbRepo.getCart()
+                            if (account?.user?.idRole == "6522667961b6e95df121642e") {
                                 Toast.makeText(
                                     this@OTPLoginActivity,
-                                    "Đăng nhập thành công",
+                                    "Bạn chưa đăng kí của hàng",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                if (!check) {
-                                    Hawk.put("Manage",0)
-                                    startActivity(
-                                        Intent(
-                                            this@OTPLoginActivity,
-                                            HomeActivity::class.java
-                                        ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(
+                                    Intent(
+                                        this@OTPLoginActivity,
+                                        SignInActivity::class.java
                                     )
-                                } else {
-                                    Hawk.put("Manage",1)
-                                    startActivity(
-                                        Intent(
-                                            this@OTPLoginActivity,
-                                            HomeStoreActivity::class.java
-                                        ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    )
-                                }
-
+                                )
                             } else {
-                                Log.d("Log In", "Sai tài khoản hoặc mật khẩu")
+                                if (account?.message == "Đăng nhập thành công") {
+                                    authRepo.saveUser(accountResponse = account.user)
+                                    authRepo.setLogin(isLogin = true)
+                                    dbRepo.getCart()
+                                    Toast.makeText(
+                                        this@OTPLoginActivity,
+                                        "Đăng nhập thành công",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    if (!check) {
+                                        Hawk.put("Manage", 0)
+                                        startActivity(
+                                            Intent(
+                                                this@OTPLoginActivity,
+                                                HomeActivity::class.java
+                                            ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                        )
+                                    } else {
+                                        Hawk.put("Manage", 1)
+                                        startActivity(
+                                            Intent(
+                                                this@OTPLoginActivity,
+                                                HomeStoreActivity::class.java
+                                            ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                        )
+                                    }
 
-                                Toast.makeText(
-                                    this@OTPLoginActivity,
-                                    "Sai tài khoản hoặc mật khẩu",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                } else {
+                                    Log.d("Log In", "Sai tài khoản hoặc mật khẩu")
+
+                                    Toast.makeText(
+                                        this@OTPLoginActivity,
+                                        "Sai tài khoản hoặc mật khẩu",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             }
+
                         }
                     }
                 }
@@ -191,7 +208,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
         views.tvSendTo.visibility = View.INVISIBLE
         views.tvSendTo.isEnabled = false
 
-       val countdownTimer = object : CountDownTimer(60000, 1000) {
+        val countdownTimer = object : CountDownTimer(60000, 1000) {
             @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
                 views.tvTimeCount.text = "Còn lại : ${(millisUntilFinished / 1000)}"
@@ -255,20 +272,12 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
     private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-            // This callback will be invoked in two situations:
-            // 1 - Instant verification. In some cases the phone number can be instantly
-            //     verified without needing to send or enter a verification code.
-            // 2 - Auto-retrieval. On some devices Google Play services can automatically
-            //     detect the incoming verification SMS and perform verification without
-            //     user action.
+
             signInWithPhoneAuthCredential(credential)
         }
 
 
         override fun onVerificationFailed(e: FirebaseException) {
-            // This callback is invoked in an invalid request for verification is made,
-            // for instance if the the phone number format is not valid.
-
             if (e is FirebaseAuthInvalidCredentialsException) {
                 // Invalid request
                 Log.d("TAG", "onVerificationFailed: ${e.toString()}")
@@ -277,19 +286,12 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                 // The SMS quota for the project has been exceeded
                 Log.d("TAG", "onVerificationFailed: ${e.toString()}")
             }
-//            views.progressPhone.visibility = View.VISIBLE
-//            dialogLoading.show(supportFragmentManager, "LoadingAccount")
-            // Show a message and update the UI
         }
 
         override fun onCodeSent(
             verificationId: String,
             token: PhoneAuthProvider.ForceResendingToken
         ) {
-            // The SMS verification code has been sent to the provided phone number, we
-            // now need to ask the user to enter the code and then construct a credential
-            // by combining the code with a verification ID.
-            // Save verification ID and resending token so we can use them later
             OTP = verificationId
             resendToken = token
         }
@@ -299,9 +301,6 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-//                    views.progressPhone.visibility = View.VISIBLE
-
                     val user = task.result?.user
                     Timber.tag("OTPLoginActivity").d("initUiAndData: ${phoneNumber}")
                     Timber.tag("OTPLoginActivity").d("initUiAndData:uid ${user?.uid}")

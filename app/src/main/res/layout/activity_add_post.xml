@@ -10,6 +10,8 @@
 
     <include
         android:id="@+id/toobar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         layout="@layout/toobar_fragment" />
 
     <androidx.core.widget.NestedScrollView
@@ -54,7 +56,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/boder_edittex"
-                android:elevation="10dp"
+                android:elevation="5dp"
                 android:gravity="start"
                 android:hint="Tiêu đề ........."
                 android:inputType="textMultiLine"
@@ -65,7 +67,19 @@
                 android:paddingBottom="12dp"
                 android:scrollbars="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title" />
-
+            <TextView
+                android:id="@+id/tv_error_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:textSize="@dimen/_12dp"
+                android:textStyle="italic"
+                android:visibility="gone"
+                android:textColor="@color/red_2"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="" />
             <TextView
                 android:id="@+id/tv_service"
                 android:layout_width="wrap_content"
@@ -84,7 +98,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/boder_edittex"
-                android:elevation="10dp"
+                android:elevation="5dp"
                 android:gravity="start"
                 android:hint="Nội dung ........."
                 android:inputType="textMultiLine"
@@ -95,7 +109,19 @@
                 android:paddingBottom="12dp"
                 android:scrollbars="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/tv_service" />
-
+            <TextView
+                android:id="@+id/tv_error_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:textSize="@dimen/_12dp"
+                android:textStyle="italic"
+                android:visibility="gone"
+                android:textColor="@color/red_2"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="" />
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ic_image"
                 android:layout_width="40dp"

@@ -25,6 +25,7 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         views.btnLogOut.setOnClickListener {
+            Dialog_Loading.getInstance().show(childFragmentManager,"Loading_logour")
             val handler = Handler(Looper.getMainLooper())
             handler.postDelayed({
                 FirebaseAuth.getInstance().signOut()

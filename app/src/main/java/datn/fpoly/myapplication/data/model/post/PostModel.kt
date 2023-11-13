@@ -1,7 +1,9 @@
 package datn.fpoly.myapplication.data.model.post
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import datn.fpoly.myapplication.data.model.StoreModel
+import java.io.Serializable
 
 data class PostModel(
     @SerializedName("_id")
@@ -16,5 +18,4 @@ data class PostModel(
     val image: String?,
     @SerializedName("createAt")
     val date : String
-) {
-}
+) : Serializable

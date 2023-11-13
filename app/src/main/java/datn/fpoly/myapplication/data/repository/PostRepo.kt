@@ -15,17 +15,34 @@ class PostRepo @Inject constructor(
 ) {
     fun getListPost(): Observable<MutableList<PostModel>> =
         api.getPost().subscribeOn(Schedulers.io())
+
     fun getListPostStore(
         idStore: String
     ): Observable<MutableList<PostModel>> =
         api.getPostStore(idStore).subscribeOn(Schedulers.io())
+
     fun addListPost(
         idStore: RequestBody,
         title: RequestBody,
         content: RequestBody,
         image: MultipartBody.Part?
     ): Observable<Response<ResponseBody>> = api.addPostImage(
-       idStore,title,content,image
+        idStore, title, content, image
     ).subscribeOn(Schedulers.io())
 
+    fun editPost(
+        idPost: String,
+        title: RequestBody,
+        content: RequestBody,
+        image: MultipartBody.Part?
+    ): Observable<Response<ResponseBody>> = api.editPostImage(
+        idPost,
+        title, content, image
+    ).subscribeOn(Schedulers.io())
+
+    fun deletePost(
+        idPost: String,
+    ): Observable<Response<ResponseBody>> = api.deletePost(
+        idPost
+    ).subscribeOn(Schedulers.io())
 }

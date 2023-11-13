@@ -43,9 +43,9 @@ class SlideImageAdapter @Inject constructor(private val viewPager2: ViewPager2) 
             holder.binding.apply {
                 imageSlide.setImageResource(slide)
             }
-            if (position == listImage.size - 1) {
-                viewPager2.post(runnable)
-            }
+//            if (position == listImage.size - 1) {
+//                viewPager2.post(runnable)
+//            }
         }
     }
 

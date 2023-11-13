@@ -35,6 +35,7 @@
             android:overScrollMode="never"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
+            android:paddingTop="10dp"
             android:paddingBottom="@dimen/_16dp"
             android:scrollbars="none"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

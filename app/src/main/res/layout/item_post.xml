@@ -1,87 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/white"
-    android:layout_marginTop="16dp"
-    app:cardCornerRadius="8dp"
-    >
-    <androidx.constraintlayout.widget.ConstraintLayout
+    android:background="@drawable/boder_post"
+    android:paddingStart="13dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="13dp"
+    android:paddingBottom="16dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image_avt"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/avatar_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/round_avt_cirle" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:text="Nguyễn Văn Dũng"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/image_avt"
+        app:layout_constraintTop_toTopOf="@+id/image_avt" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="05/10/2023"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/tv_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Tiêu đề"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/image_avt"
+        app:layout_constraintTop_toBottomOf="@+id/image_avt" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="13dp"
-        android:paddingTop="16dp"
-        android:background="@color/white"
-        android:paddingBottom="16dp"
-        android:paddingEnd="13dp"
-        >
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/image_avt"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/avatar_profile"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/round_avt_cirle" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:text="Nguyễn Văn Dũng"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/image_avt"
-            app:layout_constraintTop_toTopOf="@+id/image_avt" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="05/10/2023"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/tv_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tiêu đề"
-            android:textSize="14sp"
-            android:layout_marginTop="16dp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/image_avt"
-            app:layout_constraintTop_toBottomOf="@+id/image_avt" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_13dp"
-            android:text="💸💸💸 Siêu Sale
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_13dp"
+        android:text="💸💸💸 Siêu Sale
              Nay em mới khai chương cửa hàng nhaaa, nhà em thì có full các dịch vụ giặt đồ để phục vụ cả nhà. Nhân dịp này thì cửa hàng sẽ sale cho 1 số dịch vụ sau:Giặt khô chỉ 10 cànhGiặt ướt chỉ 8 cànhGiặt chăn bao khô, bao sạch chỉ 12 cành Và còn nhiều ưu đãi khác..."
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/image_post_client"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="12dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/image_post"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_content"
-            app:shapeAppearanceOverlay="@style/round_image_8"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image_post_client"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="12dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_post"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_content"
+        app:shapeAppearanceOverlay="@style/round_image_8" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

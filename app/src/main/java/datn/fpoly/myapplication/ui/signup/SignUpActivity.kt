@@ -36,15 +36,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
         views.progressPhone.visibility = View.INVISIBLE
         auth = FirebaseAuth.getInstance()
 
-//        views.cbRule.setOnCheckedChangeListener { _, isChecked ->
-//            // Cập nhật trạng thái của button dựa trên checkbox
-//            views.btnContinue.isEnabled = isChecked
-//            if (!isChecked) {
-//                views.btnContinue.setTextColor(Color.GRAY)
-//            } else {
-//                views.btnContinue.setTextColor(getColor(R.color.white))
-//            }
-//        }
 
         views.btnContinue.setOnClickListener {
             number = views.phoneNumber.text.toString().trim()

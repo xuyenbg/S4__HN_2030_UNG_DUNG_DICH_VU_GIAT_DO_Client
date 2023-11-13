@@ -4,8 +4,7 @@ package datn.fpoly.myapplication.ui.poststore
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
@@ -17,7 +16,6 @@ import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.StoreModel
-import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.databinding.ActivityAddPostBinding
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Dialog_Loading
@@ -46,7 +44,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
     private var imageUri: Uri? = null
     private var isValidate = 0
     override fun onCreate(savedInstanceState: Bundle?) {
-        (applicationContext as AppApplication).appComponent.inject(this);
+        (applicationContext as AppApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(views.root)
     }
@@ -57,12 +55,6 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
             updateWithState(it)
         }
         views.icImage.setOnClickListener {
-//            TedImagePicker.with(this)
-//                .start { uri ->
-//                    imageUri = uri
-//                    Glide.with(this).load(uri).into(views.imagePost)
-//                }
-//        }
             ImagePicker.with(this)
                 .crop()
                 .compress(1024)
@@ -71,72 +63,75 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
         }
 
         views.btnPost.setOnClickListener {
-            Dialog_Loading.getInstance().show(supportFragmentManager, "Loading add post")
-            addPost()
+            validate()
         }
         views.toobar.icBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-        views.toobar.tvTitleTooobal.text = "Add Post"
+        views.toobar.tvTitleTooobal.text = "Thêm Bài Viết"
     }
 
     private fun validate() {
-        if (views.edTitle.text.toString().isEmpty()) {
-            views.edTitle.error = "Vui lòng không để trống tiêu đề !"
-            isValidate++
-        } else {
-            views.edTitle.error = null
-            isValidate = 0
-        }
+        if (views.edTitle.text.toString().trim()
+                .isNotEmpty() && views.edContent.text.toString().trim()
+                .isNotEmpty()
+        ) {
+            Dialog_Loading.getInstance().show(supportFragmentManager, "Loading add post")
+            addPost()
+            views.tvErrorTitle.text = ""
+            views.tvErrorContent.text = ""
 
-        if (views.edContent.text.toString().isEmpty()) {
-            views.edContent.error = "Vui lòng không để trống nội dung !"
-            isValidate++
         } else {
-            views.edContent.error = null
-            isValidate = 0
+            if (views.edTitle.text.toString().trim().isEmpty()) {
+                views.tvErrorTitle.visibility = View.VISIBLE
+                views.tvErrorTitle.text = "Tiêu đề không được để trống"
+            } else {
+                views.tvErrorTitle.text = ""
+            }
+
+            if (views.edContent.text.toString().trim().isEmpty()) {
+                views.tvErrorContent.text = "Nội dung không được để trống"
+                views.tvErrorContent.visibility = View.VISIBLE
+            } else {
+                views.tvErrorContent.text = ""
+            }
         }
     }
 
     private fun addPost() {
-        validate()
-        if (isValidate == 0) {
-            val title = views.edTitle.text.toString()
-            val content = views.edContent.text.toString()
-            val idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
+        val title = views.edTitle.text.toString()
+        val content = views.edContent.text.toString()
+        val idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
+        if (imageUri != null) {
 
+            val file = File(imageUri!!.path!!) // Chuyển URI thành File
 
-            if (imageUri != null) {
+            val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
-                val file = File(imageUri!!.path!!) // Chuyển URI thành File
-
-                val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
-
-                val title = title.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-                val content = content.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-                val idStore = idStore!!.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-                viewModel.handle(
-                    AddPostViewAction.AddPostAction(
-                        idStore,
-                        title,
-                        content,
-                        image
-                    )
+            val title = title.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val content = content.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val idStore = idStore!!.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            viewModel.handle(
+                AddPostViewAction.AddPostAction(
+                    idStore,
+                    title,
+                    content,
+                    image
                 )
-            } else {
-                val title_1 = title.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-                val content_1 = content.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-                val idStore_1 = idStore!!.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-                viewModel.handle(
-                    AddPostViewAction.AddPostAction(
-                        idStore_1,
-                        title_1,
-                        content_1,
-                        null
-                    )
+            )
+        } else {
+            val title_1 = title.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val content_1 = content.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val idStore_1 = idStore!!.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            viewModel.handle(
+                AddPostViewAction.AddPostAction(
+                    idStore_1,
+                    title_1,
+                    content_1,
+                    null
                 )
-            }
+            )
         }
 
     }

@@ -78,9 +78,7 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
             }
             is Success->{
                 state.stateGetStore.invoke()?.let {
-                    if(it.size>0){
-                        Hawk.put(Common.KEY_STORE, it[0])
-                    }
+                        Hawk.put(Common.KEY_STORE,it)
                 }
             }
             is Fail-> {

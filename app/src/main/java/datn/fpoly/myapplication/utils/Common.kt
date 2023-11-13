@@ -37,14 +37,15 @@ object Common {
     val KEY_STORE_DETAIL = "store_detail"
     val KEY_SERVICE_DETAIL = "service_detail"
     const val baseUrl = "https://s4-hn-2030-ung-dung-dich-vu-giat-do.onrender.com"
-    val KEY_SEE_MORE="see_more"
+    val KEY_SEE_MORE = "see_more"
     const val LATIU = "latitude"
     const val LONGTIU = "longitude"
     const val ADDRESS = "address"
-    val KEY_LIST_CATE="list_category"
-    val KEY_STORE="get_store"
-    val KEY_ID_STORE ="id_store"
-    val KEY_ID_SERVICE="id_service"
+    const val KEY_LIST_CATE = "list_category"
+    const val KEY_STORE = "get_store"
+    const val KEY_ID_STORE = "id_store"
+    const val KEY_ID_SERVICE = "id_service"
+    const val KEY_POST = "KEY_POST"
 
 
     fun ComponentActivity.registerStartForActivityResult(onResult: (ActivityResult) -> Unit): ActivityResultLauncher<Intent> {

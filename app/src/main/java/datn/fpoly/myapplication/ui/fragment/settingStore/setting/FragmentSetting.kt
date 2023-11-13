@@ -16,6 +16,7 @@ import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.databinding.FragmentProfileUserBinding
 import datn.fpoly.myapplication.ui.login.SignInActivity
 import datn.fpoly.myapplication.ui.registerstore.RegisterStoreActivity
+import datn.fpoly.myapplication.utils.Dialog_Loading
 
 class FragmentSetting : BaseFragment<FragmentProfileUserBinding>() {
 
@@ -34,6 +35,7 @@ class FragmentSetting : BaseFragment<FragmentProfileUserBinding>() {
         Log.d("FragmentSetting", "invalidate: $account")
 
         views.btnLogOut.setOnClickListener {
+            Dialog_Loading.getInstance().show(childFragmentManager, "Loading_logour")
             val handler = Handler(Looper.getMainLooper())
             handler.postDelayed({
                 FirebaseAuth.getInstance().signOut()

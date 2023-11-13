@@ -2,7 +2,6 @@ package datn.fpoly.myapplication.ui.check_out
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.airbnb.mvrx.Fail
@@ -13,7 +12,6 @@ import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.AddressExtend
 import datn.fpoly.myapplication.data.model.Order
-import datn.fpoly.myapplication.data.repository.RoomDbRepo
 import datn.fpoly.myapplication.databinding.ActivityCheckOutBinding
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 import kotlinx.coroutines.launch
@@ -38,7 +36,7 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (applicationContext as AppApplication).appComponent.inject(this);
+        (applicationContext as AppApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(views.root)
     }

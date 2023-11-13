@@ -20,26 +20,39 @@ class HomeStoreViewModel @AssistedInject constructor(
             is HomeStoreViewAction.PostStoreActionList -> {
                 getPostStore(action.idStore)
             }
-            is HomeStoreViewAction.GetListCategory->{
+
+            is HomeStoreViewAction.GetListCategory -> {
                 getListCate()
             }
-            is HomeStoreViewAction.GetStoreByIdUser->{
+
+            is HomeStoreViewAction.GetStoreByIdUser -> {
                 getStoreByIdUser(action.idUser)
+            }
+
+            is HomeStoreViewAction.deletePost -> {
+                deletePost(action.idPost)
             }
         }
     }
 
-    private fun getPostStore(idStore : String) {
+    private fun getPostStore(idStore: String) {
         setState { copy(statePostStore = Loading()) }
         responsePost.getListPostStore(idStore).execute { copy(statePostStore = it) }
     }
-    private fun getListCate(){
+
+    private fun getListCate() {
         setState { copy(stateCate = Loading()) }
-        resposeCate.getDataCategory().execute { copy(stateCate= it) }
+        resposeCate.getDataCategory().execute { copy(stateCate = it) }
     }
-    private fun getStoreByIdUser(idUser: String){
+
+    private fun getStoreByIdUser(idUser: String) {
         setState { copy(stateGetStore = Loading()) }
-        resposeStore.getStoreByIdUser(idUser).execute { copy(stateGetStore= it) }
+        resposeStore.getStoreByIdUser(idUser).execute { copy(stateGetStore = it) }
+    }
+
+    private fun deletePost(idPost: String) {
+        setState { copy(stateDelete = Loading()) }
+        responsePost.deletePost(idPost).execute { copy(stateDelete = it) }
     }
 
     @AssistedFactory

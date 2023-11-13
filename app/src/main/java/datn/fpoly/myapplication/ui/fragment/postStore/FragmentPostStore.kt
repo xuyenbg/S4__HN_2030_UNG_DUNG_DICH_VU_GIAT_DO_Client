@@ -1,13 +1,24 @@
 package datn.fpoly.myapplication.ui.fragment.postStore
 
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.Fail
@@ -16,12 +27,15 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.example.ql_ban_hang.core.BaseFragment
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.orhanobut.hawk.Hawk
+import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.data.model.post.PostModel
 import datn.fpoly.myapplication.databinding.ActivityPostStoreBinding
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
-import datn.fpoly.myapplication.ui.fragment.postclient.adapter.PostClientAdapter
+import datn.fpoly.myapplication.ui.editpost.EditPostActivity
+import datn.fpoly.myapplication.ui.fragment.postclient.adapter.PostStoreAdapter
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewModel
@@ -30,11 +44,13 @@ import datn.fpoly.myapplication.utils.Common
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
+import java.io.File
 
 
 class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
     private val viewModel: HomeStoreViewModel by activityViewModel()
-    private lateinit var postClientAdapter: PostClientAdapter
+    private lateinit var postClientAdapter: PostStoreAdapter
+    private var idStore: String? = null
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -42,34 +58,41 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
+        idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
         viewModel.handle(HomeStoreViewAction.PostStoreActionList(idStore!!))
-
         views.toobar.tvTitleTooobal.text = "Tạo Bài Viết"
         views.btnAddPost.setOnClickListener {
             startActivity(Intent(requireContext(), AddPostActivity::class.java))
         }
-        postClientAdapter = PostClientAdapter()
+        postClientAdapter = PostStoreAdapter()
         val itemDecoration = ItemSpacingDecoration(32)
         views.recyclerViewPostStore.addItemDecoration(itemDecoration)
-        postClientAdapter.setListener(object : PostClientAdapter.PostListener {
+        postClientAdapter.setListener(object : PostStoreAdapter.PostListener {
             override fun onClickPost(postModel: PostModel) {
                 val intent = Intent(requireContext(), DetailStoreActivity::class.java)
+                intent.putExtra(Common.KEY_ID_STORE, postModel.id)
                 startActivity(intent)
+            }
+
+            override fun onClickEdit(postModel: PostModel) {
+                bottomSheetDialog(postModel)
+//                deletePost(postModel)
             }
         })
 
         views.swipeToRefresh.setOnRefreshListener {
 
-            viewModel.handle(HomeStoreViewAction.PostStoreActionList(idStore))
+            viewModel.handle(HomeStoreViewAction.PostStoreActionList(idStore!!))
             lifecycleScope.launch {
             }
 
         }
+
     }
 
     override fun invalidate(): Unit = withState(viewModel) {
         getListPost(it)
+        deletePostUi(it)
     }
 
     private fun getListPost(it: HomeStoreState) {
@@ -79,13 +102,11 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
                 runBlocking {
                     launch {
                         it.statePostStore.invoke()?.let {
-                            Timber.tag("PostClientFragment").d("postinvalidate: ${it.size}")
                             postClientAdapter.updateData(it)
                             views.recyclerViewPostStore.adapter = postClientAdapter
 
                             postClientAdapter.notifyDataSetChanged()
 
-                            Log.d("PostClientFragment", "getListPost: ${it.size}")
                         }
                     }
 
@@ -106,9 +127,96 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
         }
     }
 
+    private fun deletePostUi(it: HomeStoreState) {
+        when (it.stateDelete) {
+            is Success -> {
+                views.swipeToRefresh.isRefreshing = false
+                runBlocking {
+                    launch {
+                        it.stateDelete.invoke()?.let { result ->
+                            if (result.code() == 200) {
+                                Toast.makeText(requireContext(), "Đã xóa", Toast.LENGTH_SHORT)
+                                    .show()
+                            } else {
+                                Toast.makeText(requireContext(), "Thất Bại", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            is Loading -> {
+                Timber.tag("AAAAAAAAAAAAAAA").e("getPost: loading")
+            }
+
+            is Fail -> {
+                Timber.tag("AAAAAAAAAAAAAAA").e("getPost: Fail")
+            }
+
+            else -> {
+
+            }
+        }
+    }
+
+    private fun bottomSheetDialog(postModel: PostModel) {
+        val view: View = layoutInflater.inflate(R.layout.layout_opption_edit_delete_post, null)
+        val dialog = BottomSheetDialog(requireContext())
+        dialog.setContentView(view)
+
+        view.findViewById<LinearLayout>(R.id.liner_edit).setOnClickListener {
+            val intent = Intent(requireContext(), EditPostActivity::class.java)
+            intent.putExtra(Common.KEY_POST, postModel)
+            startActivity(intent)
+            dialog.dismiss()
+        }
+
+        view.findViewById<LinearLayout>(R.id.liner_delete).setOnClickListener {
+            deletePost(postModel)
+            dialog.dismiss()
+        }
+
+        view.findViewById<AppCompatImageView>(R.id.ic_cancle).setOnClickListener {
+            dialog.dismiss()
+
+        }
+        dialog.show()
+
+    }
+
+    @SuppressLint("MissingInflatedId")
+    private fun deletePost(postModel: PostModel) {
+        val dialogbinding = layoutInflater.inflate(R.layout.dialog_notification_all, null)
+        val myDialog = Dialog(requireActivity())
+        myDialog.setContentView(dialogbinding)
+
+        myDialog.setCancelable(true)
+        myDialog.setCanceledOnTouchOutside(false)
+        myDialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        myDialog.show()
+        dialogbinding.findViewById<TextView>(R.id.tv_text)
+            .setText("Bạn có chắc chắn muốn xóa bài viết ?")
+
+        dialogbinding.findViewById<TextView>(R.id.tv_onConfirm).setOnClickListener {
+            viewModel.handle(HomeStoreViewAction.deletePost(postModel.id))
+            myDialog.dismiss()
+        }
+
+        dialogbinding.findViewById<TextView>(R.id.tv_onCancel).setOnClickListener {
+            myDialog.dismiss()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-
+        viewModel.handle(HomeStoreViewAction.PostStoreActionList(idStore!!))
+        postClientAdapter.notifyDataSetChanged()
     }
 }
 

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".ui.poststore.AddPostActivity">
+
+    <include
+        android:id="@+id/toobar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/toobar_fragment" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/btn_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="Cập Nhật"
+                android:textColor="@color/colorPriamry"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/title"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/ed_title_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/boder_edittex"
+                android:elevation="5dp"
+                android:gravity="start"
+                android:hint="Tiêu đề ........."
+                android:inputType="textMultiLine"
+                android:minLines="2"
+                android:paddingStart="8dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="@dimen/_18sp"
+                android:paddingBottom="12dp"
+                android:scrollbars="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+            <TextView
+                android:id="@+id/tv_error_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:textSize="@dimen/_12dp"
+                android:textStyle="italic"
+                android:visibility="gone"
+                android:textColor="@color/red_2"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/tv_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/content"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/ed_content_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/boder_edittex"
+                android:elevation="5dp"
+                android:gravity="start"
+                android:hint="Nội dung ........."
+                android:inputType="textMultiLine"
+                android:minLines="6"
+                android:paddingStart="8dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="@dimen/_18sp"
+                android:paddingBottom="12dp"
+                android:scrollbars="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/tv_service" />
+            <TextView
+                android:id="@+id/tv_error_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:textSize="@dimen/_12dp"
+                android:textStyle="italic"
+                android:visibility="gone"
+                android:textColor="@color/red_2"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ic_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="@dimen/_24dp"
+                android:layout_marginBottom="50dp"
+                android:src="@drawable/gallery" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_post"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="@dimen/_24dp"
+                android:layout_marginEnd="@dimen/_24dp"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/round_image_8" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</LinearLayout>
