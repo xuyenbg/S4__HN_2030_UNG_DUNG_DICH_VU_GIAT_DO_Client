@@ -31,7 +31,7 @@ class HomeUserViewModel @AssistedInject constructor(
                 handlerGetPost()
             }
             is HomeViewAction.OrderActionGetList ->{
-                hanlderGetListOrder(action.idUser, action.status)
+                hanlderGetListOrder(action.idUser)
             }
         }
     }
@@ -49,9 +49,9 @@ class HomeUserViewModel @AssistedInject constructor(
         setState { copy(statePost = Loading()) }
         responsePost.getListPost().execute { copy(statePost = it) }
     }
-    private fun hanlderGetListOrder(idUser: String, status: Int) {
+    private fun hanlderGetListOrder(idUser: String) {
         setState { copy(stateOrder = Loading()) }
-        responseOrder.getDataOrder(idUser, status).execute { copy(stateOrder = it) }
+        responseOrder.getDataOrder(idUser).execute { copy(stateOrder = it) }
     }
 
     fun getCart() = dbRepo.getCart()

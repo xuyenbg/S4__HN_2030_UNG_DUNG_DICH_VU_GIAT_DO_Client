@@ -1,6 +1,7 @@
 package datn.fpoly.myapplication.data.repository
 
 import datn.fpoly.myapplication.data.model.Order
+import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.data.network.APIOrder
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -11,7 +12,6 @@ class OrderRepo @Inject constructor(
 ){
     fun getDataOrder(
         idUser: String,
-        status: Int
-    ): Observable<MutableList<Order>> = api.getListOrder(idUser, status).subscribeOn(
+    ): Observable<MutableList<OrderResponse>> = api.getListOrder(idUser).subscribeOn(
     Schedulers.io())
 }

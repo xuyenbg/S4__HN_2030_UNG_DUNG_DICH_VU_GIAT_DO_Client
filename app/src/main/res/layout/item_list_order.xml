@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="8dp"
-        android:elevation="50dp"
+        android:elevation="10dp"
         android:layout_margin="10dp"
         android:background="@drawable/shape_item_profile_3"
         android:paddingVertical="8dp">

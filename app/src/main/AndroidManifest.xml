@@ -28,6 +28,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.splashScreen.SplashsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.permission.PermissionActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.address.updateAddress.UpdateAddressActivity"
             android:exported="false" />
         <activity
