@@ -13,8 +13,10 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.example.ql_ban_hang.core.BaseFragment
+import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.Order
 import datn.fpoly.myapplication.data.model.account.AccountModel
+import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.FragmentOrderUncompingBinding
 import datn.fpoly.myapplication.ui.fragment.fragmentOrder.adapter.OrderAdapter
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
@@ -23,11 +25,11 @@ import datn.fpoly.myapplication.ui.home.HomeViewState
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
-import javax.inject.Inject
 
-class OrderUncompingFragment @Inject constructor() : BaseFragment<FragmentOrderUncompingBinding>() {
+class OrderUncompingFragment : BaseFragment<FragmentOrderUncompingBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var orderAdapter : OrderAdapter
+    private var uncompingOrders: List<Order>? = null
     private var order: Order? = null
     private var account: AccountModel? = null
     private var id = "65257a540aa52df907b803cf"
@@ -39,13 +41,13 @@ class OrderUncompingFragment @Inject constructor() : BaseFragment<FragmentOrderU
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        account = Hawk.get(Common.)
-        viewModel.handle(HomeViewAction.OrderActionGetList(id,status))
+        val account = Hawk.get<AccountModel>("Account",null)
+        viewModel.handle(HomeViewAction.OrderActionGetList(account.id.toString()))
         orderAdapter = OrderAdapter()
         val itemDecoration = ItemSpacingDecoration(0)
-        views.rcvItemOrder.addItemDecoration(itemDecoration)
+        views.rcvItemOrderUncomping.addItemDecoration(itemDecoration)
         orderAdapter.setListener(object : OrderAdapter.OrderListener{
-            override fun onClickOrder(orderModel: Order) {
+            override fun onClickOrder(orderModel: OrderResponse) {
                 TODO("Not yet implemented")
             }
 
@@ -56,27 +58,31 @@ class OrderUncompingFragment @Inject constructor() : BaseFragment<FragmentOrderU
         super.invalidate()
         getListOrder(it)
     }
+    override fun onResume(): Unit = withState(viewModel) {
+        super.onResume()
+        getListOrder(it)
+    }
     private fun getListOrder(it: HomeViewState){
         when(it.stateOrder){
             is Success -> {
                 runBlocking {
                     launch {
                         it.stateOrder.invoke()?.let {
-                            Timber.tag("OrderUncompingFragment").d("orderinvalidate: ${it.size}")
-                            orderAdapter.updateData(it)
-                            views.rcvItemOrder.adapter = orderAdapter
+                            Timber.tag("OrderUncompingFragment").d("orderUncompingInvalidate: ${it.size}")
+                            orderAdapter.updateDataByStatus(it, listOf(1,2)) // Cập nhật danh sách đơn hàng đã hủy
+                            views.rcvItemOrderUncomping.adapter = orderAdapter
                             orderAdapter.notifyDataSetChanged()
-                            Log.d("OrderUncompingFragment", "getListOrder: ${it.size}")
+                            Log.d("OrderUncompingFragment", "getListOrderUncomping: ${it.size}")
                         }
                     }
                 }
             }
             is Loading -> {
-                Timber.tag("AAAAAAAAAAAAAAA").e("getOrder: loading")
+                Timber.tag("AAAAAAAAAAAAAAA").e("getOrderUncomping: loading")
             }
 
             is Fail -> {
-                Timber.tag("AAAAAAAAAAAAAAA").e("getOrder: Fail")
+                Timber.tag("AAAAAAAAAAAAAAA").e("getOrderUncomping: Fail")
             }
             else -> {
 

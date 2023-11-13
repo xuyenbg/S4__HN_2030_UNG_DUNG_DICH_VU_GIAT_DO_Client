@@ -7,6 +7,7 @@ import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
 import datn.fpoly.myapplication.data.model.Order
 import datn.fpoly.myapplication.data.repository.CategoryRepo
+import datn.fpoly.myapplication.data.repository.OrderRepo
 import datn.fpoly.myapplication.data.repository.PostRepo
 import datn.fpoly.myapplication.data.repository.RoomDbRepo
 import datn.fpoly.myapplication.data.repository.StoreRepo
@@ -16,6 +17,7 @@ class HomeUserViewModel @AssistedInject constructor(
     private val responsePost: PostRepo,
     private val responseCategory: CategoryRepo,
     private val responseStore: StoreRepo,
+    private val responseOrder: OrderRepo,
     private val dbRepo: RoomDbRepo
 ) : BaseViewModel<HomeViewState, HomeViewAction, HomeViewEvent>(state) {
     override fun handle(action: HomeViewAction) {
@@ -28,6 +30,9 @@ class HomeUserViewModel @AssistedInject constructor(
             }
             is HomeViewAction.PostClientActionList -> {
                 handleGetPost()
+            }
+            is HomeViewAction.OrderActionGetList ->{
+                handleGetListOrder(action.idUser)
             }
 
             else -> {}
@@ -46,6 +51,10 @@ class HomeUserViewModel @AssistedInject constructor(
     private fun handleGetPost() {
         setState { copy(statePost = Loading()) }
         responsePost.getListPost().execute { copy(statePost = it) }
+    }
+    private fun handleGetListOrder(idUser: String) {
+        setState { copy(stateOrder = Loading()) }
+        responseOrder.getDataOrder(idUser).execute { copy(stateOrder = it) }
     }
 
     fun getCart() = dbRepo.getCart()
