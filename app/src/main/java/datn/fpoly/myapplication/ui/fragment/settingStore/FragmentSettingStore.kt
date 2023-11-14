@@ -32,7 +32,7 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
                 Hawk.delete("Account");
                 Hawk.put("CheckLogin", false)
                 startActivity(Intent(requireContext(), SignInActivity::class.java))
-            }, 3000)
+            }, 1000)
 
         }
     }
