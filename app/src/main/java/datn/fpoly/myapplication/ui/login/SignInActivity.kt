@@ -144,8 +144,10 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
         if (auth.currentUser != null && user) {
             if (manege ==0) {
                 startActivity(Intent(this, HomeActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
-            } else {
+            } else if (manege ==1) {
                 startActivity(Intent(this, HomeStoreActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
+            } else {
+                return
             }
 
         }

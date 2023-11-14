@@ -119,37 +119,42 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
 
                             // account chứa cả đối tượng và message
                             val account = result.body()?.let { parseJsonToAccountList(it.string()) }
-                            if (account?.user?.idRole == "6522667961b6e95df121642e") {
-                                Toast.makeText(
-                                    this@OTPLoginActivity,
-                                    "Bạn chưa đăng kí của hàng",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                startActivity(
-                                    Intent(
-                                        this@OTPLoginActivity,
-                                        SignInActivity::class.java
+
+                            if (account?.message == "Đăng nhập thành công") {
+                                authRepo.saveUser(accountResponse = account.user)
+                                authRepo.setLogin(isLogin = true)
+                                dbRepo.getCart()
+//                                Toast.makeText(
+//                                    this@OTPLoginActivity,
+//                                    "Đăng nhập thành công",
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
+                                if (!check) {
+                                    Hawk.put("Manage", 0)
+                                    startActivity(
+                                        Intent(
+                                            this@OTPLoginActivity,
+                                            HomeActivity::class.java
+                                        ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                                     )
-                                )
-                            } else {
-                                if (account?.message == "Đăng nhập thành công") {
-                                    authRepo.saveUser(accountResponse = account.user)
-                                    authRepo.setLogin(isLogin = true)
-                                    dbRepo.getCart()
-                                    Toast.makeText(
-                                        this@OTPLoginActivity,
-                                        "Đăng nhập thành công",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    if (!check) {
-                                        Hawk.put("Manage", 0)
+                                } else {
+                                    if (account.user.idRole != "6522666361b6e95df121642d") {
+                                        Hawk.put("Manage", 3)
+                                        Log.d("OTPLoginActivity", "chưa đăng kí: ")
+                                        Toast.makeText(
+                                            this@OTPLoginActivity,
+                                            "Bạn chưa đăng kí của hàng",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                         startActivity(
                                             Intent(
                                                 this@OTPLoginActivity,
-                                                HomeActivity::class.java
-                                            ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                                SignInActivity::class.java
+                                            )
                                         )
-                                    } else {
+                                    } else if (account.user.idRole == "6522666361b6e95df121642d") {
+                                        Log.d("OTPLoginActivity", "dã  đăng kí: ")
+
                                         Hawk.put("Manage", 1)
                                         startActivity(
                                             Intent(
@@ -158,19 +163,19 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                                             ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                                         )
                                     }
-
-                                } else {
-                                    Log.d("Log In", "Sai tài khoản hoặc mật khẩu")
-
-                                    Toast.makeText(
-                                        this@OTPLoginActivity,
-                                        "Sai tài khoản hoặc mật khẩu",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
                                 }
-                            }
 
+                            } else {
+                                Log.d("Log In", "Sai tài khoản hoặc mật khẩu")
+
+                                Toast.makeText(
+                                    this@OTPLoginActivity,
+                                    "Sai tài khoản hoặc mật khẩu",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
+
                     }
                 }
             }

@@ -62,6 +62,7 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
             val intent = Intent(requireContext(), HistoryStoreActivity::class.java)
             intent.putExtra("KEY_HIS", listOrderStore)
             Log.d("FragmentSettingStore", "onViewCreated: $listOrderStore")
+            }, 1000)
 
             startActivity(intent)
 //            DataRaw.animStart(views.tvOrderHistory, requireContext())
