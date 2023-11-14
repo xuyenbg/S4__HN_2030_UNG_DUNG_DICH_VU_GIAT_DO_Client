@@ -48,7 +48,6 @@ class OrderUncompingFragment : BaseFragment<FragmentOrderUncompingBinding>() {
         views.rcvItemOrderUncomping.addItemDecoration(itemDecoration)
         orderAdapter.setListener(object : OrderAdapter.OrderListener{
             override fun onClickOrder(orderModel: OrderResponse) {
-                TODO("Not yet implemented")
             }
 
         })

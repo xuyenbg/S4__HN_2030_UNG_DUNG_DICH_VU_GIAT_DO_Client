@@ -99,7 +99,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         super.onResume()
         viewModel.handle(HomeViewAction.HomeActionCategory)
         viewModel.handle(HomeViewAction.HomeActionGetListStore)
-        handler.postDelayed(runnable, 2000)
+//        handler.postDelayed(runnable, 2000)
     }
 
     override fun invalidate(): Unit = withState(viewModel) {
@@ -178,24 +178,24 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     }
 
     private fun initSlide() {
-        handler = Handler(Looper.myLooper()!!)
+        handler = Handler(Looper.getMainLooper())
         imageList.add(datn.fpoly.myapplication.R.drawable.imageslide_1)
         imageList.add(datn.fpoly.myapplication.R.drawable.imageslide_2)
         imageList.add(datn.fpoly.myapplication.R.drawable.imageslide3)
         imageList.add(datn.fpoly.myapplication.R.drawable.imageslide_4)
-        adapter = SlideImageAdapter(views.vpSlideShow)
+//        adapter = SlideImageAdapter(views.vpSlideShow)
         adapter.updateData(imageList)
         views.vpSlideShow.adapter = adapter
 
 
         views.circle3.setViewPager(views.vpSlideShow)
-        views.vpSlideShow.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                handler.removeCallbacks(runnable)
-                handler.postDelayed(runnable, 3000)
-            }
-        })
+//        views.vpSlideShow.registerOnPageChangeCallback(object : OnPageChangeCallback() {
+//            override fun onPageSelected(position: Int) {
+//                super.onPageSelected(position)
+//                handler.removeCallbacks(runnable)
+//                handler.postDelayed(runnable, 2000)
+//            }
+//        })
     }
 
     override fun onPause() {

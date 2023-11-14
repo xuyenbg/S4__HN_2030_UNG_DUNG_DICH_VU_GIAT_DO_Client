@@ -5,6 +5,7 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -27,6 +28,9 @@
         android:theme="@style/Theme.WashNow"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.historystore.HistoryStoreActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.editpost.EditPostActivity"
             android:exported="false" />

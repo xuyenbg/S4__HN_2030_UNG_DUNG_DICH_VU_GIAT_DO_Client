@@ -14,7 +14,7 @@ class OrderRepo @Inject constructor(
 ){
     fun getDataOrder(idUser: String): Observable<MutableList<OrderResponse>> = api.getListOrder(idUser).subscribeOn(Schedulers.io())
 
-    fun getDataOrder(): Observable<MutableList<Order>> = api.getListOrder().subscribeOn(Schedulers.io())
+    fun getDataOrderStore(idStore : String, sortOrder : String): Observable<MutableList<OrderResponse>> = api.getListOrderStore(idStore,sortOrder).subscribeOn(Schedulers.io())
 
     fun insertOrder(order: Order) : Observable<Unit> = api.insertOrder(order).subscribeOn(Schedulers.io())
 }

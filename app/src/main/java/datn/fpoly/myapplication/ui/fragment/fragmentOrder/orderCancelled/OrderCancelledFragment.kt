@@ -47,7 +47,6 @@ class OrderCancelledFragment : BaseFragment<FragmentOrderCancelledBinding>() {
         views.rcvItemOrderCancelled.addItemDecoration(itemDecoration)
         orderAdapter.setListener(object : OrderAdapter.OrderListener {
             override fun onClickOrder(orderModel: OrderResponse) {
-                TODO("Not yet implemented")
             }
 
         })

@@ -7,10 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import datn.fpoly.myapplication.data.model.Order
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.ItemListOrderBinding
+import datn.fpoly.myapplication.utils.DateTimeUtils
 import javax.inject.Inject
 
-class OrderAdapter @Inject constructor():
-RecyclerView.Adapter<OrderAdapter.OrderViewHolder>(){
+class OrderAdapter @Inject constructor() :
+    RecyclerView.Adapter<OrderAdapter.OrderViewHolder>() {
     private val listOrder = mutableListOf<OrderResponse>();
     private var orderListener: OrderListener? = null
 
@@ -19,6 +20,7 @@ RecyclerView.Adapter<OrderAdapter.OrderViewHolder>(){
         this.listOrder.addAll(list)
         notifyDataSetChanged()
     }
+
     fun updateDataByStatus(list: List<OrderResponse>, statuses: List<Int>) {
         val filteredList = list.filter { it.status in statuses }
         listOrder.clear()
@@ -38,36 +40,38 @@ RecyclerView.Adapter<OrderAdapter.OrderViewHolder>(){
     }
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
-        if(holder is OrderViewHolder){
-            if(listOrder.isNotEmpty()){
+        if (holder is OrderViewHolder) {
+            if (listOrder.isNotEmpty()) {
                 val itemOrder = listOrder[position]
                 holder.itemView.setOnClickListener {
                     orderListener?.onClickOrder(itemOrder)
                 }
                 holder.binding.apply {
+                    tvId.text = "#${itemOrder.id}"
                     tvNameStore.text = itemOrder.idStore
-                    if(itemOrder.status==1){
+                    tvTime.text = DateTimeUtils.formatDateOrder(itemOrder.updateAt)
+                    if (itemOrder.status == 1) {
                         tvStatus2.visibility = View.VISIBLE
                         tvStatus3.visibility = View.INVISIBLE
                         tvStatus1.visibility = View.INVISIBLE
                         tvStatus4.visibility = View.INVISIBLE
                         btnReOrder.visibility = View.INVISIBLE
                     }
-                    if(itemOrder.status==2){
+                    if (itemOrder.status == 2) {
                         tvStatus3.visibility = View.VISIBLE
                         tvStatus1.visibility = View.INVISIBLE
                         tvStatus2.visibility = View.INVISIBLE
                         tvStatus4.visibility = View.INVISIBLE
                         btnReOrder.visibility = View.INVISIBLE
                     }
-                    if(itemOrder.status==3){
+                    if (itemOrder.status == 3) {
                         tvStatus1.visibility = View.VISIBLE
                         tvStatus2.visibility = View.INVISIBLE
                         tvStatus3.visibility = View.INVISIBLE
                         tvStatus4.visibility = View.INVISIBLE
                         btnReOrder.visibility = View.VISIBLE
                     }
-                    if(itemOrder.status==4){
+                    if (itemOrder.status == 4) {
                         tvStatus4.visibility = View.VISIBLE
                         tvStatus2.visibility = View.INVISIBLE
                         tvStatus3.visibility = View.INVISIBLE
@@ -75,7 +79,7 @@ RecyclerView.Adapter<OrderAdapter.OrderViewHolder>(){
                         btnReOrder.visibility = View.VISIBLE
                     }
                 }
-            }else{
+            } else {
 
             }
         }

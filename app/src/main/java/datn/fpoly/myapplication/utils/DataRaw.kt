@@ -1,5 +1,9 @@
 package datn.fpoly.myapplication.utils
 
+import android.content.Context
+import android.view.View
+import android.view.animation.AnimationUtils
+import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.CategoryModel
 import datn.fpoly.myapplication.data.model.StoreModel
 
@@ -22,5 +26,8 @@ object DataRaw {
         idCate = id
     }
     fun getDataIdCategory(): String = idCate
+    fun animStart(view: View, context: Context){
+        view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_item_bot_na_custom))
+    }
 
 }
