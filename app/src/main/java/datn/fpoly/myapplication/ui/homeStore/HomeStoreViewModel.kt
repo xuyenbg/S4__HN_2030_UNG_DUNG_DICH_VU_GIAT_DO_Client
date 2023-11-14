@@ -8,6 +8,7 @@ import datn.fpoly.myapplication.core.BaseViewModel
 import datn.fpoly.myapplication.data.repository.CategoryRepo
 import datn.fpoly.myapplication.data.repository.OrderRepo
 import datn.fpoly.myapplication.data.repository.PostRepo
+import datn.fpoly.myapplication.data.repository.ServiceRepo
 import datn.fpoly.myapplication.data.repository.StoreRepo
 
 class HomeStoreViewModel @AssistedInject constructor(
@@ -15,7 +16,8 @@ class HomeStoreViewModel @AssistedInject constructor(
     private val responsePost: PostRepo,
     private val resposeCate: CategoryRepo,
     private val resposeStore: StoreRepo,
-    private val orderRepo: OrderRepo
+    private val orderRepo: OrderRepo,
+    private val respoService: ServiceRepo
 ) : BaseViewModel<HomeStoreState, HomeStoreViewAction, HomeStoreViewEvent>(state) {
     override fun handle(action: HomeStoreViewAction) {
         when (action) {
@@ -38,6 +40,10 @@ class HomeStoreViewModel @AssistedInject constructor(
             is HomeStoreViewAction.GetDataOrderStore -> {
                 getDataOrder(action.idStore,action.sortOrder)
             }
+
+            is HomeStoreViewAction.getListServiceByStore->{
+                getListServiceByStore(action.idStore)
+            }
         }
     }
 
@@ -59,6 +65,10 @@ class HomeStoreViewModel @AssistedInject constructor(
     private fun deletePost(idPost: String) {
         setState { copy(stateDelete = Loading()) }
         responsePost.deletePost(idPost).execute { copy(stateDelete = it) }
+    }
+    private fun getListServiceByStore(idStore: String){
+        setState { copy(stateGetListService= Loading()) }
+        respoService.getListServiceByStore(idStore).execute { copy(stateGetListService = it) }
     }
 
     private fun getDataOrder(idStore: String, sortOrder : String) {

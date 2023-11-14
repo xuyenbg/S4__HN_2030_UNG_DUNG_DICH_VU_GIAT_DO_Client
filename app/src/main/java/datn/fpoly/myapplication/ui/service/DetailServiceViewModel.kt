@@ -19,11 +19,18 @@ class DetailServiceViewModel @AssistedInject constructor(
             is DetailServiceViewAction.GetListServiceByStore->{
                 getListServiceByStore(action.idStore, action.idService)
             }
+            is DetailServiceViewAction.GetServiceById->{
+                getServiceById(action.id)
+            }
         }
     }
     fun getListServiceByStore(id: String, idService: String){
         setState { copy(stateService= Loading()) }
         repo.getListServiceByStore2(id, idService).execute { copy(stateService = it) }
+    }
+    private fun getServiceById(id: String){
+        setState { copy(stateServiceByid = Loading()) }
+        repo.getServiceById(id).execute { copy(stateServiceByid = it) }
     }
 
     fun getCart() = dbRepo.getCart()

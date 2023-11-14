@@ -8,4 +8,5 @@ sealed class HomeStoreViewAction : ViewAction {
     data class GetStoreByIdUser(val idUser: String) : HomeStoreViewAction()
     data class deletePost(val idPost: String) : HomeStoreViewAction()
     data class GetDataOrderStore(val idStore : String, val sortOrder :String) : HomeStoreViewAction()
+    data class getListServiceByStore(val idStore: String): HomeStoreViewAction()
 }

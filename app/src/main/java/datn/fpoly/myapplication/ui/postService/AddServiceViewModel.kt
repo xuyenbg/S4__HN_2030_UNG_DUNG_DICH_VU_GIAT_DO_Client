@@ -27,6 +27,18 @@ class AddServiceViewModel @AssistedInject constructor(
                     action.idCategory, action.idStore, action.unitSale, action.valueSale
                 )
             }
+            is AddServiceViewAction.UpdateService -> {
+                updateService(
+                    action.idService,
+                    action.image,
+                    action.name,
+                    action.price,
+                    action.attributeList,
+                    action.isActive,
+                    action.unit,
+                    action.idCategory, action.idStore, action.unitSale, action.valueSale
+                )
+            }
         }
     }
 
@@ -55,6 +67,35 @@ class AddServiceViewModel @AssistedInject constructor(
             unitSale,
             valueSale
         ).execute { copy(stateService = it) }
+    }
+
+    private fun updateService(
+        idService: String,
+        image: MultipartBody.Part?,  // Phần dữ liệu của hình ảnh
+        name: RequestBody,  // Tên sản phẩm
+        price: RequestBody,  // Giá sản phẩm
+        attributeList: Map<String, PostService.PostAttribute>,  // Danh sách thuộc tính sản phẩm
+        isActive: RequestBody,  // Trạng thái kích hoạt
+        unit: RequestBody,  // Đơn vị sản phẩm
+        idCategory: RequestBody,  // ID danh mục
+        idStore: RequestBody,  // ID cửa hàng
+        unitSale: RequestBody?,  // Đơn vị giảm giá (nếu có)
+        valueSale: RequestBody?
+    ) {
+        setState { copy(stateServiceUpdate = Loading()) }
+        repo.updateService(
+            idService,
+            image,
+            name,
+            price,
+            attributeList,
+            isActive,
+            unit,
+            idCategory,
+            idStore,
+            unitSale,
+            valueSale
+        ).execute { copy(stateServiceUpdate = it) }
     }
 
     @AssistedFactory

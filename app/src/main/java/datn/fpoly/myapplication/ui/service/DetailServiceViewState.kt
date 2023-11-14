@@ -6,5 +6,6 @@ import com.airbnb.mvrx.Uninitialized
 import datn.fpoly.myapplication.data.model.ServiceModel
 
 data class DetailServiceViewState(
-    var stateService: Async<MutableList<ServiceModel>> = Uninitialized
+    var stateService: Async<MutableList<ServiceModel>> = Uninitialized,
+    var stateServiceByid: Async<ServiceModel> = Uninitialized
 ): MvRxState

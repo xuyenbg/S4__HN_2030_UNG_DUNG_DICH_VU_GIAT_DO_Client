@@ -57,7 +57,7 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
     private fun getDataCate(state: HomeStoreState){
         when(state.stateCate){
             is Loading->{
-
+                Timber.tag("Loading").e("getDataCate: Loading")
             }
             is Success->{
 
@@ -66,7 +66,7 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
                 }
             }
             is Fail->{
-
+                Timber.tag("ERROR").e("getDataCate: Fail")
             }
             else -> {}
         }
