@@ -131,10 +131,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--        Cart empty-->
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/layout_cart_empty"
+        layout="@layout/layout_cart_empty"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

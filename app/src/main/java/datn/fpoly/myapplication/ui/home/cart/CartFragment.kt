@@ -28,11 +28,18 @@ class CartFragment :BaseFragment<FragmentCartBinding>() {
 
         viewModel.getCart().observe(viewLifecycleOwner) {
             Timber.tag("CART").d("observe ${it.toString()}")
-            if (it != null) {
+            if (it != null && it.listItem.isNotEmpty()) {
                 cart = it
+                views.layoutCartEmpty.root.visibility = View.GONE
+                views.layoutBottomSheet.visibility = View.VISIBLE
+                views.recycleView.visibility = View.VISIBLE
                 views.recycleView.adapter = AdapterItemCart2(requireContext(),it.listItem, eventClick = {})
                 views.tvQuantity.text = it.listItem.size.toString()
                 views.tvPrice.text = it.total?.formatCurrency(null) ?: "-"
+            }else{
+                views.layoutCartEmpty.root.visibility = View.VISIBLE
+                views.layoutBottomSheet.visibility = View.GONE
+                views.recycleView.visibility = View.GONE
             }
         }
 
@@ -75,7 +82,7 @@ class CartFragment :BaseFragment<FragmentCartBinding>() {
     override fun invalidate(): Unit = withState(viewModel) {
 
     }
-    override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentCart2Binding = FragmentCart2Binding.inflate(layoutInflater)
+    override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentCartBinding = FragmentCartBinding.inflate(layoutInflater)
 
 
 }

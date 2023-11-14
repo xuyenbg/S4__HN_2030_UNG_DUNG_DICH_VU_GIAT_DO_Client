@@ -37,4 +37,9 @@
             android:contentDescription="@string/notification"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height=".5dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
