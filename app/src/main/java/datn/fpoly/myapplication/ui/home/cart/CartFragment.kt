@@ -11,7 +11,7 @@ import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.example.ql_ban_hang.core.BaseFragment
 import datn.fpoly.myapplication.data.model.Order
-import datn.fpoly.myapplication.databinding.FragmentCart2Binding
+import datn.fpoly.myapplication.databinding.FragmentCartBinding
 import datn.fpoly.myapplication.ui.check_out.AdapterItemCart2
 import datn.fpoly.myapplication.ui.check_out.CheckOutActivity
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
@@ -19,7 +19,7 @@ import datn.fpoly.myapplication.utils.Common.formatCurrency
 import timber.log.Timber
 
 
-class CartFragment :BaseFragment<FragmentCart2Binding>() {
+class CartFragment :BaseFragment<FragmentCartBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
     var cart: Order? = null
 
