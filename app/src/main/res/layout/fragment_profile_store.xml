@@ -44,8 +44,9 @@
         android:layout_toRightOf="@+id/tv_fullname"
         android:src="@drawable/icon_back_profile_2" />
     <RelativeLayout
+        android:id="@+id/relative_1"
         android:layout_width="340dp"
-        android:layout_height="420dp"
+        android:layout_height="230dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="20dp"
@@ -58,7 +59,7 @@
             android:layout_height="24dp"
             android:src="@drawable/icon_store_profile"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="25dp"
             />
         <TextView
             android:id="@+id/tv_store"
@@ -98,7 +99,7 @@
             android:layout_height="24dp"
             android:src="@drawable/icon_order_history_profile"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="30dp"
             android:layout_below="@+id/img_store"
             />
         <TextView
@@ -139,7 +140,7 @@
             android:layout_height="24dp"
             android:src="@drawable/icon_notifications_profile"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="30dp"
             android:layout_below="@+id/img_order_history"
             />
         <TextView
@@ -180,7 +181,7 @@
             android:layout_height="24dp"
             android:src="@drawable/icon_terms_and_policies_profile"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="30dp"
             android:layout_below="@+id/img_notifications"
             />
         <TextView
@@ -207,26 +208,97 @@
             android:layout_alignLeft="@id/img_back3"
             android:layout_marginTop="3dp"
             />
-        <TextView
-            android:layout_width="300dp"
-            android:layout_height="2dp"
-            android:background="@color/gray_2"
-            android:layout_below="@+id/img_termsAndPolicies"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
-            />
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_logOut"
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:text="Đăng xuất"
-            android:textStyle="bold"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/red_2"
-            android:background="@drawable/shape_item_btn_profile"
-            android:layout_below="@+id/tv_termsAndPolicies"
-            android:layout_marginTop="100dp"
-            />
+<!--        <TextView-->
+<!--            android:layout_width="300dp"-->
+<!--            android:layout_height="2dp"-->
+<!--            android:background="@color/gray_2"-->
+<!--            android:layout_below="@+id/img_termsAndPolicies"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            />-->
     </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/relative_2"
+        android:layout_width="340dp"
+        android:layout_height="70dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/relative_1"
+        android:background="@drawable/shape_item_profile"
+        >
+        <RelativeLayout
+            android:id="@+id/relative_btn_order_not_confim"
+            android:layout_width="169dp"
+            android:layout_height="70dp"
+            >
+            <ImageView
+                android:id="@+id/icon_order_not_confim"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/icon_order_not_confim"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text="Đơn chưa xác nhận"
+                android:layout_below="@+id/icon_order_not_confim"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/dark_blue"
+                android:textStyle="bold"
+                />
+        </RelativeLayout>
+        <TextView
+            android:layout_width="2dp"
+            android:layout_height="50dp"
+            android:background="@color/gray_2"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            />
+        <RelativeLayout
+            android:id="@+id/relative_btn_order_confim"
+            android:layout_width="169dp"
+            android:layout_height="70dp"
+            android:layout_toRightOf="@+id/relative_btn_order_not_confim"
+            >
+            <ImageView
+                android:id="@+id/icon_order_confim"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/icon_order_confim"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text="Đơn đã xác nhận"
+                android:layout_below="@+id/icon_order_confim"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/dark_blue"
+                android:textStyle="bold"
+                />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_logOut"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:text="Đăng xuất"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/red_2"
+        android:background="@drawable/shape_item_btn_profile"
+        android:layout_below="@+id/relative_2"
+        android:layout_marginTop="20dp"
+        />
 
 </RelativeLayout>
