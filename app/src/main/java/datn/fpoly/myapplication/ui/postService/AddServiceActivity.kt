@@ -53,7 +53,11 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             onBackPressedDispatcher.onBackPressed()
         }
         viewModel.subscribe(this) {
-            updateStatePost(it)
+            if(intent.getBooleanExtra(Common.KEY_UPDATE_SERVICE, false)){
+                updateStateUpdate(it)
+            }else{
+                updateStatePost(it)
+            }
         }
         val listCate: MutableList<CategoryModel> = Hawk.get(Common.KEY_LIST_CATE)
         views.toobar.tvTitleTooobal.text = "Thêm dịch vụ"
@@ -157,8 +161,9 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
         views.btnInsertService.setOnClickListener {
 
             if (intent.getBooleanExtra(Common.KEY_UPDATE_SERVICE, false)) {
+                val modelUpdate = DataRaw.getModelUpdateService()
                 if(validateUpdate()){
-                    updateService()
+                    modelUpdate?.id?.let { it1 -> updateService(it1) }
                 }
             } else {
                 if(validate()){
@@ -228,7 +233,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                     )
                 )
             }
-            Glide.with(views.imgSelectImage).load(modelUpdate.image).into(views.imgSelectImage)
+            Glide.with(views.imgSelectImage).load(Common.baseUrl+""+modelUpdate.image).into(views.imgSelectImage)
             views.btnInsertService.setText("Lưu")
         }else{
             views.btnInsertService.setText("Thêm")
@@ -351,58 +356,11 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
     }
 
     private fun postService() {
-        val file = File(imageUri!!.path!!) // Chuyển URI thành File
-        val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
-        val name = views.tvNameExtraService.text.toString().trim()
-            .toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val cate = views.spinnerCate.selectedItem as CategoryModel
-        val idCate =
-            cate.id.toString().trim().toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val idStore =
-            Hawk.get<StoreModel>(Common.KEY_STORE).id.toString()
-                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
-//        val idStore ="65475330501201abab1bd500".toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val listAttribute = adapterAttribute.getList()
-        val unitSale = views.spinnerUnitSale.selectedItem.toString()
-            .toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val valueSale = views.edPriceSale.text.toString().trim()
-            .toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val priceServie = views.edPriceService.text.toString().trim()
-            .toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val unit = unit.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val isActive = true.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val stringMap = HashMap<String, PostService.PostAttribute>()
-        listAttribute.forEachIndexed { index, item ->
-            stringMap["attributeList[$index]"] = item
-        }
-        idStore?.let {
-            AddServiceViewAction.AddService(
-                image,
-                name,
-                priceServie,
-                stringMap,
-                isActive,
-                unit,
-                idCate,
-                it,
-                unitSale,
-                valueSale
-            )
-        }?.let {
-            viewModel.handle(
-                it
-            )
-        }
-
-    }
-
-    private fun updateService() {
-        if (imageUri != null) {
+        if(imageUri!=null){
             val file = File(imageUri!!.path!!) // Chuyển URI thành File
             val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
             val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
-            val name = views.tvNameExtraService.text.toString().trim()
+            val name = views.edNameService.text.toString().trim()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val cate = views.spinnerCate.selectedItem as CategoryModel
             val idCate =
@@ -424,7 +382,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             listAttribute.forEachIndexed { index, item ->
                 stringMap["attributeList[$index]"] = item
             }
-            idStore.let {
+            idStore?.let {
                 AddServiceViewAction.AddService(
                     image,
                     name,
@@ -442,8 +400,58 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                     it
                 )
             }
-        } else {
-            val name = views.tvNameExtraService.text.toString().trim()
+        }else{
+            val name = views.edNameService.text.toString().trim()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val cate = views.spinnerCate.selectedItem as CategoryModel
+            val idCate =
+                cate.id.toString().trim().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val idStore =
+                Hawk.get<StoreModel>(Common.KEY_STORE).id.toString()
+                    .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+//        val idStore ="65475330501201abab1bd500".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val listAttribute = adapterAttribute.getList()
+            val unitSale = views.spinnerUnitSale.selectedItem.toString()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val valueSale = views.edPriceSale.text.toString().trim()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val priceServie = views.edPriceService.text.toString().trim()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val unit = unit.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val isActive = true.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val stringMap = HashMap<String, PostService.PostAttribute>()
+            listAttribute.forEachIndexed { index, item ->
+                stringMap["attributeList[$index]"] = item
+            }
+            idStore?.let {
+                AddServiceViewAction.AddService(
+                    null,
+                    name,
+                    priceServie,
+                    stringMap,
+                    isActive,
+                    unit,
+                    idCate,
+                    it,
+                    unitSale,
+                    valueSale
+                )
+            }?.let {
+                viewModel.handle(
+                    it
+                )
+            }
+        }
+
+
+    }
+
+    private fun updateService(idService:String) {
+        if (imageUri != null) {
+            val file = File(imageUri!!.path!!) // Chuyển URI thành File
+            val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
+            val name = views.edNameService.text.toString().trim()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val cate = views.spinnerCate.selectedItem as CategoryModel
             val idCate =
@@ -466,7 +474,50 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 stringMap["attributeList[$index]"] = item
             }
             idStore.let {
-                AddServiceViewAction.AddService(
+                AddServiceViewAction.UpdateService(
+                    idService,
+                    image,
+                    name,
+                    priceServie,
+                    stringMap,
+                    isActive,
+                    unit,
+                    idCate,
+                    it,
+                    unitSale,
+                    valueSale
+                )
+            }?.let {
+                viewModel.handle(
+                    it
+                )
+            }
+        } else {
+            val name = views.edNameService.text.toString().trim()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val cate = views.spinnerCate.selectedItem as CategoryModel
+            val idCate =
+                cate.id.toString().trim().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val idStore =
+                Hawk.get<StoreModel>(Common.KEY_STORE).id.toString()
+                    .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+//        val idStore ="65475330501201abab1bd500".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val listAttribute = adapterAttribute.getList()
+            val unitSale = views.spinnerUnitSale.selectedItem.toString()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val valueSale = views.edPriceSale.text.toString().trim()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val priceServie = views.edPriceService.text.toString().trim()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val unit = unit.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val isActive = true.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val stringMap = HashMap<String, PostService.PostAttribute>()
+            listAttribute.forEachIndexed { index, item ->
+                stringMap["attributeList[$index]"] = item
+            }
+            idStore.let {
+                AddServiceViewAction.UpdateService(
+                    idService,
                     null,
                     name,
                     priceServie,
@@ -495,8 +546,32 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             }
             is Success -> {
                 state.stateService.invoke()?.let {
+                    Toast.makeText(this, "${it.message()}", Toast.LENGTH_SHORT).show()
+
                     Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: " + it.message())
                 }
+                setResult(Common.CODE_LOAD_DATA)
+                onBackPressedDispatcher.onBackPressed()
+            }
+            is Fail -> {
+                Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Fail")
+            }
+            else -> {}
+        }
+
+    }
+    fun updateStateUpdate(state: AddServiceViewState) {
+        when (state.stateServiceUpdate) {
+            is Loading -> {
+                Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Loading")
+            }
+            is Success -> {
+                state.stateServiceUpdate.invoke()?.let {
+                    Toast.makeText(this, "${it.message()}", Toast.LENGTH_SHORT).show()
+                    Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: " + it.message())
+                }
+                setResult(Common.CODE_LOAD_DATA)
+                onBackPressedDispatcher.onBackPressed()
             }
             is Fail -> {
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Fail")

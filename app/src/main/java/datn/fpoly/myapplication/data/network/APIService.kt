@@ -36,7 +36,7 @@ interface APIService {
         @Part("valueSale") valueSale: RequestBody?
     ): io.reactivex.Observable<Response<ResponseBody>>
     @Multipart
-    @PUT("api/services/update/:{idService}")
+    @PUT("api/services/update/{idService}")
     fun UpdateService(
         @Path("idService") idService: String,
         @Part image: MultipartBody.Part?,  // Phần dữ liệu của hình ảnh
@@ -51,6 +51,6 @@ interface APIService {
         @Part("valueSale") valueSale: RequestBody?
     ): io.reactivex.Observable<Response<ResponseBody>>
 
-    @GET("api/services/")
-    fun getServiceById(@Path("") idService: String): io.reactivex.Observable<ServiceModel>
+    @GET("api/services/servicebyid/{idService}")
+    fun getServiceById(@Path("idService") idService: String): io.reactivex.Observable<ServiceModel>
 }

@@ -4,4 +4,5 @@ import datn.fpoly.myapplication.core.ViewAction
 
 sealed class DetailServiceViewAction : ViewAction {
     data class GetListServiceByStore(val idStore: String, val idService:String): DetailServiceViewAction()
+    data class GetServiceById(val id: String): DetailServiceViewAction()
 }

@@ -7,5 +7,6 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 
 data class AddServiceViewState(
-    var stateService: Async<Response<ResponseBody>>  = Uninitialized
+    var stateService: Async<Response<ResponseBody>>  = Uninitialized,
+    var stateServiceUpdate: Async<Response<ResponseBody>>  = Uninitialized
 ): MvRxState

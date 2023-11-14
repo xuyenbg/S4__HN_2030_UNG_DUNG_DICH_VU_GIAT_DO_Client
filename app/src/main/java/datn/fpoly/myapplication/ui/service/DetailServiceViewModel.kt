@@ -12,19 +12,25 @@ import datn.fpoly.myapplication.data.repository.ServiceRepo
 class DetailServiceViewModel @AssistedInject constructor(
     @Assisted state: DetailServiceViewState,
     private var repo: ServiceRepo,
-    private val dbRepo: RoomDbRepo,
-    private val respoService: ServiceRepo
+    private val dbRepo: RoomDbRepo
 ) : BaseViewModel<DetailServiceViewState, DetailServiceViewAction, DetailServiceViewEvent>(state) {
     override fun handle(action: DetailServiceViewAction) {
         when(action){
             is DetailServiceViewAction.GetListServiceByStore->{
                 getListServiceByStore(action.idStore, action.idService)
             }
+            is DetailServiceViewAction.GetServiceById->{
+                getServiceById(action.id)
+            }
         }
     }
     fun getListServiceByStore(id: String, idService: String){
         setState { copy(stateService= Loading()) }
         repo.getListServiceByStore2(id, idService).execute { copy(stateService = it) }
+    }
+    private fun getServiceById(id: String){
+        setState { copy(stateServiceByid = Loading()) }
+        repo.getServiceById(id).execute { copy(stateServiceByid = it) }
     }
 
     fun getCart() = dbRepo.getCart()

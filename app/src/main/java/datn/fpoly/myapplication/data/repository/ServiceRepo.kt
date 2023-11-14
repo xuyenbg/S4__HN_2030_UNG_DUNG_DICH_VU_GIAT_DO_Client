@@ -35,7 +35,7 @@ class ServiceRepo @Inject constructor(
         image: MultipartBody.Part?,  // Phần dữ liệu của hình ảnh
         name: RequestBody,  // Tên sản phẩm
         price: RequestBody,  // Giá sản phẩm
-        attributeList:Map<String, PostService.PostAttribute>,  // Danh sách thuộc tính sản phẩm
+        attributeList: Map<String, PostService.PostAttribute>,  // Danh sách thuộc tính sản phẩm
         isActive: RequestBody,  // Trạng thái kích hoạt
         unit: RequestBody,  // Đơn vị sản phẩm
         idCategory: RequestBody,  // ID danh mục
@@ -55,4 +55,34 @@ class ServiceRepo @Inject constructor(
             unitSale,
             valueSale
         ).subscribeOn(Schedulers.io())
+
+    fun updateService(
+        idService: String,
+        image: MultipartBody.Part?,  // Phần dữ liệu của hình ảnh
+        name: RequestBody,  // Tên sản phẩm
+        price: RequestBody,  // Giá sản phẩm
+        attributeList: Map<String, PostService.PostAttribute>,  // Danh sách thuộc tính sản phẩm
+        isActive: RequestBody,  // Trạng thái kích hoạt
+        unit: RequestBody,  // Đơn vị sản phẩm
+        idCategory: RequestBody,  // ID danh mục
+        idStore: RequestBody,  // ID cửa hàng
+        unitSale: RequestBody?,  // Đơn vị giảm giá (nếu có)
+        valueSale: RequestBody?
+    ): Observable<Response<ResponseBody>> =
+        api.UpdateService(
+            idService,
+            image,
+            name,
+            price,
+            attributeList,
+            isActive,
+            unit,
+            idCategory,
+            idStore,
+            unitSale,
+            valueSale
+        ).subscribeOn(Schedulers.io())
+
+    fun getServiceById(id: String): Observable<ServiceModel> =
+        api.getServiceById(id).subscribeOn(Schedulers.io())
 }
