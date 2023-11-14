@@ -210,76 +210,7 @@
             android:layout_marginTop="3dp"
             />
     </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/relative_2"
-        android:layout_width="340dp"
-        android:layout_height="70dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/relative_1"
-        android:background="@drawable/shape_item_profile"
-        >
-        <RelativeLayout
-            android:id="@+id/relative_btn_order_not_confim"
-            android:layout_width="169dp"
-            android:layout_height="70dp"
-            >
-            <ImageView
-                android:id="@+id/icon_order_not_confim"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/icon_order_not_confim"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="15dp"
-                android:layout_centerHorizontal="true"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:text="Đơn chưa xác nhận"
-                android:layout_below="@+id/icon_order_not_confim"
-                android:layout_centerHorizontal="true"
-                android:textColor="@color/dark_blue"
-                android:textStyle="bold"
-                />
-        </RelativeLayout>
-        <TextView
-            android:layout_width="2dp"
-            android:layout_height="50dp"
-            android:background="@color/gray_2"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            />
-        <RelativeLayout
-            android:id="@+id/relative_btn_order_confim"
-            android:layout_width="169dp"
-            android:layout_height="70dp"
-            android:layout_toRightOf="@+id/relative_btn_order_not_confim"
-            >
-            <ImageView
-                android:id="@+id/icon_order_confim"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/icon_order_confim"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="15dp"
-                android:layout_centerHorizontal="true"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:text="Đơn đã xác nhận"
-                android:layout_below="@+id/icon_order_confim"
-                android:layout_centerHorizontal="true"
-                android:textColor="@color/dark_blue"
-                android:textStyle="bold"
-                />
-        </RelativeLayout>
 
-    </RelativeLayout>
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_logOut"
         android:layout_width="340dp"
@@ -290,7 +221,7 @@
         android:textColor="@color/white"
         android:background="@drawable/shape_item_btn_profile"
         android:backgroundTint="@color/red_2"
-        android:layout_below="@+id/relative_2"
+        android:layout_below="@+id/relative_1"
         android:layout_marginTop="20dp"
         />
 
