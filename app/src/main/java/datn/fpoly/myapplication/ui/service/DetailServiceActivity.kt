@@ -71,6 +71,16 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
                 cart = it
             }
         }
+        adapterService.setListenner(object : AdapterService.ServiceListenner{
+            override fun ServiceOnClick(item: ServiceModel, position: Int) {
+                Hawk.put(Common.KEY_SERVICE_DETAIL, item)
+                val intent = Intent(this@DetailServiceActivity, DetailServiceActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
+            override fun EditService(serviceModel: ServiceModel) {}
+        })
         views.tvNameService.text = serviceModel?.name
         adapterAttribute = AdapterAttribute()
         views.rcvItemAttribute.adapter = adapterAttribute

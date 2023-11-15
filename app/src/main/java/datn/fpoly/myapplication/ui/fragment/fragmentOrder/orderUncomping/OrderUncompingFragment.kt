@@ -1,5 +1,6 @@
 package datn.fpoly.myapplication.ui.fragment.fragmentOrder.orderUncomping
 
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +23,7 @@ import datn.fpoly.myapplication.ui.fragment.fragmentOrder.adapter.OrderAdapter
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
+import datn.fpoly.myapplication.ui.order.OrderDetailActivity
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -48,6 +50,7 @@ class OrderUncompingFragment : BaseFragment<FragmentOrderUncompingBinding>() {
         views.rcvItemOrderUncomping.addItemDecoration(itemDecoration)
         orderAdapter.setListener(object : OrderAdapter.OrderListener{
             override fun onClickOrder(orderModel: OrderResponse) {
+                startActivity(Intent(context,OrderDetailActivity::class.java))
             }
 
         })
