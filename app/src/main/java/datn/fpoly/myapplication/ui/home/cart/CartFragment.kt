@@ -11,7 +11,7 @@ import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.example.ql_ban_hang.core.BaseFragment
 import datn.fpoly.myapplication.data.model.Order
-import datn.fpoly.myapplication.databinding.FragmentCart2Binding
+import datn.fpoly.myapplication.databinding.FragmentCartBinding
 import datn.fpoly.myapplication.ui.check_out.AdapterItemCart2
 import datn.fpoly.myapplication.ui.check_out.CheckOutActivity
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
@@ -19,7 +19,7 @@ import datn.fpoly.myapplication.utils.Common.formatCurrency
 import timber.log.Timber
 
 
-class CartFragment :BaseFragment<FragmentCart2Binding>() {
+class CartFragment :BaseFragment<FragmentCartBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
     var cart: Order? = null
 
@@ -28,11 +28,18 @@ class CartFragment :BaseFragment<FragmentCart2Binding>() {
 
         viewModel.getCart().observe(viewLifecycleOwner) {
             Timber.tag("CART").d("observe ${it.toString()}")
-            if (it != null) {
+            if (it != null && it.listItem.isNotEmpty()) {
                 cart = it
+                views.layoutCartEmpty.root.visibility = View.GONE
+                views.layoutBottomSheet.visibility = View.VISIBLE
+                views.recycleView.visibility = View.VISIBLE
                 views.recycleView.adapter = AdapterItemCart2(requireContext(),it.listItem, eventClick = {})
                 views.tvQuantity.text = it.listItem.size.toString()
                 views.tvPrice.text = it.total?.formatCurrency(null) ?: "-"
+            }else{
+                views.layoutCartEmpty.root.visibility = View.VISIBLE
+                views.layoutBottomSheet.visibility = View.GONE
+                views.recycleView.visibility = View.GONE
             }
         }
 
@@ -75,7 +82,7 @@ class CartFragment :BaseFragment<FragmentCart2Binding>() {
     override fun invalidate(): Unit = withState(viewModel) {
 
     }
-    override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentCart2Binding = FragmentCart2Binding.inflate(layoutInflater)
+    override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentCartBinding = FragmentCartBinding.inflate(layoutInflater)
 
 
 }
