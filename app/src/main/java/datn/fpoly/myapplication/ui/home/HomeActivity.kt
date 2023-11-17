@@ -8,7 +8,7 @@ import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivityHomeBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterViewPage
-import datn.fpoly.myapplication.ui.fragment.fragmentOrder.FragmentOrder
+import datn.fpoly.myapplication.ui.home.order.FragmentOrder
 import datn.fpoly.myapplication.ui.home.cart.CartFragment
 import datn.fpoly.myapplication.ui.fragment.homeUser.HomeUserFragment
 import datn.fpoly.myapplication.ui.fragment.postclient.PostClientFragment

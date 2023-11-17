@@ -8,7 +8,6 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.airbnb.mvrx.*
 import com.example.ql_ban_hang.core.BaseFragment
 import com.orhanobut.hawk.Hawk
@@ -188,7 +187,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         views.vpSlideShow.adapter = adapter
 
 
-        views.circle3.setViewPager(views.vpSlideShow)
+       // views.circle3.setViewPager(views.vpSlideShow)
 //        views.vpSlideShow.registerOnPageChangeCallback(object : OnPageChangeCallback() {
 //            override fun onPageSelected(position: Int) {
 //                super.onPageSelected(position)

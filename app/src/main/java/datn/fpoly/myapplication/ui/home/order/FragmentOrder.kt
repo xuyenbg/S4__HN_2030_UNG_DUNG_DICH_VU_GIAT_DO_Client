@@ -1,4 +1,4 @@
-package datn.fpoly.myapplication.ui.fragment.fragmentOrder
+package datn.fpoly.myapplication.ui.home.order
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +8,6 @@ import androidx.fragment.app.Fragment
 import com.example.ql_ban_hang.core.BaseFragment
 import datn.fpoly.myapplication.databinding.FragmentOrderBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterViewPage
-import datn.fpoly.myapplication.ui.fragment.fragmentOrder.orderCancelled.OrderCancelledFragment
-import datn.fpoly.myapplication.ui.fragment.fragmentOrder.orderCompleted.OrderCompletedFragment
-import datn.fpoly.myapplication.ui.fragment.fragmentOrder.orderUncomping.OrderUncompingFragment
 
 class FragmentOrder: BaseFragment<FragmentOrderBinding>() {
     private lateinit var adapterVp: AdapterViewPage

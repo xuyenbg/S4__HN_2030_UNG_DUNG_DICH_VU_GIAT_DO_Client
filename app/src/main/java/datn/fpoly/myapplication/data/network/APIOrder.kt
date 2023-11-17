@@ -1,6 +1,6 @@
 package datn.fpoly.myapplication.data.network
 
-import datn.fpoly.myapplication.data.model.Order
+import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import io.reactivex.Observable
@@ -15,7 +15,7 @@ interface APIOrder {
     fun getListOrder(
         @Path("idUser") idUser: String,
         @Path("status") status: Int
-    ): Observable<MutableList<Order>>
+    ): Observable<MutableList<OrderBase>>
 
     @GET("api/order/get-list-order-by-idStore/{idStore}")
     fun getListOrderStore(
@@ -24,8 +24,11 @@ interface APIOrder {
     ): Observable<MutableList<OrderResponse>>
 
     @POST("api/order/insert")
-    fun insertOrder(@Body order: Order): Observable<Unit>
+    fun insertOrder(@Body orderBase: OrderBase): Observable<Unit>
 
     @GET("api/order/get-list-order-by-idUser/{idUser}")
     fun getListOrder(@Path("idUser") idUser: String): Observable<MutableList<OrderExtend>>
+
+    @GET("api/order/order-detail/{idOrder}")
+    fun getOrderDetail(@Path("idOrder") idOrder: String): Observable<OrderExtend>
 }

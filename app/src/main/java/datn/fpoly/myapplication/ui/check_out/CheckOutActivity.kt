@@ -11,7 +11,7 @@ import com.airbnb.mvrx.viewModel
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.AddressExtend
-import datn.fpoly.myapplication.data.model.Order
+import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.databinding.ActivityCheckOutBinding
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 import kotlinx.coroutines.launch
@@ -23,9 +23,9 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
     @Inject
     lateinit var addPosFactory: CheckOutViewModel.Factory
 
-    var adapterItemCart:AdapterItemCart2? = null
+    private var adapterItemCart:AdapterItemCart? = null
 
-    var cart: Order? = null
+    var cart: OrderBase? = null
 
     var address: AddressExtend? = null
 
@@ -52,7 +52,7 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
                 cart = it
                 viewModel.handle(CheckOutViewAction.GetStoreById(it.idStore ?: "-"))
                 views.total.text = it.total?.formatCurrency(null) ?: "- đ"
-                adapterItemCart = AdapterItemCart2(this, it.listItem, eventClick = {})
+                adapterItemCart = AdapterItemCart(this, it.listItem, eventClick = {})
                 views.recyclerView.adapter = adapterItemCart
             }
         }

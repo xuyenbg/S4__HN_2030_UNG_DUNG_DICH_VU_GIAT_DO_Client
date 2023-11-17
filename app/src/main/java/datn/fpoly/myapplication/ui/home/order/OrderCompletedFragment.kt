@@ -1,13 +1,11 @@
-package datn.fpoly.myapplication.ui.fragment.fragmentOrder.orderUncomping
+package datn.fpoly.myapplication.ui.home.order
 
 import android.content.Intent
-import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
@@ -17,34 +15,37 @@ import com.example.ql_ban_hang.core.BaseFragment
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.data.model.account.AccountModel
-import datn.fpoly.myapplication.databinding.FragmentOrderUncompingBinding
-import datn.fpoly.myapplication.ui.fragment.fragmentOrder.adapter.OrderAdapter
+import datn.fpoly.myapplication.databinding.FragmentOrderCompletedBinding
+import datn.fpoly.myapplication.ui.home.order.adapter.OrderAdapter
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
 import datn.fpoly.myapplication.ui.order.OrderDetailActivity
+import datn.fpoly.myapplication.utils.Common
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
-class OrderUncompingFragment : BaseFragment<FragmentOrderUncompingBinding>() {
+class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var orderAdapter : OrderAdapter
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentOrderUncompingBinding = FragmentOrderUncompingBinding.inflate(layoutInflater)
+    ): FragmentOrderCompletedBinding = FragmentOrderCompletedBinding.inflate(layoutInflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val account = Hawk.get<AccountModel>("Account",null)
         viewModel.handle(HomeViewAction.OrderActionGetList(account.id.toString()))
         orderAdapter = OrderAdapter()
-        val itemDecoration = ItemSpacingDecoration(0)
-        views.rcvItemOrderUncomping.addItemDecoration(itemDecoration)
+        val itemDecoration = ItemSpacingDecoration(16)
+        views.rcvItemOrderComplete.addItemDecoration(itemDecoration)
         orderAdapter.setListener(object : OrderAdapter.OrderListener{
-            override fun onClickOrder(orderModel: OrderExtend) {
-                startActivity(Intent(context,OrderDetailActivity::class.java))
+            override fun onClickOrder(order: OrderExtend) {
+                val intent = Intent(context, OrderDetailActivity::class.java)
+                intent.putExtra(Common.KEY_ID_ORDER,order.id)
+                startActivity(intent)
             }
 
         })
@@ -64,32 +65,25 @@ class OrderUncompingFragment : BaseFragment<FragmentOrderUncompingBinding>() {
                 runBlocking {
                     launch {
                         it.stateOrder.invoke()?.let {
-                            Timber.tag("OrderUncompingFragment").d("orderUncompingInvalidate: ${it.size}")
-                            orderAdapter.updateDataByStatus(it, listOf(1,2)) // Cập nhật danh sách đơn hàng đã hủy
-                            views.rcvItemOrderUncomping.adapter = orderAdapter
+                            Timber.tag("OrderCompleteFragment").d("orderCompleteInvalidate: ${it.size}")
+                            orderAdapter.updateDataByStatus(it, listOf(3)) // Cập nhật danh sách đơn hàng đã hủy
+                            views.rcvItemOrderComplete.adapter = orderAdapter
                             orderAdapter.notifyDataSetChanged()
-                            Log.d("OrderUncompingFragment", "getListOrderUncomping: ${it.size}")
+                            Log.d("OrderCompleteFragment", "getListOrderComplete: ${it.size}")
                         }
                     }
                 }
             }
             is Loading -> {
-                Timber.tag("AAAAAAAAAAAAAAA").e("getOrderUncomping: loading")
+                Timber.tag("AAAAAAAAAAAAAAA").e("getOrderComplete: loading")
             }
 
             is Fail -> {
-                Timber.tag("AAAAAAAAAAAAAAA").e("getOrderUncomping: Fail")
+                Timber.tag("AAAAAAAAAAAAAAA").e("getOrderComplete: Fail")
             }
             else -> {
 
             }
         }
     }
-}
-class ItemSpacingDecoration(private val spacing: Int) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        outRect.bottom = spacing // Đặt khoảng dưới theo giá trị spacing bạn muốn
-    }
-
-
 }

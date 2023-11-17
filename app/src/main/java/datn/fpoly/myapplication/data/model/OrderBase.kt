@@ -2,7 +2,7 @@ package datn.fpoly.myapplication.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Order(
+data class OrderBase(
     @SerializedName("idUser") var idUser: String? = null,
     @SerializedName("idStore") var idStore: String? = null,
     @SerializedName("total") var total: Double? = null,

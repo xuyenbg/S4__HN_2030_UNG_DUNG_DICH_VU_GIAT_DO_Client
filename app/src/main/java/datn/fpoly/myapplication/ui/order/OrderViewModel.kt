@@ -2,26 +2,30 @@ package datn.fpoly.myapplication.ui.order
 
 import com.airbnb.mvrx.ActivityViewModelContext
 import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
-import datn.fpoly.myapplication.data.repository.AddressRepo
-import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.data.repository.OrderRepo
-import datn.fpoly.myapplication.data.repository.RoomDbRepo
-import datn.fpoly.myapplication.data.repository.StoreRepo
 
 class OrderViewModel @AssistedInject constructor(
     @Assisted state: OrderViewState,
-    private val orderRepo: OrderRepo,
-    private val storeRepo: StoreRepo,
-    private val dbRepo: RoomDbRepo
+    private val orderRepo: OrderRepo
 ) : BaseViewModel<OrderViewState, OrderViewAction, OrderViewEvent>(state) {
     override fun handle(action: OrderViewAction) {
+        when(action){
+            is OrderViewAction.GetOrderDetail -> {
+                handleGetOrderDetail(action.idOrder)
+            }
+        }
+    }
 
+    private fun handleGetOrderDetail(idOrder: String) {
+        setState { copy(stateOrderDetail = Loading()) }
+        orderRepo.getOrderDetail(idOrder).execute { copy(stateOrderDetail = it) }
     }
 
     @AssistedFactory

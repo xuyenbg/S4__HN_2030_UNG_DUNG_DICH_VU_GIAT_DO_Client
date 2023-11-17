@@ -13,11 +13,11 @@ import datn.fpoly.myapplication.databinding.ItemCartItemBinding
 import datn.fpoly.myapplication.ui.home.cart.AdapterAddOn
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 
-class AdapterItemCart2(
+class AdapterItemCart(
     private val context: Context,
     val list: MutableList<ItemServiceBase>,
     val eventClick: (ItemServiceBase) -> Unit
-) : Adapter<AdapterItemCart2.ViewHolderItemStore>(){
+) : Adapter<AdapterItemCart.ViewHolderItemStore>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderItemStore =
         ViewHolderItemStore(

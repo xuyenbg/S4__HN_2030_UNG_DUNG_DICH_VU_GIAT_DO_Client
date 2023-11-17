@@ -9,7 +9,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
-import datn.fpoly.myapplication.data.model.Order
+import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.repository.AddressRepo
 import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.data.repository.OrderRepo
@@ -28,7 +28,7 @@ class CheckOutViewModel @AssistedInject constructor(
         when (action) {
             is CheckOutViewAction.GetStoreById -> handleGetStoreById(action.idStore)
 
-            is CheckOutViewAction.InsertOrder -> handleInsertOrder(action.order)
+            is CheckOutViewAction.InsertOrder -> handleInsertOrder(action.orderBase)
 
             is CheckOutViewAction.GetListAddress -> handleGetListAddress()
         }
@@ -41,9 +41,9 @@ class CheckOutViewModel @AssistedInject constructor(
         addressRepo.getListAddress(idUser).execute { copy(stateGetListAddress = it) }
     }
 
-    private fun handleInsertOrder(order: Order) {
+    private fun handleInsertOrder(orderBase: OrderBase) {
         setState { copy(stateInsertOrder = Loading()) }
-        orderRepo.insertOrder(order).execute { copy(stateInsertOrder = it) }
+        orderRepo.insertOrder(orderBase).execute { copy(stateInsertOrder = it) }
     }
 
     private fun handleGetStoreById(idStore: String) {

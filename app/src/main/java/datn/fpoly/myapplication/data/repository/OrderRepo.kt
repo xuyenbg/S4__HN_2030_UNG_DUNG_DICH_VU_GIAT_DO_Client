@@ -1,6 +1,6 @@
 package datn.fpoly.myapplication.data.repository
 
-import datn.fpoly.myapplication.data.model.Order
+import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.data.network.APIOrder
@@ -17,5 +17,7 @@ class OrderRepo @Inject constructor(
 
     fun getDataOrderStore(idStore : String, sortOrder : String): Observable<MutableList<OrderResponse>> = api.getListOrderStore(idStore,sortOrder).subscribeOn(Schedulers.io())
 
-    fun insertOrder(order: Order) : Observable<Unit> = api.insertOrder(order).subscribeOn(Schedulers.io())
+    fun insertOrder(orderBase: OrderBase) : Observable<Unit> = api.insertOrder(orderBase).subscribeOn(Schedulers.io())
+
+    fun getOrderDetail(idOrder: String) : Observable<OrderExtend> = api.getOrderDetail(idOrder).subscribeOn(Schedulers.io())
 }

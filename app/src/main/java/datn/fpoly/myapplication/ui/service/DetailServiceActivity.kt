@@ -12,7 +12,7 @@ import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.ItemServiceBase
-import datn.fpoly.myapplication.data.model.Order
+import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.databinding.ActivityDetailServiceBinding
@@ -34,7 +34,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
     private var serviceExtend : ServiceExtend? = null
     private lateinit var adapterService: AdapterService
     private lateinit var adapterAttribute : AdapterAttribute
-    private lateinit var cart: Order
+    private lateinit var cart: OrderBase
     private var quality = 1.0
     private var total = 0.0
 

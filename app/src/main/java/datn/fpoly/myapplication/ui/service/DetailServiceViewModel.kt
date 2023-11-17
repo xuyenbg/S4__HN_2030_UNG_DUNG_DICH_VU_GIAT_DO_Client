@@ -5,7 +5,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
-import datn.fpoly.myapplication.data.model.Order
+import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.repository.RoomDbRepo
 import datn.fpoly.myapplication.data.repository.ServiceRepo
 
@@ -35,7 +35,7 @@ class DetailServiceViewModel @AssistedInject constructor(
 
     fun getCart() = dbRepo.getCart()
 
-    fun updateCart(order: Order) = dbRepo.updateCart(order)
+    fun updateCart(orderBase: OrderBase) = dbRepo.updateCart(orderBase)
 
     @AssistedFactory
     interface Factory {

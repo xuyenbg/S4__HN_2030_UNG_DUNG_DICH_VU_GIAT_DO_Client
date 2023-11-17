@@ -46,6 +46,7 @@ object Common {
     const val KEY_ID_STORE = "id_store"
     const val KEY_ID_SERVICE = "id_service"
     const val KEY_POST = "KEY_POST"
+    const val KEY_ID_ORDER = "KEY_POST"
     val KEY_UPDATE_SERVICE="update_service"
     val CODE_LOAD_DATA=111
 

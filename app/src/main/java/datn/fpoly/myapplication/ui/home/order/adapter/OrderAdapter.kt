@@ -1,4 +1,4 @@
-package datn.fpoly.myapplication.ui.fragment.fragmentOrder.adapter
+package datn.fpoly.myapplication.ui.home.order.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.databinding.ItemListOrderBinding
 import datn.fpoly.myapplication.utils.Common.formatDateOrder
-import datn.fpoly.myapplication.utils.DateTimeUtils
 import javax.inject.Inject
 
 class OrderAdapter @Inject constructor() :
