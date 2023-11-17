@@ -219,4 +219,5 @@ object Common {
         return formatted.reverse().append(" ${if (unit != null) "đ/${unit}" else 'đ'}").toString()
     }
 
+    fun Date.formatDateOrder(): String =  SimpleDateFormat("MM/dd/yyyy HH:mm",Locale.ROOT).format(this)
 }

@@ -11,9 +11,9 @@ import com.airbnb.mvrx.viewModel
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
-import datn.fpoly.myapplication.data.model.ItemService
+import datn.fpoly.myapplication.data.model.ItemServiceBase
 import datn.fpoly.myapplication.data.model.Order
-import datn.fpoly.myapplication.data.model.ServiceModel
+import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.databinding.ActivityDetailServiceBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterAttribute
@@ -31,7 +31,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
     @Inject
     lateinit var authRepo: AuthRepo
     private val viewModel: DetailServiceViewModel by viewModel()
-    private var serviceModel : ServiceModel? = null
+    private var serviceExtend : ServiceExtend? = null
     private lateinit var adapterService: AdapterService
     private lateinit var adapterAttribute : AdapterAttribute
     private lateinit var cart: Order
@@ -41,18 +41,18 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
-        serviceModel = Hawk.get(Common.KEY_SERVICE_DETAIL)
-        views.tvNameService.text = serviceModel?.name
-        views.tvPrice.text = serviceModel?.price?.formatCurrency(unit = serviceModel?.unit) ?: ""
+        serviceExtend = Hawk.get(Common.KEY_SERVICE_DETAIL)
+        views.tvNameService.text = serviceExtend?.name
+        views.tvPrice.text = serviceExtend?.price?.formatCurrency(unit = serviceExtend?.unit) ?: ""
         views.tvQuantity.text = quality.toInt().toString()
 
         var nameAttribute=""
-        for (index in 0 until (serviceModel?.attributeList?.size ?: 0)){
-            if(serviceModel?.attributeList?.size!=0){
-                if(index== (serviceModel?.attributeList?.size?.minus(1))){
-                    nameAttribute+= (serviceModel?.attributeList?.get(index)?.name ?: "" )
+        for (index in 0 until (serviceExtend?.attributeList?.size ?: 0)){
+            if(serviceExtend?.attributeList?.size!=0){
+                if(index== (serviceExtend?.attributeList?.size?.minus(1))){
+                    nameAttribute+= (serviceExtend?.attributeList?.get(index)?.name ?: "" )
                 }else{
-                    nameAttribute+= (serviceModel?.attributeList?.get(index)?.name ?: "" ) +">"
+                    nameAttribute+= (serviceExtend?.attributeList?.get(index)?.name ?: "" ) +">"
                 }
 
             }
@@ -72,19 +72,19 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
             }
         }
         adapterService.setListenner(object : AdapterService.ServiceListenner{
-            override fun ServiceOnClick(item: ServiceModel, position: Int) {
+            override fun ServiceOnClick(item: ServiceExtend, position: Int) {
                 Hawk.put(Common.KEY_SERVICE_DETAIL, item)
                 val intent = Intent(this@DetailServiceActivity, DetailServiceActivity::class.java)
                 startActivity(intent)
                 finish()
             }
 
-            override fun EditService(serviceModel: ServiceModel) {}
+            override fun EditService(serviceExtend: ServiceExtend) {}
         })
-        views.tvNameService.text = serviceModel?.name
+        views.tvNameService.text = serviceExtend?.name
         adapterAttribute = AdapterAttribute()
         views.rcvItemAttribute.adapter = adapterAttribute
-        serviceModel?.attributeList?.let {
+        serviceExtend?.attributeList?.let {
             adapterAttribute.setData(it)
         }
         views.btnAddCart.setOnClickListener {
@@ -92,20 +92,20 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
                 Log.e("AAAAAAAAAAA", "onCreate: name: "+adapterAttribute.listAttributeSelect[index].name )
             }
             Toast.makeText(this, "list attribute select: size: "+adapterAttribute.listAttributeSelect.size, Toast.LENGTH_SHORT).show()
-            if(serviceModel != null){
+            if(serviceExtend != null){
                 Log.d("USER", authRepo.getUser().toString())
-                if (cart.idStore != null && cart.idStore?.equals(serviceModel!!.idStore?.id) == false){
+                if (cart.idStore != null && cart.idStore?.equals(serviceExtend!!.idStore?.id) == false){
                     Toast.makeText(this, "Bạn có chắc chắn muốn đặt lại không? Nếu bạn tiếp tục, giỏ hàng của bạn sẽ bị xóa.", Toast.LENGTH_SHORT).show()
 
-                    cart.idStore = serviceModel?.idStore?.id
+                    cart.idStore = serviceExtend?.idStore?.id
 
                     cart.listItem.clear()
-                    cart.listItem.add(ItemService(service = serviceModel, idService = serviceModel?.id, number = quality, total = getTotalItem(), attributeListExtend = adapterAttribute.listAttributeSelect, attributeList = adapterAttribute.listAttributeSelect.map { attr ->  attr.id}.toMutableList()))
+                    cart.listItem.add(ItemServiceBase(service = serviceExtend, idService = serviceExtend?.id, number = quality, total = getTotalItem(), attributeListExtend = adapterAttribute.listAttributeSelect, attributeList = adapterAttribute.listAttributeSelect.map { attr ->  attr.id}.toMutableList()))
                     viewModel.updateCart(cart)
 
                 }else{
-                    cart.idStore = serviceModel!!.idStore?.id
-                    cart.listItem.add(ItemService(service = serviceModel, idService = serviceModel?.id, number = quality, total = getTotalItem(), attributeListExtend = adapterAttribute.listAttributeSelect, attributeList = adapterAttribute.listAttributeSelect.map { attr ->  attr.id}.toMutableList()))
+                    cart.idStore = serviceExtend!!.idStore?.id
+                    cart.listItem.add(ItemServiceBase(service = serviceExtend, idService = serviceExtend?.id, number = quality, total = getTotalItem(), attributeListExtend = adapterAttribute.listAttributeSelect, attributeList = adapterAttribute.listAttributeSelect.map { attr ->  attr.id}.toMutableList()))
                     viewModel.updateCart(cart)
                 }
             }
@@ -126,14 +126,14 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
     private fun getTotalItem() : Double {
         var priceAttr = 0.0
         adapterAttribute.listAttributeSelect.forEach{ attr -> priceAttr += attr.price }
-        total = (serviceModel!!.price!! + priceAttr) * quality
+        total = (serviceExtend!!.price!! + priceAttr) * quality
         return total
     }
 
     override fun onResume() {
         super.onResume()
-        serviceModel?.idStore?.id?.let {
-            serviceModel?.id?.let { it1 ->
+        serviceExtend?.idStore?.id?.let {
+            serviceExtend?.id?.let { it1 ->
                 DetailServiceViewAction.GetListServiceByStore(
                     it, it1
                 )

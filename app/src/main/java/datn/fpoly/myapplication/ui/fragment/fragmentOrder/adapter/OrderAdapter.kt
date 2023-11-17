@@ -4,24 +4,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import datn.fpoly.myapplication.data.model.Order
-import datn.fpoly.myapplication.data.model.orderList.OrderResponse
+import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.databinding.ItemListOrderBinding
+import datn.fpoly.myapplication.utils.Common.formatDateOrder
 import datn.fpoly.myapplication.utils.DateTimeUtils
 import javax.inject.Inject
 
 class OrderAdapter @Inject constructor() :
     RecyclerView.Adapter<OrderAdapter.OrderViewHolder>() {
-    private val listOrder = mutableListOf<OrderResponse>();
+    private val listOrder = mutableListOf<OrderExtend>();
     private var orderListener: OrderListener? = null
 
-    fun updateData(list: MutableList<OrderResponse>) {
+    fun updateData(list: MutableList<OrderExtend>) {
         this.listOrder.clear()
         this.listOrder.addAll(list)
         notifyDataSetChanged()
     }
 
-    fun updateDataByStatus(list: List<OrderResponse>, statuses: List<Int>) {
+    fun updateDataByStatus(list: List<OrderExtend>, statuses: List<Int>) {
         val filteredList = list.filter { it.status in statuses }
         listOrder.clear()
         listOrder.addAll(filteredList)
@@ -48,8 +48,8 @@ class OrderAdapter @Inject constructor() :
                 }
                 holder.binding.apply {
                     tvId.text = "#${itemOrder.id}"
-                    tvNameStore.text = itemOrder.idStore
-                    tvTime.text = DateTimeUtils.formatDateOrder(itemOrder.updateAt)
+                    tvNameStore.text = itemOrder.idStore?.name
+                    tvTime.text = itemOrder.updateAt?.formatDateOrder()
                     if (itemOrder.status == 1) {
                         tvStatus2.visibility = View.VISIBLE
                         tvStatus3.visibility = View.INVISIBLE
@@ -91,6 +91,6 @@ class OrderAdapter @Inject constructor() :
 
 
     interface OrderListener {
-        fun onClickOrder(orderModel: OrderResponse)
+        fun onClickOrder(orderModel: OrderExtend)
     }
 }

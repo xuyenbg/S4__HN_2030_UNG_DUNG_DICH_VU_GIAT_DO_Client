@@ -1,7 +1,7 @@
 package datn.fpoly.myapplication.data.network
 
 
-import datn.fpoly.myapplication.data.model.ServiceModel
+import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.data.model.post.PostService
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -11,16 +11,16 @@ import retrofit2.http.*
 
 interface APIService {
     @GET("api/services/list-service-by-store-service/")
-    fun getListSeviceByStore(@Query("idStore") id: String): io.reactivex.Observable<MutableList<ServiceModel>>
+    fun getListSeviceByStore(@Query("idStore") id: String): io.reactivex.Observable<MutableList<ServiceExtend>>
 
     @GET("api/services/list-service-by-store-service/")
     fun getListSeviceByStore2(
         @Query("idStore") idStore: String,
         @Query("idService") idService: String
-    ): io.reactivex.Observable<MutableList<ServiceModel>>
+    ): io.reactivex.Observable<MutableList<ServiceExtend>>
 
     @GET("api/services/list-service-by-category/{idCategory}")
-    fun getListServiceByCate(@Path("idCategory") idCate: String): io.reactivex.Observable<MutableList<ServiceModel>>
+    fun getListServiceByCate(@Path("idCategory") idCate: String): io.reactivex.Observable<MutableList<ServiceExtend>>
     @Multipart
     @POST("api/services/insert")
     fun addService(
@@ -52,5 +52,5 @@ interface APIService {
     ): io.reactivex.Observable<Response<ResponseBody>>
 
     @GET("api/services/servicebyid/{idService}")
-    fun getServiceById(@Path("idService") idService: String): io.reactivex.Observable<ServiceModel>
+    fun getServiceById(@Path("idService") idService: String): io.reactivex.Observable<ServiceExtend>
 }

@@ -8,15 +8,15 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import datn.fpoly.myapplication.R
-import datn.fpoly.myapplication.data.model.ItemService
+import datn.fpoly.myapplication.data.model.ItemServiceBase
 import datn.fpoly.myapplication.databinding.ItemCartItemBinding
 import datn.fpoly.myapplication.ui.home.cart.AdapterAddOn
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 
 class AdapterItemCart2(
     private val context: Context,
-    val list: MutableList<ItemService>,
-    val eventClick: (ItemService) -> Unit
+    val list: MutableList<ItemServiceBase>,
+    val eventClick: (ItemServiceBase) -> Unit
 ) : Adapter<AdapterItemCart2.ViewHolderItemStore>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderItemStore =
@@ -43,7 +43,7 @@ class AdapterItemCart2(
     }
 
     inner class ViewHolderItemStore(val binding: ItemCartItemBinding) : ViewHolder(binding.root) {
-        fun bind(item: ItemService, context: Context) {
+        fun bind(item: ItemServiceBase, context: Context) {
             item.service?.let {
                 binding.serviceName.text = it.name
                 binding.price.text = it.price?.formatCurrency(it.unit) ?: "-"

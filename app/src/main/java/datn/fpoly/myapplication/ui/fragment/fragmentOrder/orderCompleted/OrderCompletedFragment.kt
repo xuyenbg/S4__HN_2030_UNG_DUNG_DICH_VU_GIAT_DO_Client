@@ -15,6 +15,7 @@ import com.airbnb.mvrx.withState
 import com.example.ql_ban_hang.core.BaseFragment
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.Order
+import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.FragmentOrderCompletedBinding
@@ -30,10 +31,6 @@ import javax.inject.Inject
 class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var orderAdapter : OrderAdapter
-    private var order: Order? = null
-    private var account: AccountModel? = null
-    private var id = "65257a540aa52df907b803cf"
-    private var status = 1
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -47,7 +44,7 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
         val itemDecoration = ItemSpacingDecoration(16)
         views.rcvItemOrderComplete.addItemDecoration(itemDecoration)
         orderAdapter.setListener(object : OrderAdapter.OrderListener{
-            override fun onClickOrder(orderModel: OrderResponse) {
+            override fun onClickOrder(orderModel: OrderExtend) {
             }
 
         })

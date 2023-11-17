@@ -2,8 +2,6 @@ package datn.fpoly.myapplication.ui.fragment.serviceStore
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.airbnb.mvrx.*
 import com.example.ql_ban_hang.core.BaseFragment
 import com.orhanobut.hawk.Hawk
-import datn.fpoly.myapplication.R
-import datn.fpoly.myapplication.data.model.ServiceModel
+import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.databinding.FragmentServicesStoreBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterService
@@ -58,15 +55,15 @@ class ServicesStoreFragment : BaseFragment<FragmentServicesStoreBinding>() {
         adapter = AdapterService(true)
         views.rcvListService.adapter = adapter
         adapter.setListenner(object : AdapterService.ServiceListenner {
-            override fun ServiceOnClick(item: ServiceModel, position: Int) {
+            override fun ServiceOnClick(item: ServiceExtend, position: Int) {
                 val intent = Intent(requireContext(), DetailServiceActivity::class.java)
                 intent.putExtra(Common.KEY_ID_SERVICE, item.id)
                 intent.putExtra(Common.KEY_ID_STORE, item.idStore?.id)
                 startActivity(intent)
             }
 
-            override fun EditService(serviceModel: ServiceModel) {
-                DataRaw.setModelUpdateService(serviceModel)
+            override fun EditService(serviceExtend: ServiceExtend) {
+                DataRaw.setModelUpdateService(serviceExtend)
                 startActivityResult.launch(
                     Intent(
                         requireContext(),

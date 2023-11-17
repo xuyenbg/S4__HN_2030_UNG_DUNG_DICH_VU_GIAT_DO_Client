@@ -9,13 +9,13 @@ class StoreModel(
     @SerializedName("name")
     var name : String?=null,
     @SerializedName("idUser")
-    var iduser: AccountModel?=null,
+    var iduser: AccountModel?= AccountModel(),
     @SerializedName("idAddress")
-    var idAddress :AddressModel ?=null,
+    var idAddress :AddressModel ?= AddressModel(),
     @SerializedName("status")
-    var status : Int?,
+    var status : Int? =null,
     @SerializedName("rate")
-    var rate: Double?,
+    var rate: Double? =null,
     @SerializedName("transportTypeList")
     var transportTypeList: MutableList<String>?=null,
     @SerializedName("imageQRCode")

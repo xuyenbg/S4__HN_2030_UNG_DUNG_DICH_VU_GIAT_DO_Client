@@ -6,9 +6,9 @@ class AddressModel (
     @SerializedName("_id")
     var id: String ?= null,
     @SerializedName("longitude")
-    var longitude: Double=0.0,
+    var longitude: Double? = null,
     @SerializedName("latitude")
-    var latitude: Double=0.0,
+    var latitude: Double? = null,
     @SerializedName("isDefalt")
     var isDefault: Boolean?= null,
     @SerializedName("idUser")

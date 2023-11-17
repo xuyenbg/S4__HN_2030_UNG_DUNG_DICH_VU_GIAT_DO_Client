@@ -1,6 +1,6 @@
 package datn.fpoly.myapplication.data.repository
 
-import datn.fpoly.myapplication.data.model.ServiceModel
+import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.data.model.post.PostService
 import datn.fpoly.myapplication.data.network.APIService
 import io.reactivex.schedulers.Schedulers
@@ -10,12 +10,11 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.Part
 
 class ServiceRepo @Inject constructor(
     private val api: APIService
 ) {
-    fun getListServiceByStore(id: String): Observable<MutableList<ServiceModel>> =
+    fun getListServiceByStore(id: String): Observable<MutableList<ServiceExtend>> =
         api.getListSeviceByStore(id).subscribeOn(
             Schedulers.io()
         )
@@ -23,12 +22,12 @@ class ServiceRepo @Inject constructor(
     fun getListServiceByStore2(
         idStore: String,
         idService: String
-    ): Observable<MutableList<ServiceModel>> =
+    ): Observable<MutableList<ServiceExtend>> =
         api.getListSeviceByStore2(idStore, idService).subscribeOn(
             Schedulers.io()
         )
 
-    fun getListByCate(idCate: String): Observable<MutableList<ServiceModel>> =
+    fun getListByCate(idCate: String): Observable<MutableList<ServiceExtend>> =
         api.getListServiceByCate(idCate).subscribeOn(Schedulers.io())
 
     fun addService(
@@ -83,6 +82,6 @@ class ServiceRepo @Inject constructor(
             valueSale
         ).subscribeOn(Schedulers.io())
 
-    fun getServiceById(id: String): Observable<ServiceModel> =
+    fun getServiceById(id: String): Observable<ServiceExtend> =
         api.getServiceById(id).subscribeOn(Schedulers.io())
 }

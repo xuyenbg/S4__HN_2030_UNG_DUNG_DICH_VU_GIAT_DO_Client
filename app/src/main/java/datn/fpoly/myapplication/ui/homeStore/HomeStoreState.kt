@@ -4,7 +4,7 @@ import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
 import datn.fpoly.myapplication.data.model.CategoryModel
-import datn.fpoly.myapplication.data.model.ServiceModel
+import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.data.model.post.PostModel
@@ -17,5 +17,5 @@ data class HomeStoreState(
     var stateGetStore: Async<StoreModel> = Uninitialized,
     val stateDelete: Async<Response<ResponseBody>> = Uninitialized,
     val stateGetOrderStore : Async<MutableList<OrderResponse>> = Uninitialized,
-    val stateGetListService: Async<MutableList<ServiceModel>> = Uninitialized
+    val stateGetListService: Async<MutableList<ServiceExtend>> = Uninitialized
 ) : MvRxState

@@ -15,9 +15,8 @@ import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.example.ql_ban_hang.core.BaseFragment
 import com.orhanobut.hawk.Hawk
-import datn.fpoly.myapplication.data.model.Order
+import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.data.model.account.AccountModel
-import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.FragmentOrderUncompingBinding
 import datn.fpoly.myapplication.ui.fragment.fragmentOrder.adapter.OrderAdapter
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
@@ -31,11 +30,6 @@ import timber.log.Timber
 class OrderUncompingFragment : BaseFragment<FragmentOrderUncompingBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var orderAdapter : OrderAdapter
-    private var uncompingOrders: List<Order>? = null
-    private var order: Order? = null
-    private var account: AccountModel? = null
-    private var id = "65257a540aa52df907b803cf"
-    private var status = 1
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -49,7 +43,7 @@ class OrderUncompingFragment : BaseFragment<FragmentOrderUncompingBinding>() {
         val itemDecoration = ItemSpacingDecoration(0)
         views.rcvItemOrderUncomping.addItemDecoration(itemDecoration)
         orderAdapter.setListener(object : OrderAdapter.OrderListener{
-            override fun onClickOrder(orderModel: OrderResponse) {
+            override fun onClickOrder(orderModel: OrderExtend) {
                 startActivity(Intent(context,OrderDetailActivity::class.java))
             }
 

@@ -8,14 +8,14 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import datn.fpoly.myapplication.R
-import datn.fpoly.myapplication.data.model.ServiceModel
+import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.databinding.ItemServiceBinding
 
 class AdapterService(val isStore: Boolean) : Adapter<AdapterService.ViewholderItemService>(){
-    private val listService= mutableListOf<ServiceModel>()
+    private val listService= mutableListOf<ServiceExtend>()
     private var serviceListenner: ServiceListenner?=null
     private lateinit var context: Context
-    fun setData(list: MutableList<ServiceModel>){
+    fun setData(list: MutableList<ServiceExtend>){
         this.listService.clear()
         this.listService.addAll(list)
         notifyDataSetChanged()
@@ -44,7 +44,7 @@ class AdapterService(val isStore: Boolean) : Adapter<AdapterService.ViewholderIt
 
     }
     inner class ViewholderItemService(var binding: ItemServiceBinding): ViewHolder(binding.root){
-        fun bind(item: ServiceModel){
+        fun bind(item: ServiceExtend){
             binding.tvNameService.text = item.name
             binding.tvPrice.text =""+ item.price+"đ/"+item.unit
             if(isStore){
@@ -58,7 +58,7 @@ class AdapterService(val isStore: Boolean) : Adapter<AdapterService.ViewholderIt
         }
     }
     interface ServiceListenner{
-        fun ServiceOnClick(item: ServiceModel, position: Int)
-        fun EditService(serviceModel: ServiceModel)
+        fun ServiceOnClick(item: ServiceExtend, position: Int)
+        fun EditService(serviceExtend: ServiceExtend)
     }
 }

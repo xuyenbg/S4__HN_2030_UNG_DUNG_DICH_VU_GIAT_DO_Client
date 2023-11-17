@@ -1,7 +1,6 @@
 package datn.fpoly.myapplication.ui.listService
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
@@ -9,12 +8,10 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
-import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
-import datn.fpoly.myapplication.data.model.ServiceModel
+import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.databinding.ActivityListServiceBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterService
-import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.service.DetailServiceActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.DataRaw
@@ -35,14 +32,14 @@ class ListServiceActivity : BaseActivity<ActivityListServiceBinding>(), ListServ
         adapter = AdapterService(false)
         views.rcvList.adapter= adapter
         adapter.setListenner(object :AdapterService.ServiceListenner{
-            override fun ServiceOnClick(item: ServiceModel, position: Int) {
+            override fun ServiceOnClick(item: ServiceExtend, position: Int) {
                 Hawk.put(Common.KEY_SERVICE_DETAIL, item)
                 val intent = Intent(this@ListServiceActivity, DetailServiceActivity::class.java)
                 startActivity(intent)
                 finish()
             }
 
-            override fun EditService(serviceModel: ServiceModel) {
+            override fun EditService(serviceExtend: ServiceExtend) {
 
             }
         })
