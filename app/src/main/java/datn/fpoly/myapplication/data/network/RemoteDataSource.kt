@@ -53,9 +53,9 @@ class RemoteDataSource {
                 out?.nullValue()
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    out?.value(value.format("yyyy-MM-dd'T'HH:mm'Z'"))
+                    out?.value(value.format("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"))
                 }else{
-                    out?.value(SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'",Locale.ROOT).format(value))
+                    out?.value(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",Locale.ROOT).format(value))
                 }
             }
         }
@@ -66,7 +66,7 @@ class RemoteDataSource {
                     null
                 } else {
                     try {
-                        SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'",Locale.ROOT).parse(_in.nextString())
+                        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",Locale.ROOT).parse(_in.nextString())
                     }catch (e:Exception){
                         null
                     }
