@@ -1,5 +1,6 @@
 package datn.fpoly.myapplication.ui.home.order.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,10 +46,11 @@ class OrderAdapter @Inject constructor() :
                 holder.itemView.setOnClickListener {
                     orderListener?.onClickOrder(itemOrder)
                 }
+                Log.d("itemOrder", itemOrder.toString())
                 holder.binding.apply {
                     tvId.text = "#${itemOrder.id}"
                     tvNameStore.text = itemOrder.idStore?.name
-                    tvTime.text = itemOrder.updateAt?.formatDateOrder()
+                    tvTime.text = itemOrder.createAt?.formatDateOrder()
                     if (itemOrder.status == 1) {
                         tvStatus2.visibility = View.VISIBLE
                         tvStatus3.visibility = View.INVISIBLE

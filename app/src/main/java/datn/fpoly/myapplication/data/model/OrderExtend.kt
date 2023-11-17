@@ -19,4 +19,8 @@ data class OrderExtend(
     @SerializedName("createAt") var createAt: Date? = null,
     @SerializedName("updateAt") var updateAt: Date? = null,
     @SerializedName("listItem") var listItem: ArrayList<ItemServiceExtend> = arrayListOf(),
-)
+) {
+    override fun toString(): String {
+        return "OrderExtend(id=$id, idUser=$idUser, idStore=$idStore, total=$total, note=$note, transportType=$transportType, methodPaymentType=$methodPaymentType, feeDelivery=$feeDelivery, status=$status, idAddress=$idAddress, isPaid=$isPaid, createAt=$createAt, updateAt=$updateAt, listItem=$listItem)"
+    }
+}

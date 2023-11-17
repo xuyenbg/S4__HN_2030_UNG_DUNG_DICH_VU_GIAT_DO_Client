@@ -17,7 +17,7 @@ import com.example.ql_ban_hang.core.BaseFragment
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.data.model.account.AccountModel
-import datn.fpoly.myapplication.databinding.FragmentOrderUncompingBinding
+import datn.fpoly.myapplication.databinding.FragmentOrderUpcompingBinding
 import datn.fpoly.myapplication.ui.home.order.adapter.OrderAdapter
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
@@ -28,13 +28,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
-class OrderUncompingFragment : BaseFragment<FragmentOrderUncompingBinding>() {
+class OrderUncompingFragment : BaseFragment<FragmentOrderUpcompingBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var orderAdapter : OrderAdapter
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentOrderUncompingBinding = FragmentOrderUncompingBinding.inflate(layoutInflater)
+    ): FragmentOrderUpcompingBinding = FragmentOrderUpcompingBinding.inflate(layoutInflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -18,7 +18,7 @@ class FragmentOrder: BaseFragment<FragmentOrderBinding>() {
         setUpTabLayoutCustom()
 
     }
-    fun setUpTabLayoutCustom(){
+    private fun setUpTabLayoutCustom(){
         listFragment.add(0, OrderUncompingFragment())
         listFragment.add(1, OrderCompletedFragment())
         listFragment.add(2, OrderCancelledFragment())
