@@ -2,7 +2,6 @@ package datn.fpoly.myapplication.data.model.orderList
 
 import com.google.gson.annotations.SerializedName
 import datn.fpoly.myapplication.data.model.AttributeModel
-import datn.fpoly.myapplication.data.model.ServiceModel
 import datn.fpoly.myapplication.data.model.ServiceModelOrder
 import java.io.Serializable
 
