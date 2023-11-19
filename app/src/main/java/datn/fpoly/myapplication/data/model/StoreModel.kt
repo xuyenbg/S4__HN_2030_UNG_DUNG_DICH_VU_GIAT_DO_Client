@@ -2,6 +2,7 @@ package datn.fpoly.myapplication.data.model
 
 import com.google.gson.annotations.SerializedName
 import datn.fpoly.myapplication.data.model.account.AccountModel
+import java.io.Serializable
 
 class StoreModel(
     @SerializedName("_id")
@@ -20,4 +21,4 @@ class StoreModel(
     var transportTypeList: MutableList<String>?=null,
     @SerializedName("imageQRCode")
     var imageQACode : String?=null
-)
+) : Serializable

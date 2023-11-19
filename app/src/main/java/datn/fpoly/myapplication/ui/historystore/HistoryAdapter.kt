@@ -39,7 +39,7 @@ class HistoryAdapter @Inject constructor() :
                 val itemHistory = listHistory[position]
                 holder.binding.apply {
                     tvId.text = "#${itemHistory.id}"
-                    tvNameStore.text = itemHistory.idUser
+                    tvNameStore.text = itemHistory.idUser?.fullname
                     tvTime.text = DateTimeUtils.formatDateOrder(itemHistory.updateAt)
 
                     btnDetail.setOnClickListener {

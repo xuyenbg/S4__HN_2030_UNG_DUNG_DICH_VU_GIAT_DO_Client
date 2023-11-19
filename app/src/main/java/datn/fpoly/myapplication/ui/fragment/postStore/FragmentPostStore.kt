@@ -124,7 +124,6 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
     private fun deletePostUi(it: HomeStoreState) {
         when (it.stateDelete) {
             is Success -> {
-                views.swipeToRefresh.isRefreshing = false
                 runBlocking {
                     launch {
                         it.stateDelete.invoke()?.let { result ->
