@@ -48,7 +48,7 @@ class OrderAdapter @Inject constructor() :
                 }
                 holder.binding.apply {
                     tvId.text = "#${itemOrder.id}"
-                    tvNameStore.text = itemOrder.idStore
+                    tvNameStore.text = itemOrder.idStore?.name
                     tvTime.text = DateTimeUtils.formatDateOrder(itemOrder.updateAt)
                     if (itemOrder.status == 1) {
                         tvStatus2.visibility = View.VISIBLE

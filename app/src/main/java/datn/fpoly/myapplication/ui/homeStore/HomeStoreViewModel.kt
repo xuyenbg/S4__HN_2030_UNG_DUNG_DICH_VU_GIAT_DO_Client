@@ -38,12 +38,34 @@ class HomeStoreViewModel @AssistedInject constructor(
             }
 
             is HomeStoreViewAction.GetDataOrderStore -> {
-                getDataOrder(action.idStore,action.sortOrder)
+                getDataOrder(action.idStore, action.sortOrder)
             }
 
-            is HomeStoreViewAction.getListServiceByStore->{
+            is HomeStoreViewAction.getListServiceByStore -> {
                 getListServiceByStore(action.idStore)
             }
+
+            is HomeStoreViewAction.GetDataOrderStoreDate -> {
+                getOrderDate(action.idStore, action.status, action.sortOrder)
+
+            }
+
+            is HomeStoreViewAction.GetDataOrderStoreDateWashing -> {
+                getOrderDateWashing(action.idStore, action.status, action.sortOrder)
+            }
+
+            is HomeStoreViewAction.GetDataOrderStoreDateComplete -> {
+                getOrderDateComplete(action.idStore, action.status, action.sortOrder)
+            }
+            is HomeStoreViewAction.UpdateStatus -> {
+                updateStatus(action.idOrder,action.status)
+            }
+
+            is HomeStoreViewAction.UpdateStatusWashing -> {
+                updateStatusWashing(action.idOrder,action.status)
+            }
+
+            else -> {}
         }
     }
 
@@ -66,16 +88,44 @@ class HomeStoreViewModel @AssistedInject constructor(
         setState { copy(stateDelete = Loading()) }
         responsePost.deletePost(idPost).execute { copy(stateDelete = it) }
     }
-    private fun getListServiceByStore(idStore: String){
-        setState { copy(stateGetListService= Loading()) }
+
+    private fun getListServiceByStore(idStore: String) {
+        setState { copy(stateGetListService = Loading()) }
         respoService.getListServiceByStore(idStore).execute { copy(stateGetListService = it) }
     }
 
-    private fun getDataOrder(idStore: String, sortOrder : String) {
+    private fun getDataOrder(idStore: String, sortOrder: String) {
         setState { copy(stateGetOrderStore = Loading()) }
-        orderRepo.getDataOrderStore(idStore,sortOrder).execute { copy(stateGetOrderStore = it) }
+        orderRepo.getDataOrderStore(idStore, sortOrder).execute { copy(stateGetOrderStore = it) }
     }
 
+    private fun getOrderDate(idStore: String, status: Int, sortOrder: String) {
+        setState { copy(stateGetOrderDateStore = Loading()) }
+        orderRepo.getOrderDateStoreWait(idStore, status, sortOrder)
+            .execute { copy(stateGetOrderDateStore = it) }
+    }
+
+    private fun getOrderDateWashing(idStore: String, status: Int, sortOrder: String) {
+        setState { copy(stateGetOrderDateStoreWashing = Loading()) }
+        orderRepo.getOrderDateStoreWait(idStore, status, sortOrder)
+            .execute { copy(stateGetOrderDateStoreWashing = it) }
+    }
+
+    private fun getOrderDateComplete(idStore: String, status: Int, sortOrder: String) {
+        setState { copy(stateGetOrderDateStoreComplete = Loading()) }
+        orderRepo.getOrderDateStoreWait(idStore, status, sortOrder)
+            .execute { copy(stateGetOrderDateStoreComplete = it) }
+    }
+    private fun updateStatus(idOrder: String, status: Int) {
+        setState { copy(stateUpdateStatus = Loading()) }
+        orderRepo.updateOrder(idOrder, status)
+            .execute { copy(stateUpdateStatus = it) }
+    }
+    private fun updateStatusWashing(idOrder: String, status: Int) {
+        setState { copy(stateUpdateStatusWashing = Loading()) }
+        orderRepo.updateOrderWashing(idOrder, status)
+            .execute { copy(stateUpdateStatusWashing = it) }
+    }
     @AssistedFactory
     interface Factory {
         fun create(initialState: HomeStoreState): HomeStoreViewModel

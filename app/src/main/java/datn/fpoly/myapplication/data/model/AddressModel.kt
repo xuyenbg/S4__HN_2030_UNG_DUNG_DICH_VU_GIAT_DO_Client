@@ -1,6 +1,7 @@
 package datn.fpoly.myapplication.data.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 class AddressModel (
     @SerializedName("_id")
@@ -15,4 +16,4 @@ class AddressModel (
     var idUser: String ?= null,
     @SerializedName("address")
     var address: String?=null
-)
+) : Serializable
