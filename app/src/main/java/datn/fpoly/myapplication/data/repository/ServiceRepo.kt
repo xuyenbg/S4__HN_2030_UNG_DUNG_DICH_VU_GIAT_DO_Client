@@ -84,4 +84,7 @@ class ServiceRepo @Inject constructor(
 
     fun getServiceById(id: String): Observable<ServiceExtend> =
         api.getServiceById(id).subscribeOn(Schedulers.io())
+
+    fun getListServiceByName(nameService: String): Observable<MutableList<ServiceExtend>> =
+        api.getListServiceByName(nameService).subscribeOn(Schedulers.io())
 }

@@ -44,7 +44,18 @@ class Dialog_Loading @Inject constructor() : DialogFragment() {
         dialog?.let {
             val width = ViewGroup.LayoutParams.MATCH_PARENT
             val height = ViewGroup.LayoutParams.MATCH_PARENT
-            dialog.window!!.setLayout(width, height)
+            dialog.window?.setLayout(width, height)
+        }
+    }
+    fun showDialog(){
+        if(dialog?.isShowing == false){
+            dialog?.show()
+        }
+
+    }
+    fun hideDialog(){
+        if(dialog?.isShowing == true){
+            dialog?.dismiss()
         }
     }
 

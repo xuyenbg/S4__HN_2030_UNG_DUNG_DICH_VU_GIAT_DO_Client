@@ -3,6 +3,7 @@ package datn.fpoly.myapplication.data.network
 
 import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.data.model.post.PostService
+import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -53,4 +54,7 @@ interface APIService {
 
     @GET("api/services/servicebyid/{idService}")
     fun getServiceById(@Path("idService") idService: String): io.reactivex.Observable<ServiceExtend>
+
+    @GET("api/services/seach-service/")
+    fun getListServiceByName(@Query("name") name: String): Observable<MutableList<ServiceExtend>>
 }
