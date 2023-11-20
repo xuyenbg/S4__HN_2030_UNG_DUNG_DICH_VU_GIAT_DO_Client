@@ -57,12 +57,21 @@ class HomeStoreViewModel @AssistedInject constructor(
             is HomeStoreViewAction.GetDataOrderStoreDateComplete -> {
                 getOrderDateComplete(action.idStore, action.status, action.sortOrder)
             }
+
+            is HomeStoreViewAction.GetDataOrderStoreDateCompleteMission -> {
+                getOrderDateCompleteMission(action.idStore, action.status, action.sortOrder)
+            }
+
             is HomeStoreViewAction.UpdateStatus -> {
-                updateStatus(action.idOrder,action.status)
+                updateStatus(action.idOrder, action.status)
             }
 
             is HomeStoreViewAction.UpdateStatusWashing -> {
-                updateStatusWashing(action.idOrder,action.status)
+                updateStatusWashing(action.idOrder, action.status)
+            }
+
+            is HomeStoreViewAction.UpdateStatusComplete -> {
+                updateStatusComplete(action.idOrder, action.status)
             }
 
             else -> {}
@@ -116,16 +125,31 @@ class HomeStoreViewModel @AssistedInject constructor(
         orderRepo.getOrderDateStoreWait(idStore, status, sortOrder)
             .execute { copy(stateGetOrderDateStoreComplete = it) }
     }
+
+    private fun getOrderDateCompleteMission(idStore: String, status: Int, sortOrder: String) {
+        setState { copy(stateGetOrderDateStoreCompleteMission = Loading()) }
+        orderRepo.getOrderDateStoreWait(idStore, status, sortOrder)
+            .execute { copy(stateGetOrderDateStoreCompleteMission = it) }
+    }
+
     private fun updateStatus(idOrder: String, status: Int) {
         setState { copy(stateUpdateStatus = Loading()) }
         orderRepo.updateOrder(idOrder, status)
             .execute { copy(stateUpdateStatus = it) }
     }
+
     private fun updateStatusWashing(idOrder: String, status: Int) {
         setState { copy(stateUpdateStatusWashing = Loading()) }
         orderRepo.updateOrderWashing(idOrder, status)
             .execute { copy(stateUpdateStatusWashing = it) }
     }
+
+    private fun updateStatusComplete(idOrder: String, status: Int) {
+        setState { copy(stateUpdateStatusComplete = Loading()) }
+        orderRepo.updateOrderComplete(idOrder, status)
+            .execute { copy(stateUpdateStatusComplete = it) }
+    }
+
     @AssistedFactory
     interface Factory {
         fun create(initialState: HomeStoreState): HomeStoreViewModel

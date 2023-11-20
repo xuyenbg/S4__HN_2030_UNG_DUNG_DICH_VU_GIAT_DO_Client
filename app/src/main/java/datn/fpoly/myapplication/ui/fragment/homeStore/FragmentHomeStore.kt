@@ -20,6 +20,8 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
         views.tabView.addTab(views.tabView.newTab().setText("Chờ nhận đồ"))
         views.tabView.addTab(views.tabView.newTab().setText("Đang giặt"))
         views.tabView.addTab(views.tabView.newTab().setText("Giặt xong"))
+        views.tabView.addTab(views.tabView.newTab().setText("Hoàn Thành"))
+
         views.listOrder.adapter = tabLayoutAdapter
         views.tabView.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {

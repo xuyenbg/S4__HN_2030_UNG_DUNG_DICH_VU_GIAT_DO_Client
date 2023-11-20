@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import datn.fpoly.myapplication.ui.fragment.homeStore.fragment.CompleteFragment
+import datn.fpoly.myapplication.ui.fragment.homeStore.fragment.CompleteMissionFragment
 import datn.fpoly.myapplication.ui.fragment.homeStore.fragment.WaitFragment
 import datn.fpoly.myapplication.ui.fragment.homeStore.fragment.WashingFragment
 import javax.inject.Inject
@@ -13,7 +14,7 @@ class TabLayoutAdapter @Inject constructor(fragmentManager: FragmentManager, lif
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int {
-        return 3
+        return 4
     }
 
     override fun createFragment(position: Int): Fragment {
@@ -28,6 +29,10 @@ class TabLayoutAdapter @Inject constructor(fragmentManager: FragmentManager, lif
 
             2 -> {
                 CompleteFragment()
+            }
+
+            3 -> {
+                CompleteMissionFragment()
             }
 
             else -> throw IllegalArgumentException("Invalid position")

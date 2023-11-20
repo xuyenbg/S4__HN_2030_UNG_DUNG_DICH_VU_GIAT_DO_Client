@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.viewpager2.widget.ViewPager2
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
@@ -40,12 +41,32 @@ class CompleteFragment : BaseFragment<FragmentCompleteBinding>() {
         super.onViewCreated(view, savedInstanceState)
         idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
         if (idStore != null) {
-            viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateComplete(idStore!!, 2, "desc"))
+            viewModel.handle(
+                HomeStoreViewAction.GetDataOrderStoreDateComplete(
+                    idStore!!,
+                    2,
+                    "desc"
+                )
+            )
         }
 
 
         orderStoreAdapter = OrderStoreCompleteAdapter(onBtnAction = {
-
+            viewModel.handle(HomeStoreViewAction.UpdateStatusComplete(it.id, 3))
+            viewModel.handle(
+                HomeStoreViewAction.GetDataOrderStoreDateComplete(
+                    idStore!!,
+                    2,
+                    "desc"
+                )
+            )
+            viewModel.handle(
+                HomeStoreViewAction.GetDataOrderStoreDateCompleteMission(
+                    idStore!!,
+                    3,
+                    "desc"
+                )
+            )
         })
         views.recycleviewComplete.adapter = orderStoreAdapter
         views.recycleviewComplete.addItemDecoration(ItemSpacingDecoration(46))
@@ -54,6 +75,7 @@ class CompleteFragment : BaseFragment<FragmentCompleteBinding>() {
     override fun invalidate(): Unit = withState(viewModel) {
         super.invalidate()
         getOrderDateComplete(it)
+        getOrderUpdateComplete(it)
     }
 
     private fun getOrderDateComplete(it: HomeStoreState) {
@@ -63,6 +85,7 @@ class CompleteFragment : BaseFragment<FragmentCompleteBinding>() {
                     launch {
                         it.stateGetOrderDateStoreComplete.invoke()?.let {
                             orderStoreAdapter.updateData(it)
+                            orderStoreAdapter.notifyDataSetChanged()
                             Log.d("recycleviewComplete", "getOrderDateWait: ${it.size}")
 
                             if (it.isEmpty()) {
@@ -92,4 +115,37 @@ class CompleteFragment : BaseFragment<FragmentCompleteBinding>() {
         }
     }
 
+    private fun getOrderUpdateComplete(it: HomeStoreState) {
+        when (it.stateUpdateStatusComplete) {
+            is Success -> {
+                runBlocking {
+                    launch {
+                        it.stateUpdateStatusComplete.invoke()?.let {
+                            Log.d("stateUpdateStatusWashing", "Chạy qua đây${it.code()}")
+
+                            if (it.code() == 200) {
+
+                                val viewPager: ViewPager2? =
+                                    requireActivity().findViewById(R.id.list_order)
+                                viewPager?.currentItem = 3
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            is Loading -> {
+                Timber.tag("AAAAAAAAAAAAAAA").e("getWashing: loading")
+            }
+
+            is Fail -> {
+                Timber.tag("AAAAAAAAAAAAAAA").e("getWashing: Fail")
+            }
+
+            else -> {
+
+            }
+        }
+    }
 }
