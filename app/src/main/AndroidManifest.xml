@@ -116,6 +116,9 @@
             android:name=".ui.order.OrderDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.order.OrderDetailStoreActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.login.SignInActivity"
             android:exported="true">
             <intent-filter>

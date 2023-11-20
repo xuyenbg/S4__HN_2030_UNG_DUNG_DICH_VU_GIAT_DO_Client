@@ -267,7 +267,7 @@
             android:id="@+id/group_expand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="label_pick_image,pick_image,label_price_service,price_service,label_add_on,recycler_view_add_on,label_number,number,label_weight,layout_number_kg"
+            app:constraint_referenced_ids="label_price_service,price_service,label_add_on,recycler_view_add_on,label_number,number,label_weight,layout_number_kg"
             android:visibility="visible"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package datn.fpoly.myapplication.ui.fragment.homeStore.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,6 +22,7 @@ import datn.fpoly.myapplication.ui.fragment.homeStore.adapter.OrderStoreWashingA
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewModel
+import datn.fpoly.myapplication.ui.order.OrderDetailStoreActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.ItemSpacingDecoration
 import kotlinx.coroutines.launch
@@ -47,6 +49,10 @@ class WashingFragment : BaseFragment<FragmentWashingBinding>() {
             viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateComplete(idStore!!, 2, "desc"))
 //            val viewPager: ViewPager2 = requireActivity().findViewById(R.id.list_order)
 //            viewPager.currentItem = 2
+        }, itemOnclick = {
+            val intent = Intent(context, OrderDetailStoreActivity::class.java)
+            intent.putExtra(Common.KEY_ID_ORDER, it.id)
+            startActivity(intent)
         })
         views.recycleviewWashing.adapter = orderStoreAdapter
         views.recycleviewWashing.addItemDecoration(ItemSpacingDecoration(46))

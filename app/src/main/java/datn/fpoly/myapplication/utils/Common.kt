@@ -60,7 +60,7 @@ object Common {
             android.Manifest.permission.ACCESS_FINE_LOCATION
         )
 
-    fun repuestPermission(activity: Activity) {
+    fun requestPermission(activity: Activity) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(
                 activity,
                 android.Manifest.permission.ACCESS_FINE_LOCATION

@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.ItemOrderHomeLaundryBinding
 import datn.fpoly.myapplication.utils.DateTimeUtils
-import javax.inject.Inject
 
-class OrderStoreWashingAdapter @Inject constructor(val onBtnAction: (OrderResponse) -> Unit) :
-    RecyclerView.Adapter<OrderStoreWashingAdapter.OrderViewHolder>() {
-    private val listOrder = mutableListOf<OrderResponse>();
-    private var orderListener: OrderListener? = null
+class OrderStoreWashingAdapter(
+    val onBtnAction: (OrderResponse) -> Unit,
+    val itemOnclick: (OrderResponse) -> Unit
+) : RecyclerView.Adapter<OrderStoreWashingAdapter.OrderViewHolder>() {
+    private val listOrder = mutableListOf<OrderResponse>()
 
     fun updateData(list: MutableList<OrderResponse>) {
         this.listOrder.clear()
@@ -23,10 +23,6 @@ class OrderStoreWashingAdapter @Inject constructor(val onBtnAction: (OrderRespon
         listOrder.clear()
         listOrder.addAll(list)
         notifyDataSetChanged()
-    }
-
-    fun setListener(listener: OrderListener) {
-        this.orderListener = listener
     }
 
     inner class OrderViewHolder(val binding: ItemOrderHomeLaundryBinding) :
@@ -41,16 +37,14 @@ class OrderStoreWashingAdapter @Inject constructor(val onBtnAction: (OrderRespon
             if (listOrder.isNotEmpty()) {
                 val itemOrder = listOrder[position]
                 holder.itemView.setOnClickListener {
-                    orderListener?.onClickOrder(itemOrder)
+                    itemOnclick(itemOrder)
                 }
                 holder.binding.apply {
                     tvOrderId.text = "#${itemOrder.id}"
                     tvFullName.text = itemOrder.idUser?.fullname
                     tvTime.text = DateTimeUtils.formatDateOrder(itemOrder.updateAt)
-
                     tvStatusName.text = "Đang giặt"
                     btnAction.text = "Hoàn thành"
-
                     btnAction.setOnClickListener {
                         onBtnAction(itemOrder)
                     }
@@ -65,8 +59,4 @@ class OrderStoreWashingAdapter @Inject constructor(val onBtnAction: (OrderRespon
         return listOrder.size
     }
 
-
-    interface OrderListener {
-        fun onClickOrder(orderModel: OrderResponse)
-    }
 }

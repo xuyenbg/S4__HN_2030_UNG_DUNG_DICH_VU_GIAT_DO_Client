@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.ItemOrderHomeLaundryBinding
 import datn.fpoly.myapplication.utils.DateTimeUtils
-import javax.inject.Inject
 
-class OrderStoreCompleteAdapter @Inject constructor(val onBtnAction: (OrderResponse) -> Unit) :
-    RecyclerView.Adapter<OrderStoreCompleteAdapter.OrderViewHolder>() {
+class OrderStoreCompleteAdapter (
+    val onBtnAction: (OrderResponse) -> Unit,
+    val itemOnclick: (OrderResponse) -> Unit
+) : RecyclerView.Adapter<OrderStoreCompleteAdapter.OrderViewHolder>() {
     private val listOrder = mutableListOf<OrderResponse>();
 
     fun updateData(list: MutableList<OrderResponse>) {
@@ -29,6 +30,9 @@ class OrderStoreCompleteAdapter @Inject constructor(val onBtnAction: (OrderRespo
         if (holder is OrderViewHolder) {
             if (listOrder.isNotEmpty()) {
                 val itemOrder = listOrder[position]
+                holder.itemView.setOnClickListener {
+                    itemOnclick(itemOrder)
+                }
                 holder.binding.apply {
                     tvOrderId.text = "#${itemOrder.id}"
                     tvFullName.text = itemOrder.idUser?.fullname
