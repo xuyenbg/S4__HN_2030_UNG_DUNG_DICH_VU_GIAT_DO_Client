@@ -20,20 +20,23 @@ import datn.fpoly.myapplication.ui.adapter.AdapterAttribute
 import datn.fpoly.myapplication.ui.adapter.AdapterService
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import javax.inject.Inject
 
-class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), DetailServiceViewModel.Factory {
+class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
+    DetailServiceViewModel.Factory {
     @Inject
     lateinit var detailServiceFactory: DetailServiceViewModel.Factory
+
     @Inject
     lateinit var authRepo: AuthRepo
     private val viewModel: DetailServiceViewModel by viewModel()
-    private var serviceExtend : ServiceExtend? = null
+    private var serviceExtend: ServiceExtend? = null
     private lateinit var adapterService: AdapterService
-    private lateinit var adapterAttribute : AdapterAttribute
+    private lateinit var adapterAttribute: AdapterAttribute
     private lateinit var cart: OrderBase
     private var quality = 1.0
     private var total = 0.0
@@ -41,25 +44,9 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
-        serviceExtend = Hawk.get(Common.KEY_SERVICE_DETAIL)
-        views.tvNameService.text = serviceExtend?.name
-        views.tvPrice.text = serviceExtend?.price?.formatCurrency(unit = serviceExtend?.unit) ?: ""
-        views.tvQuantity.text = quality.toInt().toString()
-
-        var nameAttribute=""
-        for (index in 0 until (serviceExtend?.attributeList?.size ?: 0)){
-            if(serviceExtend?.attributeList?.size!=0){
-                if(index== (serviceExtend?.attributeList?.size?.minus(1))){
-                    nameAttribute+= (serviceExtend?.attributeList?.get(index)?.name ?: "" )
-                }else{
-                    nameAttribute+= (serviceExtend?.attributeList?.get(index)?.name ?: "" ) +">"
-                }
-
-            }
-        }
-        views.tvAttribute.text = nameAttribute
-        viewModel.subscribe(this){
+        viewModel.subscribe(this) {
             getListService(it)
+            getService(it)
         }
         views.imgBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
@@ -71,10 +58,10 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
                 cart = it
             }
         }
-        adapterService.setListenner(object : AdapterService.ServiceListenner{
+        adapterService.setListenner(object : AdapterService.ServiceListenner {
             override fun ServiceOnClick(item: ServiceExtend, position: Int) {
-                Hawk.put(Common.KEY_SERVICE_DETAIL, item)
                 val intent = Intent(this@DetailServiceActivity, DetailServiceActivity::class.java)
+                intent.putExtra(Common.KEY_ID_SERVICE, item.id)
                 startActivity(intent)
                 finish()
             }
@@ -88,24 +75,55 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
             adapterAttribute.setData(it)
         }
         views.btnAddCart.setOnClickListener {
-            for (index in 0 until adapterAttribute.listAttributeSelect.size){
-                Log.e("AAAAAAAAAAA", "onCreate: name: "+adapterAttribute.listAttributeSelect[index].name )
+            for (index in 0 until adapterAttribute.listAttributeSelect.size) {
+                Log.e(
+                    "AAAAAAAAAAA",
+                    "onCreate: name: " + adapterAttribute.listAttributeSelect[index].name
+                )
             }
-            Toast.makeText(this, "list attribute select: size: "+adapterAttribute.listAttributeSelect.size, Toast.LENGTH_SHORT).show()
-            if(serviceExtend != null){
+            Toast.makeText(
+                this,
+                "list attribute select: size: " + adapterAttribute.listAttributeSelect.size,
+                Toast.LENGTH_SHORT
+            ).show()
+            if (serviceExtend != null) {
                 Log.d("USER", authRepo.getUser().toString())
-                if (cart.idStore != null && cart.idStore?.equals(serviceExtend!!.idStore?.id) == false){
-                    Toast.makeText(this, "Bạn có chắc chắn muốn đặt lại không? Nếu bạn tiếp tục, giỏ hàng của bạn sẽ bị xóa.", Toast.LENGTH_SHORT).show()
+                if (cart.idStore != null && cart.idStore?.equals(serviceExtend!!.idStore?.id) == false) {
+                    Toast.makeText(
+                        this,
+                        "Bạn có chắc chắn muốn đặt lại không? Nếu bạn tiếp tục, giỏ hàng của bạn sẽ bị xóa.",
+                        Toast.LENGTH_SHORT
+                    ).show()
 
                     cart.idStore = serviceExtend?.idStore?.id
 
                     cart.listItem.clear()
-                    cart.listItem.add(ItemServiceBase(service = serviceExtend, idService = serviceExtend?.id, number = quality, total = getTotalItem(), attributeListExtend = adapterAttribute.listAttributeSelect, attributeList = adapterAttribute.listAttributeSelect.map { attr ->  attr.id}.toMutableList()))
+                    cart.listItem.add(
+                        ItemServiceBase(
+                            service = serviceExtend,
+                            idService = serviceExtend?.id,
+                            number = quality,
+                            total = getTotalItem(),
+                            attributeListExtend = adapterAttribute.listAttributeSelect,
+                            attributeList = adapterAttribute.listAttributeSelect.map { attr -> attr.id }
+                                .toMutableList()
+                        )
+                    )
                     viewModel.updateCart(cart)
 
-                }else{
+                } else {
                     cart.idStore = serviceExtend!!.idStore?.id
-                    cart.listItem.add(ItemServiceBase(service = serviceExtend, idService = serviceExtend?.id, number = quality, total = getTotalItem(), attributeListExtend = adapterAttribute.listAttributeSelect, attributeList = adapterAttribute.listAttributeSelect.map { attr ->  attr.id}.toMutableList()))
+                    cart.listItem.add(
+                        ItemServiceBase(
+                            service = serviceExtend,
+                            idService = serviceExtend?.id,
+                            number = quality,
+                            total = getTotalItem(),
+                            attributeListExtend = adapterAttribute.listAttributeSelect,
+                            attributeList = adapterAttribute.listAttributeSelect.map { attr -> attr.id }
+                                .toMutableList()
+                        )
+                    )
                     viewModel.updateCart(cart)
                 }
             }
@@ -115,7 +133,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
             views.tvQuantity.text = quality.toInt().toString()
         }
         views.btnSubtraction.setOnClickListener {
-            if(quality != 0.0){
+            if (quality != 0.0) {
                 quality -= 1
                 views.tvQuantity.text = quality.toInt().toString()
             }
@@ -123,9 +141,9 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
 
     }
 
-    private fun getTotalItem() : Double {
+    private fun getTotalItem(): Double {
         var priceAttr = 0.0
-        adapterAttribute.listAttributeSelect.forEach{ attr -> priceAttr += attr.price }
+        adapterAttribute.listAttributeSelect.forEach { attr -> priceAttr += attr.price }
         total = (serviceExtend!!.price!! + priceAttr) * quality
         return total
     }
@@ -139,28 +157,74 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(), Deta
                 )
             }
         }?.let { viewModel.handle(it) }
+        intent.getStringExtra(Common.KEY_ID_SERVICE)
+            ?.let { DetailServiceViewAction.GetServiceById(it) }?.let { viewModel.handle(it) }
     }
-    fun getListService( state: DetailServiceViewState){
-        when(state.stateService){
-            is Success ->{
+
+    fun getListService(state: DetailServiceViewState) {
+        when (state.stateService) {
+            is Success -> {
                 runBlocking {
                     launch {
-                        state.stateService.invoke()?.let{
+                        state.stateService.invoke()?.let {
                             adapterService.setData(it)
-                            Timber.tag("AAAAAAAAA").e("getListService: list service size: "+it.size )
+                            Timber.tag("AAAAAAAAA")
+                                .e("getListService: list service size: " + it.size)
                         }
                     }
                 }
             }
-            is Loading ->{
+            is Loading -> {
                 Timber.tag("AAAAAAAAA").e("getListService: Loading")
             }
             is Fail -> {
                 Timber.tag("AAAAAAAAA").e("getListService: Call Fail")
             }
-            else->{
+            else -> {
 
             }
+        }
+    }
+
+    private fun getService(state: DetailServiceViewState) {
+        when (state.stateServiceByid) {
+            is Loading -> {
+//                Dialog_Loading.getInstance().show(this, "Loading")
+                Timber.tag("AAAAAAAAAAAAA").e("getService: Loading")
+            }
+            is Success -> {
+                runBlocking {
+                    launch {
+                        state.stateServiceByid.invoke()?.let {
+                            serviceExtend = it
+                            views.tvNameService.text = serviceExtend?.name
+                            views.tvPrice.text = serviceExtend?.price?.formatCurrency(unit = serviceExtend?.unit) ?: ""
+                            views.tvQuantity.text = quality.toInt().toString()
+
+                            var nameAttribute = ""
+                            for (index in 0 until (serviceExtend?.attributeList?.size ?: 0)) {
+                                if (serviceExtend?.attributeList?.size != 0) {
+                                    if (index == (serviceExtend?.attributeList?.size?.minus(1))) {
+                                        nameAttribute += (serviceExtend?.attributeList?.get(index)?.name ?: "")
+                                    } else {
+                                        nameAttribute += (serviceExtend?.attributeList?.get(index)?.name ?: "") + ">"
+                                    }
+
+                                }
+                            }
+                            views.tvAttribute.text = nameAttribute
+                        }
+//                        Dialog_Loading.getInstance().dismiss()
+                    }
+                }
+                Timber.tag("AAAAAAAAAAAAA").e("getService: Success")
+
+            }
+            is Fail -> {
+//                Dialog_Loading.getInstance().dismiss()
+                Timber.tag("AAAAAAAAAAAAA").e("getService: Fail")
+            }
+            else -> {}
         }
     }
 

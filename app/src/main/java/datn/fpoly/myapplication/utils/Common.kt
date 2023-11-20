@@ -49,6 +49,7 @@ object Common {
     const val KEY_ID_ORDER = "KEY_POST"
     val KEY_UPDATE_SERVICE="update_service"
     val CODE_LOAD_DATA=111
+    val KEY_NAME_SERVICE="name_service"
 
     fun ComponentActivity.registerStartForActivityResult(onResult: (ActivityResult) -> Unit): ActivityResultLauncher<Intent> {
         return registerForActivityResult(ActivityResultContracts.StartActivityForResult(), onResult)
