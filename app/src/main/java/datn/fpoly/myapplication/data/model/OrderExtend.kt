@@ -23,4 +23,42 @@ data class OrderExtend(
     override fun toString(): String {
         return "OrderExtend(id=$id, idUser=$idUser, idStore=$idStore, total=$total, note=$note, transportType=$transportType, methodPaymentType=$methodPaymentType, feeDelivery=$feeDelivery, status=$status, idAddress=$idAddress, isPaid=$isPaid, createAt=$createAt, updateAt=$updateAt, listItem=$listItem)"
     }
+
+    fun toListItemBase():MutableList<ItemServiceBase> =
+         this.listItem.map {
+            ItemServiceBase(
+                it.number,
+                it.total,
+                it.image,
+                it.idService?.id,
+                ServiceExtend(name = it.idService?.name, unit = it.idService?.unit, price = it.idService?.price, image = it.idService?.image),
+                it.attributeList,
+                it.attributeList?.map {attr -> attr.id }?.toMutableList()
+            )
+        }.toMutableList()
+
+    fun updateTotal(pos: Int) {
+        var totalItem = this.listItem[pos].idService?.price ?: 0.0
+        this.listItem[pos].attributeList?.forEach {  totalItem += it.price  }
+        totalItem *= this.listItem[pos].number ?: 0.0
+        this.listItem[pos].total = totalItem
+
+        var total = 0.0
+        this.listItem.forEach { total += it.total ?: 0.0 }
+        this.total = total
+    }
+
+    fun toOrderBase() :OrderBase = OrderBase(
+        idUser = this.idUser?.id,
+        idStore = this.idStore?.id,
+        total = this.total,
+        note = this.note,
+        transportType = this.transportType,
+        methodPaymentType = this.methodPaymentType,
+        feeDelivery = this.feeDelivery,
+        status = this.status,
+        idAddress = this.idAddress?.id,
+        isPaid = this.isPaid,
+        listItem = this.toListItemBase()
+    )
 }

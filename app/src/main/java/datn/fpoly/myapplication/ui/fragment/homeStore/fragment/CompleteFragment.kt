@@ -41,7 +41,7 @@ class CompleteFragment : BaseFragment<FragmentCompleteBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
+        idStore = Hawk.get<StoreModel>(Common.KEY_STORE)?.id
         if (idStore != null) {
             viewModel.handle(
                 HomeStoreViewAction.GetDataOrderStoreDateComplete(

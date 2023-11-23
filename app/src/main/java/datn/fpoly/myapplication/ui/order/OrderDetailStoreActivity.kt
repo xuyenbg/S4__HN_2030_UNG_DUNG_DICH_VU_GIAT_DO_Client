@@ -11,20 +11,14 @@ import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.viewModel
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
-import datn.fpoly.myapplication.data.model.ItemServiceBase
-import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.model.OrderExtend
-import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.databinding.ActivityOrderDetailBinding
 import datn.fpoly.myapplication.ui.order.adapter.AdapterItemOrderStore
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -36,10 +30,7 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
 
     private var posItem: Int? = null
 
-    companion object{
-        var listItem: MutableList<ItemServiceBase>? = null
-        var order:OrderExtend? = null
-    }
+    var order:OrderExtend? = null
 
     override fun getBinding(): ActivityOrderDetailBinding {
         return ActivityOrderDetailBinding.inflate(layoutInflater)
@@ -53,11 +44,11 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
 
     override fun initUiAndData() {
         super.initUiAndData()
-        val idOrder = intent.getStringExtra(Common.KEY_ID_ORDER)
         views.toolbar.btnBack.setOnClickListener {
             finish()
         }
         views.toolbar.btnNotification.visibility = View.INVISIBLE
+        val idOrder = intent.getStringExtra(Common.KEY_ID_ORDER)
         viewModel.handle(OrderViewAction.GetOrderDetail(idOrder ?: "null"))
         viewModel.subscribe(this) {
             updateWithState(it)
@@ -77,21 +68,11 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
                 views.radioShip.text = order?.transportType ?: "-"
                 views.note.setText(order?.note ?: "")
                 if(order?.listItem != null && order!!.listItem.isNotEmpty()){
-                    listItem = order!!.listItem.map {
-                        ItemServiceBase(
-                            it.number,
-                            it.total,
-                            it.image,
-                            it.idOrder,
-                            ServiceExtend(name = it.idService?.name, unit = it.idService?.unit, price = it.idService?.price, image = it.idService?.image),
-                            it.attributeList,
-                            it.attributeList?.map {attr -> attr.id }?.toMutableList()
-                        )
-                    }.toMutableList()
-                    views.recyclerView.adapter = AdapterItemOrderStore(this@OrderDetailStoreActivity,listItem!!,
+                    views.recyclerView.adapter = AdapterItemOrderStore(this@OrderDetailStoreActivity,order!!.toListItemBase(),
                         onFillWeight = { weight,pos ->
-                            listItem!![pos].number = weight
-                            updateTotalOrder(pos)
+                            posItem = pos
+                            order!!.listItem[pos].number = weight
+                            order!!.updateTotal(pos)
                             handleUpdateOrder()
                         },
                         pickImage = { imageUri, pos ->
@@ -103,8 +84,8 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
                         }) {}
                     views.tvServiceNumber.text = String.format("%d Dịch vụ", order!!.listItem.size)
                     views.total.text = order!!.total?.formatCurrency(null) ?: "- đ"
+                    state.stateOrderDetail = Uninitialized
                 }
-                state.stateOrderDetail = Uninitialized
             }
             else -> {}
         }
@@ -123,9 +104,10 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
         when(state.stateUploadImage){
             is Success -> {
                 val image = state.stateUploadImage.invoke()?.body()?.string() ?: "-"
-                Timber.tag("image pick: ").d(image)
-                listItem!![posItem!!].image = image
-                handleUpdateOrder()
+                if (image.isNotBlank()){
+                    order!!.listItem[posItem!!].image = image
+                    handleUpdateOrder()
+                }
                 state.stateUploadImage = Uninitialized
             }
             is Fail -> {
@@ -135,36 +117,10 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
         }
     }
 
-    private fun updateTotalOrder(pos: Int) {
-        var totalItem = listItem?.get(pos)?.total ?: 0.0
-        listItem?.get(pos)?.attributeListExtend?.forEach {  totalItem += it.price  }
-        totalItem *= listItem?.get(pos)?.number ?: 0.0
-        listItem?.get(pos)?.total = totalItem
-
-        var total = 0.0
-        listItem?.forEach { total += it.total ?: 0.0 }
-        order?.total = total
-    }
-
     private fun handleUpdateOrder() {
-        Timber.tag("image pick2: ").d(listItem?.get(posItem!!)?.image ?: "-")
-        val orderBase = OrderBase(
-            idUser = order?.idUser?.id,
-            idStore = order?.idStore?.id,
-            total = order?.total,
-            note = order?.note,
-            transportType = order?.transportType,
-            methodPaymentType = order?.methodPaymentType,
-            feeDelivery = order?.feeDelivery,
-            status = order?.status,
-            idAddress = order?.idAddress?.id,
-            isPaid = order?.isPaid,
-            listItem = listItem!!
-        )
-        viewModel.handle(OrderViewAction.UpdateOrder(orderBase, order?.id ?: "-"))
+        viewModel.handle(OrderViewAction.UpdateOrder(order!!.toOrderBase(), order?.id ?: "-"))
     }
 
     override fun create(initialState: OrderViewState) = orderViewModelFactory.create(initialState)
-
 
 }

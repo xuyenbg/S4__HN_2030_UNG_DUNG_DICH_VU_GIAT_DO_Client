@@ -80,7 +80,7 @@ class AdapterItemOrderStore(
             }
             binding.numberKg.setOnEditorActionListener{ _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    onFillWeight(binding.numberKg.toString().toDouble(), position)
+                    onFillWeight(binding.numberKg.text.toString().toDouble(), position)
                     binding.numberKg.clearFocus()
                     val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.hideSoftInputFromWindow(binding.numberKg.windowToken, 0)
