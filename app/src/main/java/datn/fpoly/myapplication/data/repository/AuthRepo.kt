@@ -1,6 +1,7 @@
 package datn.fpoly.myapplication.data.repository
 
 import com.orhanobut.hawk.Hawk
+import datn.fpoly.myapplication.data.model.account.AccountExtend
 import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.data.model.account.AcountLogin
 import datn.fpoly.myapplication.data.network.AuthApi
@@ -37,6 +38,21 @@ class AuthRepo @Inject constructor(
         )
     ).subscribeOn(Schedulers.io())
 
+    fun addFavoriteStore(
+        idUser: String,
+        accountModel: AccountModel
+    ): Observable<AccountModel> = api.addFavoriteStore(
+        idUser,
+        accountModel
+    ).subscribeOn(Schedulers.io())
+    fun removeFavoriteStore(
+        idUser: String,
+        accountModel: AccountModel
+    ): Observable<AccountModel> = api.removeFavoriteStore(
+        idUser,
+        accountModel
+    ).subscribeOn(Schedulers.io())
+    fun getDetailUser(idUser: String):Observable<AccountExtend> = api.getDetailUser(idUser).subscribeOn(Schedulers.io())
     fun saveUser(accountResponse: AccountModel) = Hawk.put("Account",accountResponse)
 
     fun getUser():AccountModel? = Hawk.get<AccountModel?>("Account",null)
@@ -44,4 +60,5 @@ class AuthRepo @Inject constructor(
     fun isLogging():Boolean = Hawk.get("CheckLogin",false)
 
     fun setLogin(isLogin:Boolean) = Hawk.put("CheckLogin",isLogin)
+
 }
