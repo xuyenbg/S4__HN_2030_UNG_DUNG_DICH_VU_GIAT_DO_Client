@@ -68,7 +68,6 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderVie
                                     it.total,
                                     it.image,
                                     it.idOrder,
-                                    it.idService?.id,
                                     ServiceExtend(name = it.idService?.name, unit = it.idService?.unit, price = it.idService?.price, image = it.idService?.image),
                                     it.attributeList,
                                     null

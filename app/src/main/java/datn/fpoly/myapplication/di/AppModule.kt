@@ -62,4 +62,9 @@ object AppModule {
         return remoteDataSource.buildApi(APIAddress::class.java, context)
     }
 
+    @Provides
+    fun providerUploadApi(remoteDataSource: RemoteDataSource, context: Context): APIUpload {
+        return remoteDataSource.buildApi(APIUpload::class.java, context)
+    }
+
 }
