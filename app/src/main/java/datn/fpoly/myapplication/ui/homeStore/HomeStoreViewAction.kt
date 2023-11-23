@@ -26,8 +26,14 @@ sealed class HomeStoreViewAction : ViewAction {
         val status: Int,
         val sortOrder: String
     ) : HomeStoreViewAction()
+    data class GetDataOrderStoreDateCompleteMission(
+        val idStore: String,
+        val status: Int,
+        val sortOrder: String
+    ) : HomeStoreViewAction()
 
     data class UpdateStatus(val idOrder: String, val status: Int) : HomeStoreViewAction()
     data class UpdateStatusWashing(val idOrder: String, val status: Int) : HomeStoreViewAction()
+    data class UpdateStatusComplete(val idOrder: String, val status: Int) : HomeStoreViewAction()
 
 }

@@ -43,10 +43,16 @@ class WashingFragment : BaseFragment<FragmentWashingBinding>() {
         idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
         viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateWashing(idStore!!, 1, "desc"))
         orderStoreAdapter = OrderStoreWashingAdapter(onBtnAction = {
-            Toast.makeText(requireContext(), "Hoàn Thành", Toast.LENGTH_SHORT).show()
-            viewModel.handle(HomeStoreViewAction.UpdateStatus(it.id,2))
+            viewModel.handle(HomeStoreViewAction.UpdateStatusWashing(it.id, 2))
             viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateWashing(idStore!!, 1, "desc"))
             viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateComplete(idStore!!, 2, "desc"))
+            viewModel.handle(
+                HomeStoreViewAction.GetDataOrderStoreDateComplete(
+                    idStore!!,
+                    2,
+                    "desc"
+                )
+            )
 //            val viewPager: ViewPager2 = requireActivity().findViewById(R.id.list_order)
 //            viewPager.currentItem = 2
         }, itemOnclick = {
@@ -93,6 +99,7 @@ class WashingFragment : BaseFragment<FragmentWashingBinding>() {
             }
         }
     }
+
     private fun getOrderUpdateWashing(it: HomeStoreState) {
         when (it.stateUpdateStatusWashing) {
             is Success -> {
@@ -101,9 +108,10 @@ class WashingFragment : BaseFragment<FragmentWashingBinding>() {
                         it.stateUpdateStatusWashing.invoke()?.let {
                             Log.d("stateUpdateStatusWashing", "Chạy qua đây${it.code()}")
 
-                            if (it.code()==200) {
+                            if (it.code() == 200) {
 
-                                val viewPager: ViewPager2 = requireActivity().findViewById(R.id.list_order)
+                                val viewPager: ViewPager2 =
+                                    requireActivity().findViewById(R.id.list_order)
                                 viewPager.currentItem = 2
                             }
                         }

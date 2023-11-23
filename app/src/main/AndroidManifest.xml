@@ -29,14 +29,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.listServiceByName.ListServiceByNameActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.historystore.HistoryStoreActivity"
             android:exported="false" />
         <activity
             android:name=".ui.editpost.EditPostActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.splashScreen.SplashsActivity"
-            android:exported="false" />
+
         <activity
             android:name=".ui.permission.PermissionActivity"
             android:exported="false" />
@@ -120,6 +121,9 @@
             android:exported="false" />
         <activity
             android:name=".ui.login.SignInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.splashScreen.SplashsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -2,6 +2,8 @@ package datn.fpoly.myapplication.ui.detailstore
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
@@ -12,6 +14,7 @@ import com.airbnb.mvrx.viewModel
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.data.model.StoreModel
+import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.ui.adapter.AdapterService
 import datn.fpoly.myapplication.ui.service.DetailServiceActivity
 import datn.fpoly.myapplication.utils.Common
@@ -30,6 +33,10 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
         adapterService = AdapterService(false)
+        val account = Hawk.get<AccountModel>("Account",null)
+        var store = intent.getStringExtra(Common.KEY_ID_STORE)
+        var idUser = account.id.toString()
+        val accountModel = AccountModel()
         intent.getStringExtra(Common.KEY_ID_STORE)?.let { viewModel.handle(DetailStoreViewAction.GetListServiceByStore(it)) }
         intent.getStringExtra(Common.KEY_ID_STORE)?.let { viewModel.handle(DetailStoreViewAction.GetStoreById(it)) }
         views.imgBack.setOnClickListener {
@@ -39,17 +46,27 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
             getListService(it)
             getStore(it)
         }
+
         views.rcvDetailStore.adapter =adapterService
         adapterService.setListenner(object : AdapterService.ServiceListenner{
             override fun ServiceOnClick(item: ServiceExtend, position: Int) {
-                Hawk.put(Common.KEY_SERVICE_DETAIL, item)
+//                Hawk.put(Common.KEY_SERVICE_DETAIL, item)
                 val intent = Intent(this@DetailStoreActivity, DetailServiceActivity::class.java)
+                intent.putExtra(Common.KEY_ID_SERVICE, item.id)
                 startActivity(intent)
             }
 
             override fun EditService(serviceExtend: ServiceExtend) {
 
             }
+        })
+
+        accountModel.favoriteStores = ArrayList()
+        (accountModel.favoriteStores as ArrayList<String>)?.add(store.toString())
+
+        views.imgAddFavoriteStore.setOnClickListener(View.OnClickListener {
+            viewModel.addFavoriteStore(idUser,accountModel)
+            Toast.makeText(this, "Đã thêm cửa hàng vào danh sách yêu thích", Toast.LENGTH_SHORT).show()
         })
 
 

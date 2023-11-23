@@ -12,6 +12,7 @@ import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.databinding.ActivityListServiceBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterService
+import datn.fpoly.myapplication.ui.listServiceByName.ListServiceByNameActivity
 import datn.fpoly.myapplication.ui.service.DetailServiceActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.DataRaw
@@ -33,10 +34,11 @@ class ListServiceActivity : BaseActivity<ActivityListServiceBinding>(), ListServ
         views.rcvList.adapter= adapter
         adapter.setListenner(object :AdapterService.ServiceListenner{
             override fun ServiceOnClick(item: ServiceExtend, position: Int) {
-                Hawk.put(Common.KEY_SERVICE_DETAIL, item)
-                val intent = Intent(this@ListServiceActivity, DetailServiceActivity::class.java)
+//                Hawk.put(Common.KEY_SERVICE_DETAIL, item)
+                val intent = Intent(this@ListServiceActivity, ListServiceByNameActivity::class.java)
+                intent.putExtra(Common.KEY_NAME_SERVICE, item.name)
                 startActivity(intent)
-                finish()
+//                finish()
             }
 
             override fun EditService(serviceExtend: ServiceExtend) {

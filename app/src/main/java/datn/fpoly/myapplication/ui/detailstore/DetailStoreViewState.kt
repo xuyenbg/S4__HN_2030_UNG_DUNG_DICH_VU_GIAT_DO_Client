@@ -5,8 +5,10 @@ import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
 import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.data.model.StoreModel
+import datn.fpoly.myapplication.data.model.account.AccountModel
 
 data class DetailStoreViewState(
     var stateService: Async<MutableList<ServiceExtend>> = Uninitialized,
-    var stateStore: Async<StoreModel> = Uninitialized
+    var stateStore: Async<StoreModel> = Uninitialized,
+    var stateFavoriteStore: Async<AccountModel> = Uninitialized
 ): MvRxState

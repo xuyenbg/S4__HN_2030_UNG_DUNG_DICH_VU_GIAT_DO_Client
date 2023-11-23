@@ -21,6 +21,9 @@ data class HomeStoreState(
     val stateGetOrderDateStore: Async<MutableList<OrderResponse>> = Uninitialized,
     val stateGetOrderDateStoreWashing: Async<MutableList<OrderResponse>> = Uninitialized,
     val stateGetOrderDateStoreComplete: Async<MutableList<OrderResponse>> = Uninitialized,
+    val stateGetOrderDateStoreCompleteMission: Async<MutableList<OrderResponse>> = Uninitialized,
     val stateUpdateStatus: Async<Response<ResponseBody>> = Uninitialized,
-    val stateUpdateStatusWashing: Async<Response<ResponseBody>> = Uninitialized
+    val stateUpdateStatusWashing: Async<Response<ResponseBody>> = Uninitialized,
+    val stateUpdateStatusComplete: Async<Response<ResponseBody>> = Uninitialized
+
 ) : MvRxState
