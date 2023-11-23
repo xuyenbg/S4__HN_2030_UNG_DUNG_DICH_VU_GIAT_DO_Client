@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Geocoder
@@ -51,8 +52,26 @@ object Common {
     val CODE_LOAD_DATA=111
     val KEY_NAME_SERVICE="name_service"
 
+    val KEY_LATITUDE = "MY_LATITUDE"
+    val KEY_LONGITUDE ="MY_LONGITUDE"
+
     fun ComponentActivity.registerStartForActivityResult(onResult: (ActivityResult) -> Unit): ActivityResultLauncher<Intent> {
         return registerForActivityResult(ActivityResultContracts.StartActivityForResult(), onResult)
+    }
+    fun setMyLocation(context: Context, location: LatLng){
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences("MY_App", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putLong(KEY_LATITUDE, location.latitude.toLong())
+        editor.putLong(KEY_LONGITUDE, location.longitude.toLong())
+        editor.commit()
+    }
+    fun getMyLocation(context: Context): LatLng{
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences("MY_App", Context.MODE_PRIVATE)
+       val latitude= sharedPreferences.getLong(KEY_LATITUDE, 0)
+        val longitude = sharedPreferences.getLong(KEY_LONGITUDE, 0)
+        return LatLng(latitude.toDouble(), longitude.toDouble())
     }
 
     fun checkPermission(context: Context): Boolean =
@@ -60,6 +79,7 @@ object Common {
             context,
             android.Manifest.permission.ACCESS_FINE_LOCATION
         )
+
 
     fun repuestPermission(activity: Activity) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(

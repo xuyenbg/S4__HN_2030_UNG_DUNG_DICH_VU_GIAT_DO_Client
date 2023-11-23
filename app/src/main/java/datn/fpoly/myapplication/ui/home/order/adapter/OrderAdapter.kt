@@ -71,6 +71,7 @@ class OrderAdapter @Inject constructor() :
                         tvStatus3.visibility = View.INVISIBLE
                         tvStatus4.visibility = View.INVISIBLE
                         btnReOrder.visibility = View.VISIBLE
+                        btnReOrder.setText("Đánh giá")
                     }
                     if (itemOrder.status == 4) {
                         tvStatus4.visibility = View.VISIBLE
@@ -78,6 +79,11 @@ class OrderAdapter @Inject constructor() :
                         tvStatus3.visibility = View.INVISIBLE
                         tvStatus1.visibility = View.INVISIBLE
                         btnReOrder.visibility = View.VISIBLE
+                    }
+                }
+                holder.binding.btnReOrder.setOnClickListener {
+                    if(itemOrder.status==3){
+                        orderListener?.onRateingOrder(itemOrder)
                     }
                 }
             } else {
@@ -93,5 +99,6 @@ class OrderAdapter @Inject constructor() :
 
     interface OrderListener {
         fun onClickOrder(orderModel: OrderExtend)
+        fun onRateingOrder(orderModel: OrderExtend)
     }
 }

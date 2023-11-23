@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:paddingHorizontal="16dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
+        android:background="@drawable/bg_dialog_rating"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đánh giá dịch vụ"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:textColor="@color/color_text_black"
+            style="@style/text_font_inter_semi_bold"
+            android:textSize="18sp"/>
+        <RatingBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="5"
+            android:numStars="5"
+            android:stepSize="1.0"
+            android:layout_marginVertical="@dimen/_8dp"
+            android:rating="0"
+            android:progressTint="@color/colorPriamry"
+            android:id="@+id/rate"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ed_content"
+            android:hint="Đánh giá"
+            android:textColor="@color/color_text_black"
+            android:imeOptions="actionDone"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_rating"
+            android:text="Gửi"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_button_color_primary_100"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            style="@style/text_font_inter_medium"
+            android:textStyle="normal"/>
+    </LinearLayout>
+
+</LinearLayout>
