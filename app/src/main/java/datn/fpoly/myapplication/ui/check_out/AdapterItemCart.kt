@@ -20,13 +20,7 @@ class AdapterItemCart(
 ) : Adapter<AdapterItemCart.ViewHolderItemStore>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderItemStore =
-        ViewHolderItemStore(
-            ItemCartItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+        ViewHolderItemStore(ItemCartItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun getItemCount(): Int {
         return list.size
@@ -57,8 +51,12 @@ class AdapterItemCart(
             Glide.with(context).load(item.service?.image).error(R.drawable.image_no_pick).into(binding.image)
             binding.number2.text = String.format("SL: %d %s",(item.number ?: 0.0).toInt(), item.service!!.unit)
             binding.number.text = String.format("%d %s",(item.number ?: 0.0).toInt(), item.service!!.unit)
+            binding.numberKg.setText( String.format("%.1f",(item.number ?: 0.0).toDouble()))
+            binding.numberKg.isEnabled = false
             //Xử lý click expand
+            binding.groupWeight.visibility = View.GONE
             binding.groupExpand.visibility = View.GONE
+            binding.groupPickImage.visibility = View.GONE
             binding.expand.setOnClickListener {
                 if(binding.groupExpand.visibility == View.VISIBLE){
                     binding.expand.text = "chi tiết"

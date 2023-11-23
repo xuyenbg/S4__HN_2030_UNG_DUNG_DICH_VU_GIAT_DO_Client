@@ -170,6 +170,7 @@
                 android:background="@drawable/dotted_bottom_border"
                 android:textAlignment="center"
                 android:inputType="numberDecimal"
+                android:textColor="@android:color/black"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/label_unit"/>
         </androidx.constraintlayout.widget.ConstraintLayout>

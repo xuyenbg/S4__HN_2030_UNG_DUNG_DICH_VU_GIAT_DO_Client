@@ -43,6 +43,7 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderVie
         views.toolbar.btnNotification.visibility = View.INVISIBLE
         viewModel.handle(OrderViewAction.GetOrderDetail(idOrder ?: "null"))
         viewModel.subscribe(this) {
+            views.progressCircular.root.visibility = if(it.isLoading()) View.VISIBLE else View.GONE
             updateWithState(it)
         }
     }

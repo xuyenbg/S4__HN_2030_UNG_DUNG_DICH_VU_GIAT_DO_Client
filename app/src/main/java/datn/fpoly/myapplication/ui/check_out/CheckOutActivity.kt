@@ -44,6 +44,7 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
     override fun initUiAndData() {
         super.initUiAndData()
         viewModel.subscribe(this) {
+            views.progressCircular.root.visibility = if(it.isLoading()) View.VISIBLE else View.GONE
             updateWithState(it)
         }
         viewModel.handle(CheckOutViewAction.GetListAddress)

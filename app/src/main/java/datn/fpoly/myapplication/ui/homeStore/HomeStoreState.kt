@@ -1,6 +1,7 @@
 package datn.fpoly.myapplication.ui.homeStore
 
 import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
 import datn.fpoly.myapplication.data.model.CategoryModel
@@ -26,4 +27,21 @@ data class HomeStoreState(
     val stateUpdateStatusWashing: Async<Response<ResponseBody>> = Uninitialized,
     val stateUpdateStatusComplete: Async<Response<ResponseBody>> = Uninitialized
 
-) : MvRxState
+) : MvRxState {
+    fun isLoading(): Boolean {
+        return statePostStore is Loading
+                || stateCate is Loading
+                || stateGetStore is Loading
+                || stateDelete is Loading
+                || stateGetOrderStore is Loading
+                || stateGetListService is Loading
+                || stateGetOrderDateStore is Loading
+                || stateGetOrderDateStoreWashing is Loading
+                || stateGetOrderDateStoreComplete is Loading
+                || stateGetOrderDateStoreCompleteMission is Loading
+                || stateUpdateStatus is Loading
+                || stateUpdateStatusWashing is Loading
+                || stateUpdateStatusComplete is Loading
+    }
+}
+

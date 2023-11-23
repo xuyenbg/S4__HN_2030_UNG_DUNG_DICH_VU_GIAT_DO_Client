@@ -16,6 +16,7 @@ import datn.fpoly.myapplication.databinding.ActivityOrderDetailBinding
 import datn.fpoly.myapplication.ui.order.adapter.AdapterItemOrderStore
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -51,6 +52,7 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
         val idOrder = intent.getStringExtra(Common.KEY_ID_ORDER)
         viewModel.handle(OrderViewAction.GetOrderDetail(idOrder ?: "null"))
         viewModel.subscribe(this) {
+            views.progressCircular.root.visibility = if(it.isLoading()) View.VISIBLE else View.GONE
             updateWithState(it)
         }
     }
