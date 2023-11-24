@@ -2,7 +2,10 @@ package datn.fpoly.myapplication.data.repository
 
 import datn.fpoly.myapplication.data.network.APIRate
 import io.reactivex.Observable
+import io.reactivex.Scheduler
+import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
+import org.jetbrains.annotations.Async.Schedule
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -15,6 +18,9 @@ class RatePepo @Inject constructor(
         rateNumber: Float,
         content: String,
         idOrder: String
-    ): Observable<Response<ResponseBody>> = api.addRate(idStore, idUser, rateNumber, content, idOrder)
+    ): Observable<Response<ResponseBody>> =
+        api.addRate(idStore, idUser, rateNumber, content, idOrder).subscribeOn(
+            Schedulers.io()
+        )
 
 }

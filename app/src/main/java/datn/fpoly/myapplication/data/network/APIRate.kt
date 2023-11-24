@@ -6,8 +6,8 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface APIRate {
-    @PUT("api/rate/addRate")
     @FormUrlEncoded
+    @POST("api/rates/addRate")
     fun addRate(
         @Field("idStore") idStore: String,
         @Field("idUser") idUser: String,

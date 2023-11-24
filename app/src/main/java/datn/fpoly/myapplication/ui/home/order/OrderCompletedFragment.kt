@@ -28,6 +28,7 @@ import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
 import datn.fpoly.myapplication.ui.order.OrderDetailActivity
 import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -35,6 +36,7 @@ import timber.log.Timber
 class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var orderAdapter: OrderAdapter
+    lateinit var dialog: Dialog
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -61,7 +63,7 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
     }
 
     private fun dialogRating(context: Context, orderExtend: OrderExtend) {
-        val dialog = Dialog(context)
+        dialog = Dialog(context)
         val bindingDialog = DialogRateBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(bindingDialog.root)
         dialog.window?.setBackgroundDrawableResource(R.color.tran)
@@ -103,6 +105,7 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
     override fun onResume(): Unit = withState(viewModel) {
         super.onResume()
         getListOrder(it)
+        updateStateAddRate(it)
     }
 
     private fun getListOrder(it: HomeViewState) {
@@ -141,14 +144,17 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
 
     private fun updateStateAddRate(state: HomeViewState){
         when(state.stateRate){
-            is Loading->{
-
+            is Loading-> {
+                Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:loading ")
             }
             is Success->{
+                dialog.dismiss()
+                Toast.makeText(requireContext(), "Đánh giá thành công", Toast.LENGTH_SHORT).show()
 
             }
             is Fail->{
 
+                Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:fail ")
             }
             else->{}
         }

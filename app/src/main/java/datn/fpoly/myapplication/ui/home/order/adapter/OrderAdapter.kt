@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.databinding.ItemListOrderBinding
 import datn.fpoly.myapplication.utils.Common.formatDateOrder
@@ -14,6 +15,8 @@ class OrderAdapter @Inject constructor() :
     RecyclerView.Adapter<OrderAdapter.OrderViewHolder>() {
     private val listOrder = mutableListOf<OrderExtend>();
     private var orderListener: OrderListener? = null
+
+    var holderOrder : OrderViewHolder?=null
 
     fun updateData(list: MutableList<OrderExtend>) {
         this.listOrder.clear()
@@ -41,6 +44,7 @@ class OrderAdapter @Inject constructor() :
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
         if (holder is OrderViewHolder) {
+            holderOrder = holder
             if (listOrder.isNotEmpty()) {
                 val itemOrder = listOrder[position]
                 holder.itemView.setOnClickListener {
@@ -79,10 +83,13 @@ class OrderAdapter @Inject constructor() :
                         tvStatus3.visibility = View.INVISIBLE
                         tvStatus1.visibility = View.INVISIBLE
                         btnReOrder.visibility = View.VISIBLE
+                        holder.binding.btnReOrder.setBackgroundResource(R.drawable.shape_item_btn_4)
                     }
                 }
                 holder.binding.btnReOrder.setOnClickListener {
                     if(itemOrder.status==3){
+                       holder.binding.btnReOrder.setText("Đã đánh giá")
+                        holder.binding.btnReOrder.setBackgroundResource(R.drawable.shape_item_btn_4)
                         orderListener?.onRateingOrder(itemOrder)
                     }
                 }
