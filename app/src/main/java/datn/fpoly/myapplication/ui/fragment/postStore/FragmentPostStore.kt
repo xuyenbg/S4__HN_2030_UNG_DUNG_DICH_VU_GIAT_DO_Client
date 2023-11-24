@@ -58,6 +58,7 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
         views.btnAddPost.setOnClickListener {
             startActivity(Intent(requireContext(), AddPostActivity::class.java))
         }
+        views.toobar.icBack.visibility= View.INVISIBLE
         postClientAdapter = PostStoreAdapter()
         val itemDecoration = ItemSpacingDecoration(32)
         views.recyclerViewPostStore.addItemDecoration(itemDecoration)

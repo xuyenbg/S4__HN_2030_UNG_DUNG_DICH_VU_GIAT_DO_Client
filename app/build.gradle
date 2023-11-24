@@ -106,4 +106,7 @@ dependencies {
     implementation 'me.relex:circleindicator:2.1.6'
     def lottieVersion = "3.4.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+
+
+    implementation 'com.github.ome450901:SimpleRatingBar:1.5.1'
 }

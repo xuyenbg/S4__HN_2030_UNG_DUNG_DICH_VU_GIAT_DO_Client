@@ -44,6 +44,8 @@ class ServicesStoreFragment : BaseFragment<FragmentServicesStoreBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        views.toolBar.tvTitleTooobal.text ="Danh sách dịch vụ"
+        views.toolBar.icBack.visibility =View.INVISIBLE
         views.btnAddService.setOnClickListener {
             startActivityResult.launch(
                 Intent(
@@ -57,6 +59,7 @@ class ServicesStoreFragment : BaseFragment<FragmentServicesStoreBinding>() {
         adapter.setListenner(object : AdapterService.ServiceListenner {
             override fun ServiceOnClick(item: ServiceExtend, position: Int) {
                 val intent = Intent(requireContext(), DetailServiceActivity::class.java)
+                intent.putExtra("isStore", true)
                 intent.putExtra(Common.KEY_ID_SERVICE, item.id)
                 intent.putExtra(Common.KEY_ID_STORE, item.idStore?.id)
                 startActivity(intent)

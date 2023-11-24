@@ -50,6 +50,10 @@ class OrderCancelledFragment : BaseFragment<FragmentOrderCancelledBinding>() {
                 startActivity(intent)
             }
 
+            override fun onRateingOrder(orderModel: OrderExtend) {
+
+            }
+
         })
     }
 

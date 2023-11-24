@@ -27,4 +27,5 @@
     <color name="color_text_gray">#666666</color>
     <color name="color_text_gray2">#9FA5C0</color>
     <color name="color_text_dark_blue">#186993</color>
+    <color name="tran">#00FFFFFF</color>
 </resources>

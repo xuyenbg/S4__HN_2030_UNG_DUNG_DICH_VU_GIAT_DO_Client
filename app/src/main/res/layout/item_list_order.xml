@@ -123,7 +123,6 @@
             android:layout_height="30sp"
             android:layout_marginTop="52dp"
             android:background="@drawable/shape_item_btn_3"
-            android:backgroundTint="@color/colorPriamry"
             android:text="Đặt lại"
             android:textSize="10sp"
             android:textColor="@color/white"
