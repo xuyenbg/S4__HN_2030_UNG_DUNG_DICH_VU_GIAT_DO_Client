@@ -12,7 +12,7 @@ class RatePepo @Inject constructor(
     fun AddRate(
         idStore: String,
         idUser: String,
-        rateNumber: Int,
+        rateNumber: Float,
         content: String,
         idOrder: String
     ): Observable<Response<ResponseBody>> = api.addRate(idStore, idUser, rateNumber, content, idOrder)

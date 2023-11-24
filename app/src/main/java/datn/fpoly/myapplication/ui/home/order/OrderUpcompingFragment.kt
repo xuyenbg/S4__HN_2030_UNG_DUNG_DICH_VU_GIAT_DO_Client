@@ -50,6 +50,9 @@ class OrderUncompingFragment : BaseFragment<FragmentOrderUpcompingBinding>() {
                 startActivity(intent)
             }
 
+            override fun onRateingOrder(orderModel: OrderExtend) {
+
+            }
         })
     }
 

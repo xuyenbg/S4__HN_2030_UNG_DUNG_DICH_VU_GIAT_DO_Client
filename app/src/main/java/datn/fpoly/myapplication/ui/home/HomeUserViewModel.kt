@@ -9,6 +9,7 @@ import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.repository.CategoryRepo
 import datn.fpoly.myapplication.data.repository.OrderRepo
 import datn.fpoly.myapplication.data.repository.PostRepo
+import datn.fpoly.myapplication.data.repository.RatePepo
 import datn.fpoly.myapplication.data.repository.RoomDbRepo
 import datn.fpoly.myapplication.data.repository.StoreRepo
 
@@ -18,7 +19,8 @@ class HomeUserViewModel @AssistedInject constructor(
     private val repoCategory: CategoryRepo,
     private val repoStore: StoreRepo,
     private val repoOrder: OrderRepo,
-    private val dbRepo: RoomDbRepo
+    private val dbRepo: RoomDbRepo,
+    private val respoRate: RatePepo
 ) : BaseViewModel<HomeViewState, HomeViewAction, HomeViewEvent>(state) {
     override fun handle(action: HomeViewAction) {
         when (action) {
@@ -33,6 +35,9 @@ class HomeUserViewModel @AssistedInject constructor(
             }
             is HomeViewAction.OrderActionGetList ->{
                 handleGetListOrder(action.idUser)
+            }
+            is HomeViewAction.AddRate->{
+                addRate(action.idStore, action.idUser, action.startNumber, action.content, action.idOrder)
             }
 
             else -> {}
@@ -55,6 +60,10 @@ class HomeUserViewModel @AssistedInject constructor(
     private fun handleGetListOrder(idUser: String) {
         setState { copy(stateOrder = Loading()) }
         repoOrder.getDataOrder(idUser).execute { copy(stateOrder = it) }
+    }
+    private fun addRate(idStore: String , idUser: String, startNumber: Float, content: String, idOrder: String){
+        setState { copy(stateRate = Loading()) }
+        respoRate.AddRate(idStore, idUser, startNumber, content, idOrder).execute { copy(stateRate= it) }
     }
 
     fun getCart() = dbRepo.getCart()

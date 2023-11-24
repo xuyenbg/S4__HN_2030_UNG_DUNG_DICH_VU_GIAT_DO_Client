@@ -11,7 +11,7 @@ interface APIRate {
     fun addRate(
         @Field("idStore") idStore: String,
         @Field("idUser") idUser: String,
-        @Field("rateNumber") rateNumber: Int,
+        @Field("rateNumber") rateNumber: Float,
         @Field("content") content: String,
         @Field("idOrder") idOrder: String
     ): Observable<Response<ResponseBody>>

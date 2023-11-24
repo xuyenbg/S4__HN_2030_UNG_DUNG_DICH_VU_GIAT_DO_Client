@@ -66,11 +66,28 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
         dialog.setContentView(bindingDialog.root)
         dialog.window?.setBackgroundDrawableResource(R.color.tran)
         dialog.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-        bindingDialog.rate.setOnRatingBarChangeListener { ratingBar, fl, b ->
-
-        }
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
         bindingDialog.btnRating.setOnClickListener {
-            Toast.makeText(context, "rating: "+bindingDialog.rate.rating, Toast.LENGTH_SHORT).show()
+            orderExtend.idStore?.id?.let { it1 ->
+                orderExtend.idUser?.id?.let { it2 ->
+                    orderExtend.id?.let { it3 ->
+                        HomeViewAction.AddRate(
+                            it1,
+                            it2,
+                            bindingDialog.rate.rating,
+                            bindingDialog.edContent.text.toString().trim(), it3
+                        )
+                    }
+                }
+            }?.let { it2 ->
+                viewModel.handle(
+                    it2
+                )
+            }
+        }
+        bindingDialog.cancle.setOnClickListener {
+            dialog.dismiss()
         }
         if (activity?.isFinishing == false) {
             dialog.show()
@@ -80,6 +97,7 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
     override fun invalidate(): Unit = withState(viewModel) {
         super.invalidate()
         getListOrder(it)
+
     }
 
     override fun onResume(): Unit = withState(viewModel) {
@@ -106,6 +124,7 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
                     }
                 }
             }
+
             is Loading -> {
                 Timber.tag("AAAAAAAAAAAAAAA").e("getOrderComplete: loading")
             }
@@ -113,9 +132,25 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
             is Fail -> {
                 Timber.tag("AAAAAAAAAAAAAAA").e("getOrderComplete: Fail")
             }
+
             else -> {
 
             }
+        }
+    }
+
+    private fun updateStateAddRate(state: HomeViewState){
+        when(state.stateRate){
+            is Loading->{
+
+            }
+            is Success->{
+
+            }
+            is Fail->{
+
+            }
+            else->{}
         }
     }
 }
