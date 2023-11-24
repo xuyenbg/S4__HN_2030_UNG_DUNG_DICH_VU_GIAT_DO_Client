@@ -26,11 +26,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.ui.login.SignInActivity
 
-class SplashsActivity : AppCompatActivity() {
-rivate lateinit var fusedLoaction: FusedLocationProviderClient
+class SplashsActivity : BaseActivity<ActivitySplashBinding>() {
+private lateinit var fusedLoaction: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,15 +80,12 @@ rivate lateinit var fusedLoaction: FusedLocationProviderClient
     }
 
     override fun getBinding(): ActivitySplashBinding {
-        return ActivitySplashBinding.inflate(layoutInflater)
-
-
         val handler = Handler()
         handler.postDelayed({
             startActivity(Intent(this@SplashsActivity, SignInActivity::class.java))
             finish()
         }, 3000)
-
+        return ActivitySplashBinding.inflate(layoutInflater)
 
     }
 }
