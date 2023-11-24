@@ -26,12 +26,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.ui.login.SignInActivity
 
 class SplashsActivity : BaseActivity<ActivitySplashBinding>() {
 private lateinit var fusedLoaction: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (applicationContext as AppApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         val windowInsetsController =
             WindowCompat.getInsetsController(window, window.decorView)
@@ -41,7 +43,6 @@ private lateinit var fusedLoaction: FusedLocationProviderClient
             view.onApplyWindowInsets(windowInsets)
         }
 
-        setContentView(R.layout.activity_splash)
 
         if (Common.checkPermission(this)) {
             getCurrentLocation()

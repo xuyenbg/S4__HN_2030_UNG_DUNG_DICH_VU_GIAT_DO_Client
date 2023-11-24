@@ -21,6 +21,7 @@ import datn.fpoly.myapplication.ui.registerstore.RegisterStoreActivity
 import datn.fpoly.myapplication.ui.service.DetailServiceActivity
 import datn.fpoly.myapplication.ui.signup.RegisterInforActivity
 import datn.fpoly.myapplication.ui.signup.SignUpActivity
+import datn.fpoly.myapplication.ui.splashScreen.SplashsActivity
 import javax.inject.Singleton
 
 @Component(
@@ -50,6 +51,8 @@ interface AppComponent {
     fun inject(activity: OrderDetailStoreActivity)
     fun inject(activity: ListServiceByNameActivity)
     fun inject(activity: FavoriteStoreActivity)
+
+    fun inject(activity: SplashsActivity)
 
     @Component.Factory
     interface Factory {
