@@ -9,18 +9,38 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
+import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.repository.OrderRepo
+import datn.fpoly.myapplication.data.repository.UploadRepo
+import okhttp3.MultipartBody
 
 class OrderViewModel @AssistedInject constructor(
     @Assisted state: OrderViewState,
-    private val orderRepo: OrderRepo
+    private val orderRepo: OrderRepo,
+    private val uploadRepo: UploadRepo
 ) : BaseViewModel<OrderViewState, OrderViewAction, OrderViewEvent>(state) {
     override fun handle(action: OrderViewAction) {
         when(action){
             is OrderViewAction.GetOrderDetail -> {
                 handleGetOrderDetail(action.idOrder)
             }
+            is OrderViewAction.UpdateOrder -> {
+                handleUpdateOrder(action.orderBase, action.idOrder)
+            }
+            is OrderViewAction.UploadImage -> {
+                handleUploadImage(action.image)
+            }
         }
+    }
+
+    private fun handleUploadImage(image: MultipartBody.Part) {
+        setState { copy(stateUploadImage = Loading()) }
+        uploadRepo.uploadImage(image).execute { copy(stateUploadImage = it) }
+    }
+
+    private fun handleUpdateOrder(orderBase: OrderBase, idOrder: String) {
+        setState { copy(stateUpdateOrder = Loading()) }
+        orderRepo.updateOrder(orderBase, idOrder).execute { copy(stateUpdateOrder = it) }
     }
 
     private fun handleGetOrderDetail(idOrder: String) {

@@ -1,6 +1,7 @@
 package datn.fpoly.myapplication.ui.home
 
 import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
 import datn.fpoly.myapplication.data.model.CategoryModel
@@ -16,4 +17,13 @@ data class HomeViewState (
     var statePost : Async<MutableList<PostModel>> = Uninitialized,
     var stateOrder: Async<MutableList<OrderExtend>> = Uninitialized,
     var stateRate: Async<Response<ResponseBody>>  = Uninitialized
-): MvRxState
+): MvRxState{
+    fun isLoading(): Boolean {
+        return stateCategory is Loading
+                || stateStore is Loading
+                || statePost is Loading
+                || stateOrder is Loading
+                || stateRate is Loading
+    }
+}
+

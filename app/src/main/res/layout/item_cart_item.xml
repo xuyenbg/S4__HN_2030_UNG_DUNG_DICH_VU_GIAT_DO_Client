@@ -161,15 +161,16 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/number_kg"
+                android:imeOptions="actionDone"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:paddingVertical="8dp"
                 android:layout_marginEnd="6dp"
                 style="@style/font_14_black_bold"
-                android:text="5.5"
                 android:background="@drawable/dotted_bottom_border"
                 android:textAlignment="center"
-                android:inputType="number"
+                android:inputType="numberDecimal"
+                android:textColor="@android:color/black"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/label_unit"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -267,7 +268,7 @@
             android:id="@+id/group_expand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="label_pick_image,pick_image,label_price_service,price_service,label_add_on,recycler_view_add_on,label_number,number,label_weight,layout_number_kg"
+            app:constraint_referenced_ids="label_price_service,price_service,label_add_on,recycler_view_add_on,label_number,number"
             android:visibility="visible"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

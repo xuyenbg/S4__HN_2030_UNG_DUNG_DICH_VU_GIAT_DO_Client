@@ -4,7 +4,9 @@ package datn.fpoly.myapplication.ui.splashScreen
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.LocationRequest
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -22,13 +24,26 @@ import datn.fpoly.myapplication.utils.Common
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import datn.fpoly.myapplication.R
+import datn.fpoly.myapplication.ui.login.SignInActivity
 
-class SplashsActivity : BaseActivity<ActivitySplashBinding>() {
+class SplashsActivity : AppCompatActivity() {
+rivate lateinit var fusedLoaction: FusedLocationProviderClient
 
-    private lateinit var fusedLoaction: FusedLocationProviderClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val windowInsetsController =
+            WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        window.decorView.setOnApplyWindowInsetsListener { view, windowInsets ->
+            view.onApplyWindowInsets(windowInsets)
+        }
+
         setContentView(R.layout.activity_splash)
+
         if (Common.checkPermission(this)) {
             getCurrentLocation()
         }
@@ -67,5 +82,14 @@ class SplashsActivity : BaseActivity<ActivitySplashBinding>() {
 
     override fun getBinding(): ActivitySplashBinding {
         return ActivitySplashBinding.inflate(layoutInflater)
+
+
+        val handler = Handler()
+        handler.postDelayed({
+            startActivity(Intent(this@SplashsActivity, SignInActivity::class.java))
+            finish()
+        }, 3000)
+
+
     }
 }

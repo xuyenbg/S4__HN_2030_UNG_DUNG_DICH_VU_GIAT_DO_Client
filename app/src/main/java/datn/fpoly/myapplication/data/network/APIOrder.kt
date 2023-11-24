@@ -31,6 +31,9 @@ interface APIOrder {
     @POST("api/order/insert")
     fun insertOrder(@Body orderBase: OrderBase): Observable<Unit>
 
+    @PUT("api/order/update-order/{idOrder}")
+    fun updateOrder(@Body orderBase: OrderBase, @Path("idOrder") idOrder: String): Observable<Unit>
+
     @FormUrlEncoded
     @PUT("api/order/update-status/{idOrder}")
     fun updateOrder(

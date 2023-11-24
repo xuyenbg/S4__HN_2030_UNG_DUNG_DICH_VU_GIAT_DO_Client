@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.ItemOrderHomeLaundryBinding
 import datn.fpoly.myapplication.utils.DateTimeUtils
-import javax.inject.Inject
 
-class OrderStoreWaitAdapter @Inject constructor(val onBtnAction: (OrderResponse) -> Unit) :
-    RecyclerView.Adapter<OrderStoreWaitAdapter.OrderViewHolder>() {
-    private val listOrder = mutableListOf<OrderResponse>();
-    private var orderListener: OrderListener? = null
+class OrderStoreWaitAdapter (
+    val onBtnAction: (OrderResponse) -> Unit,
+    val itemOnclick: (OrderResponse) -> Unit
+) : RecyclerView.Adapter<OrderStoreWaitAdapter.OrderViewHolder>() {
+    private val listOrder = mutableListOf<OrderResponse>()
 
     fun updateData(list: MutableList<OrderResponse>) {
         this.listOrder.clear()
@@ -23,10 +23,6 @@ class OrderStoreWaitAdapter @Inject constructor(val onBtnAction: (OrderResponse)
         listOrder.clear()
         listOrder.addAll(list)
         notifyDataSetChanged()
-    }
-
-    fun setListener(listener: OrderListener) {
-        this.orderListener = listener
     }
 
     inner class OrderViewHolder(val binding: ItemOrderHomeLaundryBinding) :
@@ -41,7 +37,7 @@ class OrderStoreWaitAdapter @Inject constructor(val onBtnAction: (OrderResponse)
             if (listOrder.isNotEmpty()) {
                 val itemOrder = listOrder[position]
                 holder.itemView.setOnClickListener {
-                    orderListener?.onClickOrder(itemOrder)
+                    itemOnclick(itemOrder)
                 }
                 holder.binding.apply {
                     tvOrderId.text = "#${itemOrder.id}"
@@ -62,10 +58,5 @@ class OrderStoreWaitAdapter @Inject constructor(val onBtnAction: (OrderResponse)
 
     override fun getItemCount(): Int {
         return listOrder.size
-    }
-
-
-    interface OrderListener {
-        fun onClickOrder(orderModel: OrderResponse)
     }
 }

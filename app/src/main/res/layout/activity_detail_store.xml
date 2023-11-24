@@ -67,6 +67,17 @@
     </androidx.cardview.widget.CardView>
 
     <ImageView
+        android:id="@+id/img_add_favorite_store"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/ic_add_address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.122"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView_avatar" />
+
+    <ImageView
         android:id="@+id/img_store"
         android:layout_width="24dp"
         android:layout_height="22dp"
@@ -80,8 +91,8 @@
     <ImageView
         android:id="@+id/img_address"
         android:layout_width="24dp"
-        android:layout_height="22dp"
-        android:layout_marginTop="18dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.067"
@@ -92,23 +103,27 @@
         android:id="@+id/img_phone"
         android:layout_width="24dp"
         android:layout_height="22dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/ic_phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.067"
         app:layout_constraintStart_toEndOf="@+id/cardView_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/img_address" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_address" />
 
     <TextView
         android:id="@+id/tv_name_store"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:ellipsize="end"
+        android:maxWidth="180dp"
+        android:layout_marginStart="10dp"
+        android:maxLines="1"
         android:text="Cửa hàng giặt Bố Già"
         android:textSize="16dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/img_store"
         app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
@@ -116,25 +131,31 @@
         android:id="@+id/tv_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:maxWidth="220dp"
-        android:text="123 phương canh, Nam Từ Liêm, Hà Nội"
+        android:layout_marginTop="20dp"
+        android:ellipsize="end"
+        android:maxWidth="180dp"
+        android:maxLines="1"
+        android:layout_marginStart="10dp"
+        android:text="123 phương canh, Nam Từ"
         android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.142"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/img_address"
-        app:layout_constraintTop_toBottomOf="@+id/tv_name_store" />
+        app:layout_constraintTop_toBottomOf="@+id/img_store" />
 
     <TextView
         android:id="@+id/tv_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:layout_marginStart="10dp"
         android:maxWidth="220dp"
+        android:maxLines="1"
         android:text="0123456789"
         android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintHorizontal_bias="0.035"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/img_phone"
         app:layout_constraintTop_toBottomOf="@+id/tv_address" />
 
@@ -166,7 +187,7 @@
         android:id="@+id/img_sale"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/img_sale"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.043"
@@ -177,14 +198,14 @@
         android:id="@+id/tv_sale"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="32dp"
         android:text="Giảm giá 10% cho tất cả các dịch vụ trong ngày 30/02"
         android:textColor="@color/red"
         android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.428"
-        app:layout_constraintStart_toEndOf="@+id/img_sale"
-        app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
+        app:layout_constraintStart_toEndOf="@+id/img_sale" />
 
     <TextView
         android:id="@+id/textView"

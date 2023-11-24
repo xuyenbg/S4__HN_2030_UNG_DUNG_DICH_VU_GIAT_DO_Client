@@ -1,7 +1,7 @@
 package datn.fpoly.myapplication.ui.fragment.homeStore.fragment
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,10 +19,10 @@ import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.FragmentWaitBinding
 import datn.fpoly.myapplication.ui.fragment.homeStore.adapter.OrderStoreWaitAdapter
-import datn.fpoly.myapplication.ui.fragment.homeStore.adapter.OrderStoreWashingAdapter
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewModel
+import datn.fpoly.myapplication.ui.order.OrderDetailStoreActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.ItemSpacingDecoration
 import kotlinx.coroutines.launch
@@ -41,11 +41,10 @@ class WaitFragment : BaseFragment<FragmentWaitBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
+        idStore = Hawk.get<StoreModel>(Common.KEY_STORE)?.id
         if (idStore != null) {
             viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDate(idStore!!, 0, "desc"))
         }
-
 
         orderStoreAdapter = OrderStoreWaitAdapter(onBtnAction = {
             Toast.makeText(requireContext(), "Hoàn Thành", Toast.LENGTH_SHORT).show()
@@ -54,6 +53,10 @@ class WaitFragment : BaseFragment<FragmentWaitBinding>() {
             viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateWashing(idStore!!, 1, "desc"))
 //            val viewPager: ViewPager2 = requireActivity().findViewById(R.id.list_order)
 //            viewPager.currentItem = 1
+        }, itemOnclick = {
+            val intent = Intent(context, OrderDetailStoreActivity::class.java)
+            intent.putExtra(Common.KEY_ID_ORDER, it.id)
+            startActivity(intent)
         })
         views.recycleviewWating.adapter = orderStoreAdapter
         views.recycleviewWating.addItemDecoration(ItemSpacingDecoration(46))
