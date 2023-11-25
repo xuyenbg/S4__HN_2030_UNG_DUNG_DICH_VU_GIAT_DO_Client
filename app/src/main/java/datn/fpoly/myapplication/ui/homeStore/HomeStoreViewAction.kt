@@ -35,5 +35,5 @@ sealed class HomeStoreViewAction : ViewAction {
     data class UpdateStatus(val idOrder: String, val status: Int) : HomeStoreViewAction()
     data class UpdateStatusWashing(val idOrder: String, val status: Int) : HomeStoreViewAction()
     data class UpdateStatusComplete(val idOrder: String, val status: Int) : HomeStoreViewAction()
-
+    data class OpendCloseStore(val idStore: String , val status: Int): HomeStoreViewAction()
 }

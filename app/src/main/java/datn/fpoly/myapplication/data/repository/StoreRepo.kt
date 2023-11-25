@@ -38,8 +38,14 @@ class StoreRepo @Inject constructor(
         address,
         isDefault,
         imageQRCode,
-        ).subscribeOn(Schedulers.io())
-    fun getStoreByIdUser(idUSer: String): Observable<StoreModel> = api.getStoreByIdUser(idUSer).subscribeOn(Schedulers.io())
-    fun getStoreById(id: String): Observable<StoreModel> = api.getStoreById(id).subscribeOn(Schedulers.io())
+    ).subscribeOn(Schedulers.io())
 
+    fun getStoreByIdUser(idUSer: String): Observable<StoreModel> =
+        api.getStoreByIdUser(idUSer).subscribeOn(Schedulers.io())
+
+    fun getStoreById(id: String): Observable<StoreModel> =
+        api.getStoreById(id).subscribeOn(Schedulers.io())
+
+    fun opendCloseStore(idStoer: String, status: Int): Observable<Response<ResponseBody>> =
+        api.opendAndCloseSStore(idStoer, status).subscribeOn(Schedulers.io())
 }
