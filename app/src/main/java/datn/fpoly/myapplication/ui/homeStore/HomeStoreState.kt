@@ -25,7 +25,8 @@ data class HomeStoreState(
     val stateGetOrderDateStoreCompleteMission: Async<MutableList<OrderResponse>> = Uninitialized,
     val stateUpdateStatus: Async<Response<ResponseBody>> = Uninitialized,
     val stateUpdateStatusWashing: Async<Response<ResponseBody>> = Uninitialized,
-    val stateUpdateStatusComplete: Async<Response<ResponseBody>> = Uninitialized
+    val stateUpdateStatusComplete: Async<Response<ResponseBody>> = Uninitialized,
+    val stateOpendCloseStore : Async<Response<ResponseBody>> = Uninitialized
 
 ) : MvRxState {
     fun isLoading(): Boolean {
@@ -42,6 +43,7 @@ data class HomeStoreState(
                 || stateUpdateStatus is Loading
                 || stateUpdateStatusWashing is Loading
                 || stateUpdateStatusComplete is Loading
+                || stateOpendCloseStore is Loading
     }
 }
 

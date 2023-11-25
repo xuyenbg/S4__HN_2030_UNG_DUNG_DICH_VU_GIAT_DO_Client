@@ -73,6 +73,9 @@ class HomeStoreViewModel @AssistedInject constructor(
             is HomeStoreViewAction.UpdateStatusComplete -> {
                 updateStatusComplete(action.idOrder, action.status)
             }
+            is HomeStoreViewAction.OpendCloseStore->{
+                opendClose(action.idStore, action.status)
+            }
 
             else -> {}
         }
@@ -148,6 +151,10 @@ class HomeStoreViewModel @AssistedInject constructor(
         setState { copy(stateUpdateStatusComplete = Loading()) }
         orderRepo.updateOrderComplete(idOrder, status)
             .execute { copy(stateUpdateStatusComplete = it) }
+    }
+    private fun opendClose(idStore: String , status: Int){
+        setState { copy(stateOpendCloseStore = Loading()) }
+        resposeStore.opendCloseStore(idStore, status).execute { copy(stateOpendCloseStore = it) }
     }
 
     @AssistedFactory

@@ -59,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:text="@string/open_door"
+                android:id="@+id/sw_opend_close"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:switchPadding="8dp"

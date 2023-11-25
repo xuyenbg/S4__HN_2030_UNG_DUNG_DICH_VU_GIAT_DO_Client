@@ -40,6 +40,9 @@ interface APIStore {
 
     @GET("api/stores/store-by-idstore/{idStore}")
     fun getStoreById(@Path("idStore") idStore: String): Observable<StoreModel>
+    @FormUrlEncoded
+    @PUT("api/stores/open-close-store/{idStore}")
+    fun opendAndCloseSStore(@Path("idStore") idStore: String ,@Field("status") status: Int ): Observable<Response<ResponseBody>>
 
     @Multipart
     @PUT("api/stores/update-store/{idStore}")
