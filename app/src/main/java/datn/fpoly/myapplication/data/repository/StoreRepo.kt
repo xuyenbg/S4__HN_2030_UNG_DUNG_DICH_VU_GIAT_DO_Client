@@ -46,6 +46,31 @@ class StoreRepo @Inject constructor(
     fun getStoreById(id: String): Observable<StoreModel> =
         api.getStoreById(id).subscribeOn(Schedulers.io())
 
+    fun updateStore(
+        idStore: String,
+        name: RequestBody,
+        address: RequestBody,
+        lat: RequestBody,
+        long: RequestBody,
+        isDefault : RequestBody,
+        idUser : RequestBody,
+        image : MultipartBody.Part?
+    ): Observable<Response<ResponseBody>> =
+        api.getUpdateStore(idStore, name, address, lat, long, isDefault,idUser,image).subscribeOn(Schedulers.io())
+    fun updateStoreOne(
+        idStore: String,
+        name: RequestBody,
+        image : MultipartBody.Part?
+    ): Observable<Response<ResponseBody>> =
+        api.getUpdateStoreOne(idStore, name,image).subscribeOn(Schedulers.io())
+
+
+    fun getStoreByIdUser(idUSer: String): Observable<StoreModel> =
+        api.getStoreByIdUser(idUSer).subscribeOn(Schedulers.io())
+
+    fun getStoreById(id: String): Observable<StoreModel> =
+        api.getStoreById(id).subscribeOn(Schedulers.io())
+
     fun opendCloseStore(idStoer: String, status: Int): Observable<Response<ResponseBody>> =
         api.opendAndCloseSStore(idStoer, status).subscribeOn(Schedulers.io())
 }

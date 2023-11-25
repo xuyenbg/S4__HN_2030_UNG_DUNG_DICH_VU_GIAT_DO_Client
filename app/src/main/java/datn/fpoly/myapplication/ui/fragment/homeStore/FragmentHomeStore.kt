@@ -22,11 +22,18 @@ import datn.fpoly.myapplication.ui.homeStore.HomeStoreState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewModel
 import datn.fpoly.myapplication.utils.Common
+
 import timber.log.Timber
 
 class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
 
     private val viewModel: HomeStoreViewModel by activityViewModel()
+    override fun getBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = FragmentHomeLaundryBinding.inflate(layoutInflater)
+
+
     private lateinit var tabLayoutAdapter: TabLayoutAdapter
     private var storeModel : StoreModel?=null
     private var isOpend = false;
@@ -60,7 +67,6 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
                 views.tabView.selectTab(views.tabView.getTabAt(position))
             }
         })
-
         views.swOpendClose.setOnCheckedChangeListener { compoundButton, b ->
             if(b){
                 storeModel?.id?.let { HomeStoreViewAction.OpendCloseStore(it, 1) }
@@ -123,13 +129,16 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
             }
             else ->{}
         }
+
+        setView()
+
     }
 
-    override fun getBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
-    ): FragmentHomeLaundryBinding {
-        return FragmentHomeLaundryBinding.inflate(layoutInflater)
+    private fun setView() {
+        views.apply {
+            tvNameLaundry.text = Hawk.get<StoreModel>(Common.KEY_STORE,null).name
+        }
     }
+
 
 }

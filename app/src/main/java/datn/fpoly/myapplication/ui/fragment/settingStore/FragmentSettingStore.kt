@@ -25,6 +25,7 @@ import datn.fpoly.myapplication.ui.homeStore.HomeStoreState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewModel
 import datn.fpoly.myapplication.ui.login.SignInActivity
+import datn.fpoly.myapplication.ui.myshop.MyShopActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.DataRaw
 import datn.fpoly.myapplication.utils.Dialog_Loading
@@ -66,6 +67,10 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
             startActivity(intent)
 //            DataRaw.animStart(views.tvOrderHistory, requireContext())
         }
+        views.tvStore.setOnClickListener {
+            val intent = Intent(requireContext(), MyShopActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun invalidate(): Unit = withState(viewModel) {
@@ -106,7 +111,7 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
 
     private fun countOrder(listOrder: MutableList<OrderResponse>) {
         countUnconfimred = listOrder.count { it.status == 1 }
-        countConfirmed = listOrder.size-countUnconfimred
+        countConfirmed = listOrder.size - countUnconfimred
         views.apply {
             iconOrderConfim.text = countConfirmed.toString()
             iconOrderNotConfim.text = countUnconfimred.toString()

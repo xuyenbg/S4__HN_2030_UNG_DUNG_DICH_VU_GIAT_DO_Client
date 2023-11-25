@@ -19,6 +19,7 @@ import retrofit2.http.Path
 interface APIStore {
     @GET("api/stores/list")
     fun getListCategory(): Observable<MutableList<StoreModel>>
+
     @GET("api/stores/store-by-iduse/{idUser}")
     fun getStoreByIdUser(@Path("idUser") idUser: String): Observable<StoreModel>
 
@@ -43,4 +44,24 @@ interface APIStore {
     @PUT("api/stores/open-close-store/{idStore}")
     fun opendAndCloseSStore(@Path("idStore") idStore: String ,@Field("status") status: Int ): Observable<Response<ResponseBody>>
 
+    @Multipart
+    @PUT("api/stores/update-store/{idStore}")
+    fun getUpdateStore(
+        @Path("idStore") idStore: String,
+        @Part("name") name: RequestBody,
+        @Part("address") address: RequestBody,
+        @Part("longitude") longitude: RequestBody,
+        @Part("latitude") latitude: RequestBody,
+        @Part("isDefault") isDefault : RequestBody,
+        @Part("idUser") idUser : RequestBody,
+        @Part image : MultipartBody.Part?
+    ): Observable<Response<ResponseBody>>
+
+    @Multipart
+    @PUT("api/stores/update-store/{idStore}")
+    fun getUpdateStoreOne(
+        @Path("idStore") idStore: String,
+        @Part("name") name: RequestBody,
+        @Part image : MultipartBody.Part?
+    ): Observable<Response<ResponseBody>>
 }

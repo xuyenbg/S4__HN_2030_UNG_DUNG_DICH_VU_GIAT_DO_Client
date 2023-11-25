@@ -5,18 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.ql_ban_hang.core.BaseFragment
 import datn.fpoly.myapplication.R
+import datn.fpoly.myapplication.databinding.FragmentOrderStoreBinding
 
 
-class OrderStoreFragment : Fragment() {
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_order_store, container, false)
-    }
+class OrderStoreFragment : BaseFragment<FragmentOrderStoreBinding>() {
+    override fun getBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = FragmentOrderStoreBinding.inflate(layoutInflater)
 
 }
