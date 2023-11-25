@@ -6,9 +6,12 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.PartMap
 import retrofit2.http.Path
@@ -16,6 +19,7 @@ import retrofit2.http.Path
 interface APIStore {
     @GET("api/stores/list")
     fun getListCategory(): Observable<MutableList<StoreModel>>
+
     @GET("api/stores/store-by-iduse/{idUser}")
     fun getStoreByIdUser(@Path("idUser") idUser: String): Observable<StoreModel>
 
@@ -37,4 +41,24 @@ interface APIStore {
     @GET("api/stores/store-by-idstore/{idStore}")
     fun getStoreById(@Path("idStore") idStore: String): Observable<StoreModel>
 
+    @Multipart
+    @PUT("api/stores/update-store/{idStore}")
+    fun getUpdateStore(
+        @Path("idStore") idStore: String,
+        @Part("name") name: RequestBody,
+        @Part("address") address: RequestBody,
+        @Part("longitude") longitude: RequestBody,
+        @Part("latitude") latitude: RequestBody,
+        @Part("isDefault") isDefault : RequestBody,
+        @Part("idUser") idUser : RequestBody,
+        @Part image : MultipartBody.Part?
+    ): Observable<Response<ResponseBody>>
+
+    @Multipart
+    @PUT("api/stores/update-store/{idStore}")
+    fun getUpdateStoreOne(
+        @Path("idStore") idStore: String,
+        @Part("name") name: RequestBody,
+        @Part image : MultipartBody.Part?
+    ): Observable<Response<ResponseBody>>
 }

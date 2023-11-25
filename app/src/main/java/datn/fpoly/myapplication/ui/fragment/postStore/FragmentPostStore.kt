@@ -54,7 +54,6 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
         super.onViewCreated(view, savedInstanceState)
         idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
         viewModel.handle(HomeStoreViewAction.PostStoreActionList(idStore!!))
-        views.toobar.tvTitleTooobal.text = "Tạo Bài Viết"
         views.btnAddPost.setOnClickListener {
             startActivity(Intent(requireContext(), AddPostActivity::class.java))
         }
