@@ -43,6 +43,7 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderVie
         views.toolbar.btnNotification.visibility = View.INVISIBLE
         viewModel.handle(OrderViewAction.GetOrderDetail(idOrder ?: "null"))
         viewModel.subscribe(this) {
+            views.progressCircular.root.visibility = if(it.isLoading()) View.VISIBLE else View.GONE
             updateWithState(it)
         }
     }
@@ -68,7 +69,6 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderVie
                                     it.total,
                                     it.image,
                                     it.idOrder,
-                                    it.idService?.id,
                                     ServiceExtend(name = it.idService?.name, unit = it.idService?.unit, price = it.idService?.price, image = it.idService?.image),
                                     it.attributeList,
                                     null

@@ -26,6 +26,8 @@ class RemoteDataSource {
     companion object {
         const val BASE_URL =
             "https://s4-hn-2030-ung-dung-dich-vu-giat-do.onrender.com/"
+        const val BASE_URL_IMAGE =
+            "https://s4-hn-2030-ung-dung-dich-vu-giat-do.onrender.com/"
         private const val DEFAULT_USER_AGENT = "QLBH-Android"
         private const val DEFAULT_CONTENT_TYPE = "application/json"
     }

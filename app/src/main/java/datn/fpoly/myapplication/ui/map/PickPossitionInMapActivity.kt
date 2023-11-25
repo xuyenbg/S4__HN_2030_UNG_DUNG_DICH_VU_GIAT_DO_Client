@@ -1,17 +1,10 @@
 package datn.fpoly.myapplication.ui.map
 
 import android.Manifest
-import android.app.Activity
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
 import android.location.LocationRequest
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -20,17 +13,13 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
-import com.orhanobut.hawk.Hawk
-import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivityPickPossitionInMapBinding
-import datn.fpoly.myapplication.ui.registerstore.RegisterStoreActivity
 import datn.fpoly.myapplication.utils.Common
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBinding>(),
     OnMapReadyCallback {
@@ -81,7 +70,7 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
                 Common.dialogDisconnectWifi(this)
             } else {
                 if (!Common.checkPermission(this)) {
-                    Common.repuestPermission(this)
+                    Common.requestPermission(this)
                 } else {
                     if (!Common.isGpsEnabled(this)) {
                         Common.dialogLocationService(this)

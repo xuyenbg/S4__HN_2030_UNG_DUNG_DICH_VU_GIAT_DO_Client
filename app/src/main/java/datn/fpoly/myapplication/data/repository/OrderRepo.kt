@@ -35,6 +35,9 @@ class OrderRepo @Inject constructor(
     fun updateOrderWashing(idOrder: String, status: Int): Observable<Response<ResponseBody>> =
         api.updateOrder(idOrder, status).subscribeOn(Schedulers.io())
 
+    fun updateOrder(orderBase: OrderBase, idOrder: String): Observable<Unit> =
+        api.updateOrder(orderBase, idOrder).subscribeOn(Schedulers.io())
+
     fun updateOrderComplete(idOrder: String, status: Int): Observable<Response<ResponseBody>> =
         api.updateOrder(idOrder, status).subscribeOn(Schedulers.io())
 }

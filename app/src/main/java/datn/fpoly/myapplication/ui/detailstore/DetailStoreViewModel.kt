@@ -5,6 +5,8 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
+import datn.fpoly.myapplication.data.model.account.AccountModel
+import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.data.repository.CategoryRepo
 import datn.fpoly.myapplication.data.repository.ServiceRepo
 import datn.fpoly.myapplication.data.repository.StoreRepo
@@ -12,7 +14,8 @@ import datn.fpoly.myapplication.data.repository.StoreRepo
 class DetailStoreViewModel @AssistedInject constructor(
     @Assisted state: DetailStoreViewState,
     private var repo: ServiceRepo,
-    private var repoStore: StoreRepo
+    private var repoStore: StoreRepo,
+    private var repoAuth: AuthRepo
 ) : BaseViewModel<DetailStoreViewState, DetailStoreViewAction, DetailStoreViewEvent>(state) {
     override fun handle(action: DetailStoreViewAction) {
         when(action){
@@ -21,6 +24,9 @@ class DetailStoreViewModel @AssistedInject constructor(
             }
             is DetailStoreViewAction.GetStoreById->{
                 getStoreById(action.id)
+            }
+            is DetailStoreViewAction.AddFavoriteStore->{
+                addFavoriteStore(action.idUser, action.accountModel)
             }
         }
     }
@@ -31,6 +37,10 @@ class DetailStoreViewModel @AssistedInject constructor(
     fun getStoreById(id: String){
         setState { copy(stateStore= Loading()) }
         repoStore.getStoreById(id).execute { copy(stateStore = it) }
+    }
+    fun addFavoriteStore(id: String, accountModel: AccountModel){
+        setState { copy(stateFavoriteStore= Loading()) }
+        repoAuth.addFavoriteStore(id,accountModel).execute { copy(stateFavoriteStore = it) }
     }
 
 

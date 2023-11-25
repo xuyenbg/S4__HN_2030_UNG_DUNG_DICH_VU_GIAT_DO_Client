@@ -44,6 +44,7 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
     override fun initUiAndData() {
         super.initUiAndData()
         viewModel.subscribe(this) {
+            views.progressCircular.root.visibility = if(it.isLoading()) View.VISIBLE else View.GONE
             updateWithState(it)
         }
         viewModel.handle(CheckOutViewAction.GetListAddress)
@@ -70,7 +71,7 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
                 cart.transportType = if(views.radioShip.isChecked) "Shipper" else "Mang tới cửa hàng"
                 cart.feeDelivery = if(views.radioShip.isChecked) 30000.0 else 0.0
                 cart.isPaid = false
-                cart.status = 1
+                cart.status = 0
                 viewModel.handle(CheckOutViewAction.InsertOrder(cart))
             }
         }

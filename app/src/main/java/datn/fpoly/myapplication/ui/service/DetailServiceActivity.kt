@@ -3,6 +3,7 @@ package datn.fpoly.myapplication.ui.service
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
@@ -50,6 +51,13 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
         }
         views.imgBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+        }
+        if(intent.getBooleanExtra("isStore", false)){
+            views.btnOrder.visibility= View.GONE
+            views.btnAddCart.visibility = View.GONE
+        }else{
+            views.btnOrder.visibility= View.VISIBLE
+            views.btnAddCart.visibility = View.VISIBLE
         }
         adapterService = AdapterService(false)
         views.rcvService.adapter = adapterService
