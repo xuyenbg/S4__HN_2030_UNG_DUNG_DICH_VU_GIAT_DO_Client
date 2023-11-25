@@ -8,11 +8,13 @@
     tools:context=".ui.fragment.postStore.FragmentPostStore">
 
     <TextView
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="16dp"
         android:text="@string/post"
+        app:layout_constraintTop_toTopOf="parent"
         android:background="@color/white"
         android:textAlignment="center"
         android:textColor="@color/colorPriamry"
@@ -26,7 +28,7 @@
         android:layout_height="0dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toobar">
+        app:layout_constraintTop_toBottomOf="@+id/tv_title">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_postStore"
