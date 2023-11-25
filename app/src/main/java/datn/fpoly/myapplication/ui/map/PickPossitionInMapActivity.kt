@@ -44,6 +44,14 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
     override fun initUiAndData() {
         super.initUiAndData()
         views.btnChossePossition.setOnClickListener {
+           myLocation?.let{
+               dataAdress.longitude= it.longitude
+               dataAdress.latitude= it.latitude
+               dataAdress.pick_address = views.tvCurrentAdress.text.toString()
+           }
+            onBackPressedDispatcher.onBackPressed()
+        }
+        views.icBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }
@@ -107,7 +115,7 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
                     CoroutineScope(Dispatchers.IO).launch {
                         val address =
                             Common.getAddress(myLocation!!, this@PickPossitionInMapActivity)
-                        dataAdress.pick_address = address
+
                         runOnUiThread {
                             views.tvCurrentAdress.text = address
                         }
@@ -139,8 +147,6 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
         ggMap?.setMaxZoomPreference(10000F);
         ggMap?.setOnCameraChangeListener {
             val posCamera = it.target
-            dataAdress.longitude = posCamera.longitude
-            dataAdress.latitude = posCamera.latitude
             Log.e(
                 "AAAAAAAAAAAA",
                 "onMapReady: latitude: " + posCamera.latitude + " longtitude: " + posCamera.longitude
@@ -149,7 +155,6 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
 //            Hawk.put(Common.KEY_LOCATION,it.target)
             CoroutineScope(Dispatchers.IO).launch {
                 val adreess = Common.getAddress(posCamera, this@PickPossitionInMapActivity)
-                adreess
                 runOnUiThread {
                     views.tvCurrentAdress.text = adreess
                 }
