@@ -13,6 +13,7 @@ import datn.fpoly.myapplication.ui.homeStore.HomeStoreActivity
 import datn.fpoly.myapplication.ui.listService.ListServiceActivity
 import datn.fpoly.myapplication.ui.listServiceByName.ListServiceByNameActivity
 import datn.fpoly.myapplication.ui.login.OTPLoginActivity
+import datn.fpoly.myapplication.ui.myProfileUser.MyProfileActivity
 import datn.fpoly.myapplication.ui.myshop.MyShopActivity
 import datn.fpoly.myapplication.ui.myshop.MyShopViewModel
 import datn.fpoly.myapplication.ui.order.OrderDetailActivity
@@ -58,6 +59,7 @@ interface AppComponent {
     fun inject(activity: FavoriteStoreActivity)
 
     fun inject(activity: SplashsActivity)
+    fun inject(activity: MyProfileActivity)
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance context: Context): AppComponent

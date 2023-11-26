@@ -136,7 +136,7 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
 
     private fun setView() {
         views.apply {
-            tvNameLaundry.text = Hawk.get<StoreModel>(Common.KEY_STORE,null).name
+//            tvNameLaundry.text = Hawk.get<StoreModel>(Common.KEY_STORE,null).name
         }
     }
 
