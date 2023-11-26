@@ -26,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.google.android.gms.location.LocationServices
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.ui.login.SignInActivity
 
@@ -42,10 +43,12 @@ private lateinit var fusedLoaction: FusedLocationProviderClient
         window.decorView.setOnApplyWindowInsetsListener { view, windowInsets ->
             view.onApplyWindowInsets(windowInsets)
         }
-
+        fusedLoaction = LocationServices.getFusedLocationProviderClient(this)
 
         if (Common.checkPermission(this)) {
-            getCurrentLocation()
+            CoroutineScope(Dispatchers.IO).launch {
+                getCurrentLocation()
+            }
         }
     }
 

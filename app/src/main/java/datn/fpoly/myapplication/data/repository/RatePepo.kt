@@ -1,5 +1,6 @@
 package datn.fpoly.myapplication.data.repository
 
+import datn.fpoly.myapplication.data.model.RateModel
 import datn.fpoly.myapplication.data.network.APIRate
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -22,5 +23,8 @@ class RatePepo @Inject constructor(
         api.addRate(idStore, idUser, rateNumber, content, idOrder).subscribeOn(
             Schedulers.io()
         )
+
+    fun getListRateByStore(idStore: String): Observable<MutableList<RateModel>> =
+        api.getListRateByStore(idStore).subscribeOn(Schedulers.io())
 
 }

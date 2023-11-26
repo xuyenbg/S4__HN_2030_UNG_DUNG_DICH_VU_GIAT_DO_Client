@@ -2,6 +2,7 @@ package datn.fpoly.myapplication.ui.detailstore
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.airbnb.mvrx.Fail
@@ -15,6 +16,7 @@ import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.data.model.account.AccountModel
+import datn.fpoly.myapplication.ui.adapter.AdapterRate
 import datn.fpoly.myapplication.ui.adapter.AdapterService
 import datn.fpoly.myapplication.ui.service.DetailServiceActivity
 import datn.fpoly.myapplication.utils.Common
@@ -29,6 +31,7 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
     private val viewModel: DetailStoreViewModel by viewModel()
     private lateinit var itemStoreDetail: StoreModel
     private lateinit var adapterService: AdapterService
+    private lateinit var adapterRate: AdapterRate
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
@@ -39,12 +42,14 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
         val accountModel = AccountModel()
         intent.getStringExtra(Common.KEY_ID_STORE)?.let { viewModel.handle(DetailStoreViewAction.GetListServiceByStore(it)) }
         intent.getStringExtra(Common.KEY_ID_STORE)?.let { viewModel.handle(DetailStoreViewAction.GetStoreById(it)) }
+        intent.getStringExtra(Common.KEY_ID_STORE)?.let { viewModel.handle(DetailStoreViewAction.GetListRateByStore(it)) }
         views.imgBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
         viewModel.subscribe(this){
             getListService(it)
             getStore(it)
+            getListRate(it)
         }
 
         views.rcvDetailStore.adapter =adapterService
@@ -68,6 +73,9 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
             viewModel.addFavoriteStore(idUser,accountModel)
             Toast.makeText(this, "Đã thêm cửa hàng vào danh sách yêu thích", Toast.LENGTH_SHORT).show()
         })
+
+        adapterRate = AdapterRate()
+        views.rcvRates.adapter= adapterRate
 
 
 
@@ -119,6 +127,23 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
             else->{
 
             }
+        }
+    }
+    fun getListRate(state: DetailStoreViewState){
+        when(state.stateListRateStore){
+            is Loading-> {
+                Timber.tag("AAAAAAAAAAAA").e("getListRate: loading ")
+            }
+            is Success->{
+                Timber.tag("AAAAAAAAAAAA").e("getListRate: Success ")
+                state.stateListRateStore.invoke()?.let{
+                    adapterRate.initData(it)
+                }
+            }
+            is Fail->{
+                Timber.tag("AAAAAAAAAAAA").e("getListRate: Fail ")
+            }
+            else->{}
         }
     }
 
