@@ -96,7 +96,27 @@ object Common {
             dialogGotoSetting(activity)
         }
     }
+    fun requestPermissionNotify(activity: Activity) {
 
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                activity,
+                android.Manifest.permission.POST_NOTIFICATIONS
+            )
+        ) {
+            ActivityCompat.requestPermissions(
+                activity,
+                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), REQUEST_CODE_LOCATION
+            )
+        } else {
+            dialogGotoSetting(activity)
+        }
+    }
+
+    fun checkPermissionNotify(context: Context): Boolean =
+        PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+            context,
+            android.Manifest.permission.POST_NOTIFICATIONS
+        )
     fun isGpsEnabled(context: Context): Boolean {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)

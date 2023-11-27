@@ -8,9 +8,14 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
+import datn.fpoly.myapplication.data.model.account.LoginResponse
 import datn.fpoly.myapplication.databinding.ActivityRegiterInforAccountUserBinding
 import datn.fpoly.myapplication.ui.home.HomeActivity
 import datn.fpoly.myapplication.utils.Dialog_Loading
@@ -76,7 +81,19 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
                                 .d("updateWithState đăng kí: " + s?.code())
                             val check = s?.code()
                             if (check == 200) {
-
+                                val account = s.body()?.let { parseJsonToAccountList(it.string()) }
+                                account?.user?.id?.let {
+                                    Firebase.messaging.subscribeToTopic(it)
+                                        .addOnCompleteListener {
+                                            if (it.isSuccessful) {
+                                                Timber.tag("AAAAAAAAAA")
+                                                    .e("updateWithState: đăng ký topic thàng công%s", it.result.toString())
+                                            } else {
+                                                Timber.tag("AAAAAAAAAA")
+                                                    .e("updateWithState: đăng ký topic thàng công%s", it.exception.toString())
+                                            }
+                                        }
+                                }
                                 Log.d("Log In", "Log in successful $s")
 
                                 Toast.makeText(
@@ -89,7 +106,7 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
                                     Intent(
                                         this@RegisterInforActivity,
                                         HomeActivity::class.java
-                                    )
+                                    ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                 )
                             } else {
                                 Toast.makeText(
@@ -121,6 +138,12 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
 
             else -> {}
         }
+    }
+
+    private fun parseJsonToAccountList(json: String): LoginResponse {
+        val gson = Gson()
+        val type = object : TypeToken<LoginResponse>() {}.type
+        return gson.fromJson(json, type)
     }
 
     override fun getBinding() = ActivityRegiterInforAccountUserBinding.inflate(layoutInflater)

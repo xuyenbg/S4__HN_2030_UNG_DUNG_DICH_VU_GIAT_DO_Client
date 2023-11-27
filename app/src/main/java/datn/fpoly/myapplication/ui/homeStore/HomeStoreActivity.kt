@@ -29,13 +29,14 @@ import datn.fpoly.myapplication.utils.Dialog_Loading
 import timber.log.Timber
 import javax.inject.Inject
 
-class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreViewModel.Factory{
+class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>(), HomeStoreViewModel.Factory {
     @Inject
     lateinit var homeStoreFatory: HomeStoreViewModel.Factory
     private val viewModel: HomeStoreViewModel by viewModel()
     private lateinit var adapterVp: AdapterViewPage
-    private val listFragment= mutableListOf<Fragment>()
-    private var inforUser: AccountModel?=null
+    private val listFragment = mutableListOf<Fragment>()
+    private var inforUser: AccountModel? = null
+
     @Inject
     lateinit var authRepo: AuthRepo
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,54 +50,60 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
         viewModel.handle(HomeStoreViewAction.GetListCategory)
         inforUser?.id?.let { HomeStoreViewAction.GetStoreByIdUser(it) }
             ?.let { viewModel.handle(it) }
-        viewModel.subscribe(this){
-           getDataCate(it)
+        viewModel.subscribe(this) {
+            getDataCate(it)
             getDataStore(it)
+        }
+        if (!Common.checkPermissionNotify(this)) {
+            Common.requestPermissionNotify(this)
         }
 
     }
-    private fun getDataCate(state: HomeStoreState){
-        when(state.stateCate){
-            is Loading->{
+
+    private fun getDataCate(state: HomeStoreState) {
+        when (state.stateCate) {
+            is Loading -> {
                 Timber.tag("Loading").e("getDataCate: Loading")
             }
-            is Success->{
+            is Success -> {
 
                 state.stateCate.invoke()?.let {
                     Hawk.put(Common.KEY_LIST_CATE, it)
                 }
             }
-            is Fail->{
+            is Fail -> {
                 Timber.tag("ERROR").e("getDataCate: Fail")
             }
             else -> {}
         }
     }
-    private fun getDataStore(state: HomeStoreState){
-        when(state.stateGetStore){
-            is Loading->{
+
+    private fun getDataStore(state: HomeStoreState) {
+        when (state.stateGetStore) {
+            is Loading -> {
                 Timber.tag("Loading").e("getDataStore: Loading")
             }
-            is Success->{
+            is Success -> {
                 state.stateGetStore.invoke()?.let {
-                        Hawk.put(Common.KEY_STORE,it)
+                    Hawk.put(Common.KEY_STORE, it)
                 }
             }
-            is Fail-> {
+            is Fail -> {
                 Timber.tag("ERROR").e("getDataStore: Fail")
             }
             else -> {}
         }
     }
-    fun setViewNavigation(){
+
+    fun setViewNavigation() {
         listFragment.add(0, FragmentHomeStore())
-        listFragment.add(1,ServicesStoreFragment())
+        listFragment.add(1, ServicesStoreFragment())
         listFragment.add(2, OrderStoreFragment())
         listFragment.add(3, FragmentPostStore())
-        listFragment.add(4,FragmentSettingStore())
+        listFragment.add(4, FragmentSettingStore())
         adapterVp = AdapterViewPage(listFragment, this)
         views.vp2Home.adapter = adapterVp
-        views.vp2Home.isUserInputEnabled= false
+        views.vp2Home.isUserInputEnabled = false
         views.vp2Home.setCurrentItem(0, true)
         views.viewBgItem.visibility = View.VISIBLE
         views.viewBgItem2.visibility = View.INVISIBLE
@@ -207,10 +214,13 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>() , HomeStoreVi
         }
     }
 
-    fun animStart(view: View){
+    fun animStart(view: View) {
         view.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_item_bot_na_custom))
     }
 
-    override fun getBinding(): ActivityHomeStoreBinding = ActivityHomeStoreBinding.inflate(layoutInflater)
-    override fun create(initialState: HomeStoreState): HomeStoreViewModel = homeStoreFatory.create(initialState)
+    override fun getBinding(): ActivityHomeStoreBinding =
+        ActivityHomeStoreBinding.inflate(layoutInflater)
+
+    override fun create(initialState: HomeStoreState): HomeStoreViewModel =
+        homeStoreFatory.create(initialState)
 }
