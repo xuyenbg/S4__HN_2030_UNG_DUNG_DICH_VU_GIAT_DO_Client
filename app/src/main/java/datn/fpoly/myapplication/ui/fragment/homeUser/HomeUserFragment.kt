@@ -22,6 +22,7 @@ import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
 import datn.fpoly.myapplication.ui.listService.ListServiceActivity
+import datn.fpoly.myapplication.ui.searchService.SearchServiceActivity
 import datn.fpoly.myapplication.ui.seeMore.SeeMoreActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.DataRaw
@@ -88,6 +89,10 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
             intent.putExtra(Common.KEY_SEE_MORE, 2)
             requireContext().startActivity(intent)
         }
+        views.imgSearch.setOnClickListener {
+            val intent = Intent(requireContext(), SearchServiceActivity::class.java)
+            requireContext().startActivity(intent)
+        }
 
         initSlide()
 
@@ -97,7 +102,12 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     override fun onResume() {
         super.onResume()
         viewModel.handle(HomeViewAction.HomeActionCategory)
-        viewModel.handle(HomeViewAction.HomeActionGetListStore)
+        viewModel.handle(
+            HomeViewAction.HomeActionGetListStore(
+                Common.getMyLocation(requireContext()).latitude,
+                Common.getMyLocation(requireContext()).longitude
+            )
+        )
 //        handler.postDelayed(runnable, 2000)
     }
 
@@ -187,7 +197,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         views.vpSlideShow.adapter = adapter
 
 
-       // views.circle3.setViewPager(views.vpSlideShow)
+        // views.circle3.setViewPager(views.vpSlideShow)
 //        views.vpSlideShow.registerOnPageChangeCallback(object : OnPageChangeCallback() {
 //            override fun onPageSelected(position: Int) {
 //                super.onPageSelected(position)

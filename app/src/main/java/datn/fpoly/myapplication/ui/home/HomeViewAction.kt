@@ -4,7 +4,7 @@ import datn.fpoly.myapplication.core.ViewAction
 
 sealed class HomeViewAction : ViewAction {
     object HomeActionCategory : HomeViewAction()
-    object HomeActionGetListStore: HomeViewAction()
+    data class HomeActionGetListStore(val latitude: Double, val longitude: Double): HomeViewAction()
     object PostClientActionList : HomeViewAction()
     data class OrderActionGetList(var idUser: String) : HomeViewAction()
 

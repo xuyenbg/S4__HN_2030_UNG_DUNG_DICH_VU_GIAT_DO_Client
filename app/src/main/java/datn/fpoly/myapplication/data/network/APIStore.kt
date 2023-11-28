@@ -17,8 +17,8 @@ import retrofit2.http.PartMap
 import retrofit2.http.Path
 
 interface APIStore {
-    @GET("api/stores/list")
-    fun getListCategory(): Observable<MutableList<StoreModel>>
+    @GET("api/address/getListStoreNearest/{latitude}/{longitude}")
+    fun getListStoreByLoaction(@Path("latitude") latitude: Double, @Path("longitude") longitude: Double): Observable<MutableList<StoreModel>>
 
     @GET("api/stores/store-by-iduse/{idUser}")
     fun getStoreByIdUser(@Path("idUser") idUser: String): Observable<StoreModel>

@@ -13,8 +13,8 @@ import javax.inject.Inject
 class StoreRepo @Inject constructor(
     private val api: APIStore
 ) {
-    fun getDataStore(): Observable<MutableList<StoreModel>> =
-        api.getListCategory().subscribeOn(Schedulers.io())
+    fun getDataStore( latitude: Double, longitude: Double): Observable<MutableList<StoreModel>> =
+        api.getListStoreByLoaction(latitude,longitude).subscribeOn(Schedulers.io())
 
     fun registerStore(
         name: RequestBody,

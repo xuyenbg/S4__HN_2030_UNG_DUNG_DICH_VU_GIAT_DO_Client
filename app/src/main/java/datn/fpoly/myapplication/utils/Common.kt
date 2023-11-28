@@ -15,7 +15,9 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.provider.Settings
 import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager.LayoutParams
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -83,7 +85,7 @@ object Common {
 
     fun requestPermission(activity: Activity) {
 
-        if (ActivityCompat.shouldShowRequestPermissionRationale(
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(
                 activity,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             )
@@ -97,8 +99,7 @@ object Common {
         }
     }
     fun requestPermissionNotify(activity: Activity) {
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(
                 activity,
                 android.Manifest.permission.POST_NOTIFICATIONS
             )
@@ -206,7 +207,6 @@ object Common {
             DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
         builder.setCancelable(false)
         val alertDialog: AlertDialog = builder.create()
-        alertDialog.window?.setDimAmount(1f)
         alertDialog.show()
     }
 
@@ -263,4 +263,10 @@ object Common {
     }
 
     fun Date.formatDateOrder(): String =  SimpleDateFormat("MM/dd/yyyy HH:mm",Locale.ROOT).format(this)
+
+     fun hideKeyboard(context: Context, view: View) {
+        val inputMethodManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
 }
