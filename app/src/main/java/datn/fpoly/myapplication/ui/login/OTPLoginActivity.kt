@@ -21,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.orhanobut.hawk.Hawk
@@ -119,7 +121,18 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
 
                             // account chứa cả đối tượng và message
                             val account = result.body()?.let { parseJsonToAccountList(it.string()) }
-
+                            account?.user?.id?.let {
+                                Firebase.messaging.subscribeToTopic(it)
+                                    .addOnCompleteListener {
+                                        if (it.isSuccessful) {
+                                            Timber.tag("AAAAAAAAAA")
+                                                .e("updateWithState: đăng ký topic thàng công%s", it.result.toString())
+                                        } else {
+                                            Timber.tag("AAAAAAAAAA")
+                                                .e("updateWithState: đăng ký topic thàng công%s", it.exception.toString())
+                                        }
+                                    }
+                            }
                             if (account?.message == "Đăng nhập thành công") {
                                 authRepo.saveUser(accountResponse = account.user)
                                 authRepo.setLogin(isLogin = true)

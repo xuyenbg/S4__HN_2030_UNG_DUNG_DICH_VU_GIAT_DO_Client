@@ -3,6 +3,7 @@ package datn.fpoly.myapplication.ui.home
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
@@ -15,6 +16,7 @@ import datn.fpoly.myapplication.ui.fragment.postclient.PostClientFragment
 import datn.fpoly.myapplication.ui.fragment.settingStore.setting.FragmentSetting
 import com.airbnb.mvrx.viewModel
 import datn.fpoly.myapplication.AppApplication
+import datn.fpoly.myapplication.utils.Common
 import javax.inject.Inject
 
 class HomeActivity: BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Factory {
@@ -31,6 +33,9 @@ class HomeActivity: BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Facto
         setViewNavigation()
         viewModel.observeViewEvents {
 
+        }
+        if(!Common.checkPermissionNotify(this)){
+            Common.requestPermissionNotify(this)
         }
 
 

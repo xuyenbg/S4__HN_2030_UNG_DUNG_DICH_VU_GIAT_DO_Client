@@ -46,7 +46,9 @@ private lateinit var fusedLoaction: FusedLocationProviderClient
         fusedLoaction = LocationServices.getFusedLocationProviderClient(this)
 
         if (Common.checkPermission(this)) {
-            getCurrentLocation()
+            CoroutineScope(Dispatchers.IO).launch {
+                getCurrentLocation()
+            }
         }
     }
 

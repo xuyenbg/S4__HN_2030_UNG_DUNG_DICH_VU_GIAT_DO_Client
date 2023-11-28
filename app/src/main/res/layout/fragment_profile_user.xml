@@ -135,20 +135,21 @@
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
             />
+
         <ImageView
             android:id="@+id/img_address"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/icon_address_profile"
+            android:src="@drawable/ic_profile"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
             android:layout_below="@+id/img_order_history"
             />
         <TextView
-            android:id="@+id/tv_address"
+            android:id="@+id/tv_edit_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Địa chỉ"
+            android:text="Cập nhật hồ sơ"
             android:textSize="16dp"
             android:layout_marginStart="15dp"
             android:textColor="@color/color_text_dark_blue"
@@ -161,8 +162,8 @@
             android:layout_width="14dp"
             android:layout_height="14dp"
             android:src="@drawable/icon_back_profile"
-            android:layout_toRightOf="@+id/tv_address"
-            android:layout_alignTop="@+id/tv_address"
+            android:layout_toRightOf="@+id/tv_edit_profile"
+            android:layout_alignTop="@+id/tv_edit_profile"
             android:layout_alignLeft="@+id/img_back2"
             android:layout_alignRight="@id/img_back2"
             android:layout_below="@id/img_back2"

@@ -6,16 +6,14 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
 import datn.fpoly.myapplication.data.model.account.AccountModel
-import datn.fpoly.myapplication.data.repository.AuthRepo
-import datn.fpoly.myapplication.data.repository.CategoryRepo
-import datn.fpoly.myapplication.data.repository.ServiceRepo
-import datn.fpoly.myapplication.data.repository.StoreRepo
+import datn.fpoly.myapplication.data.repository.*
 
 class DetailStoreViewModel @AssistedInject constructor(
     @Assisted state: DetailStoreViewState,
     private var repo: ServiceRepo,
     private var repoStore: StoreRepo,
-    private var repoAuth: AuthRepo
+    private var repoAuth: AuthRepo,
+    private var repoRate: RatePepo
 ) : BaseViewModel<DetailStoreViewState, DetailStoreViewAction, DetailStoreViewEvent>(state) {
     override fun handle(action: DetailStoreViewAction) {
         when(action){
@@ -27,6 +25,9 @@ class DetailStoreViewModel @AssistedInject constructor(
             }
             is DetailStoreViewAction.AddFavoriteStore->{
                 addFavoriteStore(action.idUser, action.accountModel)
+            }
+            is DetailStoreViewAction.GetListRateByStore->{
+                litsRateByStore(action.idStore)
             }
         }
     }
@@ -42,7 +43,10 @@ class DetailStoreViewModel @AssistedInject constructor(
         setState { copy(stateFavoriteStore= Loading()) }
         repoAuth.addFavoriteStore(id,accountModel).execute { copy(stateFavoriteStore = it) }
     }
-
+    fun litsRateByStore(idStore: String){
+        setState { copy(stateListRateStore = Loading()) }
+        repoRate.getListRateByStore(idStore).execute { copy(stateListRateStore = it) }
+    }
 
     @AssistedFactory
     interface Factory {

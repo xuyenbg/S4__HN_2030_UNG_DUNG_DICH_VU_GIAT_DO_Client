@@ -7,5 +7,5 @@ sealed class DetailStoreViewAction : ViewAction {
     data class GetListServiceByStore(val idStore: String): DetailStoreViewAction()
     data class GetStoreById(val id: String):DetailStoreViewAction()
     data class AddFavoriteStore(val idUser: String, val accountModel: AccountModel):DetailStoreViewAction()
-
+    data class GetListRateByStore(val idStore: String): DetailStoreViewAction()
 }

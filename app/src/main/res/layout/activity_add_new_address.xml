@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.address.addNewAddress.AddNewAddressActivity">
+    tools:context=".ui.addAddress.AddAddressActivity">
     <ImageView
         android:id="@+id/img_back"
         android:layout_width="14dp"

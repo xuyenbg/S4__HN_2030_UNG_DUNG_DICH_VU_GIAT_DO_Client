@@ -4,6 +4,9 @@ import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
 import datn.fpoly.myapplication.AppApplication
+import datn.fpoly.myapplication.ui.address.AddressActivity
+import datn.fpoly.myapplication.ui.addAddress.AddAddressActivity
+import datn.fpoly.myapplication.ui.updateAddress.UpdateAddressActivity
 import datn.fpoly.myapplication.ui.check_out.CheckOutActivity
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
 import datn.fpoly.myapplication.ui.editpost.EditPostActivity
@@ -13,8 +16,8 @@ import datn.fpoly.myapplication.ui.homeStore.HomeStoreActivity
 import datn.fpoly.myapplication.ui.listService.ListServiceActivity
 import datn.fpoly.myapplication.ui.listServiceByName.ListServiceByNameActivity
 import datn.fpoly.myapplication.ui.login.OTPLoginActivity
+import datn.fpoly.myapplication.ui.myProfileUser.MyProfileActivity
 import datn.fpoly.myapplication.ui.myshop.MyShopActivity
-import datn.fpoly.myapplication.ui.myshop.MyShopViewModel
 import datn.fpoly.myapplication.ui.order.OrderDetailActivity
 import datn.fpoly.myapplication.ui.order.OrderDetailStoreActivity
 import datn.fpoly.myapplication.ui.postService.AddServiceActivity
@@ -58,6 +61,10 @@ interface AppComponent {
     fun inject(activity: FavoriteStoreActivity)
 
     fun inject(activity: SplashsActivity)
+    fun inject(activity: MyProfileActivity)
+    fun inject(activity: AddressActivity)
+    fun inject(activity: AddAddressActivity)
+    fun inject(activity: UpdateAddressActivity)
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance context: Context): AppComponent
