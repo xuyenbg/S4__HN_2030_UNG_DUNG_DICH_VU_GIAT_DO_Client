@@ -53,4 +53,12 @@ interface APIOrder {
         @Query("status") status: Int,
         @Query("sortOrder") sortOrder: String
     ): Observable<MutableList<OrderResponse>>
+
+    @GET("api/order/list-order-by-date-status/{idStore}")
+    fun getFilterOrder(
+        @Path("idStore") idStore: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String,
+        @Query("status") status: Int
+    ): Observable<MutableList<OrderResponse>>
 }

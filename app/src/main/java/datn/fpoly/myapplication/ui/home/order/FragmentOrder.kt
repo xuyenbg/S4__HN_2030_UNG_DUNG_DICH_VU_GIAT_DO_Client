@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.ql_ban_hang.core.BaseFragment
+import datn.fpoly.myapplication.core.BaseFragment
 import datn.fpoly.myapplication.databinding.FragmentOrderBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterViewPage
 

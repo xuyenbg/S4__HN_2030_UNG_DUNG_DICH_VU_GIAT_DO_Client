@@ -16,7 +16,7 @@
 
 @file:Suppress("DEPRECATION")
 
-package com.example.ql_ban_hang.core
+package datn.fpoly.myapplication.core
 
 import android.app.ProgressDialog
 import android.content.Context
@@ -27,9 +27,6 @@ import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.airbnb.mvrx.BaseMvRxFragment
-import datn.fpoly.myapplication.core.BaseActivity
-import datn.fpoly.myapplication.core.BaseViewModel
-import datn.fpoly.myapplication.core.ViewEvents
 import datn.fpoly.myapplication.di.AppComponent
 import datn.fpoly.myapplication.di.HasScreenInjector
 import io.reactivex.android.schedulers.AndroidSchedulers

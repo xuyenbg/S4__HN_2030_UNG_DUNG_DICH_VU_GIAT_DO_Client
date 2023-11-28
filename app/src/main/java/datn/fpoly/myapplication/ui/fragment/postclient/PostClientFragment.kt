@@ -14,12 +14,11 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
-import com.example.ql_ban_hang.core.BaseFragment
+import datn.fpoly.myapplication.core.BaseFragment
 import datn.fpoly.myapplication.data.model.post.PostModel
 import datn.fpoly.myapplication.databinding.FragmentPostClientBinding
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
 import datn.fpoly.myapplication.ui.fragment.postclient.adapter.PostClientAdapter
-import datn.fpoly.myapplication.ui.fragment.postclient.adapter.PostStoreAdapter
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
@@ -29,7 +28,7 @@ import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import javax.inject.Inject
 
-class PostClientFragment @Inject constructor() : BaseFragment<FragmentPostClientBinding>() {
+class PostClientFragment : BaseFragment<FragmentPostClientBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
 
     private lateinit var postClientAdapter: PostClientAdapter

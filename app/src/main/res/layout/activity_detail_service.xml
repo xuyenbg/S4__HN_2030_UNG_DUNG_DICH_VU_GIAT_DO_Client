@@ -15,7 +15,16 @@
         android:src="@drawable/icon_back_profile_3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
+    <TextView
+        android:id="@+id/tv_name_service_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/img_back"
+        app:layout_constraintTop_toTopOf="@+id/img_back"
+        app:layout_constraintBottom_toBottomOf="@+id/img_back"
+        tools:text="Áo dài"
+        android:layout_marginStart="@dimen/_16dp"
+        />
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_showShop"
         android:layout_width="100dp"
@@ -55,9 +64,10 @@
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/img_service"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="140dp"
                 android:layout_marginTop="60dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/image_service"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

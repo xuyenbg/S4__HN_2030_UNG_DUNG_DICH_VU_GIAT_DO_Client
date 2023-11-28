@@ -9,8 +9,10 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
+import com.bumptech.glide.Glide
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
+import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.ItemServiceBase
 import datn.fpoly.myapplication.data.model.OrderBase
@@ -52,12 +54,20 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
         views.imgBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-        if(intent.getBooleanExtra("isStore", false)){
-            views.btnOrder.visibility= View.GONE
-            views.btnAddCart.visibility = View.GONE
-        }else{
-            views.btnOrder.visibility= View.VISIBLE
-            views.btnAddCart.visibility = View.VISIBLE
+        views.tvNameServiceTitle.text = "Chi Tiết"
+        views.apply {
+            if (intent.getBooleanExtra("isStore", false)) {
+                btnOrder.visibility = View.GONE
+                btnAddCart.visibility = View.GONE
+                btnShowShop.visibility = View.GONE
+                imgBuy.visibility = View.GONE
+                btnSubtraction.visibility = View.GONE
+                tvQuantity.visibility = View.GONE
+                btnAddition.visibility = View.GONE
+            } else {
+                btnOrder.visibility = View.VISIBLE
+                btnAddCart.visibility = View.VISIBLE
+            }
         }
         adapterService = AdapterService(false)
         views.rcvService.adapter = adapterService
@@ -77,6 +87,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
             override fun EditService(serviceExtend: ServiceExtend) {}
         })
         views.tvNameService.text = serviceExtend?.name
+        Log.d("DetailServiceActivity", "onCreate: $serviceExtend")
         adapterAttribute = AdapterAttribute()
         views.rcvItemAttribute.adapter = adapterAttribute
         serviceExtend?.attributeList?.let {
@@ -182,12 +193,15 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
                     }
                 }
             }
+
             is Loading -> {
                 Timber.tag("AAAAAAAAA").e("getListService: Loading")
             }
+
             is Fail -> {
                 Timber.tag("AAAAAAAAA").e("getListService: Call Fail")
             }
+
             else -> {
 
             }
@@ -200,22 +214,30 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
 //                Dialog_Loading.getInstance().show(this, "Loading")
                 Timber.tag("AAAAAAAAAAAAA").e("getService: Loading")
             }
+
             is Success -> {
                 runBlocking {
                     launch {
                         state.stateServiceByid.invoke()?.let {
                             serviceExtend = it
                             views.tvNameService.text = serviceExtend?.name
-                            views.tvPrice.text = serviceExtend?.price?.formatCurrency(unit = serviceExtend?.unit) ?: ""
+                            views.tvPrice.text =
+                                serviceExtend?.price?.formatCurrency(unit = serviceExtend?.unit)
+                                    ?: ""
                             views.tvQuantity.text = quality.toInt().toString()
+                            Glide.with(this@DetailServiceActivity)
+                                .load(Common.baseUrl + serviceExtend?.image)
+                                .error(R.drawable.image_service).into(views.imgService)
 
                             var nameAttribute = ""
                             for (index in 0 until (serviceExtend?.attributeList?.size ?: 0)) {
                                 if (serviceExtend?.attributeList?.size != 0) {
                                     if (index == (serviceExtend?.attributeList?.size?.minus(1))) {
-                                        nameAttribute += (serviceExtend?.attributeList?.get(index)?.name ?: "")
+                                        nameAttribute += (serviceExtend?.attributeList?.get(index)?.name
+                                            ?: "")
                                     } else {
-                                        nameAttribute += (serviceExtend?.attributeList?.get(index)?.name ?: "") + ">"
+                                        nameAttribute += (serviceExtend?.attributeList?.get(index)?.name
+                                            ?: "") + ">"
                                     }
 
                                 }
@@ -228,10 +250,12 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
                 Timber.tag("AAAAAAAAAAAAA").e("getService: Success")
 
             }
+
             is Fail -> {
 //                Dialog_Loading.getInstance().dismiss()
                 Timber.tag("AAAAAAAAAAAAA").e("getService: Fail")
             }
+
             else -> {}
         }
     }
