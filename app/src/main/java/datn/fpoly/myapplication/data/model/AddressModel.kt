@@ -10,7 +10,7 @@ class AddressModel (
     var longitude: Double? = null,
     @SerializedName("latitude")
     var latitude: Double? = null,
-    @SerializedName("isDefalt")
+    @SerializedName("isDefault")
     var isDefault: Boolean?= null,
     @SerializedName("idUser")
     var idUser: String ?= null,

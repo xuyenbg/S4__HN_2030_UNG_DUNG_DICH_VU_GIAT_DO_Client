@@ -48,10 +48,10 @@
             android:name=".ui.permission.PermissionActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.address.updateAddress.UpdateAddressActivity"
+            android:name=".ui.updateAddress.UpdateAddressActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.address.addNewAddress.AddNewAddressActivity"
+            android:name=".ui.addAddress.AddAddressActivity"
             android:exported="false" />
         <activity
             android:name=".ui.address.AddressActivity"

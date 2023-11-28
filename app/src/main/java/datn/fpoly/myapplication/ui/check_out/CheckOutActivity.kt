@@ -1,6 +1,7 @@
 package datn.fpoly.myapplication.ui.check_out
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -13,6 +14,7 @@ import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.AddressExtend
 import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.databinding.ActivityCheckOutBinding
+import datn.fpoly.myapplication.ui.address.AddressActivity
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -60,6 +62,9 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
         views.toolbar.title.text = "ĐẶT ĐƠN"
         views.toolbar.btnBack.setOnClickListener {
             this.finish()
+        }
+        views.changeAddress.setOnClickListener {
+            startActivity(Intent(this@CheckOutActivity, AddressActivity::class.java))
         }
         views.toolbar.btnNotification.visibility = View.INVISIBLE
         views.btnAction.text = "Xác nhận"
