@@ -26,8 +26,8 @@ data class HomeStoreState(
     val stateUpdateStatus: Async<Response<ResponseBody>> = Uninitialized,
     val stateUpdateStatusWashing: Async<Response<ResponseBody>> = Uninitialized,
     val stateUpdateStatusComplete: Async<Response<ResponseBody>> = Uninitialized,
-    val stateOpendCloseStore : Async<Response<ResponseBody>> = Uninitialized
-
+    val stateOpendCloseStore : Async<Response<ResponseBody>> = Uninitialized,
+    val stateFilterOrder : Async<MutableList<OrderResponse>> = Uninitialized
 ) : MvRxState {
     fun isLoading(): Boolean {
         return statePostStore is Loading

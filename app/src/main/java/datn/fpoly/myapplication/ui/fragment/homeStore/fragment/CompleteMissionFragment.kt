@@ -2,7 +2,6 @@ package datn.fpoly.myapplication.ui.fragment.homeStore.fragment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +10,10 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
-import com.example.ql_ban_hang.core.BaseFragment
+import datn.fpoly.myapplication.core.BaseFragment
 import com.orhanobut.hawk.Hawk
-import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.StoreModel
-import datn.fpoly.myapplication.databinding.FragmentCompleteBinding
 import datn.fpoly.myapplication.databinding.FragmentCompleteMissionBinding
-import datn.fpoly.myapplication.ui.fragment.homeStore.adapter.OrderStoreCompleteAdapter
 import datn.fpoly.myapplication.ui.fragment.homeStore.adapter.OrderStoreCompleteMissionAdapter
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction

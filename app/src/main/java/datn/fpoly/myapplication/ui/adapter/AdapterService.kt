@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.databinding.ItemServiceBinding
+import datn.fpoly.myapplication.utils.Common
 
 class AdapterService(val isStore: Boolean) : Adapter<AdapterService.ViewholderItemService>(){
     private val listService= mutableListOf<ServiceExtend>()
@@ -54,6 +55,7 @@ class AdapterService(val isStore: Boolean) : Adapter<AdapterService.ViewholderIt
                 binding.btnEdit.visibility = View.INVISIBLE
                 Glide.with(binding.btnEdit).load(R.drawable.img_cart).into(binding.btnEdit)
             }
+            Glide.with(binding.root).load(Common.baseUrl+item.image).into(binding.imageService)
 
         }
     }

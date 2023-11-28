@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".ui.fragment.postStore.FragmentPostStore">
 
     <TextView
@@ -19,7 +20,6 @@
         android:textAlignment="center"
         android:textColor="@color/colorPriamry"
         android:textSize="@dimen/_18sp"
-        android:elevation="2dp"
         android:textStyle="bold" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

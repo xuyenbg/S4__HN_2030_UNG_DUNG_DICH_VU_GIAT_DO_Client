@@ -32,7 +32,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
-import com.example.ql_ban_hang.core.BaseFragment
 import datn.fpoly.myapplication.di.AppComponent
 import datn.fpoly.myapplication.di.DaggerAppComponent
 import datn.fpoly.myapplication.di.HasScreenInjector

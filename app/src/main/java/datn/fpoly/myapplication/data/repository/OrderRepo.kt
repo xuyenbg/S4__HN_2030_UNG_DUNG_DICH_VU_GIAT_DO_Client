@@ -14,11 +14,15 @@ import javax.inject.Singleton
 @Singleton
 class OrderRepo @Inject constructor(
     private val api: APIOrder
-){
+) {
     fun getDataOrder(idUser: String): Observable<MutableList<OrderExtend>> =
         api.getListOrder(idUser).subscribeOn(Schedulers.io())
 
-    fun getDataOrderStore(idStore: String, sortOrder: String): Observable<MutableList<OrderResponse>> = api.getListOrderStore(idStore, sortOrder).subscribeOn(Schedulers.io())
+    fun getDataOrderStore(
+        idStore: String,
+        sortOrder: String
+    ): Observable<MutableList<OrderResponse>> =
+        api.getListOrderStore(idStore, sortOrder).subscribeOn(Schedulers.io())
 
     fun insertOrder(orderBase: OrderBase): Observable<Unit> =
         api.insertOrder(orderBase).subscribeOn(Schedulers.io())
@@ -26,7 +30,11 @@ class OrderRepo @Inject constructor(
     fun getOrderDetail(idOrder: String): Observable<OrderExtend> =
         api.getOrderDetail(idOrder).subscribeOn(Schedulers.io())
 
-    fun getOrderDateStoreWait(idStore: String, status: Int, sortOrder: String): Observable<MutableList<OrderResponse>> =
+    fun getOrderDateStoreWait(
+        idStore: String,
+        status: Int,
+        sortOrder: String
+    ): Observable<MutableList<OrderResponse>> =
         api.getListOrderDateStore(idStore, status, sortOrder).subscribeOn(Schedulers.io())
 
     fun updateOrder(idOrder: String, status: Int): Observable<Response<ResponseBody>> =
@@ -40,4 +48,13 @@ class OrderRepo @Inject constructor(
 
     fun updateOrderComplete(idOrder: String, status: Int): Observable<Response<ResponseBody>> =
         api.updateOrder(idOrder, status).subscribeOn(Schedulers.io())
+
+    fun filterOrder(
+        idOrder: String,
+        statDate: String,
+        endDate: String,
+        status: Int
+    ): Observable<MutableList<OrderResponse>> =
+        api.getFilterOrder(idOrder, statDate, endDate, status).subscribeOn(Schedulers.io())
+
 }
