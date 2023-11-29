@@ -56,6 +56,7 @@ object Common {
 
     val KEY_LATITUDE = "MY_LATITUDE"
     val KEY_LONGITUDE ="MY_LONGITUDE"
+    val KEY_CART="cart_order"
 
     fun ComponentActivity.registerStartForActivityResult(onResult: (ActivityResult) -> Unit): ActivityResultLauncher<Intent> {
         return registerForActivityResult(ActivityResultContracts.StartActivityForResult(), onResult)

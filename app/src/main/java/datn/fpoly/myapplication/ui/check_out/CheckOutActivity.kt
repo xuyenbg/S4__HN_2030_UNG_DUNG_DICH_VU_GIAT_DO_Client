@@ -1,6 +1,7 @@
 package datn.fpoly.myapplication.ui.check_out
 
 
+import android.app.Notification.CarExtender
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -15,6 +16,7 @@ import datn.fpoly.myapplication.data.model.AddressExtend
 import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.databinding.ActivityCheckOutBinding
 import datn.fpoly.myapplication.ui.address.AddressActivity
+import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -50,15 +52,16 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
             updateWithState(it)
         }
         viewModel.handle(CheckOutViewAction.GetListAddress)
-        viewModel.getCart().observe(this) {
-            if (it != null && it.listItem.isNotEmpty()) {
-                cart = it
-                viewModel.handle(CheckOutViewAction.GetStoreById(it.idStore ?: "-"))
-                views.total.text = it.total?.formatCurrency(null) ?: "- đ"
-                adapterItemCart = AdapterItemCart(this, it.listItem, eventClick = {})
-                views.recyclerView.adapter = adapterItemCart
-            }
-        }
+        cart = intent.getSerializableExtra(Common.KEY_CART) as OrderBase?
+        viewModel.handle(CheckOutViewAction.GetStoreById(cart?.idStore ?: "-"))
+        views.total.text = cart?.total?.formatCurrency(null) ?: "- đ"
+        adapterItemCart = cart?.listItem?.let { AdapterItemCart(this, it, eventClick = {}) }
+        views.recyclerView.adapter = adapterItemCart
+//        viewModel.getCart().observe(this) {
+//            if (it != null && it.listItem.isNotEmpty()) {
+//
+//            }
+//        }
         views.toolbar.title.text = "ĐẶT ĐƠN"
         views.toolbar.btnBack.setOnClickListener {
             this.finish()

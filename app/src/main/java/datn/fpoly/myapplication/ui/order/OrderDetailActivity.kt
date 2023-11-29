@@ -3,11 +3,15 @@ package datn.fpoly.myapplication.ui.order
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.ItemServiceBase
+import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.databinding.ActivityOrderDetailBinding
 import datn.fpoly.myapplication.ui.check_out.AdapterItemCart
@@ -23,6 +27,7 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderVie
     lateinit var orderViewModelFactory: OrderViewModel.Factory
 
     private val viewModel: OrderViewModel by viewModel()
+    private var orderExtend: OrderExtend?=null
 
     override fun getBinding(): ActivityOrderDetailBinding {
         return ActivityOrderDetailBinding.inflate(layoutInflater)
@@ -45,6 +50,18 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderVie
         viewModel.subscribe(this) {
             views.progressCircular.root.visibility = if(it.isLoading()) View.VISIBLE else View.GONE
             updateWithState(it)
+            updateStateWithUpdateStatus(it)
+        }
+        if(intent.getBooleanExtra("completed", false)){
+            views.btnAction.visibility=View.GONE
+            views.labelNoteTotal.visibility=View.GONE
+        }else{
+            views.btnAction.visibility=View.VISIBLE
+            views.labelNoteTotal.visibility=View.VISIBLE
+        }
+        views.btnActitonCancel.setOnClickListener {
+            orderExtend?.id?.let { it1 -> OrderViewAction.UpdateStatus(it1, 5) }
+                ?.let { it2 -> viewModel.handle(it2) }
         }
     }
 
@@ -54,6 +71,12 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderVie
                 runBlocking {
                     launch {
                         val order = state.stateOrderDetail.invoke()
+                        orderExtend= order
+                        if(order?.status==0){
+                            views.btnActitonCancel.visibility=View.VISIBLE
+                        }else{
+                            views.btnActitonCancel.visibility=View.GONE
+                        }
                         views.nameStore.text = order?.idStore?.name ?: "-"
                         views.addressStore.text = order?.idStore?.idAddress?.address ?: "-"
                         views.storePhone.text = order?.idStore?.iduser?.phone ?: "-"
@@ -84,6 +107,30 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderVie
                 }
             }
             else -> {}
+        }
+    }
+    private fun updateStateWithUpdateStatus(state: OrderViewState){
+        when(state.stateUpdateStatus){
+            is Loading->{
+                views.progressCircular.root.visibility=View.VISIBLE
+            }
+            is Success->{
+                runBlocking {
+                    launch {
+                        state.stateUpdateStatus.invoke()?.let{
+                            views.progressCircular.root.visibility=View.GONE
+                            Toast.makeText(this@OrderDetailActivity, "${it.message()}", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
+                }
+
+            }
+            is Fail->{
+                views.progressCircular.root.visibility=View.GONE
+                Toast.makeText(this, "Hủy đơn hàng thất bại", Toast.LENGTH_SHORT).show()
+            }
+            else->{}
         }
     }
 

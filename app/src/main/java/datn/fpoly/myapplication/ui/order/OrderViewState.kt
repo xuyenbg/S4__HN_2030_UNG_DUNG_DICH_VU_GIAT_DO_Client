@@ -12,6 +12,7 @@ data class OrderViewState (
     var stateOrderDetail: Async<OrderExtend> = Uninitialized,
     var stateUpdateOrder: Async<Unit> = Uninitialized,
     var stateUploadImage: Async<Response<ResponseBody>>  = Uninitialized,
+    var stateUpdateStatus: Async<Response<ResponseBody>> = Uninitialized
 ): MvRxState{
     fun isLoading(): Boolean {
         return stateOrderDetail is Loading

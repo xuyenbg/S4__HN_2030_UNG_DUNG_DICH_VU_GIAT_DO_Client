@@ -52,6 +52,7 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
         orderAdapter.setListener(object : OrderAdapter.OrderListener {
             override fun onClickOrder(order: OrderExtend) {
                 val intent = Intent(context, OrderDetailActivity::class.java)
+                intent.putExtra("completed", true)
                 intent.putExtra(Common.KEY_ID_ORDER, order.id)
                 startActivity(intent)
             }

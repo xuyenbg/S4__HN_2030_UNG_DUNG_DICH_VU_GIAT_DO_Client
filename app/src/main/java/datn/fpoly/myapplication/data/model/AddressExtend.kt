@@ -16,7 +16,7 @@ class AddressExtend (
     var idUser: AccountModel ?= null,
     @SerializedName("address")
     var address: String?=null
-) {
+): java.io.Serializable {
     override fun toString(): String {
         return "AddressExtend(id=$id, longitude=$longitude, latitude=$latitude, isDefault=$isDefault, idUser=$idUser, address=$address)"
     }

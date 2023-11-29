@@ -389,6 +389,18 @@
                         app:backgroundTint="@color/dark_blue"
                         app:layout_constraintTop_toBottomOf="@id/label_note_total"
                         app:layout_constraintBottom_toBottomOf="parent"/>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_actiton_cancel"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Hủy đơn hàng"
+                        android:textAllCaps="false"
+                        android:layout_marginHorizontal="80dp"
+                        app:cornerRadius="8dp"
+                        app:backgroundTint="@color/red"
+                        app:layout_constraintTop_toBottomOf="@id/btn_action"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>

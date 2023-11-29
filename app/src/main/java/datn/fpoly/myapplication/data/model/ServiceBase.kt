@@ -23,7 +23,7 @@ class ServiceBase(
     var price: Double? = null,
     @SerializedName("image")
     var image: String? = null
-) {
+):java.io.Serializable {
     override fun toString(): String {
         return "ServiceBase(id=$id, name=$name, idStore=$idStore, attributeList=$attributeList, idCategory=$idCategory, isActive=$isActive, unit=$unit, idSale=$idSale, price=$price, image=$image)"
     }

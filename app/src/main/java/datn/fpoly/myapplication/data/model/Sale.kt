@@ -7,4 +7,4 @@ data class Sale(
     @SerializedName("unit") var unit: String? = null,
     @SerializedName("value") var value: Double? = null
 
-)
+): java.io.Serializable

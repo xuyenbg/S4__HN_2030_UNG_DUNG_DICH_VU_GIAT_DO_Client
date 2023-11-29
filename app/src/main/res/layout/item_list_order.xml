@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="8dp"
-        android:elevation="10dp"
         android:layout_margin="10dp"
         android:background="@drawable/shape_item_profile_3"
+        android:elevation="10dp"
+        android:paddingHorizontal="8dp"
         android:paddingVertical="8dp">
 
         <ImageView
@@ -66,20 +66,20 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_status_1"
+            android:id="@+id/tv_status_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="● Giao hàng thành công"
+            android:textColor="@color/green"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.33"
-            android:textColor="@color/green"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_name_store" />
 
         <TextView
-            android:id="@+id/tv_status_2"
+            android:id="@+id/tv_status_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -92,13 +92,26 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_name_store" />
 
         <TextView
-            android:id="@+id/tv_status_3"
+            android:id="@+id/tv_status_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="● Đang sử lý đơn"
+            android:textColor="@color/orange"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.283"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name_store" />
+
+        <TextView
+            android:id="@+id/tv_status_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="● Đang giặt"
             android:textColor="@color/orange"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.256"
             app:layout_constraintStart_toStartOf="parent"
@@ -124,8 +137,8 @@
             android:layout_marginTop="52dp"
             android:background="@drawable/shape_item_btn_3"
             android:text="Đặt lại"
-            android:textSize="10sp"
             android:textColor="@color/white"
+            android:textSize="10sp"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.986"
