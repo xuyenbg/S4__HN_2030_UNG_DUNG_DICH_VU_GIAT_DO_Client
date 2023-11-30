@@ -95,14 +95,14 @@ class SearchServiceActivity : BaseActivity<ActivitySearchServiceBinding>(), Sear
     }
 
     private fun updateStateSearch(state: SearchServiceViewState){
-        when(state.stateService){
+        when(state.stateSearchService){
             is Loading->{
                 Timber.e("loading search")
 
             }
             is Success->{
                 Timber.e("Success search")
-                state.stateService.invoke()?.let {
+                state.stateSearchService.invoke()?.let {
                     adapterService.setData(it)
                     if(it.size!=0){
                         views.tvNoti.visibility=View.GONE

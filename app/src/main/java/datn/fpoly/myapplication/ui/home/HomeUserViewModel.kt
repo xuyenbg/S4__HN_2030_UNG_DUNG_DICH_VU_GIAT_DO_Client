@@ -48,7 +48,7 @@ class HomeUserViewModel @AssistedInject constructor(
         setState { copy(stateCategory = Loading()) }
         repoCategory.getDataCategory().execute { copy(stateCategory = it) }
     }
-    private fun handleGetListStore(latitude: Double, longitude:Double){
+    private fun handleGetListStore(latitude: Float, longitude:Float){
         setState { copy(stateStore = Loading()) }
         repoStore.getDataStore(latitude, longitude).execute { copy(stateStore = it) }
     }

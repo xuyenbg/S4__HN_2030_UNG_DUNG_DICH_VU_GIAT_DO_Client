@@ -2,9 +2,8 @@ package datn.fpoly.myapplication.data.model
 
 import com.google.gson.annotations.SerializedName
 import datn.fpoly.myapplication.data.model.account.AccountModel
-import java.io.Serializable
 
-class StoreModel(
+class StoreNearplaceModel(
     @SerializedName("_id")
     var id: String?=null,
     @SerializedName("name")
@@ -20,5 +19,9 @@ class StoreModel(
     @SerializedName("transportTypeList")
     var transportTypeList: MutableList<String>?=null,
     @SerializedName("image")
-    var imageQACode : String?=null,
-) : Serializable
+    var image : String?=null,
+    @SerializedName("distance")
+    var distance: Double?=null,
+    @SerializedName("distanceUnit")
+    var distanceUnit: String?=null
+): java.io.Serializable

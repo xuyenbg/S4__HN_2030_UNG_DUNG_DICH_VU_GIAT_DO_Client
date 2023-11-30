@@ -1,6 +1,7 @@
 package datn.fpoly.myapplication.data.network
 
 import datn.fpoly.myapplication.data.model.StoreModel
+import datn.fpoly.myapplication.data.model.StoreNearplaceModel
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -18,7 +19,7 @@ import retrofit2.http.Path
 
 interface APIStore {
     @GET("api/address/getListStoreNearest/{latitude}/{longitude}")
-    fun getListStoreByLoaction(@Path("latitude") latitude: Double, @Path("longitude") longitude: Double): Observable<MutableList<StoreModel>>
+    fun getListStoreByLoaction(@Path("latitude") latitude: Float, @Path("longitude") longitude: Float): Observable<MutableList<StoreNearplaceModel>>
 
     @GET("api/stores/store-by-iduse/{idUser}")
     fun getStoreByIdUser(@Path("idUser") idUser: String): Observable<StoreModel>

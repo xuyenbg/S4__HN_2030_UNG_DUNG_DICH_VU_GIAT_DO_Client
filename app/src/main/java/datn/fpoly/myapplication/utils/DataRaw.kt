@@ -7,17 +7,18 @@ import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.CategoryModel
 import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.data.model.StoreModel
+import datn.fpoly.myapplication.data.model.StoreNearplaceModel
 
 object DataRaw {
-    private val listStore: MutableList<StoreModel> = mutableListOf()
+    private val listStore: MutableList<StoreNearplaceModel> = mutableListOf()
     private val listCategory: MutableList<CategoryModel> = mutableListOf()
     private var idCate: String =""
     private var modelUpdateService: ServiceExtend?= null
-    fun setDataStore(list: MutableList<StoreModel>) {
+    fun setDataStore(list: MutableList<StoreNearplaceModel>) {
         listStore.clear()
         listStore.addAll(list)
     }
-    fun getDataStore(): MutableList<StoreModel> = listStore
+    fun getDataStore(): MutableList<StoreNearplaceModel> = listStore
 
     fun setDataCategory(list: MutableList<CategoryModel>) {
         listCategory.clear()

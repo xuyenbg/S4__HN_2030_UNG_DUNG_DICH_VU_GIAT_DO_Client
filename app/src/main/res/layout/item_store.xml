@@ -68,6 +68,15 @@
                 android:text="02893921"
                 android:textColor="@color/color_text_black"
                 android:textSize="8sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_distance"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/color_text_black"
+                android:textSize="10sp"
+                android:text="khoảng: "
+                style="@style/text_font_inter_regular"/>
         </LinearLayout>
 
         <LinearLayout
@@ -90,6 +99,7 @@
                 android:text="4.5"
                 android:textColor="@color/color_text_black"
                 android:textSize="8sp" />
+
         </LinearLayout>
 
     </LinearLayout>

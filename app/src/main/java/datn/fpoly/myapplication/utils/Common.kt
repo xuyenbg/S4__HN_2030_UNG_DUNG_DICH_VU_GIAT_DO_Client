@@ -65,18 +65,24 @@ object Common {
         val sharedPreferences: SharedPreferences =
             context.getSharedPreferences("MY_App", Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.putLong(KEY_LATITUDE, location.latitude.toLong())
-        editor.putLong(KEY_LONGITUDE, location.longitude.toLong())
+        editor.putFloat(KEY_LATITUDE, location.latitude.toFloat())
+        editor.putFloat(KEY_LONGITUDE, location.longitude.toFloat())
         editor.commit()
     }
-    fun getMyLocation(context: Context): LatLng{
+    fun getMyLocationLatitude(context: Context): Float{
         val sharedPreferences: SharedPreferences =
             context.getSharedPreferences("MY_App", Context.MODE_PRIVATE)
-       val latitude= sharedPreferences.getLong(KEY_LATITUDE, 0)
-        val longitude = sharedPreferences.getLong(KEY_LONGITUDE, 0)
-        return LatLng(latitude.toDouble(), longitude.toDouble())
+       val latitude= sharedPreferences.getFloat(KEY_LATITUDE, 0f)
+        val longitude = sharedPreferences.getFloat(KEY_LONGITUDE, 0f)
+        return latitude
     }
-
+    fun getMyLocationLongitude(context: Context): Float{
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences("MY_App", Context.MODE_PRIVATE)
+        val latitude= sharedPreferences.getFloat(KEY_LATITUDE, 0f)
+        val longitude = sharedPreferences.getFloat(KEY_LONGITUDE, 0f)
+        return longitude
+    }
     fun checkPermission(context: Context): Boolean =
         PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
             context,

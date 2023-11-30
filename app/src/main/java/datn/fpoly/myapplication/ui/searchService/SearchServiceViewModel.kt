@@ -21,8 +21,8 @@ class SearchServiceViewModel @AssistedInject constructor(
         }
     }
     private fun searchService(query: String){
-        setState { copy(stateService = Loading()) }
-        repo.getListServiceByName(query).execute { copy(stateService = it) }
+        setState { copy(stateSearchService = Loading()) }
+        repo.getListServiceByName(query).execute { copy(stateSearchService = it) }
     }
 
     @AssistedFactory
