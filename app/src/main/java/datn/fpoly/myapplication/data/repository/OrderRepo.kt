@@ -2,6 +2,7 @@ package datn.fpoly.myapplication.data.repository
 
 import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.model.OrderExtend
+import datn.fpoly.myapplication.data.model.StatisticalModel
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.data.network.APIOrder
 import io.reactivex.Observable
@@ -57,4 +58,9 @@ class OrderRepo @Inject constructor(
     ): Observable<MutableList<OrderResponse>> =
         api.getFilterOrder(idOrder, statDate, endDate, status).subscribeOn(Schedulers.io())
 
+    fun getStatisticalByToday(idStore: String): Observable<StatisticalModel> =
+        api.getStatisticalByToday(idStore).subscribeOn(Schedulers.io())
+
+    fun getStatisticalByMonth(idStore: String, month: Int): Observable<StatisticalModel> =
+        api.getStatisticalByMonth(idStore, month).subscribeOn(Schedulers.io())
 }

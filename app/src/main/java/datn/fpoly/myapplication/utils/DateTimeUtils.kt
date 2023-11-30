@@ -1,12 +1,14 @@
 package datn.fpoly.myapplication.utils
 
 import android.annotation.SuppressLint
+import java.text.NumberFormat
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
-object DateTimeUtils {
+object Utils {
     @SuppressLint("NewApi")
     fun formatDateOrder(inputDateTime: String): String {
         try {
@@ -18,5 +20,11 @@ object DateTimeUtils {
             return ""
         }
 
+    }
+
+    fun formatVND(price: Double): String {
+        val currencyFormat = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
+        val formattedAmount = currencyFormat.format(price)
+        return formattedAmount
     }
 }

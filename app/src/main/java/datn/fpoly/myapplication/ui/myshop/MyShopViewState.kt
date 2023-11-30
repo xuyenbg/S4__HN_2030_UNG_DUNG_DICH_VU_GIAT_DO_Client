@@ -9,5 +9,5 @@ import retrofit2.Response
 
 data class MyShopViewState(
     var statStoreDetail: Async<StoreModel> = Uninitialized,
-    var statUpdateStore: Async<Response<ResponseBody>> = Uninitialized
+    var statUpdateStore: Async<StoreModel> = Uninitialized
 ) : MvRxState
