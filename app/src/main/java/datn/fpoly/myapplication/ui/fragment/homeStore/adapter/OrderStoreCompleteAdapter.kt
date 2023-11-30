@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.ItemOrderHomeLaundryBinding
-import datn.fpoly.myapplication.utils.DateTimeUtils
+import datn.fpoly.myapplication.utils.Utils
 
 class OrderStoreCompleteAdapter (
     val onBtnAction: (OrderResponse) -> Unit,
@@ -36,7 +36,7 @@ class OrderStoreCompleteAdapter (
                 holder.binding.apply {
                     tvOrderId.text = "#${itemOrder.id}"
                     tvFullName.text = itemOrder.idUser?.fullname
-                    tvTime.text = DateTimeUtils.formatDateOrder(itemOrder.updateAt)
+                    tvTime.text = Utils.formatDateOrder(itemOrder.updateAt)
 
                     tvStatusName.text = "Đã xong"
                     btnAction.text = "Xong"

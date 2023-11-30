@@ -220,15 +220,15 @@ class MyShopActivity : BaseActivity<ActivityMyShopBinding>(), MyShopViewModel.Fa
                 runBlocking {
                     launch {
                         state.statUpdateStore.invoke()?.let {
-                            if (it.code() == 200) {
-                                onBackPressedDispatcher.onBackPressed()
-                                finish()
-                                Toast.makeText(
-                                    this@MyShopActivity,
-                                    "Cập Nhật Thành Công ",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+
+                            Hawk.put(Common.KEY_STORE, it)
+                            onBackPressedDispatcher.onBackPressed()
+                            finish()
+                            Toast.makeText(
+                                this@MyShopActivity,
+                                "Cập Nhật Thành Công ",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 }

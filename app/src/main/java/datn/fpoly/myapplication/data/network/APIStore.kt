@@ -55,7 +55,7 @@ interface APIStore {
         @Part("isDefault") isDefault : RequestBody,
         @Part("idUser") idUser : RequestBody,
         @Part image : MultipartBody.Part?
-    ): Observable<Response<ResponseBody>>
+    ): Observable<StoreModel>
 
     @Multipart
     @PUT("api/stores/update-store/{idStore}")
@@ -63,5 +63,5 @@ interface APIStore {
         @Path("idStore") idStore: String,
         @Part("name") name: RequestBody,
         @Part image : MultipartBody.Part?
-    ): Observable<Response<ResponseBody>>
+    ): Observable<StoreModel>
 }

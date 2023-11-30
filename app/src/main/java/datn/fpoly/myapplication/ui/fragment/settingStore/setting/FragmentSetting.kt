@@ -11,10 +11,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.example.ql_ban_hang.core.BaseFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.R
+import datn.fpoly.myapplication.core.BaseFragment
 import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.databinding.FragmentProfileUserBinding
 import datn.fpoly.myapplication.ui.favoriteStore.FavoriteStoreActivity

@@ -14,6 +14,7 @@ import datn.fpoly.myapplication.ui.adapter.AdapterStore
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.DataRaw
+import datn.fpoly.myapplication.utils.ItemSpacingDecoration
 
 class SeeMoreActivity : BaseActivity<ActivitySeeMoreBinding>() {
     private lateinit var adapterCate: AdapterCategory
@@ -38,9 +39,6 @@ class SeeMoreActivity : BaseActivity<ActivitySeeMoreBinding>() {
     }
     private fun setUpViewListCategory(){
         views.tvTitle.setText("Danh sách Loại dịch vụ")
-        val layoutManager =LinearLayoutManager(this)
-        layoutManager.orientation = LinearLayoutManager.VERTICAL
-        views.rcvList.layoutManager = layoutManager
         adapterCate = AdapterCategory(0, true)
         views.rcvList.adapter = adapterCate
         adapterCate.updateData(DataRaw.getDataCategory())
@@ -56,6 +54,7 @@ class SeeMoreActivity : BaseActivity<ActivitySeeMoreBinding>() {
         views.rcvList.layoutManager = layoutManager
         adapterStore = AdapterStore(0)
         views.rcvList.adapter = adapterStore
+        views.rcvList.addItemDecoration(ItemSpacingDecoration(32))
         adapterStore.setData(DataRaw.getDataStore())
         adapterStore.setListener(object : AdapterStore.StoreListener{
             override fun onClickStoreListener(storeModel: StoreModel) {

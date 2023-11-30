@@ -2,6 +2,7 @@ package datn.fpoly.myapplication.data.network
 
 import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.model.OrderExtend
+import datn.fpoly.myapplication.data.model.StatisticalModel
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import io.reactivex.Observable
 import okhttp3.ResponseBody
@@ -61,4 +62,20 @@ interface APIOrder {
         @Query("endDate") endDate: String,
         @Query("status") status: Int
     ): Observable<MutableList<OrderResponse>>
+
+    @GET("api/order/total-order-by-currentdate/{idStore}")
+    fun getStatisticalByToday(
+    @Path("idStore") idStore: String,
+    ): Observable<StatisticalModel>
+
+    @GET("api/order/total-order-by-week-month/{idStore}")
+    fun getStatisticalByMonth(
+        @Path("idStore") idStore: String,
+        @Query("month") month: Int
+    ): Observable<StatisticalModel>
+    @GET("api/order/total-order-by-week-month/{idStore}")
+    fun getStatisticalByWeek(
+        @Path("idStore") idStore: String,
+        @Query("week") week: Int
+    ): Observable<StatisticalModel>
 }

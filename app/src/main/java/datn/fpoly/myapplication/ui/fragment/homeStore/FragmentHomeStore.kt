@@ -3,10 +3,14 @@ package datn.fpoly.myapplication.ui.fragment.homeStore
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.os.Build
 import android.os.Bundle
+import android.text.format.DateUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.viewpager2.widget.ViewPager2
 import com.airbnb.mvrx.*
 import datn.fpoly.myapplication.core.BaseFragment
@@ -19,8 +23,11 @@ import datn.fpoly.myapplication.ui.homeStore.HomeStoreState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewModel
 import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.Utils
 
 import timber.log.Timber
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
 
@@ -32,8 +39,10 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
 
 
     private lateinit var tabLayoutAdapter: TabLayoutAdapter
-    private var storeModel : StoreModel?=null
+    private var storeModel: StoreModel? = null
     private var isOpend = false;
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tabLayoutAdapter = TabLayoutAdapter(childFragmentManager, lifecycle)
@@ -41,6 +50,25 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
         views.tabView.addTab(views.tabView.newTab().setText("Đang giặt"))
         views.tabView.addTab(views.tabView.newTab().setText("Giặt xong"))
         views.tabView.addTab(views.tabView.newTab().setText("Hoàn Thành"))
+        ///
+        val idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
+        val formatter = DateTimeFormatter.ofPattern("MM")
+        val month = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDateTime.now().format(formatter)
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
+
+
+        ////
+        idStore?.let { HomeStoreViewAction.GetStatisticalByToday(it) }?.let { viewModel.handle(it) }
+        idStore?.let { HomeStoreViewAction.GetStatisticalByMonth(it, month.toInt()) }
+            ?.let { viewModel.handle(it) }
+
+
+        storeModel = Hawk.get<StoreModel>(Common.KEY_STORE)
+        Log.d("viewModel", "onViewCreated: ${storeModel?.status}")
+        views.swOpendClose.isChecked = storeModel?.status == 1
 
         views.listOrder.adapter = tabLayoutAdapter
         views.tabView.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -65,26 +93,27 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
             }
         })
         views.swOpendClose.setOnCheckedChangeListener { compoundButton, b ->
-            if(b){
+            if (b) {
                 storeModel?.id?.let { HomeStoreViewAction.OpendCloseStore(it, 1) }
                     ?.let { viewModel.handle(it) }
-            }else{
+            } else {
                 storeModel?.id?.let { HomeStoreViewAction.OpendCloseStore(it, 0) }
                     ?.let { viewModel.handle(it) }
             }
             isOpend = b
         }
-        if(storeModel?.status==0){
+        if (storeModel?.status == 0) {
             dialogMessage(requireContext())
         }
 
     }
-    private fun dialogMessage(context: Context){
+
+    private fun dialogMessage(context: Context) {
         val build = AlertDialog.Builder(context)
         build.setMessage("Bạn chưa mở cửa hàng. Hãy vui lòng mở cửa hàng trở lại")
         build.setTitle("Thông báo")
         build.setCancelable(false)
-        build.setPositiveButton("Đóng", object : DialogInterface.OnClickListener{
+        build.setPositiveButton("Đóng", object : DialogInterface.OnClickListener {
             override fun onClick(p0: DialogInterface, p1: Int) {
                 p0.dismiss()
             }
@@ -95,25 +124,23 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
         alertDialog.show()
     }
 
-    override fun onResume() {
-        super.onResume()
-        storeModel = Hawk.get(Common.KEY_STORE)
-        views.swOpendClose.isSelected = storeModel?.status==1
+    override fun invalidate(): Unit = withState(viewModel) {
+        updateStateOpendClose(it)
+        statisticalByToday(it)
+        statisticalByToMonth(it)
     }
 
-    override fun invalidate() : Unit = withState(viewModel) {
-        updateStateOpendClose(it)
-    }
-    private fun updateStateOpendClose(state: HomeStoreState){
-        when(state.stateOpendCloseStore){
-            is Loading-> {
+    private fun updateStateOpendClose(state: HomeStoreState) {
+        when (state.stateOpendCloseStore) {
+            is Loading -> {
                 Timber.tag("AAAAAAAAA").e("updateStateOpendClose: loading ")
             }
-            is Success->{
+
+            is Success -> {
                 state.stateOpendCloseStore.invoke()?.let {
-                    if(isOpend){
+                    if (isOpend) {
                         storeModel?.status = 1
-                    }else{
+                    } else {
                         storeModel?.status = 0
                     }
                     Hawk.put(Common.KEY_STORE, storeModel)
@@ -121,14 +148,56 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
                     Timber.tag("AAAAAAAAA").e("updateStateOpendClose: Success ")
                 }
             }
-            is Fail->{
+
+            is Fail -> {
                 Timber.tag("AAAAAAAAA").e("updateStateOpendClose: fail ")
             }
-            else ->{}
+
+            else -> {}
         }
 
         setView()
 
+    }
+
+    private fun statisticalByToday(state: HomeStoreState) {
+        when (state.stateStatisticalByToday) {
+            is Loading -> {
+                Timber.tag("AAAAAAAAA").e("updateStateOpendClose: loading ")
+            }
+
+            is Success -> {
+                state.stateStatisticalByToday.invoke()?.let {
+                    views.priceToday.text = Utils.formatVND(it.total)
+                }
+            }
+
+            is Fail -> {
+                Timber.tag("AAAAAAAAA").e("updateStateOpendClose: fail ")
+            }
+
+            else -> {}
+        }
+    }
+
+    private fun statisticalByToMonth(state: HomeStoreState) {
+        when (state.stateStatisticalByMonth) {
+            is Loading -> {
+                Timber.tag("AAAAAAAAA").e("updateStateOpendClose: loading ")
+            }
+
+            is Success -> {
+                state.stateStatisticalByMonth.invoke()?.let {
+                    views.priceMonth.text = Utils.formatVND(it.total)
+                }
+            }
+
+            is Fail -> {
+                Timber.tag("AAAAAAAAA").e("updateStateOpendClose: fail ")
+            }
+
+            else -> {}
+        }
     }
 
     private fun setView() {
