@@ -11,13 +11,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.example.ql_ban_hang.core.BaseFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.R
+import datn.fpoly.myapplication.core.BaseFragment
 import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.databinding.FragmentProfileUserBinding
 import datn.fpoly.myapplication.ui.favoriteStore.FavoriteStoreActivity
+import datn.fpoly.myapplication.ui.historyOrderUser.HistoryOrderActivity
 import datn.fpoly.myapplication.ui.login.SignInActivity
 import datn.fpoly.myapplication.ui.myProfileUser.MyProfileActivity
 import datn.fpoly.myapplication.ui.registerstore.RegisterStoreActivity
@@ -69,6 +70,9 @@ class FragmentSetting : BaseFragment<FragmentProfileUserBinding>() {
         }
         views.tvFavouriteStore.setOnClickListener {
             startActivity(Intent(requireContext(), FavoriteStoreActivity::class.java))
+        }
+        views.tvOrderHistory.setOnClickListener {
+            startActivity(Intent(requireContext(),HistoryOrderActivity::class.java))
         }
         views.tvEditProfile.setOnClickListener {
             startActivity(

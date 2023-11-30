@@ -75,7 +75,7 @@ class OrderCancelledFragment : BaseFragment<FragmentOrderCancelledBinding>() {
                     launch {
                         it.stateOrder.invoke()?.let {
                             Timber.tag("OrderCancelledFragment").d("orderCancelledInvalidate: ${it.size}")
-                            orderAdapter.updateDataByStatus(it, listOf(4)) // Cập nhật danh sách đơn hàng đã hủy
+                            orderAdapter.updateDataByStatus(it, listOf(5)) // Cập nhật danh sách đơn hàng đã hủy
                             views.rcvItemOrderCancelled.adapter = orderAdapter
                             orderAdapter.notifyDataSetChanged()
                             Log.d("OrderCancelledFragment", "getListOrderCancelled: ${it.size}")

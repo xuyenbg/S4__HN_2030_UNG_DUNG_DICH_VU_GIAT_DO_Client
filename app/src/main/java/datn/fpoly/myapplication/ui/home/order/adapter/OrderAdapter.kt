@@ -55,18 +55,28 @@ class OrderAdapter @Inject constructor() :
                     tvId.text = "#${itemOrder.id}"
                     tvNameStore.text = itemOrder.idStore?.name
                     tvTime.text = itemOrder.createAt?.formatDateOrder()
-                    if (itemOrder.status == 1) {
+                    if (itemOrder.status == 0) {
                         tvStatus2.visibility = View.VISIBLE
                         tvStatus3.visibility = View.INVISIBLE
                         tvStatus1.visibility = View.INVISIBLE
                         tvStatus4.visibility = View.INVISIBLE
+                        tvStatus5.visibility = View.INVISIBLE
                         btnReOrder.visibility = View.INVISIBLE
                     }
-                    if (itemOrder.status == 2) {
+                    if (itemOrder.status == 1) {
                         tvStatus3.visibility = View.VISIBLE
                         tvStatus1.visibility = View.INVISIBLE
                         tvStatus2.visibility = View.INVISIBLE
                         tvStatus4.visibility = View.INVISIBLE
+                        tvStatus5.visibility = View.INVISIBLE
+                        btnReOrder.visibility = View.INVISIBLE
+                    }
+                    if (itemOrder.status == 2) {
+                        tvStatus5.visibility = View.VISIBLE
+                        tvStatus1.visibility = View.INVISIBLE
+                        tvStatus2.visibility = View.INVISIBLE
+                        tvStatus4.visibility = View.INVISIBLE
+                        tvStatus3.visibility = View.INVISIBLE
                         btnReOrder.visibility = View.INVISIBLE
                     }
                     if (itemOrder.status == 3) {
@@ -74,14 +84,24 @@ class OrderAdapter @Inject constructor() :
                         tvStatus2.visibility = View.INVISIBLE
                         tvStatus3.visibility = View.INVISIBLE
                         tvStatus4.visibility = View.INVISIBLE
+                        tvStatus5.visibility = View.INVISIBLE
                         btnReOrder.visibility = View.VISIBLE
                         btnReOrder.setText("Đánh giá")
                     }
                     if (itemOrder.status == 4) {
+                        tvStatus1.visibility = View.VISIBLE
+                        tvStatus2.visibility = View.INVISIBLE
+                        tvStatus3.visibility = View.INVISIBLE
+                        tvStatus4.visibility = View.INVISIBLE
+                        tvStatus5.visibility = View.INVISIBLE
+                        btnReOrder.visibility = View.VISIBLE
+                    }
+                    if (itemOrder.status == 5) {
                         tvStatus4.visibility = View.VISIBLE
                         tvStatus2.visibility = View.INVISIBLE
                         tvStatus3.visibility = View.INVISIBLE
                         tvStatus1.visibility = View.INVISIBLE
+                        tvStatus5.visibility = View.INVISIBLE
                         btnReOrder.visibility = View.VISIBLE
                         holder.binding.btnReOrder.setBackgroundResource(R.drawable.shape_item_btn_4)
                     }
