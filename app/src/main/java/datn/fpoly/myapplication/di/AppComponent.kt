@@ -24,6 +24,7 @@ import datn.fpoly.myapplication.ui.order.OrderDetailStoreActivity
 import datn.fpoly.myapplication.ui.postService.AddServiceActivity
 import datn.fpoly.myapplication.ui.poststore.AddPostActivity
 import datn.fpoly.myapplication.ui.registerstore.RegisterStoreActivity
+import datn.fpoly.myapplication.ui.searchService.SearchServiceActivity
 import datn.fpoly.myapplication.ui.service.DetailServiceActivity
 import datn.fpoly.myapplication.ui.signup.RegisterInforActivity
 import datn.fpoly.myapplication.ui.signup.SignUpActivity
@@ -66,7 +67,9 @@ interface AppComponent {
     fun inject(activity: AddressActivity)
     fun inject(activity: AddAddressActivity)
     fun inject(activity: UpdateAddressActivity)
+    fun inject(activity: SearchServiceActivity)
     fun inject(activity: HistoryOrderActivity)
+
 
     @Component.Factory
     interface Factory {

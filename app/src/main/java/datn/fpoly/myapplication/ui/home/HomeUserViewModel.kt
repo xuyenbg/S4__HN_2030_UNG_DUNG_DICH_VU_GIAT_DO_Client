@@ -28,7 +28,7 @@ class HomeUserViewModel @AssistedInject constructor(
                 handleGetListCategory()
             }
             is HomeViewAction.HomeActionGetListStore->{
-                handleGetListStore()
+                handleGetListStore(action.latitude,action.longitude)
             }
             is HomeViewAction.PostClientActionList -> {
                 handleGetPost()
@@ -48,9 +48,9 @@ class HomeUserViewModel @AssistedInject constructor(
         setState { copy(stateCategory = Loading()) }
         repoCategory.getDataCategory().execute { copy(stateCategory = it) }
     }
-    private fun handleGetListStore(){
+    private fun handleGetListStore(latitude: Float, longitude:Float){
         setState { copy(stateStore = Loading()) }
-        repoStore.getDataStore().execute { copy(stateStore = it) }
+        repoStore.getDataStore(latitude, longitude).execute { copy(stateStore = it) }
     }
 
     private fun handleGetPost() {

@@ -8,6 +8,7 @@ import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.CategoryModel
 import datn.fpoly.myapplication.data.model.StoreModel
+import datn.fpoly.myapplication.data.model.StoreNearplaceModel
 import datn.fpoly.myapplication.databinding.ActivitySeeMoreBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterCategory
 import datn.fpoly.myapplication.ui.adapter.AdapterStore
@@ -57,7 +58,7 @@ class SeeMoreActivity : BaseActivity<ActivitySeeMoreBinding>() {
         views.rcvList.addItemDecoration(ItemSpacingDecoration(32))
         adapterStore.setData(DataRaw.getDataStore())
         adapterStore.setListener(object : AdapterStore.StoreListener{
-            override fun onClickStoreListener(storeModel: StoreModel) {
+            override fun onClickStoreListener(storeModel: StoreNearplaceModel) {
                 Hawk.put(Common.KEY_STORE_DETAIL, storeModel)
                 startActivity(Intent(this@SeeMoreActivity, DetailStoreActivity::class.java))
             }

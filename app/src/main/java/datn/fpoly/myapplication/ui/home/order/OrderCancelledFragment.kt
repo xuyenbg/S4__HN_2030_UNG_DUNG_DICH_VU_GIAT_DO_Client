@@ -15,9 +15,11 @@ import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import datn.fpoly.myapplication.core.BaseFragment
 import com.orhanobut.hawk.Hawk
+import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.databinding.FragmentOrderCancelledBinding
+import datn.fpoly.myapplication.ui.check_out.CheckOutActivity
 import datn.fpoly.myapplication.ui.home.order.adapter.OrderAdapter
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
@@ -38,7 +40,7 @@ class OrderCancelledFragment : BaseFragment<FragmentOrderCancelledBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val account = Hawk.get<AccountModel>("Account",null)
+        val account = Hawk.get<AccountModel>("Account", null)
         viewModel.handle(HomeViewAction.OrderActionGetList(account.id.toString()))
         orderAdapter = OrderAdapter()
         val itemDecoration = ItemSpacingDecoration(16)
@@ -46,12 +48,30 @@ class OrderCancelledFragment : BaseFragment<FragmentOrderCancelledBinding>() {
         orderAdapter.setListener(object : OrderAdapter.OrderListener {
             override fun onClickOrder(order: OrderExtend) {
                 val intent = Intent(context, OrderDetailActivity::class.java)
-                intent.putExtra(Common.KEY_ID_ORDER,order.id)
+                intent.putExtra(Common.KEY_ID_ORDER, order.id)
                 startActivity(intent)
             }
 
             override fun onRateingOrder(orderModel: OrderExtend) {
-
+                val orderBase = OrderBase(
+                    orderModel.idUser?.id,
+                    orderModel.idStore?.id,
+                    orderModel.total,
+                    orderModel.note,
+                    orderModel.transportType,
+                    orderModel.methodPaymentType,
+                    orderModel.feeDelivery,
+                    orderModel.status,
+                    orderModel.idAddress?.id,
+                    orderModel.isPaid,
+                    orderModel.toListItemBase()
+                )
+                requireContext().startActivity(
+                    Intent(
+                        requireContext(),
+                        CheckOutActivity::class.java
+                    ).putExtra(Common.KEY_CART, orderBase)
+                )
             }
 
         })
@@ -74,6 +94,7 @@ class OrderCancelledFragment : BaseFragment<FragmentOrderCancelledBinding>() {
                 runBlocking {
                     launch {
                         it.stateOrder.invoke()?.let {
+                          // Cập nhật danh sách đơn hàng đã hủy
                             Timber.tag("OrderCancelledFragment").d("orderCancelledInvalidate: ${it.size}")
                             orderAdapter.updateDataByStatus(it, listOf(5)) // Cập nhật danh sách đơn hàng đã hủy
                             views.rcvItemOrderCancelled.adapter = orderAdapter

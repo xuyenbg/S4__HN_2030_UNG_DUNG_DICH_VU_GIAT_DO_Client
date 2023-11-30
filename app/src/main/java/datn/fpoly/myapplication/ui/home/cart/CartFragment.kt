@@ -15,6 +15,7 @@ import datn.fpoly.myapplication.databinding.FragmentCartBinding
 import datn.fpoly.myapplication.ui.check_out.AdapterItemCart
 import datn.fpoly.myapplication.ui.check_out.CheckOutActivity
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
+import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 import timber.log.Timber
 
@@ -44,7 +45,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
         }
 
         views.btnOrder.setOnClickListener {
-            startActivity(Intent(activity,CheckOutActivity::class.java))
+            requireContext().startActivity(Intent(requireContext(),CheckOutActivity::class.java).putExtra(Common.KEY_CART, cart))
         }
 
         views.toolbar.btnBack.visibility = View.INVISIBLE

@@ -30,6 +30,9 @@ class OrderViewModel @AssistedInject constructor(
             is OrderViewAction.UploadImage -> {
                 handleUploadImage(action.image)
             }
+            is OrderViewAction.UpdateStatus->{
+                updateStatus(action.idOrder, action.status)
+            }
         }
     }
 
@@ -46,6 +49,10 @@ class OrderViewModel @AssistedInject constructor(
     private fun handleGetOrderDetail(idOrder: String) {
         setState { copy(stateOrderDetail = Loading()) }
         orderRepo.getOrderDetail(idOrder).execute { copy(stateOrderDetail = it) }
+    }
+    private fun updateStatus(idOrder: String, status: Int){
+        setState { copy(stateUpdateStatus= Loading()) }
+        orderRepo.updateOrder(idOrder, status).execute { copy(stateUpdateStatus = it)}
     }
 
     @AssistedFactory

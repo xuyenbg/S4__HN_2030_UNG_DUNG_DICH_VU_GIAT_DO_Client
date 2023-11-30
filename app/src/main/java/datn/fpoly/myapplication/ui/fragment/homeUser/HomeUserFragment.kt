@@ -13,6 +13,7 @@ import datn.fpoly.myapplication.core.BaseFragment
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.CategoryModel
 import datn.fpoly.myapplication.data.model.StoreModel
+import datn.fpoly.myapplication.data.model.StoreNearplaceModel
 import datn.fpoly.myapplication.databinding.FragmentHomeUserBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterCategory
 import datn.fpoly.myapplication.ui.adapter.AdapterStore
@@ -22,6 +23,7 @@ import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
 import datn.fpoly.myapplication.ui.listService.ListServiceActivity
+import datn.fpoly.myapplication.ui.searchService.SearchServiceActivity
 import datn.fpoly.myapplication.ui.seeMore.SeeMoreActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.DataRaw
@@ -65,7 +67,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         adapterStore = AdapterStore(6)
         views.rcvListStore.adapter = adapterStore
         adapterStore.setListener(object : AdapterStore.StoreListener {
-            override fun onClickStoreListener(storeModel: StoreModel) {
+            override fun onClickStoreListener(storeModel: StoreNearplaceModel) {
                 Hawk.put(Common.KEY_STORE_DETAIL, storeModel)
                 requireContext().startActivity(
                     Intent(
@@ -88,6 +90,10 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
             intent.putExtra(Common.KEY_SEE_MORE, 2)
             requireContext().startActivity(intent)
         }
+        views.imgSearch.setOnClickListener {
+            val intent = Intent(requireContext(), SearchServiceActivity::class.java)
+            requireContext().startActivity(intent)
+        }
 
         initSlide()
 
@@ -97,7 +103,12 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     override fun onResume() {
         super.onResume()
         viewModel.handle(HomeViewAction.HomeActionCategory)
-        viewModel.handle(HomeViewAction.HomeActionGetListStore)
+        viewModel.handle(
+            HomeViewAction.HomeActionGetListStore(
+                Common.getMyLocationLatitude(requireContext()),
+                Common.getMyLocationLongitude(requireContext())
+            )
+        )
 //        handler.postDelayed(runnable, 2000)
     }
 
@@ -115,6 +126,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
                     launch {
                         Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: Success3")
                         it.stateCategory.invoke()?.let {
+
                             adapterCate.updateData(it)
                             Timber.tag("AAAAAAAAAAAAAA").e("invalidate: " + it.size)
                         }
@@ -150,6 +162,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
                     launch {
                         Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: Success3")
                         state.stateStore.invoke()?.let {
+
                             adapterStore.setData(it)
                             Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: size" + it.size)
                         }
@@ -187,7 +200,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         views.vpSlideShow.adapter = adapter
 
 
-       // views.circle3.setViewPager(views.vpSlideShow)
+        // views.circle3.setViewPager(views.vpSlideShow)
 //        views.vpSlideShow.registerOnPageChangeCallback(object : OnPageChangeCallback() {
 //            override fun onPageSelected(position: Int) {
 //                super.onPageSelected(position)

@@ -32,6 +32,9 @@
         <activity
             android:name=".ui.historyOrderUser.HistoryOrderActivity"
             android:exported="false" />
+      <activity 
+                android:name=".ui.searchService.SearchServiceActivity"
+                android:exported="false"/>
         <activity
             android:name=".ui.myProfileUser.MyProfileActivity"
             android:exported="false" />
@@ -103,9 +106,6 @@
             android:exported="false" />
         <activity
             android:name=".ui.signup.SignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".ui.otp.AuthenticationOtpActivity"

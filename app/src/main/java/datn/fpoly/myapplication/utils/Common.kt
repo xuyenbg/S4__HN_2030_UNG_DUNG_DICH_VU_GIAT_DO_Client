@@ -15,7 +15,9 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.provider.Settings
 import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager.LayoutParams
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -54,6 +56,7 @@ object Common {
 
     val KEY_LATITUDE = "MY_LATITUDE"
     val KEY_LONGITUDE ="MY_LONGITUDE"
+    val KEY_CART="cart_order"
 
     fun ComponentActivity.registerStartForActivityResult(onResult: (ActivityResult) -> Unit): ActivityResultLauncher<Intent> {
         return registerForActivityResult(ActivityResultContracts.StartActivityForResult(), onResult)
@@ -62,18 +65,24 @@ object Common {
         val sharedPreferences: SharedPreferences =
             context.getSharedPreferences("MY_App", Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.putLong(KEY_LATITUDE, location.latitude.toLong())
-        editor.putLong(KEY_LONGITUDE, location.longitude.toLong())
+        editor.putFloat(KEY_LATITUDE, location.latitude.toFloat())
+        editor.putFloat(KEY_LONGITUDE, location.longitude.toFloat())
         editor.commit()
     }
-    fun getMyLocation(context: Context): LatLng{
+    fun getMyLocationLatitude(context: Context): Float{
         val sharedPreferences: SharedPreferences =
             context.getSharedPreferences("MY_App", Context.MODE_PRIVATE)
-       val latitude= sharedPreferences.getLong(KEY_LATITUDE, 0)
-        val longitude = sharedPreferences.getLong(KEY_LONGITUDE, 0)
-        return LatLng(latitude.toDouble(), longitude.toDouble())
+       val latitude= sharedPreferences.getFloat(KEY_LATITUDE, 0f)
+        val longitude = sharedPreferences.getFloat(KEY_LONGITUDE, 0f)
+        return latitude
     }
-
+    fun getMyLocationLongitude(context: Context): Float{
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences("MY_App", Context.MODE_PRIVATE)
+        val latitude= sharedPreferences.getFloat(KEY_LATITUDE, 0f)
+        val longitude = sharedPreferences.getFloat(KEY_LONGITUDE, 0f)
+        return longitude
+    }
     fun checkPermission(context: Context): Boolean =
         PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
             context,
@@ -83,7 +92,7 @@ object Common {
 
     fun requestPermission(activity: Activity) {
 
-        if (ActivityCompat.shouldShowRequestPermissionRationale(
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(
                 activity,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             )
@@ -97,8 +106,7 @@ object Common {
         }
     }
     fun requestPermissionNotify(activity: Activity) {
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(
                 activity,
                 android.Manifest.permission.POST_NOTIFICATIONS
             )
@@ -206,7 +214,6 @@ object Common {
             DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
         builder.setCancelable(false)
         val alertDialog: AlertDialog = builder.create()
-        alertDialog.window?.setDimAmount(1f)
         alertDialog.show()
     }
 
@@ -263,4 +270,10 @@ object Common {
     }
 
     fun Date.formatDateOrder(): String =  SimpleDateFormat("MM/dd/yyyy HH:mm",Locale.ROOT).format(this)
+
+     fun hideKeyboard(context: Context, view: View) {
+        val inputMethodManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
 }

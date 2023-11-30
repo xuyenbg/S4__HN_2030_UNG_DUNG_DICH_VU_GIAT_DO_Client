@@ -10,7 +10,7 @@ data class ItemServiceBase(
     @SerializedName("service") var service: ServiceExtend? = ServiceExtend(),
     @SerializedName("attributeListExtend") var attributeListExtend: MutableList<AttributeModel>? = arrayListOf(),
     @SerializedName("attributeList") var attributeList: MutableList<String>? = arrayListOf()
-) {
+) : java.io.Serializable{
     override fun toString(): String {
         return "ItemService(number=$number, total=$total, image=$image, service=$service, attributeList=$attributeListExtend)"
     }
