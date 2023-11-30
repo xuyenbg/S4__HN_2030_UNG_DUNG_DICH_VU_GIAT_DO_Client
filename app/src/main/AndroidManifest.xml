@@ -32,9 +32,9 @@
         <activity
             android:name=".ui.historyOrderUser.HistoryOrderActivity"
             android:exported="false" />
-      <activity 
-                android:name=".ui.searchService.SearchServiceActivity"
-                android:exported="false"/>
+        <activity
+            android:name=".ui.searchService.SearchServiceActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.myProfileUser.MyProfileActivity"
             android:exported="false" />
