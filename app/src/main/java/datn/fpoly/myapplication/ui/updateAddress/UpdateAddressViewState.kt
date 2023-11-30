@@ -8,5 +8,6 @@ import datn.fpoly.myapplication.data.model.AddressModel
 
 data class UpdateAddressViewState (
     var stateAddress: Async<AddressModel> = Uninitialized,
-    var stateDetailAddress: Async<AddressExtend> = Uninitialized
+    var stateDetailAddress: Async<AddressExtend> = Uninitialized,
+    var stateDeleteAddress: Async<AddressModel> = Uninitialized
 ): MvRxState

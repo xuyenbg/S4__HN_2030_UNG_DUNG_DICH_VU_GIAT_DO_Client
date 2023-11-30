@@ -6,6 +6,7 @@ import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
 import datn.fpoly.myapplication.data.model.CategoryModel
 import datn.fpoly.myapplication.data.model.ServiceExtend
+import datn.fpoly.myapplication.data.model.StatisticalModel
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.data.model.post.PostModel
@@ -26,7 +27,10 @@ data class HomeStoreState(
     val stateUpdateStatus: Async<Response<ResponseBody>> = Uninitialized,
     val stateUpdateStatusWashing: Async<Response<ResponseBody>> = Uninitialized,
     val stateUpdateStatusComplete: Async<Response<ResponseBody>> = Uninitialized,
-    val stateOpendCloseStore : Async<Response<ResponseBody>> = Uninitialized
+    val stateOpendCloseStore : Async<Response<ResponseBody>> = Uninitialized,
+    val stateFilterOrder : Async<MutableList<OrderResponse>> = Uninitialized,
+    val stateStatisticalByToday : Async<StatisticalModel> = Uninitialized,
+    val stateStatisticalByMonth : Async<StatisticalModel> = Uninitialized
 
 ) : MvRxState {
     fun isLoading(): Boolean {

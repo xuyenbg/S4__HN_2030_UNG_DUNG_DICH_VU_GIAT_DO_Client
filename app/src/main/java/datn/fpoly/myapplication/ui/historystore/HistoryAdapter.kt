@@ -6,8 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.ItemListHistoryStoreBinding
-import datn.fpoly.myapplication.databinding.ItemPostBinding
-import datn.fpoly.myapplication.utils.DateTimeUtils
+import datn.fpoly.myapplication.utils.Utils
 import javax.inject.Inject
 
 class HistoryAdapter @Inject constructor() :
@@ -40,7 +39,7 @@ class HistoryAdapter @Inject constructor() :
                 holder.binding.apply {
                     tvId.text = "#${itemHistory.id}"
                     tvNameStore.text = itemHistory.idUser?.fullname
-                    tvTime.text = DateTimeUtils.formatDateOrder(itemHistory.updateAt)
+                    tvTime.text = Utils.formatDateOrder(itemHistory.updateAt)
 
                     btnDetail.setOnClickListener {
                         postlistener?.onClickDetail(itemHistory)

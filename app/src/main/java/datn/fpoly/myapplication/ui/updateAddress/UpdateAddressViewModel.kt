@@ -24,6 +24,9 @@ class UpdateAddressViewModel@AssistedInject constructor(
             is UpdateAddressViewAction.GetDetailAddress->{
                 getDetailAddress(action.idAddress)
             }
+            is UpdateAddressViewAction.DeleteAddress->{
+                deleteAddress(action.idAddress)
+            }
         }
     }
 
@@ -34,6 +37,10 @@ class UpdateAddressViewModel@AssistedInject constructor(
     fun putAddress(idAddress: String,addressModel: AddressModel){
         setState { copy(stateAddress=Loading()) }
         repo.putAddress(idAddress,addressModel).execute { copy(stateAddress=it) }
+    }
+    fun deleteAddress(idAddress: String){
+        setState { copy(stateDeleteAddress=Loading()) }
+        repo.deleteAddress(idAddress).execute { copy(stateDeleteAddress = it) }
     }
     @AssistedFactory
     interface Factory {

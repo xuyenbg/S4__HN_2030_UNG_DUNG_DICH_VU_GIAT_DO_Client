@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
-import com.example.ql_ban_hang.core.BaseFragment
+import datn.fpoly.myapplication.core.BaseFragment
 import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.databinding.FragmentCartBinding
 import datn.fpoly.myapplication.ui.check_out.AdapterItemCart
@@ -20,7 +20,7 @@ import datn.fpoly.myapplication.utils.Common.formatCurrency
 import timber.log.Timber
 
 
-class CartFragment :BaseFragment<FragmentCartBinding>() {
+class CartFragment : BaseFragment<FragmentCartBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
     var cart: OrderBase? = null
 

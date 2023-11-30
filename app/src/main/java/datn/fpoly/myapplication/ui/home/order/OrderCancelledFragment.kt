@@ -13,7 +13,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
-import com.example.ql_ban_hang.core.BaseFragment
+import datn.fpoly.myapplication.core.BaseFragment
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.model.OrderExtend
@@ -94,12 +94,9 @@ class OrderCancelledFragment : BaseFragment<FragmentOrderCancelledBinding>() {
                 runBlocking {
                     launch {
                         it.stateOrder.invoke()?.let {
-                            Timber.tag("OrderCancelledFragment")
-                                .d("orderCancelledInvalidate: ${it.size}")
-                            orderAdapter.updateDataByStatus(
-                                it,
-                                listOf(5)
-                            ) // Cập nhật danh sách đơn hàng đã hủy
+                          // Cập nhật danh sách đơn hàng đã hủy
+                            Timber.tag("OrderCancelledFragment").d("orderCancelledInvalidate: ${it.size}")
+                            orderAdapter.updateDataByStatus(it, listOf(5)) // Cập nhật danh sách đơn hàng đã hủy
                             views.rcvItemOrderCancelled.adapter = orderAdapter
                             orderAdapter.notifyDataSetChanged()
                             Log.d("OrderCancelledFragment", "getListOrderCancelled: ${it.size}")

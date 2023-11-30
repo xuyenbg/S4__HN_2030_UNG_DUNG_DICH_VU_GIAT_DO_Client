@@ -22,4 +22,6 @@ class AddressRepo @Inject constructor(
         api.putAddress(idAddress, addressModel).subscribeOn(Schedulers.io())
     fun addAddress(addressModel: AddressModel): Observable<AddressModel> =
         api.addAddress(addressModel).subscribeOn(Schedulers.io())
+    fun deleteAddress(idAddress: String): Observable<AddressModel> =
+        api.deleteAddress(idAddress).subscribeOn(Schedulers.io())
 }

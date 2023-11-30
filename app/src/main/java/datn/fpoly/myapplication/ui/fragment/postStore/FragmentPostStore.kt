@@ -21,7 +21,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
-import com.example.ql_ban_hang.core.BaseFragment
+import datn.fpoly.myapplication.core.BaseFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.R
@@ -62,9 +62,9 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
         views.recyclerViewPostStore.addItemDecoration(itemDecoration)
         postClientAdapter.setListener(object : PostStoreAdapter.PostListener {
             override fun onClickPost(postModel: PostModel) {
-                val intent = Intent(requireContext(), DetailStoreActivity::class.java)
-                intent.putExtra(Common.KEY_ID_STORE, postModel.id)
-                startActivity(intent)
+//                val intent = Intent(requireContext(), DetailStoreActivity::class.java)
+//                intent.putExtra(Common.KEY_ID_STORE, postModel.idStore.id)
+//                startActivity(intent)
             }
 
             override fun onClickEdit(postModel: PostModel) {
@@ -197,6 +197,8 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
 
         dialogbinding.findViewById<TextView>(R.id.tv_onConfirm).setOnClickListener {
             viewModel.handle(HomeStoreViewAction.deletePost(postModel.id))
+            viewModel.handle(HomeStoreViewAction.PostStoreActionList(idStore!!))
+            postClientAdapter.notifyDataSetChanged()
             myDialog.dismiss()
         }
 
@@ -219,6 +221,7 @@ class ItemSpacingDecoration(private val spacing: Int) : RecyclerView.ItemDecorat
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
+        outRect.top = spacing/2
         outRect.bottom = spacing // Đặt khoảng dưới theo giá trị spacing bạn muốn
         outRect.right = spacing
         outRect.left = spacing

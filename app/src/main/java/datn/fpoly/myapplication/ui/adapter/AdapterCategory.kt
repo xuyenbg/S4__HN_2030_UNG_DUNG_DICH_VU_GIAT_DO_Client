@@ -81,11 +81,6 @@ class AdapterCategory(var limits: Int, val linearEnable: Boolean) :
         ViewHolder(binding.root) {
         fun bind(item: CategoryModel) {
             binding.tvCategoryService.text = item.name
-            if(layoutPosition==listCategoryService.size-1){
-                binding.line.visibility = View.INVISIBLE
-            }else{
-                binding.line.visibility = View.VISIBLE
-            }
         }
     }
 

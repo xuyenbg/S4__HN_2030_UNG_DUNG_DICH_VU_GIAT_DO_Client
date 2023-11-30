@@ -13,23 +13,20 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
-import com.example.ql_ban_hang.core.BaseFragment
+import datn.fpoly.myapplication.core.BaseFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.FragmentProfileStoreBinding
 import datn.fpoly.myapplication.ui.historystore.HistoryStoreActivity
-import datn.fpoly.myapplication.ui.home.HomeViewState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewModel
 import datn.fpoly.myapplication.ui.login.SignInActivity
 import datn.fpoly.myapplication.ui.myshop.MyShopActivity
 import datn.fpoly.myapplication.utils.Common
-import datn.fpoly.myapplication.utils.DataRaw
 import datn.fpoly.myapplication.utils.Dialog_Loading
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -47,7 +44,6 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
-
         viewModel.handle(HomeStoreViewAction.GetDataOrderStore(idStore!!, "desc"))
         views.btnLogOut.setOnClickListener {
             Dialog_Loading.getInstance().show(childFragmentManager, "Loading_logour")

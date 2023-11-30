@@ -1,7 +1,11 @@
 package datn.fpoly.myapplication.ui.updateAddress
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
+import android.widget.TextView
 import android.widget.Toast
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
@@ -9,9 +13,11 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.viewModel
 import datn.fpoly.myapplication.AppApplication
+import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.AddressModel
 import datn.fpoly.myapplication.databinding.ActivityUpdateAddressBinding
+import datn.fpoly.myapplication.databinding.DialogNotificationAllBinding
 import datn.fpoly.myapplication.ui.addAddress.AddAddressViewAction
 import datn.fpoly.myapplication.ui.map.PickPossitionInMapActivity
 import datn.fpoly.myapplication.utils.Common
@@ -28,7 +34,7 @@ class UpdateAddressActivity : BaseActivity<ActivityUpdateAddressBinding>(),Updat
     private var latitude = 0.0
     private var longitude = 0.0
     private var isDefault = false
-
+    lateinit var dialog: Dialog
     val addressModel = AddressModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
@@ -49,9 +55,31 @@ class UpdateAddressActivity : BaseActivity<ActivityUpdateAddressBinding>(),Updat
         views.btnConfirm.setOnClickListener {
             _updateAddress()
         }
+        views.tvDeleteAddress.setOnClickListener {
+            deleteDialog(idAddress)
+        }
         views.imgBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
+    }
+    private fun deleteDialog(idAddress: String?){
+        dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_notification_all)
+        val tvOnCancel = dialog.findViewById<TextView>(R.id.tv_onCancel)
+        val tvOnConfirm = dialog.findViewById<TextView>(R.id.tv_onConfirm)
+        val tvText = dialog.findViewById<TextView>(R.id.tv_text)
+        tvText.text = "Bạn có chắc muốn xóa địa chỉ này ?"
+        tvOnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        tvOnConfirm.setOnClickListener {
+            idAddress?.let { it1 -> UpdateAddressViewAction.DeleteAddress(it1) }
+                ?.let { it2 -> viewModel.handle(it2) }
+            dialog.dismiss()
+            onBackPressedDispatcher.onBackPressed()
+        }
+        dialog.show()
     }
     override fun onResume() {
         super.onResume()
@@ -106,7 +134,7 @@ class UpdateAddressActivity : BaseActivity<ActivityUpdateAddressBinding>(),Updat
                         }
                     }
                 }
-                Toast.makeText(this@UpdateAddressActivity, "Thêm thành công", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@UpdateAddressActivity, "Cập nhật thành công", Toast.LENGTH_SHORT).show()
                 onBackPressedDispatcher.onBackPressed()
             }
             is Loading ->{
@@ -114,7 +142,7 @@ class UpdateAddressActivity : BaseActivity<ActivityUpdateAddressBinding>(),Updat
             }
             is Fail -> {
                 Timber.tag("AAAAAAAAA").e("updateAddress: Call Fail")
-                Toast.makeText(this@UpdateAddressActivity, "Thêm thành công", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@UpdateAddressActivity, "Cập nhật thành công", Toast.LENGTH_SHORT).show()
                 onBackPressedDispatcher.onBackPressed()
             }
             else->{

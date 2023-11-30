@@ -4,6 +4,7 @@ import datn.fpoly.myapplication.data.model.AddressExtend
 import datn.fpoly.myapplication.data.model.AddressModel
 import io.reactivex.Observable
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -26,4 +27,6 @@ interface APIAddress {
         @Body addressModel: AddressModel): Observable<AddressModel>
     @POST("api/address/add-address")
     fun addAddress(@Body addressModel: AddressModel): Observable<AddressModel>
+    @DELETE("api/address/delete-address/{idAddress}")
+    fun deleteAddress(@Path("idAddress") idAddress: String): Observable<AddressModel>
 }
