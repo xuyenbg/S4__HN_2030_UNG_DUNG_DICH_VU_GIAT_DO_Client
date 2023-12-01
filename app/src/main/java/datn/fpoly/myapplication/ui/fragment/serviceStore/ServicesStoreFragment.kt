@@ -79,20 +79,34 @@ class ServicesStoreFragment : BaseFragment<FragmentServicesStoreBinding>() {
         val store: StoreModel = Hawk.get(Common.KEY_STORE)
         store.id?.let { HomeStoreViewAction.getListServiceByStore(it) }
             ?.let { viewModel.handle(it) }
+
+        views.swipeToRefresh.setOnRefreshListener {
+            store.id?.let { HomeStoreViewAction.getListServiceByStore(it) }
+                ?.let { viewModel.handle(it) }
+        }
     }
     fun getListService(state: HomeStoreState) {
         when (state.stateGetListService) {
             is Loading -> {
+                views.shimmer.visibility=View.VISIBLE
+                views.shimmer.startShimmer()
+                views.rcvListService.visibility=View.GONE
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListService: Loading")
             }
             is Success -> {
                 state.stateGetListService.invoke().let {
+                    views.swipeToRefresh.isRefreshing= false
+                    views.shimmer.visibility=View.GONE
+                    views.rcvListService.visibility=View.VISIBLE
                     adapter.setData(it)
                     Timber.tag("AAAAAAAAAAAAAAA").e("getListService:Success " + it.size)
                 }
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListService:Success ")
             }
             is Fail -> {
+                views.shimmer.visibility=View.GONE
+
+                views.rcvListService.visibility=View.VISIBLE
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListService: Fail")
             }
             else -> {}

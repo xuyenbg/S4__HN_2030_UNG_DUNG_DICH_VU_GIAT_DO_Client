@@ -75,6 +75,11 @@ class OrderCancelledFragment : BaseFragment<FragmentOrderCancelledBinding>() {
             }
 
         })
+        views.swipeToRefresh.setOnRefreshListener {
+            if(!views.swipeToRefresh.isRefreshing){
+                viewModel.handle(HomeViewAction.OrderActionGetList(account.id.toString()))
+            }
+        }
     }
 
     override fun invalidate(): Unit = withState(viewModel) {
@@ -95,6 +100,9 @@ class OrderCancelledFragment : BaseFragment<FragmentOrderCancelledBinding>() {
                     launch {
                         it.stateOrder.invoke()?.let {
                           // Cập nhật danh sách đơn hàng đã hủy
+                            views.rcvItemOrderCancelled.visibility=View.VISIBLE
+                            views.shimmerLoading.visibility=View.GONE
+                            views.swipeToRefresh.isRefreshing= false
                             Timber.tag("OrderCancelledFragment").d("orderCancelledInvalidate: ${it.size}")
                             orderAdapter.updateDataByStatus(it, listOf(5)) // Cập nhật danh sách đơn hàng đã hủy
                             views.rcvItemOrderCancelled.adapter = orderAdapter
@@ -106,10 +114,15 @@ class OrderCancelledFragment : BaseFragment<FragmentOrderCancelledBinding>() {
             }
 
             is Loading -> {
+                views.rcvItemOrderCancelled.visibility=View.GONE
+                views.shimmerLoading.visibility=View.VISIBLE
+                views.shimmerLoading.startShimmer()
                 Timber.tag("AAAAAAAAAAAAAAA").e("getOrderCancelled: loading")
             }
 
             is Fail -> {
+                views.rcvItemOrderCancelled.visibility=View.VISIBLE
+                views.shimmerLoading.visibility=View.GONE
                 Timber.tag("AAAAAAAAAAAAAAA").e("getOrderCancelled: Fail")
             }
 

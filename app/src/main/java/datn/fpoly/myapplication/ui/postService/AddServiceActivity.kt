@@ -32,6 +32,7 @@ import com.google.gson.Gson
 import datn.fpoly.myapplication.data.model.StoreModel
 import com.airbnb.mvrx.viewModel
 import datn.fpoly.myapplication.utils.DataRaw
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -542,6 +543,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
     fun updateStatePost(state: AddServiceViewState) {
         when (state.stateService) {
             is Loading -> {
+                Dialog_Loading.getInstance().show(supportFragmentManager,"Loading Add Service")
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Loading")
             }
             is Success -> {
@@ -554,6 +556,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 onBackPressedDispatcher.onBackPressed()
             }
             is Fail -> {
+                Dialog_Loading.getInstance().dismiss()
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Fail")
             }
             else -> {}
@@ -563,6 +566,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
     fun updateStateUpdate(state: AddServiceViewState) {
         when (state.stateServiceUpdate) {
             is Loading -> {
+                Dialog_Loading.getInstance().show(supportFragmentManager,"Loading Add Service")
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Loading")
             }
             is Success -> {
@@ -574,6 +578,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 onBackPressedDispatcher.onBackPressed()
             }
             is Fail -> {
+                Dialog_Loading.getInstance().dismiss()
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Fail")
             }
             else -> {}

@@ -49,8 +49,8 @@ class AdapterStore(val limit: Int) : Adapter<AdapterStore.ViewHolderItemStore>()
             val index = position
             val itemStore = listStore[index]
             holder.bind(itemStore)
-            Glide.with(holder.itemView).load(Common.baseUrl + itemStore.image)
-                .error(R.drawable.img_demo_store).into(holder.binding.imgAvateStore)
+//            Glide.with(holder.itemView).load(Common.baseUrl + itemStore.image)
+//                .error(R.drawable.img_demo_store).into(holder.binding.imgAvateStore)
             holder.itemView.setOnClickListener {
                 storeListener?.onClickStoreListener(itemStore)
             }

@@ -51,10 +51,8 @@ class PostClientFragment : BaseFragment<FragmentPostClientBinding>() {
             }
         })
         views.swipeToRefresh.setOnRefreshListener {
-
-            viewModel.handle(HomeViewAction.PostClientActionList)
-            lifecycleScope.launch {
-
+            if(!views.swipeToRefresh.isRefreshing){
+                viewModel.handle(HomeViewAction.PostClientActionList)
             }
         }
     }
@@ -71,6 +69,8 @@ class PostClientFragment : BaseFragment<FragmentPostClientBinding>() {
                 runBlocking {
                     launch {
                         it.statePost.invoke()?.let {
+                            views.shimmer.visibility=View.GONE
+                            views.swipeToRefresh.visibility=View.VISIBLE
                             Timber.tag("PostClientFragment").d("postinvalidate: ${it.size}")
                             postClientAdapter.updateData(it)
                             views.recycleviewPost.adapter = postClientAdapter
@@ -85,10 +85,15 @@ class PostClientFragment : BaseFragment<FragmentPostClientBinding>() {
             }
 
             is Loading -> {
+                views.shimmer.visibility=View.VISIBLE
+                views.swipeToRefresh.visibility=View.GONE
+                views.shimmer.startShimmer()
                 Timber.tag("AAAAAAAAAAAAAAA").e("getPost: loading")
             }
 
             is Fail -> {
+                views.shimmer.visibility=View.GONE
+                views.swipeToRefresh.visibility=View.VISIBLE
                 Timber.tag("AAAAAAAAAAAAAAA").e("getPost: Fail")
             }
 

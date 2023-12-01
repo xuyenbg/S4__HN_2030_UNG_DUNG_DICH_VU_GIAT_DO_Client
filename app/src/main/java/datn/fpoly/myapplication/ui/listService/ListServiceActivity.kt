@@ -2,6 +2,7 @@ package datn.fpoly.myapplication.ui.listService
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
@@ -29,16 +30,16 @@ class ListServiceActivity : BaseActivity<ActivityListServiceBinding>(), ListServ
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
+        views.tvNoti.visibility=View.GONE
+        views.imgNoti.visibility=View.GONE
         viewModel.handle(ListServiceViewAction.GetListServiceByCategory(DataRaw.getDataIdCategory()))
         adapter = AdapterService(false)
         views.rcvList.adapter= adapter
         adapter.setListenner(object :AdapterService.ServiceListenner{
             override fun ServiceOnClick(item: ServiceExtend, position: Int) {
-//                Hawk.put(Common.KEY_SERVICE_DETAIL, item)
                 val intent = Intent(this@ListServiceActivity, ListServiceByNameActivity::class.java)
                 intent.putExtra(Common.KEY_NAME_SERVICE, item.name)
                 startActivity(intent)
-//                finish()
             }
 
             override fun EditService(serviceExtend: ServiceExtend) {
@@ -51,6 +52,10 @@ class ListServiceActivity : BaseActivity<ActivityListServiceBinding>(), ListServ
         views.btnBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
+        views.swipeToRefresh.setOnRefreshListener {
+            viewModel.handle(ListServiceViewAction.GetListServiceByCategory(DataRaw.getDataIdCategory()))
+
+        }
 
     }
     fun getListService(state: ListServiceViewState){
@@ -59,16 +64,33 @@ class ListServiceActivity : BaseActivity<ActivityListServiceBinding>(), ListServ
                 runBlocking {
                     launch {
                         state.stateService.invoke()?.let{
+                            views.swipeToRefresh.isRefreshing=false
+                            views.shimmer.visibility= View.GONE
+                            views.rcvList.visibility=View.VISIBLE
                             adapter.setData(it)
+                            if(it.size!=0){
+                                views.tvNoti.visibility=View.GONE
+                                views.imgNoti.visibility=View.GONE
+                                views.rcvList.visibility=View.VISIBLE
+                            }else{
+                                views.tvNoti.visibility=View.VISIBLE
+                                views.imgNoti.visibility=View.VISIBLE
+                                views.rcvList.visibility=View.GONE
+                            }
                             Timber.tag("AAAAAAAAA").e("getListService: list service size: "+it.size )
                         }
                     }
                 }
             }
             is Loading ->{
+                views.shimmer.visibility= View.VISIBLE
+                views.rcvList.visibility=View.GONE
+                views.shimmer.startShimmer()
                 Timber.tag("AAAAAAAAA").e("getListService: Loading")
             }
             is Fail -> {
+                views.shimmer.visibility= View.GONE
+                views.rcvList.visibility=View.VISIBLE
                 Timber.tag("AAAAAAAAA").e("getListService: Call Fail")
             }
             else->{

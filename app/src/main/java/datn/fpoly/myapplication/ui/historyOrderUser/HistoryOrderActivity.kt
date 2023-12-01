@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.WindowManager
+import android.widget.Toast
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
@@ -25,6 +26,7 @@ import datn.fpoly.myapplication.ui.home.HomeViewState
 import datn.fpoly.myapplication.ui.home.order.adapter.OrderAdapter
 import datn.fpoly.myapplication.ui.order.OrderDetailActivity
 import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -52,14 +54,50 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
             }
 
             override fun onRateingOrder(orderModel: OrderExtend) {
-//                dialogRating(this@HistoryOrderActivity, orderModel)
+                dialogRating(this@HistoryOrderActivity, orderModel)
             }
         })
         viewModel.subscribe(this){
             getListOrder(it)
+            updateStateAddRate(it)
         }
         views.imgBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+        }
+
+    }
+    private fun dialogRating(context: Context, orderExtend: OrderExtend) {
+        dialog = Dialog(context)
+        val bindingDialog = DialogRateBinding.inflate(LayoutInflater.from(context))
+        dialog.setContentView(bindingDialog.root)
+        dialog.window?.setBackgroundDrawableResource(R.color.tran)
+        dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+        bindingDialog.btnRating.setOnClickListener {
+            orderExtend.idStore?.id?.let { it1 ->
+                orderExtend.idUser?.id?.let { it2 ->
+                    orderExtend.id?.let { it3 ->
+                        HistoryOrderViewAction.AddRate(
+                            it1,
+                            it2,
+                            bindingDialog.rate.rating,
+                            bindingDialog.edContent.text.toString().trim(), it3
+                        )
+                    }
+                }
+            }?.let { it2 ->
+                viewModel.handle(
+                    it2
+                )
+            }
+            dialog.dismiss()
+        }
+        bindingDialog.cancle.setOnClickListener {
+            dialog.dismiss()
+        }
+        if (isFinishing == false) {
+            dialog.show()
         }
     }
     private fun getListOrder(it: HistoryOrderViewState) {
@@ -90,6 +128,23 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
             else -> {
 
             }
+        }
+    }
+    private fun updateStateAddRate(state: HistoryOrderViewState){
+        when(state.stateRate){
+            is Loading-> {
+                Dialog_Loading.getInstance().show(supportFragmentManager,"Loading Rate")
+                Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:loading ")
+            }
+            is Success->{
+                onBackPressedDispatcher.onBackPressed()
+                Toast.makeText(this, "Đánh giá thành công", Toast.LENGTH_SHORT).show()
+            }
+            is Fail->{
+                onBackPressedDispatcher.onBackPressed()
+                Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:fail ")
+            }
+            else->{}
         }
     }
     override fun getBinding(): ActivityHistoryOrderBinding {

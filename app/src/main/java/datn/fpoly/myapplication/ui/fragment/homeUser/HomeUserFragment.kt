@@ -96,6 +96,18 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         }
 
         initSlide()
+        views.refLayout.setOnRefreshListener {
+            if(!views.refLayout.isRefreshing){
+                viewModel.handle(HomeViewAction.HomeActionCategory)
+                viewModel.handle(
+                    HomeViewAction.HomeActionGetListStore(
+                        Common.getMyLocationLatitude(requireContext()),
+                        Common.getMyLocationLongitude(requireContext())
+                    )
+                )
+            }
+
+        }
 
 
     }
@@ -126,7 +138,9 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
                     launch {
                         Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: Success3")
                         it.stateCategory.invoke()?.let {
-
+                            views.shimmerCate.visibility= View.GONE
+                            views.rcvListCategory.visibility=View.VISIBLE
+                            views.refLayout.isRefreshing= false
                             adapterCate.updateData(it)
                             Timber.tag("AAAAAAAAAAAAAA").e("invalidate: " + it.size)
                         }
@@ -136,10 +150,15 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
             }
 
             is Loading -> {
+                views.shimmerCate.visibility= View.VISIBLE
+                views.shimmerCate.startShimmer()
+                views.rcvListCategory.visibility=View.INVISIBLE
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: loading")
             }
 
             is Fail -> {
+                views.shimmerCate.visibility= View.GONE
+                views.rcvListCategory.visibility=View.VISIBLE
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: Fail")
             }
 
@@ -152,6 +171,9 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     fun getListStore(state: HomeViewState) {
         when (state.stateStore) {
             is Loading -> {
+                views.shimmerStore.visibility=View.VISIBLE
+                views.rcvListStore.visibility=View.INVISIBLE
+                views.shimmerStore.startShimmer()
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: loading")
             }
 
@@ -162,7 +184,9 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
                     launch {
                         Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: Success3")
                         state.stateStore.invoke()?.let {
-
+                            views.shimmerStore.visibility=View.GONE
+                            views.rcvListStore.visibility=View.VISIBLE
+                            views.refLayout.isRefreshing= false
                             adapterStore.setData(it)
                             Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: size" + it.size)
                         }
@@ -171,6 +195,8 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
             }
 
             is Fail -> {
+                views.shimmerStore.visibility=View.GONE
+                views.rcvListStore.visibility=View.VISIBLE
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: fail")
             }
 

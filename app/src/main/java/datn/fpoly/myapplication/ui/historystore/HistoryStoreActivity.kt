@@ -15,6 +15,7 @@ class HistoryStoreActivity : BaseActivity<ActivityHistoryStoreBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         views.recycleViewHistory.adapter = historyAdapter
+
     }
 
     override fun initUiAndData() {

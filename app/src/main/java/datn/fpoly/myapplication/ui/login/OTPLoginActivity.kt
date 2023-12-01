@@ -124,13 +124,13 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                             account?.user?.id?.let {
                                 Firebase.messaging.subscribeToTopic(it)
                                     .addOnCompleteListener {
-                                        if (it.isSuccessful) {
-                                            Timber.tag("AAAAAAAAAA")
-                                                .e("updateWithState: đăng ký topic thàng công%s", it.result.toString())
-                                        } else {
-                                            Timber.tag("AAAAAAAAAA")
-                                                .e("updateWithState: đăng ký topic thàng công%s", it.exception.toString())
-                                        }
+//                                        if (it.isSuccessful) {
+//                                            Timber.tag("AAAAAAAAAA")
+//                                                .e("updateWithState: đăng ký topic thàng công%s", it.result.toString())
+//                                        } else {
+//                                            Timber.tag("AAAAAAAAAA")
+//                                                .e("updateWithState: đăng ký topic thàng công%s", it.exception.toString())
+//                                        }
                                     }
                             }
                             if (account?.message == "Đăng nhập thành công") {

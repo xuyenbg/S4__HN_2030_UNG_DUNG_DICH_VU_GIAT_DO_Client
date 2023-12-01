@@ -3,6 +3,7 @@ package datn.fpoly.myapplication.ui.listServiceByName
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
@@ -35,6 +36,8 @@ class ListServiceByNameActivity : BaseActivity<ActivityListServiceByNameBinding>
         viewModel.subscribe(this){
             getListServiceByName(it)
         }
+        views.tvNoti.visibility=View.GONE
+        views.imgNoti.visibility=View.GONE
         views.btnBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -53,6 +56,11 @@ class ListServiceByNameActivity : BaseActivity<ActivityListServiceByNameBinding>
 
             }
         })
+        views.swipeToRefresh.setOnRefreshListener {
+            intent.getStringExtra(Common.KEY_NAME_SERVICE)
+                ?.let { ListServiceByNameViewAction.GetListServiceByName(it) }
+                ?.let { viewModel.handle(it) }
+        }
     }
 
     override fun onRestart() {
@@ -64,19 +72,35 @@ class ListServiceByNameActivity : BaseActivity<ActivityListServiceByNameBinding>
     fun getListServiceByName(state: ListServiceByNameViewState){
         when(state.stateService){
             is Loading->{
+                views.shimmer.visibility= View.VISIBLE
+                views.rcvListService.visibility= View.GONE
+                views.shimmer.startShimmer()
 //                Dialog_Loading.getInstance().show(supportFragmentManager, "Loading")
             }
             is Success->{
                 runBlocking {
                     launch {
-//                        Dialog_Loading.getInstance().dismiss()
+                        views.swipeToRefresh.isRefreshing=false
+                        views.shimmer.visibility= View.GONE
+                        views.rcvListService.visibility= View.VISIBLE
                         state.stateService.invoke()?.let {
                             adapterService.setData(it)
+                            if(it.size!=0){
+                                views.tvNoti.visibility=View.GONE
+                                views.imgNoti.visibility=View.GONE
+                                views.rcvListService.visibility=View.VISIBLE
+                            }else{
+                                views.tvNoti.visibility=View.VISIBLE
+                                views.imgNoti.visibility=View.VISIBLE
+                                views.rcvListService.visibility=View.GONE
+                            }
                         }
                     }
                 }
             }
             is Fail->{
+                views.shimmer.visibility= View.GONE
+                views.rcvListService.visibility= View.VISIBLE
 //                Dialog_Loading.getInstance().dismiss()
             }
             else->{}
