@@ -81,13 +81,15 @@ class HomeStoreViewModel @AssistedInject constructor(
             is HomeStoreViewAction.FilterOrder -> {
                 filterOrder(action.idStore, action.startDate, action.endDate, action.status)
             }
+
             is HomeStoreViewAction.GetStatisticalByToday -> {
                 getStatisticalByToday(action.idStore)
             }
 
             is HomeStoreViewAction.GetStatisticalByMonth -> {
-                getStatisticalByMonth(action.idStore,action.month)
+                getStatisticalByMonth(action.idStore, action.month)
             }
+
             else -> {}
         }
     }
@@ -180,11 +182,19 @@ class HomeStoreViewModel @AssistedInject constructor(
         orderRepo.getStatisticalByToday(idStore)
             .execute { copy(stateStatisticalByToday = it) }
     }
-    private fun getStatisticalByMonth(idStore: String, month : Int) {
+
+    private fun getStatisticalByMonth(idStore: String, month: Int) {
         setState { copy(stateStatisticalByMonth = Loading()) }
-        orderRepo.getStatisticalByMonth(idStore,month)
+        orderRepo.getStatisticalByMonth(idStore, month)
             .execute { copy(stateStatisticalByMonth = it) }
     }
+
+    private fun getStatisticalByWeek(idStore: String, week: Int) {
+        setState { copy(stateStatisticalByWeek = Loading()) }
+        orderRepo.getStatisticalByWeek(idStore, week)
+            .execute { copy(stateStatisticalByWeek = it) }
+    }
+
     @AssistedFactory
     interface Factory {
         fun create(initialState: HomeStoreState): HomeStoreViewModel

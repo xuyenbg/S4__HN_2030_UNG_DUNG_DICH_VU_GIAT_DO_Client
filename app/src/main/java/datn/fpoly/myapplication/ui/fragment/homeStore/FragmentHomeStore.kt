@@ -26,6 +26,7 @@ import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Utils
 
 import timber.log.Timber
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -58,16 +59,17 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
         } else {
             TODO("VERSION.SDK_INT < O")
         }
+        val week = Utils.getWeekByMonth(LocalDate.now())
 
 
         ////
         idStore?.let { HomeStoreViewAction.GetStatisticalByToday(it) }?.let { viewModel.handle(it) }
         idStore?.let { HomeStoreViewAction.GetStatisticalByMonth(it, month.toInt()) }
             ?.let { viewModel.handle(it) }
-
+        idStore?.let { HomeStoreViewAction.GetStatisticalByWeek(it, week) }
+            ?.let { viewModel.handle(it) }
 
         storeModel = Hawk.get<StoreModel>(Common.KEY_STORE)
-        Log.d("viewModel", "onViewCreated: ${storeModel?.status}")
         views.swOpendClose.isChecked = storeModel?.status == 1
 
         views.listOrder.adapter = tabLayoutAdapter
