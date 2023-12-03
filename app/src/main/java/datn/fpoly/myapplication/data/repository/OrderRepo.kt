@@ -63,4 +63,6 @@ class OrderRepo @Inject constructor(
 
     fun getStatisticalByMonth(idStore: String, month: Int): Observable<StatisticalModel> =
         api.getStatisticalByMonth(idStore, month).subscribeOn(Schedulers.io())
+    fun getStatisticalByWeek(idStore: String, week: Int): Observable<StatisticalModel> =
+        api.getStatisticalByWeek(idStore, week).subscribeOn(Schedulers.io())
 }
