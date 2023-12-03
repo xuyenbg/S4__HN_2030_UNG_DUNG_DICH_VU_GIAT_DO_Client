@@ -30,7 +30,8 @@ data class HomeStoreState(
     val stateOpendCloseStore : Async<Response<ResponseBody>> = Uninitialized,
     val stateFilterOrder : Async<MutableList<OrderResponse>> = Uninitialized,
     val stateStatisticalByToday : Async<StatisticalModel> = Uninitialized,
-    val stateStatisticalByMonth : Async<StatisticalModel> = Uninitialized
+    val stateStatisticalByMonth : Async<StatisticalModel> = Uninitialized,
+    val stateStatisticalByWeek : Async<StatisticalModel> = Uninitialized
 
 ) : MvRxState {
     fun isLoading(): Boolean {

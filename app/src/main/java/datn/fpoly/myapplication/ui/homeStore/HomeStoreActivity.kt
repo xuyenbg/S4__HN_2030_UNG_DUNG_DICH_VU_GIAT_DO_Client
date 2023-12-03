@@ -26,6 +26,8 @@ import datn.fpoly.myapplication.ui.fragment.orderStore.OrderStoreFragment
 import datn.fpoly.myapplication.ui.fragment.serviceStore.ServicesStoreFragment
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Dialog_Loading
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -62,20 +64,21 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>(), HomeStoreVie
             is Loading -> {
                 Timber.tag("Loading").e("getDataCate: Loading")
             }
+
             is Success -> {
 
                 state.stateCate.invoke()?.let {
                     Hawk.put(Common.KEY_LIST_CATE, it)
                 }
             }
+
             is Fail -> {
                 Timber.tag("ERROR").e("getDataCate: Fail")
             }
+
             else -> {}
         }
     }
-
-
     fun setViewNavigation() {
         listFragment.add(0, FragmentHomeStore())
         listFragment.add(1, ServicesStoreFragment())

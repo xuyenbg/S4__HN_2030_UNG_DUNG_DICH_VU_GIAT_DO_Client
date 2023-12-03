@@ -46,7 +46,7 @@ class PostClientFragment : BaseFragment<FragmentPostClientBinding>() {
         postClientAdapter.setListener(object : PostClientAdapter.PostListener {
             override fun onClickPost(postModel: PostModel) {
                 val intent = Intent(requireContext(), DetailStoreActivity::class.java)
-                intent.putExtra(Common.KEY_ID_STORE,postModel.idStore.idUser)
+                intent.putExtra(Common.KEY_ID_STORE,postModel.idStore.id)
                 startActivity(intent)
             }
         })
