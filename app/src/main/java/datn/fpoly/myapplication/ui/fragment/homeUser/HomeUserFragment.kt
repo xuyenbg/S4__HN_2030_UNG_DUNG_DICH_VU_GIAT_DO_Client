@@ -27,6 +27,7 @@ import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.CategoryModel
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.data.model.StoreNearplaceModel
+import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.databinding.FragmentHomeUserBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterCategory
 import datn.fpoly.myapplication.ui.adapter.AdapterStore
@@ -37,6 +38,7 @@ import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
 import datn.fpoly.myapplication.ui.listService.ListServiceActivity
 import datn.fpoly.myapplication.ui.map.PickPossitionInMapActivity
+import datn.fpoly.myapplication.ui.notification.NotificationActivity
 import datn.fpoly.myapplication.ui.searchService.SearchServiceActivity
 import datn.fpoly.myapplication.ui.seeMore.SeeMoreActivity
 import datn.fpoly.myapplication.utils.Common
@@ -57,6 +59,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     private var imageList: MutableList<Int> = mutableListOf()
     private lateinit var adapter: SlideImageAdapter
     private lateinit var fusedLoaction: FusedLocationProviderClient
+    private var account: AccountModel?=null
 
     override fun getBinding(
         inflater: LayoutInflater,
@@ -111,7 +114,11 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
             val intent = Intent(requireContext(), SearchServiceActivity::class.java)
             requireContext().startActivity(intent)
         }
-
+        views.imgNotification.setOnClickListener {
+            val intent = Intent(requireContext(), NotificationActivity::class.java)
+            intent.putExtra(Common.KEY_ID_USER, account?.id)
+            requireContext().startActivity(intent)
+        }
         initSlide()
         views.refLayout.setOnRefreshListener {
             if (!views.refLayout.isRefreshing) {
@@ -141,6 +148,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
 
     override fun onResume() {
         super.onResume()
+        account = Hawk.get<AccountModel>("Account", null)
         viewModel.handle(HomeViewAction.HomeActionCategory)
         if (Common.getMyLocationLatitude(requireContext()) != 0f && Common.getMyLocationLongitude(
                 requireContext()

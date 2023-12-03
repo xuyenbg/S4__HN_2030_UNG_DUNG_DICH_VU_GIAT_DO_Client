@@ -22,6 +22,7 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -59,6 +60,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
     private var check = false
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var phoneNumber: String
+    private var isStatActivity= true
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
@@ -121,13 +123,17 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                 state.stateStore.invoke()?.let {
                     runBlocking {
                         launch {
-                            Hawk.put(Common.KEY_STORE, it)
-                            startActivity(
-                                Intent(
-                                    this@OTPLoginActivity,
-                                    HomeStoreActivity::class.java
-                                ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            )
+                            if(isStatActivity){
+                                isStatActivity= false
+                                Hawk.put(Common.KEY_STORE, it)
+                                startActivity(
+                                    Intent(
+                                        this@OTPLoginActivity,
+                                        HomeStoreActivity::class.java
+                                    ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                )
+                            }
+
                         }
                     }
                 }
@@ -150,16 +156,15 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                             // account chứa cả đối tượng và message
                             val account = result
                             account.user.id?.let {
-                                Firebase.messaging.subscribeToTopic(it)
-                                    .addOnCompleteListener {
-                                        if (it.isSuccessful) {
-                                            Timber.tag("AAAAAAAAAAA")
-                                                .e("updateWithState: Đăng ký topic thàng công")
-                                        } else {
-                                            Timber.tag("AAAAAAAAAAA")
-                                                .e("updateWithState: Đăng ký topic thất bại")
-                                        }
+                                FirebaseMessaging.getInstance().subscribeToTopic(it).addOnCompleteListener {
+                                    if (it.isSuccessful) {
+                                        Timber.tag("AAAAAAAAAAA")
+                                            .e("updateWithState: Đăng ký topic thàng công")
+                                    } else {
+                                        Timber.tag("AAAAAAAAAAA")
+                                            .e("updateWithState: Đăng ký topic thất bại")
                                     }
+                                }
                             }
                             if (account.message == "Đăng nhập thành công") {
                                 authRepo.saveUser(accountResponse = account.user)

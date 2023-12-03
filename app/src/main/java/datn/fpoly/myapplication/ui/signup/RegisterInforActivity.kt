@@ -9,6 +9,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -83,16 +84,25 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
                             if (check == 200) {
                                 val account = s.body()?.let { parseJsonToAccountList(it.string()) }
                                 account?.user?.id?.let {
-                                    Firebase.messaging.subscribeToTopic(it)
-                                        .addOnCompleteListener {
-                                            if (it.isSuccessful) {
-                                                Timber.tag("AAAAAAAAAAAAAAAAA")
-                                                    .e("updateWithState: Đăng ký topic thành công")
-                                            } else {
-                                                Timber.tag("AAAAAAAAAAAAAAAAA")
-                                                    .e("updateWithState: Đăng ký topic thất bại")
-                                            }
+                                    FirebaseMessaging.getInstance().subscribeToTopic(it).addOnCompleteListener {
+                                        if (it.isSuccessful) {
+                                            Timber.tag("AAAAAAAAAAA")
+                                                .e("updateWithState: Đăng ký topic thàng công")
+                                        } else {
+                                            Timber.tag("AAAAAAAAAAA")
+                                                .e("updateWithState: Đăng ký topic thất bại")
                                         }
+                                    }
+//                                    Firebase.messaging.subscribeToTopic(it)
+//                                        .addOnCompleteListener {
+//                                            if (it.isSuccessful) {
+//                                                Timber.tag("AAAAAAAAAAAAAAAAA")
+//                                                    .e("updateWithState: Đăng ký topic thành công")
+//                                            } else {
+//                                                Timber.tag("AAAAAAAAAAAAAAAAA")
+//                                                    .e("updateWithState: Đăng ký topic thất bại")
+//                                            }
+//                                        }
                                 }
                                 Log.d("Log In", "Log in successful $s")
 

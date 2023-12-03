@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseFragment
@@ -44,12 +45,22 @@ class FragmentSetting : BaseFragment<FragmentProfileUserBinding>() {
         views.btnLogOut.setOnClickListener {
             Dialog_Loading.getInstance().show(childFragmentManager, "Loading_logour")
             val handler = Handler(Looper.getMainLooper())
-            handler.postDelayed({
-                FirebaseAuth.getInstance().signOut()
-                Hawk.delete("Account");
-                Hawk.put("CheckLogin", false)
-                startActivity(Intent(requireContext(), SignInActivity::class.java))
-            }, 3000)
+            account?.id?.let { it1 ->
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(it1)
+                    .addOnCompleteListener {
+                        if(it.isSuccessful){
+                            handler.postDelayed({
+                                FirebaseAuth.getInstance().signOut()
+
+                                Hawk.delete("Account");
+                                Hawk.put("CheckLogin", false)
+                                startActivity(Intent(requireContext(), SignInActivity::class.java))
+                            }, 3000)
+                        }
+
+                    }
+            }
+
 
         }
         views.tvFullname.text = account?.fullname
@@ -71,7 +82,7 @@ class FragmentSetting : BaseFragment<FragmentProfileUserBinding>() {
             startActivity(Intent(requireContext(), FavoriteStoreActivity::class.java))
         }
         views.tvOrderHistory.setOnClickListener {
-            startActivity(Intent(requireContext(),HistoryOrderActivity::class.java))
+            startActivity(Intent(requireContext(), HistoryOrderActivity::class.java))
         }
         views.tvEditProfile.setOnClickListener {
             startActivity(

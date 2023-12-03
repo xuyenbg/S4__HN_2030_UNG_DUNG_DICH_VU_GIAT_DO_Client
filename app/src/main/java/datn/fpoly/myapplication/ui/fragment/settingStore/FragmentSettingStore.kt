@@ -16,6 +16,7 @@ import com.airbnb.mvrx.withState
 import com.bumptech.glide.Glide
 import datn.fpoly.myapplication.core.BaseFragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.StoreModel
@@ -27,6 +28,7 @@ import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewModel
 import datn.fpoly.myapplication.ui.login.SignInActivity
 import datn.fpoly.myapplication.ui.myshop.MyShopActivity
+import datn.fpoly.myapplication.ui.notification.NotificationActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
@@ -52,12 +54,22 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
         views.btnLogOut.setOnClickListener {
             Dialog_Loading.getInstance().show(childFragmentManager, "Loading_logour")
             val handler = Handler(Looper.getMainLooper())
-            handler.postDelayed({
-                FirebaseAuth.getInstance().signOut()
-                Hawk.delete("Account");
-                Hawk.put("CheckLogin", false)
-                startActivity(Intent(requireContext(), SignInActivity::class.java))
-            }, 3000)
+            storeModel?.iduser?.id?.let { it1 ->
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(
+                    it1
+                ).addOnCompleteListener {
+                    if(it.isSuccessful){
+                        handler.postDelayed({
+                            FirebaseAuth.getInstance().signOut()
+                            Hawk.delete("Account");
+                            Hawk.put("CheckLogin", false)
+                            startActivity(Intent(requireContext(), SignInActivity::class.java))
+                        }, 3000)
+                    }
+
+                }
+            }
+
         }
         views.tvOrderHistory.setOnClickListener {
             val intent = Intent(requireContext(), HistoryStoreActivity::class.java)
@@ -70,6 +82,11 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
         views.tvStore.setOnClickListener {
             val intent = Intent(requireContext(), MyShopActivity::class.java)
             startActivity(intent)
+        }
+        views.tvNotifications.setOnClickListener {
+            val intent = Intent(requireContext(), NotificationActivity::class.java)
+            intent.putExtra(Common.KEY_ID_USER, storeModel?.iduser?.id)
+            requireContext().startActivity(intent)
         }
     }
 

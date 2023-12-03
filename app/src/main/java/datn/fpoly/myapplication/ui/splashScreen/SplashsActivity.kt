@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.model.LatLng
@@ -31,7 +32,10 @@ import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.ui.login.SignInActivity
 import javax.inject.Inject
 import com.airbnb.mvrx.viewModel
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.orhanobut.hawk.Hawk
+import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.data.repository.AuthRepo
 import kotlinx.coroutines.runBlocking
@@ -87,6 +91,20 @@ class SplashsActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.F
                 finish()
             }, 3000)
         }
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            Log.d("AAAAAAAAAAAA", "token: "+token)
+
+        })
     }
     private fun updateStateGetAccount(state: SplashState){
         when(state.stateUser){
@@ -126,6 +144,8 @@ class SplashsActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.F
                 Timber.tag("AAAAAAAAAAAA").e("updateStateGetAccount: Success account")
             }
             is Fail->{
+                startActivity(Intent(this@SplashsActivity, SignInActivity::class.java))
+                finish()
                 Timber.tag("AAAAAAAAAAAA").e("updateStateGetAccount: Fail account")
             }
             else->{
@@ -152,6 +172,8 @@ class SplashsActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.F
                 Timber.tag("AAAAAAAAAAAA").e("updateStateGetAccount: Success account")
             }
             is Fail->{
+                startActivity(Intent(this@SplashsActivity, SignInActivity::class.java))
+                finish()
                 Timber.tag("AAAAAAAAAAAA").e("updateStateGetAccount: Fail account")
             }
             else->{

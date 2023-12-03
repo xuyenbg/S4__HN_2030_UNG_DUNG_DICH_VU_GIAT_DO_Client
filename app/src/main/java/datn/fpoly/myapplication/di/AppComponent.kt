@@ -19,6 +19,7 @@ import datn.fpoly.myapplication.ui.listServiceByName.ListServiceByNameActivity
 import datn.fpoly.myapplication.ui.login.OTPLoginActivity
 import datn.fpoly.myapplication.ui.myProfileUser.MyProfileActivity
 import datn.fpoly.myapplication.ui.myshop.MyShopActivity
+import datn.fpoly.myapplication.ui.notification.NotificationActivity
 import datn.fpoly.myapplication.ui.order.OrderDetailActivity
 import datn.fpoly.myapplication.ui.order.OrderDetailStoreActivity
 import datn.fpoly.myapplication.ui.postService.AddServiceActivity
@@ -69,6 +70,7 @@ interface AppComponent {
     fun inject(activity: UpdateAddressActivity)
     fun inject(activity: SearchServiceActivity)
     fun inject(activity: HistoryOrderActivity)
+    fun inject(activity: NotificationActivity)
 
 
     @Component.Factory

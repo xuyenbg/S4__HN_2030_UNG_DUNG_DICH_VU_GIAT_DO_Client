@@ -3,6 +3,7 @@ package datn.fpoly.myapplication.ui.fragment.homeStore
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.format.DateUtils
@@ -22,6 +23,7 @@ import datn.fpoly.myapplication.ui.fragment.homeStore.adapter.TabLayoutAdapter
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewModel
+import datn.fpoly.myapplication.ui.notification.NotificationActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Utils
 
@@ -104,6 +106,11 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
         }
         if (storeModel?.status == 0) {
             dialogMessage(requireContext())
+        }
+        views.icNotification.setOnClickListener {
+            val intent = Intent(requireContext(), NotificationActivity::class.java)
+            intent.putExtra(Common.KEY_ID_USER, storeModel?.iduser?.id)
+            requireContext().startActivity(intent)
         }
 
     }
