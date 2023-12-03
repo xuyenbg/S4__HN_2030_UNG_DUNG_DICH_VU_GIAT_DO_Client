@@ -73,4 +73,9 @@ object AppModule {
         return remoteDataSource.buildApi(APIUpload::class.java, context)
     }
 
+    @Provides
+    fun providerNotifyApi(remoteDataSource: RemoteDataSource, context: Context): APINotifycation {
+        return remoteDataSource.buildApi(APINotifycation::class.java, context)
+    }
+
 }

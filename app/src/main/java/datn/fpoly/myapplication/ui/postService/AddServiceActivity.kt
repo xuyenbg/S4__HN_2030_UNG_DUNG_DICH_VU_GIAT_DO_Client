@@ -32,6 +32,7 @@ import com.google.gson.Gson
 import datn.fpoly.myapplication.data.model.StoreModel
 import com.airbnb.mvrx.viewModel
 import datn.fpoly.myapplication.utils.DataRaw
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -45,6 +46,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
     lateinit var adapterAttribute: AdapterPostAttribute
     private var unit = ""
     private var limitPriceSale: Int = 0
+    private var dialog: Dialog_Loading?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
@@ -107,20 +109,21 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
 
         }
         val items = mutableListOf<String>()
-        items.add("")
+        items.add("Chọn đơn vị")
         items.add("%")
         items.add("VNĐ")
         val adapter = ArrayAdapter(this, R.layout.simple_spinner_item, items)
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         views.spinnerUnitSale.adapter = adapter
         views.spinnerUnitSale.setSelection(0)
+        views.spinnerUnitSale.isSelected = true
         views.spinnerUnitSale.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 when (p2) {
-                    0 -> {
+                    1 -> {
                         limitPriceSale = 100
                     }
-                    1 -> {
+                    2 -> {
                         limitPriceSale = -1
                     }
                 }
@@ -540,20 +543,23 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
     }
 
     fun updateStatePost(state: AddServiceViewState) {
+        dialog = Dialog_Loading.getInstance()
         when (state.stateService) {
             is Loading -> {
+                dialog?.show(supportFragmentManager,"Loading Add Service")
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Loading")
             }
             is Success -> {
                 state.stateService.invoke()?.let {
                     Toast.makeText(this, "${it.message()}", Toast.LENGTH_SHORT).show()
-
                     Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: " + it.message())
                 }
                 setResult(Common.CODE_LOAD_DATA)
                 onBackPressedDispatcher.onBackPressed()
             }
             is Fail -> {
+                dialog?.dismiss()
+                dialog=null
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Fail")
             }
             else -> {}
@@ -563,6 +569,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
     fun updateStateUpdate(state: AddServiceViewState) {
         when (state.stateServiceUpdate) {
             is Loading -> {
+                Dialog_Loading.getInstance().show(supportFragmentManager,"Loading Add Service")
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Loading")
             }
             is Success -> {
@@ -574,6 +581,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 onBackPressedDispatcher.onBackPressed()
             }
             is Fail -> {
+                Dialog_Loading.getInstance().dismiss()
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Fail")
             }
             else -> {}

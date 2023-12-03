@@ -40,7 +40,6 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(views.root)
     }
 
     override fun initUiAndData() {

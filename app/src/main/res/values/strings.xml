@@ -65,13 +65,13 @@
     <string name="money_example">900.000 đ</string>
     <string name="this_week">Tuần này</string>
     <string name="this_month">Tháng này</string>
-    <string name="statistics_detail"><![CDATA[<u>Thống kê chi tiết</u> >>]]></string>
+    <string name="statistics_detail">Thống kê chi tiết</string>
     <string name="status_name_order_example">Chờ nhận đồ(10)</string>
     <string name="datetime_example">11:00 11/07/2023</string>
     <string name="order_id_example">#ahfdlfl0132355465</string>
     <string name="order_id_example2">ahfdlfl0132355465</string>
     <string name="full_name_example">Nguyễn Văn Trường</string>
-    <string name="phone_number_example"><![CDATA[<u>0987654321</u>]]></string>
+    <string name="phone_number_example">0987654321</string>
     <string name="phone_number_example2">0987654321</string>
     <string name="waiting_confirm">Chờ xác nhận</string>
     <string name="received">Nhận đồ</string>

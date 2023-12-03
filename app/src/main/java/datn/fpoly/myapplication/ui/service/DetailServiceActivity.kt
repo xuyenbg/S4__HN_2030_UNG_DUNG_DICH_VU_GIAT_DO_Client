@@ -14,6 +14,7 @@ import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
+import datn.fpoly.myapplication.data.model.AttributeModel
 import datn.fpoly.myapplication.data.model.ItemServiceBase
 import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.model.ServiceExtend
@@ -21,6 +22,7 @@ import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.databinding.ActivityDetailServiceBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterAttribute
 import datn.fpoly.myapplication.ui.adapter.AdapterService
+import datn.fpoly.myapplication.ui.address.check_out.CheckOutActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 import datn.fpoly.myapplication.utils.Dialog_Loading
@@ -93,20 +95,17 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
         serviceExtend?.attributeList?.let {
             adapterAttribute.setData(it)
         }
+        adapterAttribute.setListenner(object : AdapterAttribute.AttributeListenner {
+            override fun onClickItem(attributeModel: AttributeModel) {
+
+            }
+        })
         views.btnAddCart.setOnClickListener {
             for (index in 0 until adapterAttribute.listAttributeSelect.size) {
-                Log.e(
-                    "AAAAAAAAAAA",
-                    "onCreate: name: " + adapterAttribute.listAttributeSelect[index].name
-                )
+                Timber.tag("AAAAAAAAAAA").e("onCreate: name: " + adapterAttribute.listAttributeSelect[index].name)
             }
-            Toast.makeText(
-                this,
-                "list attribute select: size: " + adapterAttribute.listAttributeSelect.size,
-                Toast.LENGTH_SHORT
-            ).show()
             if (serviceExtend != null) {
-                Log.d("USER", authRepo.getUser().toString())
+                Timber.tag("USER").d(authRepo.getUser().toString())
                 if (cart.idStore != null && cart.idStore?.equals(serviceExtend!!.idStore?.id) == false) {
                     Toast.makeText(
                         this,
@@ -156,6 +155,39 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
                 quality -= 1
                 views.tvQuantity.text = quality.toInt().toString()
             }
+        }
+        views.btnOrder.setOnClickListener {
+            val list = mutableListOf<ItemServiceBase>()
+            list.add((ItemServiceBase(
+                views.tvQuantity.text.toString().toDouble(),
+                (serviceExtend?.price?.times((views.tvQuantity.text.toString().toInt()))),
+                null,
+                serviceExtend?.id,
+                serviceExtend,
+                adapterAttribute.listAttributeSelect,
+                adapterAttribute.listAttributeSelect.map { attr -> attr.id }
+                    .toMutableList()
+
+            )))
+            val orderBase = OrderBase(
+                authRepo.getUser()?.id,
+                serviceExtend?.idStore?.id,
+                (serviceExtend?.price?.times((views.tvQuantity.text.toString().toInt()))),
+                "",
+                "",
+                "",
+                0.0,
+                0,
+                "",
+                false,
+                list
+            )
+            startActivity(
+                Intent(
+                    this@DetailServiceActivity,
+                    CheckOutActivity::class.java
+                ).putExtra(Common.KEY_CART, orderBase)
+            )
         }
 
     }

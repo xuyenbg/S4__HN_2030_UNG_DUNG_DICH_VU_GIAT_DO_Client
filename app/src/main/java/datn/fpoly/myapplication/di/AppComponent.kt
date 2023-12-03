@@ -7,7 +7,7 @@ import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.ui.address.AddressActivity
 import datn.fpoly.myapplication.ui.addAddress.AddAddressActivity
 import datn.fpoly.myapplication.ui.updateAddress.UpdateAddressActivity
-import datn.fpoly.myapplication.ui.check_out.CheckOutActivity
+import datn.fpoly.myapplication.ui.address.check_out.CheckOutActivity
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
 import datn.fpoly.myapplication.ui.editpost.EditPostActivity
 import datn.fpoly.myapplication.ui.favoriteStore.FavoriteStoreActivity
@@ -19,6 +19,7 @@ import datn.fpoly.myapplication.ui.listServiceByName.ListServiceByNameActivity
 import datn.fpoly.myapplication.ui.login.OTPLoginActivity
 import datn.fpoly.myapplication.ui.myProfileUser.MyProfileActivity
 import datn.fpoly.myapplication.ui.myshop.MyShopActivity
+import datn.fpoly.myapplication.ui.notification.NotificationActivity
 import datn.fpoly.myapplication.ui.order.OrderDetailActivity
 import datn.fpoly.myapplication.ui.order.OrderDetailStoreActivity
 import datn.fpoly.myapplication.ui.postService.AddServiceActivity
@@ -69,6 +70,7 @@ interface AppComponent {
     fun inject(activity: UpdateAddressActivity)
     fun inject(activity: SearchServiceActivity)
     fun inject(activity: HistoryOrderActivity)
+    fun inject(activity: NotificationActivity)
 
 
     @Component.Factory

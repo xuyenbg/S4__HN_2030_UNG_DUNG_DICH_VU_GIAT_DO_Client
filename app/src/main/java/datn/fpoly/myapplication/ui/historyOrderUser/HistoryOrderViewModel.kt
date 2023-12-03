@@ -10,15 +10,21 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
 import datn.fpoly.myapplication.data.repository.OrderRepo
+import datn.fpoly.myapplication.data.repository.RatePepo
 
 class HistoryOrderViewModel@AssistedInject constructor(
     @Assisted state: HistoryOrderViewState,
-    private val repo: OrderRepo
+    private val repo: OrderRepo,
+    private val respoRate: RatePepo
 ): BaseViewModel<HistoryOrderViewState,HistoryOrderViewAction,HistoryOrderViewEvent>(state) {
     override fun handle(action: HistoryOrderViewAction) {
         when(action){
             is HistoryOrderViewAction.GetListHistoryOrder->{
                 handleGetListOrder(action.idUser)
+            }
+            is HistoryOrderViewAction.AddRate->{
+                addRate(action.idStore, action.idUser, action.startNumber, action.content, action.idOrder)
+
             }
         }
     }
@@ -26,6 +32,10 @@ class HistoryOrderViewModel@AssistedInject constructor(
     private fun handleGetListOrder(idUser: String) {
         setState { copy(stateOrder = Loading()) }
         repo.getDataOrder(idUser).execute { copy(stateOrder = it) }
+    }
+    private fun addRate(idStore: String , idUser: String, startNumber: Float, content: String, idOrder: String){
+        setState { copy(stateRate = Loading()) }
+        respoRate.AddRate(idStore, idUser, startNumber, content, idOrder).execute { copy(stateRate= it) }
     }
 
     @AssistedFactory

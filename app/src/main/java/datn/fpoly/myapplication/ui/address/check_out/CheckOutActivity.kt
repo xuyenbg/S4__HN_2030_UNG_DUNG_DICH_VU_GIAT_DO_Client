@@ -1,4 +1,4 @@
-package datn.fpoly.myapplication.ui.check_out
+package datn.fpoly.myapplication.ui.address.check_out
 
 
 import android.app.Notification.CarExtender
@@ -16,6 +16,7 @@ import datn.fpoly.myapplication.data.model.AddressExtend
 import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.databinding.ActivityCheckOutBinding
 import datn.fpoly.myapplication.ui.address.AddressActivity
+import datn.fpoly.myapplication.ui.confirm.ConfirmActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 import kotlinx.coroutines.launch
@@ -27,7 +28,7 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
     @Inject
     lateinit var addPosFactory: CheckOutViewModel.Factory
 
-    private var adapterItemCart:AdapterItemCart? = null
+    private var adapterItemCart: AdapterItemCart? = null
 
     var cart: OrderBase? = null
 
@@ -106,9 +107,9 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
                     launch {
                         viewModel.clearCart()
                         state.stateInsertOrder = Uninitialized
+                        startActivity(Intent(this@CheckOutActivity, ConfirmActivity::class.java))
                     }
                 }
-                Toast.makeText(this, "Đặt dịch vụ thành công", Toast.LENGTH_SHORT).show()
             }
             is Fail ->{
                 Toast.makeText(this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show()

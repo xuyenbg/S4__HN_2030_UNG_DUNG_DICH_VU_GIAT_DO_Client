@@ -50,11 +50,8 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>(), HomeStoreVie
             inforUser = it
         }
         viewModel.handle(HomeStoreViewAction.GetListCategory)
-        inforUser?.id?.let { HomeStoreViewAction.GetStoreByIdUser(it) }
-            ?.let { viewModel.handle(it) }
         viewModel.subscribe(this) {
             getDataCate(it)
-            getDataStore(it)
         }
         if (!Common.checkPermissionNotify(this)) {
             Common.requestPermissionNotify(this)
@@ -77,31 +74,6 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>(), HomeStoreVie
 
             is Fail -> {
                 Timber.tag("ERROR").e("getDataCate: Fail")
-            }
-
-            else -> {}
-        }
-    }
-
-    private fun getDataStore(state: HomeStoreState) {
-        when (state.stateGetStore) {
-            is Loading -> {
-                Timber.tag("Loading").e("getDataStore: Loading")
-            }
-
-            is Success -> {
-                runBlocking {
-                    launch {
-                        state.stateGetStore.invoke()?.let {
-                            Hawk.put(Common.KEY_STORE, it)
-                        }
-                    }
-                }
-
-            }
-
-            is Fail -> {
-                Timber.tag("ERROR").e("getDataStore: Fail")
             }
 
             else -> {}

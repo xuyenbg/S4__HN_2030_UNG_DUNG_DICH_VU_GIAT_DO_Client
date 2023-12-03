@@ -13,9 +13,12 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
+import com.bumptech.glide.Glide
 import datn.fpoly.myapplication.core.BaseFragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.orhanobut.hawk.Hawk
+import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.FragmentProfileStoreBinding
@@ -25,6 +28,7 @@ import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewModel
 import datn.fpoly.myapplication.ui.login.SignInActivity
 import datn.fpoly.myapplication.ui.myshop.MyShopActivity
+import datn.fpoly.myapplication.ui.notification.NotificationActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
@@ -36,6 +40,7 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
     private val listOrderStore = arrayListOf<OrderResponse>()
     private var countUnconfimred = 0
     private var countConfirmed = 0
+    private var storeModel: StoreModel? = null
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -44,16 +49,27 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
-        viewModel.handle(HomeStoreViewAction.GetDataOrderStore(idStore!!, "desc"))
+        idStore?.let { HomeStoreViewAction.GetDataOrderStore(it, "desc") }
+            ?.let { viewModel.handle(it) }
         views.btnLogOut.setOnClickListener {
             Dialog_Loading.getInstance().show(childFragmentManager, "Loading_logour")
             val handler = Handler(Looper.getMainLooper())
-            handler.postDelayed({
-                FirebaseAuth.getInstance().signOut()
-                Hawk.delete("Account");
-                Hawk.put("CheckLogin", false)
-                startActivity(Intent(requireContext(), SignInActivity::class.java))
-            }, 3000)
+            storeModel?.iduser?.id?.let { it1 ->
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(
+                    it1
+                ).addOnCompleteListener {
+                    if(it.isSuccessful){
+                        handler.postDelayed({
+                            FirebaseAuth.getInstance().signOut()
+                            Hawk.delete("Account");
+                            Hawk.put("CheckLogin", false)
+                            startActivity(Intent(requireContext(), SignInActivity::class.java))
+                        }, 3000)
+                    }
+
+                }
+            }
+
         }
         views.tvOrderHistory.setOnClickListener {
             val intent = Intent(requireContext(), HistoryStoreActivity::class.java)
@@ -67,6 +83,19 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
             val intent = Intent(requireContext(), MyShopActivity::class.java)
             startActivity(intent)
         }
+        views.tvNotifications.setOnClickListener {
+            val intent = Intent(requireContext(), NotificationActivity::class.java)
+            intent.putExtra(Common.KEY_ID_USER, storeModel?.iduser?.id)
+            requireContext().startActivity(intent)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        storeModel = Hawk.get(Common.KEY_STORE)
+        views.tvFullname.text = storeModel?.name
+        Glide.with(views.imgAvatar).load(storeModel?.imageQACode).error(R.drawable.avatar_profile)
+            .into(views.imgAvatar)
     }
 
     override fun invalidate(): Unit = withState(viewModel) {

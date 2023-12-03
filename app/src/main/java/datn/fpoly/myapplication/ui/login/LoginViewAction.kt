@@ -4,4 +4,5 @@ import datn.fpoly.myapplication.core.ViewAction
 
 sealed class LoginViewAction : ViewAction {
     data class LoginAction(val phone: String, val userId: String) : LoginViewAction()
+    data class GetStoreDetail(val idUser: String): LoginViewAction()
 }

@@ -19,7 +19,7 @@ import javax.inject.Singleton
 class AuthRepo @Inject constructor(
     private val api: AuthApi
 ) {
-    fun login(phone: String, userId: String): Observable<Response<ResponseBody>> =
+    fun login(phone: String, userId: String): Observable<LoginResponse> =
         api.login(AcountLogin(phone, userId)).subscribeOn(Schedulers.io())
 
     fun register(
