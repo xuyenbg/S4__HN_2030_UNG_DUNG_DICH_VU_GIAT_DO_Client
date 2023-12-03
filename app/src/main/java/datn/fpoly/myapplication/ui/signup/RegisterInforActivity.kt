@@ -86,11 +86,11 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
                                     Firebase.messaging.subscribeToTopic(it)
                                         .addOnCompleteListener {
                                             if (it.isSuccessful) {
-                                                Timber.tag("AAAAAAAAAA")
-                                                    .e("updateWithState: đăng ký topic thàng công%s", it.result.toString())
+                                                Timber.tag("AAAAAAAAAAAAAAAAA")
+                                                    .e("updateWithState: Đăng ký topic thành công")
                                             } else {
-                                                Timber.tag("AAAAAAAAAA")
-                                                    .e("updateWithState: đăng ký topic thàng công%s", it.exception.toString())
+                                                Timber.tag("AAAAAAAAAAAAAAAAA")
+                                                    .e("updateWithState: Đăng ký topic thất bại")
                                             }
                                         }
                                 }

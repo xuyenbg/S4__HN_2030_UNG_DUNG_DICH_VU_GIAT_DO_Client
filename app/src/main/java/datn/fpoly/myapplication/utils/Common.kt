@@ -57,6 +57,7 @@ object Common {
     val KEY_LATITUDE = "MY_LATITUDE"
     val KEY_LONGITUDE ="MY_LONGITUDE"
     val KEY_CART="cart_order"
+    val KEY_ACCOUNT="getAccount"
 
     fun ComponentActivity.registerStartForActivityResult(onResult: (ActivityResult) -> Unit): ActivityResultLauncher<Intent> {
         return registerForActivityResult(ActivityResultContracts.StartActivityForResult(), onResult)
@@ -162,7 +163,7 @@ object Common {
         dialog.setContentView(binding.root)
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
-        dialog.window?.setBackgroundDrawableResource(Color.TRANSPARENT)
+        dialog.window?.setBackgroundDrawableResource(R.color.tran)
         dialog.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         binding.btnConnectNow.setOnClickListener {
             (context as Activity).startActivityForResult(
@@ -181,7 +182,7 @@ object Common {
         val dialog = Dialog(context)
         val binding = DialogGpsBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(binding.root)
-        dialog.window?.setBackgroundDrawableResource(Color.TRANSPARENT)
+        dialog.window?.setBackgroundDrawableResource(R.color.tran)
         dialog.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)

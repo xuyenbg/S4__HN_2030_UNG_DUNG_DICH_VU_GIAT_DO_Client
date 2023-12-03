@@ -1,14 +1,27 @@
 package datn.fpoly.myapplication.ui.fragment.homeUser
 
 
+import android.Manifest
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.LocationRequest
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import com.airbnb.mvrx.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.OnTokenCanceledListener
 import datn.fpoly.myapplication.core.BaseFragment
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.CategoryModel
@@ -23,10 +36,13 @@ import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
 import datn.fpoly.myapplication.ui.listService.ListServiceActivity
+import datn.fpoly.myapplication.ui.map.PickPossitionInMapActivity
 import datn.fpoly.myapplication.ui.searchService.SearchServiceActivity
 import datn.fpoly.myapplication.ui.seeMore.SeeMoreActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.DataRaw
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -40,6 +56,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     private lateinit var handler: Handler
     private var imageList: MutableList<Int> = mutableListOf()
     private lateinit var adapter: SlideImageAdapter
+    private lateinit var fusedLoaction: FusedLocationProviderClient
 
     override fun getBinding(
         inflater: LayoutInflater,
@@ -48,7 +65,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        fusedLoaction = LocationServices.getFusedLocationProviderClient(requireActivity())
         adapter = SlideImageAdapter(views.vpSlideShow)
 
         adapterCate = AdapterCategory(6, false)
@@ -97,7 +114,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
 
         initSlide()
         views.refLayout.setOnRefreshListener {
-            if(!views.refLayout.isRefreshing){
+            if (!views.refLayout.isRefreshing) {
                 viewModel.handle(HomeViewAction.HomeActionCategory)
                 viewModel.handle(
                     HomeViewAction.HomeActionGetListStore(
@@ -108,22 +125,88 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
             }
 
         }
-
+        if (Common.getMyLocationLatitude(requireContext()) == 0f && Common.getMyLocationLongitude(
+                requireContext()
+            ) == 0f
+        ) {
+            dialogGPS(requireContext())
+        }else{
+            if(!Common.checkPermission(requireContext())){
+                getCurrentLocation()
+            }
+        }
 
     }
+
 
     override fun onResume() {
         super.onResume()
         viewModel.handle(HomeViewAction.HomeActionCategory)
-        viewModel.handle(
-            HomeViewAction.HomeActionGetListStore(
-                Common.getMyLocationLatitude(requireContext()),
-                Common.getMyLocationLongitude(requireContext())
+        if (Common.getMyLocationLatitude(requireContext()) != 0f && Common.getMyLocationLongitude(
+                requireContext()
+            ) != 0f
+        ) {
+            viewModel.handle(
+                HomeViewAction.HomeActionGetListStore(
+                    Common.getMyLocationLatitude(requireContext()),
+                    Common.getMyLocationLongitude(requireContext())
+                )
             )
-        )
-//        handler.postDelayed(runnable, 2000)
-    }
+        }
 
+    }
+    private fun getCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            fusedLoaction.getCurrentLocation(
+                LocationRequest.QUALITY_HIGH_ACCURACY,
+                object : CancellationToken() {
+                    override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
+
+                        return CancellationTokenSource().token
+                    }
+
+                    override fun isCancellationRequested(): Boolean {
+                        return false
+                    }
+
+                }).addOnSuccessListener() {
+                if (it != null) {
+                   Common.setMyLocation(requireContext(), LatLng(it.latitude, it.longitude))
+                    viewModel.handle(HomeViewAction.HomeActionGetListStore(it.latitude.toFloat(),it.longitude.toFloat()))
+                }
+            }
+        }
+
+    }
+    private fun dialogGPS(context: Context){
+        val build = AlertDialog.Builder(context)
+        build.setTitle("Thông báo")
+        build.setMessage("Lấy thông tin vị trí")
+        build.setPositiveButton("Lấy vị trí", DialogInterface.OnClickListener { dialogInterface, i ->
+            val intent = Intent(context, PickPossitionInMapActivity::class.java)
+            requireActivity().startActivity(intent)
+        })
+        build.setNegativeButton("Đóng", DialogInterface.OnClickListener { dialogInterface, i ->
+            dialogInterface.dismiss()
+            viewModel.handle(
+                HomeViewAction.HomeActionGetListStore(
+                    Common.getMyLocationLatitude(requireContext()),
+                    Common.getMyLocationLongitude(requireContext())
+                )
+            )
+        })
+        val dialog = build.create()
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
+    }
     override fun invalidate(): Unit = withState(viewModel) {
         getListCate(it)
         getListStore(it)

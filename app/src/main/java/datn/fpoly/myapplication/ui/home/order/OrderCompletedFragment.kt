@@ -37,6 +37,7 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var orderAdapter: OrderAdapter
     lateinit var dialog: Dialog
+    private var dialogLoading : Dialog_Loading?=null
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -157,19 +158,22 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
     }
 
     private fun updateStateAddRate(state: HomeViewState){
+        dialogLoading= Dialog_Loading.getInstance()
         when(state.stateRate){
             is Loading-> {
-                Dialog_Loading.getInstance().show(childFragmentManager, "Loading Rate")
+               dialogLoading?.show(childFragmentManager, "Loading Rate")
                 Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:loading ")
             }
             is Success->{
-                activity?.onBackPressedDispatcher?.onBackPressed()
+                dialogLoading?.dismiss()
+                dialogLoading=null
                 dialog.dismiss()
                 Toast.makeText(requireContext(), "Đánh giá thành công", Toast.LENGTH_SHORT).show()
 
             }
             is Fail->{
-                activity?.onBackPressedDispatcher?.onBackPressed()
+                dialogLoading?.dismiss()
+                dialogLoading=null
                 Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:fail ")
             }
             else->{}

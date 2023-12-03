@@ -14,7 +14,7 @@ import datn.fpoly.myapplication.data.model.ItemServiceBase
 import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.databinding.ActivityOrderDetailBinding
-import datn.fpoly.myapplication.ui.check_out.AdapterItemCart
+import datn.fpoly.myapplication.ui.address.check_out.AdapterItemCart
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 import kotlinx.coroutines.launch
@@ -59,6 +59,11 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderVie
             views.btnAction.visibility=View.VISIBLE
             views.labelNoteTotal.visibility=View.VISIBLE
         }
+        if(intent.getBooleanExtra("store", false)){
+            views.btnActitonCancel.visibility=View.GONE
+        }else{
+            views.btnActitonCancel.visibility=View.VISIBLE
+        }
         views.btnActitonCancel.setOnClickListener {
             orderExtend?.id?.let { it1 -> OrderViewAction.UpdateStatus(it1, 5) }
                 ?.let { it2 -> viewModel.handle(it2) }
@@ -72,7 +77,7 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderVie
                     launch {
                         val order = state.stateOrderDetail.invoke()
                         orderExtend= order
-                        if(order?.status==0){
+                        if(order?.status==0&&intent.getBooleanExtra("store", false)){
                             views.btnActitonCancel.visibility=View.VISIBLE
                         }else{
                             views.btnActitonCancel.visibility=View.GONE

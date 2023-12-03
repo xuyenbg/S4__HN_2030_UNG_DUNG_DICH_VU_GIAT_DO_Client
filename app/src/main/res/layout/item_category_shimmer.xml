@@ -8,16 +8,16 @@
 
         <ImageView
             android:id="@+id/img_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/image_category"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_solid_opcity_white"
             />
         <TextView
             android:id="@+id/tv_category_service"
             style="@style/font_12_black_regular"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="Loading"
+            android:text=""
             android:layout_marginTop="4dp"
             />
 </LinearLayout>

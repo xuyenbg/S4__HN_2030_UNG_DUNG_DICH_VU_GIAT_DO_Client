@@ -41,7 +41,6 @@ class FragmentSetting : BaseFragment<FragmentProfileUserBinding>() {
     override fun invalidate() {
         super.invalidate()
         Log.d("FragmentSetting", "invalidate: $account")
-
         views.btnLogOut.setOnClickListener {
             Dialog_Loading.getInstance().show(childFragmentManager, "Loading_logour")
             val handler = Handler(Looper.getMainLooper())

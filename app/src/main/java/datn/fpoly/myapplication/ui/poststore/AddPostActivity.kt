@@ -36,6 +36,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
     lateinit var addPosFactory: AddPostViewModel.Factory
 
     private val viewModel: AddPostViewModel by viewModel()
+    private var dialogLoading: Dialog_Loading?=null
 
     override fun getBinding(): ActivityAddPostBinding {
         return ActivityAddPostBinding.inflate(layoutInflater)
@@ -142,6 +143,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
     }
 
     private fun updateWithState(state: AddPostViewState) {
+        dialogLoading= Dialog_Loading.getInstance()
         Timber.tag("AddPostActivity").d("chậgdhasjd: ")
         when (state.stateAddPost) {
             is Success -> {
@@ -163,14 +165,19 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
                         }
                     }
                 }
+                dialogLoading?.dismiss()
+                dialogLoading=null
             }
 
             is Loading -> {
                 //Xoay tròn indicate
+                dialogLoading?.show(supportFragmentManager,"Loading")
                 Timber.tag("AddPostActivity").d("loadiing: ")
             }
 
             is Fail -> {
+                dialogLoading?.dismiss()
+                dialogLoading=null
                 Timber.tag("AddPostActivity").e("Error: ")
             }
 

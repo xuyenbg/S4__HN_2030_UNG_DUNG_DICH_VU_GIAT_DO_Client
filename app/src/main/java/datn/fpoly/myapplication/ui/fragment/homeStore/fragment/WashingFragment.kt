@@ -55,9 +55,10 @@ class WashingFragment : BaseFragment<FragmentWashingBinding>() {
 //            val viewPager: ViewPager2 = requireActivity().findViewById(R.id.list_order)
 //            viewPager.currentItem = 2
         }, itemOnclick = {
-            val intent = Intent(context, OrderDetailStoreActivity::class.java)
+            val intent = Intent(requireContext(), OrderDetailStoreActivity::class.java)
             intent.putExtra(Common.KEY_ID_ORDER, it.id)
-            startActivity(intent)
+            intent.putExtra("store", true)
+            requireContext().startActivity(intent)
         })
         views.recycleviewWashing.adapter = orderStoreAdapter
         views.recycleviewWashing.addItemDecoration(ItemSpacingDecoration(46))

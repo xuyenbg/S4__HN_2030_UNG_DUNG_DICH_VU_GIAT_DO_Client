@@ -13,9 +13,11 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
+import com.bumptech.glide.Glide
 import datn.fpoly.myapplication.core.BaseFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.orhanobut.hawk.Hawk
+import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.FragmentProfileStoreBinding
@@ -36,6 +38,7 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
     private val listOrderStore = arrayListOf<OrderResponse>()
     private var countUnconfimred = 0
     private var countConfirmed = 0
+    private var storeModel: StoreModel? = null
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -44,7 +47,8 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
-        viewModel.handle(HomeStoreViewAction.GetDataOrderStore(idStore!!, "desc"))
+        idStore?.let { HomeStoreViewAction.GetDataOrderStore(it, "desc") }
+            ?.let { viewModel.handle(it) }
         views.btnLogOut.setOnClickListener {
             Dialog_Loading.getInstance().show(childFragmentManager, "Loading_logour")
             val handler = Handler(Looper.getMainLooper())
@@ -67,6 +71,14 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
             val intent = Intent(requireContext(), MyShopActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        storeModel = Hawk.get(Common.KEY_STORE)
+        views.tvFullname.text = storeModel?.name
+        Glide.with(views.imgAvatar).load(storeModel?.imageQACode).error(R.drawable.avatar_profile)
+            .into(views.imgAvatar)
     }
 
     override fun invalidate(): Unit = withState(viewModel) {

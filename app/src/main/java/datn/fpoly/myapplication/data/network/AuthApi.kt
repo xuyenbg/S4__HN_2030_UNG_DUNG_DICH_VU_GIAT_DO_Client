@@ -25,7 +25,7 @@ interface AuthApi {
 //        @Field("phone") phone: String,
 //        @Field("userId") userId: String
         @Body body: AcountLogin
-    ): Observable<Response<ResponseBody>>
+    ): Observable<LoginResponse>
 
     @POST("api/register")
     fun register(

@@ -40,6 +40,7 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
     lateinit var dialog: Dialog
     private val account = Hawk.get<AccountModel>("Account",null)
     private var idUser = account.id.toString()
+    private var dialogLoading: Dialog_Loading?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
@@ -131,17 +132,20 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
         }
     }
     private fun updateStateAddRate(state: HistoryOrderViewState){
+        dialogLoading= Dialog_Loading.getInstance()
         when(state.stateRate){
             is Loading-> {
-                Dialog_Loading.getInstance().show(supportFragmentManager,"Loading Rate")
+                dialogLoading?.show(supportFragmentManager,"Loading Rate")
                 Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:loading ")
             }
             is Success->{
-                onBackPressedDispatcher.onBackPressed()
+                dialogLoading?.dismiss()
+                dialogLoading=null
                 Toast.makeText(this, "Đánh giá thành công", Toast.LENGTH_SHORT).show()
             }
             is Fail->{
-                onBackPressedDispatcher.onBackPressed()
+                dialogLoading?.dismiss()
+                dialogLoading=null
                 Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:fail ")
             }
             else->{}
