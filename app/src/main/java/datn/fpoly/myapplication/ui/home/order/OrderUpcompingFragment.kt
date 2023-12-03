@@ -54,6 +54,11 @@ class OrderUncompingFragment : BaseFragment<FragmentOrderUpcompingBinding>() {
 
             }
         })
+        views.swipeToRefresh.setOnRefreshListener {
+            if(!views.swipeToRefresh.isRefreshing){
+                viewModel.handle(HomeViewAction.OrderActionGetList(account.id.toString()))
+            }
+        }
     }
 
     override fun invalidate() : Unit = withState(viewModel){
@@ -70,6 +75,9 @@ class OrderUncompingFragment : BaseFragment<FragmentOrderUpcompingBinding>() {
                 runBlocking {
                     launch {
                         it.stateOrder.invoke()?.let {
+                            views.shimmerLoading.visibility=View.GONE
+                            views.rcvItemOrderUncomping.visibility=View.VISIBLE
+                            views.swipeToRefresh.isRefreshing= false
                             Timber.tag("OrderUncompingFragment").d("orderUncompingInvalidate: ${it.size}")
                             orderAdapter.updateDataByStatus(it, listOf(0,1,2)) // Cập nhật danh sách đơn hàng đã hủy
                             views.rcvItemOrderUncomping.adapter = orderAdapter
@@ -80,10 +88,15 @@ class OrderUncompingFragment : BaseFragment<FragmentOrderUpcompingBinding>() {
                 }
             }
             is Loading -> {
+                views.shimmerLoading.visibility=View.VISIBLE
+                views.rcvItemOrderUncomping.visibility=View.GONE
+                views.shimmerLoading.startShimmer()
                 Timber.tag("AAAAAAAAAAAAAAA").e("getOrderUncomping: loading")
             }
 
             is Fail -> {
+                views.shimmerLoading.visibility=View.GONE
+                views.rcvItemOrderUncomping.visibility=View.VISIBLE
                 Timber.tag("AAAAAAAAAAAAAAA").e("getOrderUncomping: Fail")
             }
             else -> {

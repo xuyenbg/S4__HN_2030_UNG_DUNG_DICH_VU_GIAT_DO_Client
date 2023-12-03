@@ -37,8 +37,6 @@ class HomeActivity: BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Facto
         if(!Common.checkPermissionNotify(this)){
             Common.requestPermissionNotify(this)
         }
-
-
     }
 
 

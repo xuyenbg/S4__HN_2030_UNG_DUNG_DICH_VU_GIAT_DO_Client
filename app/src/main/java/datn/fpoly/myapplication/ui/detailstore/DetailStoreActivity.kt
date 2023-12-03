@@ -20,6 +20,7 @@ import datn.fpoly.myapplication.ui.adapter.AdapterRate
 import datn.fpoly.myapplication.ui.adapter.AdapterService
 import datn.fpoly.myapplication.ui.service.DetailServiceActivity
 import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -86,6 +87,8 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
                 runBlocking {
                     launch {
                         state.stateService.invoke()?.let{
+                            views.shimmer.visibility=View.GONE
+                            views.rcvDetailStore.visibility=View.VISIBLE
                             adapterService.setData(it)
                             Timber.tag("AAAAAAAAA").e("getListService: list service size: "+it.size )
                         }
@@ -93,9 +96,14 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
                 }
             }
             is Loading->{
+                views.shimmer.visibility=View.VISIBLE
+                views.rcvDetailStore.visibility=View.GONE
+                views.shimmer.startShimmer()
                 Timber.tag("AAAAAAAAA").e("getListService: Loading")
             }
             is Fail-> {
+                views.shimmer.visibility=View.GONE
+                views.rcvDetailStore.visibility=View.VISIBLE
                 Timber.tag("AAAAAAAAA").e("getListService: Call Fail")
             }
             else->{
@@ -109,6 +117,7 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
                 runBlocking {
                     launch {
                         state.stateStore.invoke()?.let{
+
                             itemStoreDetail = it
                             views.tvNameStore.text = itemStoreDetail.name
                             views.tvAddress.text = itemStoreDetail.idAddress?.address
@@ -117,11 +126,14 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
                         }
                     }
                 }
+
             }
             is Loading->{
+
                 Timber.tag("AAAAAAAAA").e("getListService: Loading")
             }
             is Fail-> {
+
                 Timber.tag("AAAAAAAAA").e("getListService: Call Fail")
             }
             else->{
@@ -132,15 +144,22 @@ class DetailStoreActivity :BaseActivity<ActivityDetailStoreBinding>(), DetailSto
     fun getListRate(state: DetailStoreViewState){
         when(state.stateListRateStore){
             is Loading-> {
+                views.shimmerRate.visibility=View.VISIBLE
+                views.rcvRates.visibility=View.GONE
+                views.shimmerRate.startShimmer()
                 Timber.tag("AAAAAAAAAAAA").e("getListRate: loading ")
             }
             is Success->{
                 Timber.tag("AAAAAAAAAAAA").e("getListRate: Success ")
                 state.stateListRateStore.invoke()?.let{
+                    views.shimmerRate.visibility=View.GONE
+                    views.rcvRates.visibility=View.VISIBLE
                     adapterRate.initData(it)
                 }
             }
             is Fail->{
+                views.shimmerRate.visibility=View.GONE
+                views.rcvRates.visibility=View.VISIBLE
                 Timber.tag("AAAAAAAAAAAA").e("getListRate: Fail ")
             }
             else->{}

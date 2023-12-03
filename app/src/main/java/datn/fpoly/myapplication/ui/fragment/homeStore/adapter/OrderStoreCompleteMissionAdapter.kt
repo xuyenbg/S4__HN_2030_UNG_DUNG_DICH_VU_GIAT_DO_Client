@@ -33,7 +33,7 @@ class OrderStoreCompleteMissionAdapter @Inject constructor(val onBtnAction: (Ord
                     tvOrderId.text = "#${itemOrder.id}"
                     tvFullName.text = itemOrder.idUser?.fullname
                     tvTime.text = Utils.formatDateOrder(itemOrder.updateAt)
-
+                    tvPhoneNumber.text = itemOrder.idUser?.phone
                     tvStatusName.text = "Hoàn Thành"
                     btnAction.text = "Hoàn Thành"
                     btnAction.setOnClickListener {

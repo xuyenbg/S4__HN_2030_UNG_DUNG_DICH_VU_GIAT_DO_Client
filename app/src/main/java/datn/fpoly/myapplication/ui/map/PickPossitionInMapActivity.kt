@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.location.LocationRequest
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -20,14 +21,15 @@ import datn.fpoly.myapplication.utils.Common
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
-class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBinding>(),
+class PickPossitionInMapActivity :AppCompatActivity(),
     OnMapReadyCallback {
     private lateinit var fusedLoaction: FusedLocationProviderClient
     private lateinit var mapFragment: SupportMapFragment
     private var ggMap: GoogleMap? = null
     private var myLocation: LatLng? = null
-
+    private lateinit var binging : ActivityPickPossitionInMapBinding
     object dataAdress {
         var pick_address: String = ""
         var longitude: Double = 0.0
@@ -36,30 +38,37 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(views.root)
+        binging = ActivityPickPossitionInMapBinding.inflate(layoutInflater)
+        setContentView(binging.root)
         fusedLoaction = LocationServices.getFusedLocationProviderClient(this)
         setPossition()
+        binging.btnChossePossition.setOnClickListener {
+            myLocation?.let{
+                dataAdress.longitude= it.longitude
+                dataAdress.latitude= it.latitude
+                dataAdress.pick_address = binging.tvCurrentAdress.text.toString()
+            }
+            myLocation?.let { it1 -> Common.setMyLocation(this, it1) }
+            onBackPressedDispatcher.onBackPressed()
+        }
+        binging.icBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+        requestGetCurrentLocation()
     }
 
-    override fun initUiAndData() {
-        super.initUiAndData()
-        views.btnChossePossition.setOnClickListener {
-           myLocation?.let{
-               dataAdress.longitude= it.longitude
-               dataAdress.latitude= it.latitude
-               dataAdress.pick_address = views.tvCurrentAdress.text.toString()
-           }
-            onBackPressedDispatcher.onBackPressed()
-        }
-        views.icBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-    }
+
 
     override fun onResume() {
         super.onResume()
-        requestGetCurrentLocation()
 
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        if(Common.checkPermission(this)){
+            getCurrentLocation()
+        }
     }
 
     fun requestGetCurrentLocation() {
@@ -117,19 +126,16 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
                             Common.getAddress(myLocation!!, this@PickPossitionInMapActivity)
 
                         runOnUiThread {
-                            views.tvCurrentAdress.text = address
+                            binging.tvCurrentAdress.text = address
                         }
                     }
-
-                }
-            }.addOnCompleteListener() {
-                if (it.isSuccessful) {
 
                 }
             }
         }
 
     }
+
 
     fun setPossition() {
 //        views.btnChossePossition.setOnClickListener {
@@ -138,25 +144,20 @@ class PickPossitionInMapActivity : BaseActivity<ActivityPickPossitionInMapBindin
     }
 
 
-    override fun getBinding(): ActivityPickPossitionInMapBinding =
-        ActivityPickPossitionInMapBinding.inflate(layoutInflater)
-
     override fun onMapReady(p0: GoogleMap) {
         ggMap = p0
         ggMap?.mapType = GoogleMap.MAP_TYPE_TERRAIN
         ggMap?.setMaxZoomPreference(10000F);
         ggMap?.setOnCameraChangeListener {
             val posCamera = it.target
-            Log.e(
-                "AAAAAAAAAAAA",
-                "onMapReady: latitude: " + posCamera.latitude + " longtitude: " + posCamera.longitude
-            )
+            Timber.tag("AAAAAAAAAAAA")
+                .e("onMapReady: latitude: " + posCamera.latitude + " longtitude: " + posCamera.longitude)
             myLocation = it.target
 //            Hawk.put(Common.KEY_LOCATION,it.target)
             CoroutineScope(Dispatchers.IO).launch {
                 val adreess = Common.getAddress(posCamera, this@PickPossitionInMapActivity)
                 runOnUiThread {
-                    views.tvCurrentAdress.text = adreess
+                    binging.tvCurrentAdress.text = adreess
                 }
             }
         }

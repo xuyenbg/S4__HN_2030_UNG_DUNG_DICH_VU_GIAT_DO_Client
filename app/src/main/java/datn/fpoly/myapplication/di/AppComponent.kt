@@ -7,7 +7,7 @@ import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.ui.address.AddressActivity
 import datn.fpoly.myapplication.ui.addAddress.AddAddressActivity
 import datn.fpoly.myapplication.ui.updateAddress.UpdateAddressActivity
-import datn.fpoly.myapplication.ui.check_out.CheckOutActivity
+import datn.fpoly.myapplication.ui.address.check_out.CheckOutActivity
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
 import datn.fpoly.myapplication.ui.editpost.EditPostActivity
 import datn.fpoly.myapplication.ui.favoriteStore.FavoriteStoreActivity

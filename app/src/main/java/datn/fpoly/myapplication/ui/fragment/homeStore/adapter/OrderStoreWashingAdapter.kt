@@ -45,6 +45,7 @@ class OrderStoreWashingAdapter(
                     tvTime.text = Utils.formatDateOrder(itemOrder.updateAt)
                     tvStatusName.text = "Đang giặt"
                     btnAction.text = "Hoàn thành"
+                    tvPhoneNumber.text = itemOrder.idUser?.phone
                     btnAction.setOnClickListener {
                         onBtnAction(itemOrder)
                     }

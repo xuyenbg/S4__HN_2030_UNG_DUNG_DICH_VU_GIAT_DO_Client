@@ -97,12 +97,15 @@ class SearchServiceActivity : BaseActivity<ActivitySearchServiceBinding>(), Sear
     private fun updateStateSearch(state: SearchServiceViewState){
         when(state.stateSearchService){
             is Loading->{
+                views.shimmer.visibility=View.VISIBLE
+                views.shimmer.startShimmer()
                 Timber.e("loading search")
 
             }
             is Success->{
                 Timber.e("Success search")
                 state.stateSearchService.invoke()?.let {
+                    views.shimmer.visibility=View.GONE
                     adapterService.setData(it)
                     if(it.size!=0){
                         views.tvNoti.visibility=View.GONE
@@ -118,6 +121,7 @@ class SearchServiceActivity : BaseActivity<ActivitySearchServiceBinding>(), Sear
 
             }
             is Fail->{
+                views.shimmer.visibility=View.GONE
                 Timber.e("Fail search")
 
             }

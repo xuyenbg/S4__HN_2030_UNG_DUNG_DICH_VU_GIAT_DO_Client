@@ -37,7 +37,7 @@ class OrderStoreCompleteAdapter (
                     tvOrderId.text = "#${itemOrder.id}"
                     tvFullName.text = itemOrder.idUser?.fullname
                     tvTime.text = Utils.formatDateOrder(itemOrder.updateAt)
-
+                    tvPhoneNumber.text= itemOrder.idUser?.fullname
                     tvStatusName.text = "Đã xong"
                     btnAction.text = "Xong"
                     btnAction.setOnClickListener {

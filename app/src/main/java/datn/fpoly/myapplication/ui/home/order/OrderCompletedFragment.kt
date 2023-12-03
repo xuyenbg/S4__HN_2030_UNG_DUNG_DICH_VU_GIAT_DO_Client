@@ -28,6 +28,7 @@ import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
 import datn.fpoly.myapplication.ui.order.OrderDetailActivity
 import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -36,6 +37,7 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var orderAdapter: OrderAdapter
     lateinit var dialog: Dialog
+    private var dialogLoading : Dialog_Loading?=null
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -60,6 +62,11 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
                 dialogRating(requireContext(), orderModel)
             }
         })
+        views.swipeToRefresh.setOnRefreshListener {
+            if(!views.swipeToRefresh.isRefreshing){
+                viewModel.handle(HomeViewAction.OrderActionGetList(account.id.toString()))
+            }
+        }
     }
 
     private fun dialogRating(context: Context, orderExtend: OrderExtend) {
@@ -114,6 +121,9 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
                 runBlocking {
                     launch {
                         it.stateOrder.invoke()?.let {
+                            views.shimmerLoading.visibility=View.GONE
+                            views.rcvItemOrderComplete.visibility=View.VISIBLE
+                            views.swipeToRefresh.isRefreshing= false
                             Timber.tag("OrderCompleteFragment")
                                 .d("orderCompleteInvalidate: ${it.size}")
                             orderAdapter.updateDataByStatus(
@@ -129,10 +139,15 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
             }
 
             is Loading -> {
+                views.shimmerLoading.visibility=View.VISIBLE
+                views.rcvItemOrderComplete.visibility=View.GONE
+                views.shimmerLoading.startShimmer()
                 Timber.tag("AAAAAAAAAAAAAAA").e("getOrderComplete: loading")
             }
 
             is Fail -> {
+                views.shimmerLoading.visibility=View.GONE
+                views.rcvItemOrderComplete.visibility=View.VISIBLE
                 Timber.tag("AAAAAAAAAAAAAAA").e("getOrderComplete: Fail")
             }
 
@@ -143,17 +158,22 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
     }
 
     private fun updateStateAddRate(state: HomeViewState){
+        dialogLoading= Dialog_Loading.getInstance()
         when(state.stateRate){
             is Loading-> {
+               dialogLoading?.show(childFragmentManager, "Loading Rate")
                 Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:loading ")
             }
             is Success->{
+                dialogLoading?.dismiss()
+                dialogLoading=null
                 dialog.dismiss()
                 Toast.makeText(requireContext(), "Đánh giá thành công", Toast.LENGTH_SHORT).show()
 
             }
             is Fail->{
-
+                dialogLoading?.dismiss()
+                dialogLoading=null
                 Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:fail ")
             }
             else->{}

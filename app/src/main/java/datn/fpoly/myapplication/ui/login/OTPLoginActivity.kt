@@ -29,12 +29,14 @@ import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
+import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.data.model.account.LoginResponse
 import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.data.repository.RoomDbRepo
 import datn.fpoly.myapplication.databinding.ActivityOtpLoginBinding
 import datn.fpoly.myapplication.ui.home.HomeActivity
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreActivity
+import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -75,6 +77,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
 
         viewModel.subscribe(this) {
             updateWithState(it)
+            updateState(it)
         }
         addTextChangeListener()
         resendOTPTvVisibility()
@@ -109,6 +112,33 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
     private fun login(uID: String) {
         viewModel.handle(LoginViewAction.LoginAction(phoneNumber, uID))
     }
+    private fun updateState(state: LoginViewState){
+        when(state.stateStore){
+            is Loading->{
+
+            }
+            is Success->{
+                state.stateStore.invoke()?.let {
+                    runBlocking {
+                        launch {
+                            Hawk.put(Common.KEY_STORE, it)
+                            startActivity(
+                                Intent(
+                                    this@OTPLoginActivity,
+                                    HomeStoreActivity::class.java
+                                ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            )
+                        }
+                    }
+                }
+
+            }
+            is Fail->{
+
+            }
+            else->{}
+        }
+    }
 
     private fun updateWithState(state: LoginViewState) {
         Timber.tag("LogIn").d("Log in successful ${state.stateLogin}")
@@ -117,31 +147,24 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                 runBlocking {
                     launch {
                         state.stateLogin.invoke()?.let { result ->
-                            Timber.tag("LogIn").d("Log in successful ${result.body()}}")
-
                             // account chứa cả đối tượng và message
-                            val account = result.body()?.let { parseJsonToAccountList(it.string()) }
-                            account?.user?.id?.let {
+                            val account = result
+                            account.user.id?.let {
                                 Firebase.messaging.subscribeToTopic(it)
                                     .addOnCompleteListener {
                                         if (it.isSuccessful) {
-                                            Timber.tag("AAAAAAAAAA")
-                                                .e("updateWithState: đăng ký topic thàng công%s", it.result.toString())
+                                            Timber.tag("AAAAAAAAAAA")
+                                                .e("updateWithState: Đăng ký topic thàng công")
                                         } else {
-                                            Timber.tag("AAAAAAAAAA")
-                                                .e("updateWithState: đăng ký topic thàng công%s", it.exception.toString())
+                                            Timber.tag("AAAAAAAAAAA")
+                                                .e("updateWithState: Đăng ký topic thất bại")
                                         }
                                     }
                             }
-                            if (account?.message == "Đăng nhập thành công") {
+                            if (account.message == "Đăng nhập thành công") {
                                 authRepo.saveUser(accountResponse = account.user)
                                 authRepo.setLogin(isLogin = true)
                                 dbRepo.getCart()
-//                                Toast.makeText(
-//                                    this@OTPLoginActivity,
-//                                    "Đăng nhập thành công",
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
                                 if (!check) {
                                     Hawk.put("Manage", 0)
                                     startActivity(
@@ -167,14 +190,13 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                                         )
                                     } else if (account.user.idRole == "6522666361b6e95df121642d") {
                                         Log.d("OTPLoginActivity", "dã  đăng kí: ")
-
+                                        account.user.id?.let {
+                                            LoginViewAction.GetStoreDetail(
+                                                it
+                                            )
+                                        }?.let { viewModel.handle(it) }
                                         Hawk.put("Manage", 1)
-                                        startActivity(
-                                            Intent(
-                                                this@OTPLoginActivity,
-                                                HomeStoreActivity::class.java
-                                            ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                        )
+
                                     }
                                 }
 

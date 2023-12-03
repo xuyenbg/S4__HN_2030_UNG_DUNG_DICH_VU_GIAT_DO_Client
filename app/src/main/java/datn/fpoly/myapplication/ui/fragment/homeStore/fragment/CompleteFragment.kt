@@ -68,9 +68,10 @@ class CompleteFragment : BaseFragment<FragmentCompleteBinding>() {
             )
 
         }, itemOnclick = {
-            val intent = Intent(context, OrderDetailStoreActivity::class.java)
+            val intent = Intent(requireContext(), OrderDetailStoreActivity::class.java)
             intent.putExtra(Common.KEY_ID_ORDER, it.id)
-            startActivity(intent)
+            intent.putExtra("store", true)
+            requireContext().startActivity(intent)
         })
         views.recycleviewComplete.adapter = orderStoreAdapter
         views.recycleviewComplete.addItemDecoration(ItemSpacingDecoration(46))

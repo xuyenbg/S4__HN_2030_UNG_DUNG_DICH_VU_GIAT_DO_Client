@@ -43,7 +43,7 @@ class OrderStoreWaitAdapter (
                     tvOrderId.text = "#${itemOrder.id}"
                     tvFullName.text = itemOrder.idUser?.fullname
                     tvTime.text = Utils.formatDateOrder(itemOrder.updateAt)
-
+                    tvPhoneNumber.text  = itemOrder.idUser?.phone
                     tvStatusName.text = "Chưa xác nhận"
                     btnAction.text = "Nhận đơn"
                     btnAction.setOnClickListener {

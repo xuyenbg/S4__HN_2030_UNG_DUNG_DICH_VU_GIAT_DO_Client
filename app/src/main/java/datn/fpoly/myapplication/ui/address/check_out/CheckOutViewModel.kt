@@ -1,4 +1,4 @@
-package datn.fpoly.myapplication.ui.check_out
+package datn.fpoly.myapplication.ui.address.check_out
 
 import com.airbnb.mvrx.ActivityViewModelContext
 import com.airbnb.mvrx.FragmentViewModelContext

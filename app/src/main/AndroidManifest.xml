@@ -120,7 +120,7 @@
             android:name=".ui.service.DetailServiceActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.check_out.CheckOutActivity"
+            android:name=".ui.address.check_out.CheckOutActivity"
             android:exported="false" />
         <activity
             android:name=".ui.order.OrderDetailActivity"
