@@ -61,7 +61,7 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
         } else {
             TODO("VERSION.SDK_INT < O")
         }
-        val week = Utils.getWeekByMonth(LocalDate.now())
+        val week = Utils.getWeekByMonth()
 
 
         ////
@@ -70,6 +70,7 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
             ?.let { viewModel.handle(it) }
         idStore?.let { HomeStoreViewAction.GetStatisticalByWeek(it, week) }
             ?.let { viewModel.handle(it) }
+        Log.d("hhh", "onViewCreated: ${Utils.getWeekByMonth()}")
 
         storeModel = Hawk.get<StoreModel>(Common.KEY_STORE)
         views.swOpendClose.isChecked = storeModel?.status == 1
@@ -137,6 +138,7 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
         updateStateOpendClose(it)
         statisticalByToday(it)
         statisticalByToMonth(it)
+        statisticalByToWeek(it)
     }
 
     private fun updateStateOpendClose(state: HomeStoreState) {
@@ -208,7 +210,25 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
             else -> {}
         }
     }
+    private fun statisticalByToWeek(state: HomeStoreState) {
+        when (state.stateStatisticalByWeek) {
+            is Loading -> {
+                Timber.tag("AAAAAAAAA").e("updateStateOpendClose: loading ")
+            }
 
+            is Success -> {
+                state.stateStatisticalByWeek.invoke()?.let {
+                    views.priceWeek.text = Utils.formatVND(it.total)
+                }
+            }
+
+            is Fail -> {
+                Timber.tag("AAAAAAAAA").e("updateStateOpendClose: fail ")
+            }
+
+            else -> {}
+        }
+    }
     private fun setView() {
         views.apply {
             tvNameLaundry.text = Hawk.get<StoreModel>(Common.KEY_STORE,null).name

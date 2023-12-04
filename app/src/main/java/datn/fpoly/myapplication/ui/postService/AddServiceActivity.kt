@@ -46,7 +46,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
     lateinit var adapterAttribute: AdapterPostAttribute
     private var unit = ""
     private var limitPriceSale: Int = 0
-    private var dialog: Dialog_Loading?=null
+    private var dialog: Dialog_Loading? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
@@ -54,10 +54,11 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
         views.toobar.icBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
+        views.toobar.icSearch.visibility = View.GONE
         viewModel.subscribe(this) {
-            if(intent.getBooleanExtra(Common.KEY_UPDATE_SERVICE, false)){
+            if (intent.getBooleanExtra(Common.KEY_UPDATE_SERVICE, false)) {
                 updateStateUpdate(it)
-            }else{
+            } else {
                 updateStatePost(it)
             }
         }
@@ -123,6 +124,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                     1 -> {
                         limitPriceSale = 100
                     }
+
                     2 -> {
                         limitPriceSale = -1
                     }
@@ -165,11 +167,11 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
 
             if (intent.getBooleanExtra(Common.KEY_UPDATE_SERVICE, false)) {
                 val modelUpdate = DataRaw.getModelUpdateService()
-                if(validateUpdate()){
+                if (validateUpdate()) {
                     modelUpdate?.id?.let { it1 -> updateService(it1) }
                 }
             } else {
-                if(validate()){
+                if (validate()) {
                     postService()
                 }
 
@@ -204,6 +206,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                     views.btnUnit3.isChecked = false
                     views.btnUnit4.isChecked = false
                 }
+
                 views.btnUnit2.text -> {
                     unit = views.btnUnit2.text.toString()
                     views.btnUnit1.isChecked = false
@@ -211,6 +214,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                     views.btnUnit3.isChecked = false
                     views.btnUnit4.isChecked = false
                 }
+
                 views.btnUnit3.text -> {
                     unit = views.btnUnit3.text.toString()
                     views.btnUnit1.isChecked = false
@@ -218,6 +222,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                     views.btnUnit3.isChecked = true
                     views.btnUnit4.isChecked = false
                 }
+
                 views.btnUnit4.text -> {
                     unit = views.btnUnit4.text.toString()
                     views.btnUnit1.isChecked = false
@@ -236,9 +241,10 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                     )
                 )
             }
-            Glide.with(views.imgSelectImage).load(Common.baseUrl+""+modelUpdate.image).into(views.imgSelectImage)
+            Glide.with(views.imgSelectImage).load(Common.baseUrl + "" + modelUpdate.image)
+                .into(views.imgSelectImage)
             views.btnInsertService.setText("Lưu")
-        }else{
+        } else {
             views.btnInsertService.setText("Thêm")
         }
 
@@ -359,7 +365,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
     }
 
     private fun postService() {
-        if(imageUri!=null){
+        if (imageUri != null) {
             val file = File(imageUri!!.path!!) // Chuyển URI thành File
             val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
             val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
@@ -403,7 +409,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                     it
                 )
             }
-        }else{
+        } else {
             val name = views.edNameService.text.toString().trim()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val cate = views.spinnerCate.selectedItem as CategoryModel
@@ -449,7 +455,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
 
     }
 
-    private fun updateService(idService:String) {
+    private fun updateService(idService: String) {
         if (imageUri != null) {
             val file = File(imageUri!!.path!!) // Chuyển URI thành File
             val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
@@ -546,9 +552,10 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
         dialog = Dialog_Loading.getInstance()
         when (state.stateService) {
             is Loading -> {
-                dialog?.show(supportFragmentManager,"Loading Add Service")
+                dialog?.show(supportFragmentManager, "Loading Add Service")
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Loading")
             }
+
             is Success -> {
                 state.stateService.invoke()?.let {
                     Toast.makeText(this, "${it.message()}", Toast.LENGTH_SHORT).show()
@@ -557,21 +564,25 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 setResult(Common.CODE_LOAD_DATA)
                 onBackPressedDispatcher.onBackPressed()
             }
+
             is Fail -> {
                 dialog?.dismiss()
-                dialog=null
+                dialog = null
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Fail")
             }
+
             else -> {}
         }
 
     }
+
     fun updateStateUpdate(state: AddServiceViewState) {
         when (state.stateServiceUpdate) {
             is Loading -> {
-                Dialog_Loading.getInstance().show(supportFragmentManager,"Loading Add Service")
+                Dialog_Loading.getInstance().show(supportFragmentManager, "Loading Add Service")
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Loading")
             }
+
             is Success -> {
                 state.stateServiceUpdate.invoke()?.let {
                     Toast.makeText(this, "${it.message()}", Toast.LENGTH_SHORT).show()
@@ -580,10 +591,12 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 setResult(Common.CODE_LOAD_DATA)
                 onBackPressedDispatcher.onBackPressed()
             }
+
             is Fail -> {
                 Dialog_Loading.getInstance().dismiss()
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Fail")
             }
+
             else -> {}
         }
 

@@ -29,20 +29,12 @@ object Utils {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getWeekByMonth(date: LocalDate): Int {
-        val weekFields = WeekFields.of(Locale.getDefault())
-        val firstDayOfMonth = date.with(TemporalAdjusters.firstDayOfMonth())
-        val firstDayOfWeek = firstDayOfMonth.get(weekFields.dayOfWeek())
-        val currentDayOfWeek = date.get(weekFields.dayOfWeek())
+    fun getWeekByMonth(): Int {
+        val currentDate = LocalDate.now()
 
-        // Tính tuần trong tháng
-        return if (firstDayOfWeek <= currentDayOfWeek) {
-            date.get(weekFields.weekOfMonth())
-        } else {
-            // Nếu ngày hiện tại thuộc tuần cuối của tháng trước
-            val lastDayOfPreviousMonth = date.minusMonths(1).with(TemporalAdjusters.lastDayOfMonth())
-            lastDayOfPreviousMonth.get(weekFields.weekOfMonth()) + 1
-        }
+        // Lấy trường tuần của ngày hiện tại
+        val weekFields = WeekFields.of(Locale.getDefault())
+        return  currentDate.get(weekFields.weekOfMonth())
     }
 
     fun formatVND(price: Double): String {

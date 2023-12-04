@@ -13,6 +13,7 @@ import datn.fpoly.myapplication.databinding.ActivitySeeMoreBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterCategory
 import datn.fpoly.myapplication.ui.adapter.AdapterStore
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
+import datn.fpoly.myapplication.ui.listService.ListServiceActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.DataRaw
 import datn.fpoly.myapplication.utils.ItemSpacingDecoration
@@ -45,7 +46,13 @@ class SeeMoreActivity : BaseActivity<ActivitySeeMoreBinding>() {
         adapterCate.updateData(DataRaw.getDataCategory())
         adapterCate.setListener(object : AdapterCategory.CategoryListener{
             override fun onClickCate(categoryModel: CategoryModel) {
-
+                categoryModel.id?.let { DataRaw.setDataIdCategory(it) }
+                startActivity(
+                    Intent(
+                        this@SeeMoreActivity,
+                        ListServiceActivity::class.java
+                    )
+                )
             }
         })
     }

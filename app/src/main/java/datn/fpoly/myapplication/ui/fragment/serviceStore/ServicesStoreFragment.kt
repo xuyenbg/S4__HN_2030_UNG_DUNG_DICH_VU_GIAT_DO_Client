@@ -2,6 +2,9 @@ package datn.fpoly.myapplication.ui.fragment.serviceStore
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +23,8 @@ import datn.fpoly.myapplication.ui.postService.AddServiceActivity
 import datn.fpoly.myapplication.ui.service.DetailServiceActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.DataRaw
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 
@@ -44,8 +49,8 @@ class ServicesStoreFragment : BaseFragment<FragmentServicesStoreBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        views.toolBar.tvTitleTooobal.text ="Danh sách dịch vụ"
-        views.toolBar.icBack.visibility =View.INVISIBLE
+        views.toolBar.tvTitleTooobal.text = "Danh sách dịch vụ"
+        views.toolBar.icBack.visibility = View.INVISIBLE
         views.btnAddService.setOnClickListener {
             startActivityResult.launch(
                 Intent(
@@ -54,6 +59,20 @@ class ServicesStoreFragment : BaseFragment<FragmentServicesStoreBinding>() {
                 ).putExtra(Common.KEY_UPDATE_SERVICE, false)
             )
         }
+
+        views.toolBar.icSearch.setOnClickListener {
+            views.toolBar.toobar.visibility = View.INVISIBLE
+            views.edSearch.visibility = View.VISIBLE
+            views.icClose.visibility = View.VISIBLE
+        }
+
+        views.icClose.setOnClickListener {
+            views.edSearch.visibility = View.GONE
+            views.edSearch.setText("")
+            views.icClose.visibility = View.GONE
+            views.toolBar.toobar.visibility = View.VISIBLE
+        }
+
         adapter = AdapterService(true)
         views.rcvListService.adapter = adapter
         adapter.setListenner(object : AdapterService.ServiceListenner {
@@ -84,31 +103,58 @@ class ServicesStoreFragment : BaseFragment<FragmentServicesStoreBinding>() {
             store.id?.let { HomeStoreViewAction.getListServiceByStore(it) }
                 ?.let { viewModel.handle(it) }
         }
+        views.edSearch.addTextChangedListener(
+            object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    Log.d("onTextChanged", "onTextChanged: $p0")
+//                    orderStoreAdapter.filter.filter(p0.toString())
+                    adapter.filter(p0.toString())
+                }
+
+                override fun afterTextChanged(p0: Editable?) {
+
+                }
+            }
+        )
     }
+
     fun getListService(state: HomeStoreState) {
         when (state.stateGetListService) {
             is Loading -> {
-                views.shimmer.visibility=View.VISIBLE
+                views.shimmer.visibility = View.VISIBLE
                 views.shimmer.startShimmer()
-                views.rcvListService.visibility=View.GONE
+                views.rcvListService.visibility = View.GONE
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListService: Loading")
             }
-            is Success -> {
-                state.stateGetListService.invoke().let {
-                    views.swipeToRefresh.isRefreshing= false
-                    views.shimmer.visibility=View.GONE
-                    views.rcvListService.visibility=View.VISIBLE
-                    adapter.setData(it)
-                    Timber.tag("AAAAAAAAAAAAAAA").e("getListService:Success " + it.size)
-                }
-                Timber.tag("AAAAAAAAAAAAAAA").e("getListService:Success ")
-            }
-            is Fail -> {
-                views.shimmer.visibility=View.GONE
 
-                views.rcvListService.visibility=View.VISIBLE
+            is Success -> {
+                runBlocking {
+                    launch {
+                        state.stateGetListService.invoke().let {
+                            views.swipeToRefresh.isRefreshing = false
+
+                            views.shimmer.visibility = View.GONE
+                            views.rcvListService.visibility = View.VISIBLE
+                            adapter.setData(it)
+                            Timber.tag("AAAAAAAAAAAAAAA").e("getListService:Success " + it.size)
+                        }
+                        Timber.tag("AAAAAAAAAAAAAAA").e("getListService:Success ")
+                    }
+                }
+
+            }
+
+            is Fail -> {
+                views.shimmer.visibility = View.GONE
+
+                views.rcvListService.visibility = View.VISIBLE
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListService: Fail")
             }
+
             else -> {}
         }
     }

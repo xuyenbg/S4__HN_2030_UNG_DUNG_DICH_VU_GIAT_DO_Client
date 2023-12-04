@@ -14,6 +14,7 @@ import datn.fpoly.myapplication.databinding.ActivityNotificationBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterNotify
 import datn.fpoly.myapplication.ui.myshop.MyShopViewModel
 import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.ItemSpacingDecoration
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -33,6 +34,7 @@ class NotificationActivity : BaseActivity<ActivityNotificationBinding>(), Notify
         }
         adapterNoti= AdapterNotify()
         views.rcvNotification.adapter = adapterNoti
+        views.rcvNotification.addItemDecoration(ItemSpacingDecoration(32))
         views.imgBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
