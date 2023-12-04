@@ -36,11 +36,11 @@ class AdapterNotify : Adapter<AdapterNotify.ViewHolderItemNotify>() {
         val index = position
         val itemNoti = listNotify[index]
         holder.bind(itemNoti)
-        if(index==listNotify.size-1){
-            holder.bining.line.visibility= View.INVISIBLE
-        }else{
-            holder.bining.line.visibility= View.VISIBLE
-        }
+//        if(index==listNotify.size-1){
+//            holder.bining.line.visibility= View.INVISIBLE
+//        }else{
+//            holder.bining.line.visibility= View.VISIBLE
+//        }
     }
 
 }

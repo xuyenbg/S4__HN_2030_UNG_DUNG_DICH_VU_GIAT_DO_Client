@@ -89,6 +89,9 @@ class HomeStoreViewModel @AssistedInject constructor(
             is HomeStoreViewAction.GetStatisticalByMonth -> {
                 getStatisticalByMonth(action.idStore, action.month)
             }
+            is HomeStoreViewAction.GetStatisticalByWeek -> {
+                getStatisticalByWeek(action.idStore,action.week)
+            }
 
             else -> {}
         }
