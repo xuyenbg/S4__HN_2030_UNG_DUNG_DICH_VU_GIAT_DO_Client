@@ -46,6 +46,10 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
         setContentView(views.root)
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.handle(CheckOutViewAction.GetListAddress)
+    }
     override fun initUiAndData() {
         super.initUiAndData()
         viewModel.subscribe(this) {

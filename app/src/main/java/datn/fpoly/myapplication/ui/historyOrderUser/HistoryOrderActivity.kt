@@ -139,9 +139,13 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
                 Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:loading ")
             }
             is Success->{
-                dialogLoading?.dismiss()
-                dialogLoading=null
-                Toast.makeText(this, "Đánh giá thành công", Toast.LENGTH_SHORT).show()
+                runBlocking {
+                    launch {
+                        dialogLoading?.dismiss()
+                        dialogLoading=null
+                        Toast.makeText(this@HistoryOrderActivity, "Đánh giá thành công", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
             is Fail->{
                 dialogLoading?.dismiss()

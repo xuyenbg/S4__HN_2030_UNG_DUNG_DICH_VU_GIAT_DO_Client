@@ -20,7 +20,7 @@ object Utils {
         try {
             val instant = Instant.parse(inputDateTime)
             val localDateTime = LocalDateTime.ofInstant(instant, ZoneId.of("UTC"))
-            val outputFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")
+            val outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
             return localDateTime.format(outputFormatter)
         } catch (e: Exception) {
             return ""
