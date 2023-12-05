@@ -68,6 +68,7 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderVie
             orderExtend?.id?.let { it1 -> OrderViewAction.UpdateStatus(it1, 5) }
                 ?.let { it2 -> viewModel.handle(it2) }
         }
+        views.toolbar.btnNotification.visibility = View.GONE
     }
 
     private fun updateWithState(state: OrderViewState) {

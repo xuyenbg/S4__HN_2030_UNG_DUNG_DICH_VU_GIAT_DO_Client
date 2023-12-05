@@ -47,6 +47,7 @@ class RegisterStoreActivity : BaseActivity<ActivityRegiterInforAccountStoreBindi
     private var address = ""
     private var latiu = 0.0
     private var longtiu = 0.0
+    var dialogLoading : Dialog_Loading?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
@@ -56,6 +57,7 @@ class RegisterStoreActivity : BaseActivity<ActivityRegiterInforAccountStoreBindi
 
     override fun initUiAndData() {
         super.initUiAndData()
+        dialogLoading = Dialog_Loading.getInstance()
         viewModel.subscribe(this) {
             updateWithState(it)
         }
@@ -72,6 +74,10 @@ class RegisterStoreActivity : BaseActivity<ActivityRegiterInforAccountStoreBindi
 
         views.tvPickPossitionInMap.setOnClickListener {
             startActivity(Intent(this, PickPossitionInMapActivity::class.java))
+        }
+
+        views.btnBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
         }
 
     }
@@ -148,8 +154,9 @@ class RegisterStoreActivity : BaseActivity<ActivityRegiterInforAccountStoreBindi
                                     this@RegisterStoreActivity,
                                     "Thất Bại",
                                     Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                                ).show()
+                                dialogLoading?.dismiss()
+                                dialogLoading = null
                             }
                         }
                     }
@@ -159,11 +166,13 @@ class RegisterStoreActivity : BaseActivity<ActivityRegiterInforAccountStoreBindi
             is Loading -> {
                 //Xoay tròn indicate
                 Timber.tag("AddPostActivity").d("loadiing: ")
-                Dialog_Loading.getInstance().show(supportFragmentManager, "Loading_store")
+                dialogLoading?.show(supportFragmentManager, "Loading_store")
             }
 
             is Fail -> {
                 Timber.tag("AddPostActivity").e("Error: ")
+                dialogLoading?.dismiss()
+                dialogLoading = null
             }
 
             else -> {}

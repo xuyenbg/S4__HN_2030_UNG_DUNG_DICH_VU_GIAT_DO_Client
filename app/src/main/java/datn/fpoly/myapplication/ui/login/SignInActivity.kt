@@ -29,6 +29,7 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
     private lateinit var number: String
     private lateinit var auth: FirebaseAuth
     private var checkStrore = false
+    var dialogLogin : Dialog_Loading?=null
 
     override fun getBinding(): ActivitySignIn2Binding {
         return ActivitySignIn2Binding.inflate(layoutInflater)
@@ -37,6 +38,7 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
     override fun initUiAndData() {
         super.initUiAndData()
         auth = FirebaseAuth.getInstance()
+        dialogLogin= Dialog_Loading.getInstance()
 
         views.cbRule.setOnCheckedChangeListener { _, isChecked ->
             // Cập nhật trạng thái của button dựa trên checkbox
@@ -61,7 +63,8 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
                 if (number.length == 10) {
                     number = "+84$number"
 //                    views.progressPhone.visibility = View.VISIBLE
-                    Dialog_Loading.getInstance().show(supportFragmentManager,"LoginLoading")
+                      dialogLogin?.show(supportFragmentManager,"LoginLoading")
+//                    Dialog_Loading.getInstance().show(supportFragmentManager,"LoginLoading")
                     val options = PhoneAuthOptions.newBuilder(auth)
                         .setPhoneNumber(number) // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
@@ -86,17 +89,22 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
                     Log.d(ContentValues.TAG, "signInWithCredential:success")
                     Toast.makeText(this, "Thành Công", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this, HomeActivity::class.java))
+                    dismissDialog()
                 } else {
                     // Sign in failed, display a message and update the UI
                     Log.w(ContentValues.TAG, "signInWithCredential:failure", task.exception)
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         // The verification code entered was invalid
                     }
-                    // Update UI
+                    dismissDialog()
                 }
-//                views.progressPhone.visibility = View.INVISIBLE
 
             }
+    }
+
+    fun dismissDialog(){
+        dialogLogin?.dismiss()
+        dialogLogin = null
     }
 
     private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -117,9 +125,8 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
             } else if (e is FirebaseAuthMissingActivityForRecaptchaException) {
                 // reCAPTCHA verification attempted with null Activity
             }
-//            views.progressPhone.visibility = View.VISIBLE
-            Dialog_Loading.getInstance().show(supportFragmentManager,"LoginLoading")
             // Show a message and update the UI
+            dismissDialog()
         }
 
         override fun onCodeSent(
@@ -142,12 +149,16 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
         val user : Boolean = Hawk.get("CheckLogin",false)
         val manege : Int = Hawk.get("Manage",0)
         if (auth.currentUser != null && user) {
-            if (manege ==0) {
-                startActivity(Intent(this, HomeActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
-            } else if (manege ==1) {
-                startActivity(Intent(this, HomeStoreActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
-            } else {
-                return
+            when (manege) {
+                0 -> {
+                    startActivity(Intent(this, HomeActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
+                }
+                1 -> {
+                    startActivity(Intent(this, HomeStoreActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
+                }
+                else -> {
+                    return
+                }
             }
 
         }

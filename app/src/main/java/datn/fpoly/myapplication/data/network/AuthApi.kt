@@ -27,10 +27,16 @@ interface AuthApi {
         @Body body: AcountLogin
     ): Observable<LoginResponse>
 
+    @Multipart
     @POST("api/register")
     fun register(
-        @Body body: AccountModel
-    ): Observable<Response<ResponseBody>>
+        @Part("phone") phone: RequestBody,
+        @Part("passwd") passwd: RequestBody,
+        @Part("fullname") fullname: RequestBody,
+        @Part("idRole") idRole: RequestBody,
+        @Part("favouriteStores") favouriteStores: RequestBody?,
+        @Part avatar: MultipartBody.Part?
+    ): Observable<LoginResponse>
 
     @PUT("api/users/add-fav-store/{idUser}")
     fun addFavoriteStore(

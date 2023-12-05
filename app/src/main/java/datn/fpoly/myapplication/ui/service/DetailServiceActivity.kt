@@ -12,6 +12,7 @@ import com.airbnb.mvrx.viewModel
 import com.bumptech.glide.Glide
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
+import datn.fpoly.myapplication.MainActivity
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.AttributeModel
@@ -23,6 +24,8 @@ import datn.fpoly.myapplication.databinding.ActivityDetailServiceBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterAttribute
 import datn.fpoly.myapplication.ui.adapter.AdapterService
 import datn.fpoly.myapplication.ui.address.check_out.CheckOutActivity
+import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
+import datn.fpoly.myapplication.ui.home.HomeActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 import datn.fpoly.myapplication.utils.Dialog_Loading
@@ -69,6 +72,14 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
             } else {
                 btnOrder.visibility = View.VISIBLE
                 btnAddCart.visibility = View.VISIBLE
+            }
+            btnShowShop.setOnClickListener {
+                val intent = Intent(this@DetailServiceActivity,DetailStoreActivity::class.java)
+                intent.putExtra(Common.KEY_ID_STORE,serviceExtend?.idStore?.id )
+                startActivity(intent)
+            }
+            imgBuy.setOnClickListener {
+                startActivity(Intent(this@DetailServiceActivity, HomeActivity::class.java))
             }
         }
         adapterService = AdapterService(false)

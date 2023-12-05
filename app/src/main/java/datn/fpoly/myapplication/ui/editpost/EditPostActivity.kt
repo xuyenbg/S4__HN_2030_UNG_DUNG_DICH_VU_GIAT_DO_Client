@@ -79,6 +79,7 @@ class EditPostActivity : BaseActivity<ActivityEditPostBinding>(), EditPostViewMo
                 Glide.with(this@EditPostActivity).load(Common.baseUrl + postModel?.image)
                     .placeholder(R.drawable.loading_error).into(imagePost)
             }
+            toobar.icSearch.visibility = View.GONE
 
         }
         views.btnPost.setOnClickListener {

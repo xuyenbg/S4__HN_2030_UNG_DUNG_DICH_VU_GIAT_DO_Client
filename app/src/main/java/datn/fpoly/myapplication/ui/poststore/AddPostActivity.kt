@@ -69,6 +69,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
         views.toobar.icBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
+        views.toobar.icSearch.visibility = View.GONE
         views.toobar.tvTitleTooobal.text = "Thêm Bài Viết"
     }
 

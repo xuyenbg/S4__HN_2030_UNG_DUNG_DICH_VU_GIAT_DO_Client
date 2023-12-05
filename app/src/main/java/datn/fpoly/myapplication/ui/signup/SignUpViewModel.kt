@@ -6,6 +6,8 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import datn.fpoly.myapplication.core.BaseViewModel
 import datn.fpoly.myapplication.data.repository.AuthRepo
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 
 class SignUpViewModel @AssistedInject constructor(
@@ -16,16 +18,16 @@ class SignUpViewModel @AssistedInject constructor(
     override fun handle(action: SignUpViewAction) {
         when (action){
             is SignUpViewAction.SignUpAction -> {
-                handleSignUp(action.phone,action.passwd,action.fullname,action.idRole,action.favouriteStores)
+                handleSignUp(action.phone,action.passwd,action.fullname,action.idRole,null,action.avatar)
             }
 
             else -> {}
         }
     }
 
-    private fun handleSignUp(phone : String, passwd : String, fullname: String, idRole: String, favouriteStores : List<String>? ) {
+    private fun handleSignUp(phone : RequestBody, passwd : RequestBody, fullname: RequestBody, idRole: RequestBody, favouriteStores : List<String>?, avatar : MultipartBody.Part? ) {
         setState { copy(stateSignUp = Loading()) }
-        repository.register(phone,passwd,fullname,idRole,favouriteStores).execute { copy(stateSignUp = it) }
+        repository.register(phone,passwd,fullname,idRole,null,avatar).execute { copy(stateSignUp = it) }
     }
 
     @AssistedFactory

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.registerStore.RegisterStoreActivity">
+    tools:context=".ui.registerstore.RegisterStoreActivity">
 
     <ImageView
         android:id="@+id/img_back"
