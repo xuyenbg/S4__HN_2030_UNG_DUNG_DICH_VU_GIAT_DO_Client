@@ -8,7 +8,7 @@ import datn.fpoly.myapplication.databinding.ItemOrderHomeLaundryBinding
 import datn.fpoly.myapplication.utils.Utils
 import javax.inject.Inject
 
-class OrderStoreCompleteMissionAdapter @Inject constructor(val onBtnAction: (OrderResponse) -> Unit) :
+class OrderStoreCompleteMissionAdapter @Inject constructor(val onBtnAction: (OrderResponse) -> Unit,val onClick: (OrderResponse)->Unit) :
     RecyclerView.Adapter<OrderStoreCompleteMissionAdapter.OrderViewHolder>() {
     private val listOrder = mutableListOf<OrderResponse>();
 
@@ -38,6 +38,9 @@ class OrderStoreCompleteMissionAdapter @Inject constructor(val onBtnAction: (Ord
                     btnAction.text = "Hoàn Thành"
                     btnAction.setOnClickListener {
                         onBtnAction(itemOrder)
+                    }
+                    root.setOnClickListener {
+                        onClick.invoke(itemOrder)
                     }
                 }
             } else {

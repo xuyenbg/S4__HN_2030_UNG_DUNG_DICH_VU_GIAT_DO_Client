@@ -41,15 +41,15 @@ class AddressAdapter@Inject constructor():
                     tvDefaultAddress.text = item.address
                     if(item.isDefault== true){
                         tvIsDefault.visibility = View.VISIBLE
-                        tvIsDefaultFalse.visibility = View.INVISIBLE
+
                     }
                     if(item.isDefault==false){
                         tvIsDefault.visibility = View.INVISIBLE
-                        tvIsDefaultFalse.visibility = View.VISIBLE
+
                     }
-                    tvIsDefaultFalse.setOnClickListener {
-                        addressListener?.onClickAddressDefault(item.id, item.idUser?.id)
-                    }
+//                    tvIsDefaultFalse.setOnClickListener {
+//                        addressListener?.onClickAddressDefault(item.id, item.idUser?.id)
+//                    }
                 }
             }
         }
@@ -59,6 +59,6 @@ class AddressAdapter@Inject constructor():
     }
     interface AddressListener {
         fun onClickAddress(id: String?)
-        fun onClickAddressDefault(idAddress: String?,idUser: String?)
+//        fun onClickAddressDefault(idAddress: String?,idUser: String?)
     }
 }

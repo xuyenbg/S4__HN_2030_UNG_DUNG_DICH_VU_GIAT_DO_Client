@@ -42,10 +42,10 @@ class AddressActivity : BaseActivity<ActivityAddressBinding>(),AddressViewModel.
                 }
             }
 
-            override fun onClickAddressDefault(idAddress: String?, idUser: String?) {
-                idUser?.let { idAddress?.let { it1 -> AddressViewAction.PutDefaultAddress(it1, it) } }
-                    ?.let { viewModel.handle(it) }
-            }
+//            override fun onClickAddressDefault(idAddress: String?, idUser: String?) {
+//                idUser?.let { idAddress?.let { it1 -> AddressViewAction.PutDefaultAddress(it1, it) } }
+//                    ?.let { viewModel.handle(it) }
+//            }
 
         })
         views.tvAddAddress.setOnClickListener {

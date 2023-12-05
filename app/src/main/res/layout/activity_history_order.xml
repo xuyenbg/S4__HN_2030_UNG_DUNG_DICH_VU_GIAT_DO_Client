@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginTop="12dp"
-        android:text="Lịch sử đặt đơn"
+        android:text="LỊCH SỬ ĐƠN HÀNG"
         android:textColor="@color/colorPriamry"
         android:textSize="18dp"
         android:textStyle="bold"
