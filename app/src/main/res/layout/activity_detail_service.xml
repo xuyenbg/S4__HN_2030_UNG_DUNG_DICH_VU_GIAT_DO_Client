@@ -7,7 +7,7 @@
     tools:context=".ui.service.DetailServiceActivity">
 
     <ImageView
-        android:id="@+id/img_back"
+        android:id="@+id/btn_back"
         android:layout_width="14dp"
         android:layout_height="20dp"
         android:layout_marginTop="16dp"
@@ -19,9 +19,9 @@
         android:id="@+id/tv_name_service_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/img_back"
-        app:layout_constraintTop_toTopOf="@+id/img_back"
-        app:layout_constraintBottom_toBottomOf="@+id/img_back"
+        app:layout_constraintStart_toEndOf="@+id/btn_back"
+        app:layout_constraintTop_toTopOf="@+id/btn_back"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_back"
         tools:text="Áo dài"
         android:layout_marginStart="@dimen/_16dp"
         />
@@ -39,7 +39,7 @@
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.79"
-        app:layout_constraintStart_toEndOf="@+id/img_back"
+        app:layout_constraintStart_toEndOf="@+id/btn_back"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView

@@ -55,6 +55,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
         viewModel.subscribe(this) {
             updateWithState(it)
         }
+        dialogLoading= Dialog_Loading.getInstance()
         views.icImage.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
@@ -78,7 +79,6 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
                 .isNotEmpty() && views.edContent.text.toString().trim()
                 .isNotEmpty()
         ) {
-            Dialog_Loading.getInstance().show(supportFragmentManager, "Loading add post")
             addPost()
             views.tvErrorTitle.text = ""
             views.tvErrorContent.text = ""
@@ -144,7 +144,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
     }
 
     private fun updateWithState(state: AddPostViewState) {
-        dialogLoading= Dialog_Loading.getInstance()
+
         Timber.tag("AddPostActivity").d("chậgdhasjd: ")
         when (state.stateAddPost) {
             is Success -> {
@@ -158,7 +158,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
                                     "Thêm thành công",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                onBackPressedDispatcher.onBackPressed()
+                                finish()
                             } else {
                                 Toast.makeText(this@AddPostActivity, "Thất Bại", Toast.LENGTH_SHORT)
                                     .show()

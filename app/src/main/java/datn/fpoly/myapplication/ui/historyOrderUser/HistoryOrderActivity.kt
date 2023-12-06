@@ -46,6 +46,7 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
         super.onCreate(savedInstanceState)
         viewModel.handle(HistoryOrderViewAction.GetListHistoryOrder(idUser))
         orderAdapter = OrderAdapter()
+        dialogLoading= Dialog_Loading.getInstance()
         views.rcvListOrder.adapter = orderAdapter
         orderAdapter.setListener(object : OrderAdapter.OrderListener {
             override fun onClickOrder(order: OrderExtend) {
@@ -104,8 +105,11 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
     private fun getListOrder(it: HistoryOrderViewState) {
         when (it.stateOrder) {
             is Success -> {
+
                 runBlocking {
                     launch {
+                        dialogLoading?.dismiss()
+                        dialogLoading=null
                         it.stateOrder.invoke()?.let {
                             Timber.tag("OrderCompleteFragment")
                                 .d("orderCompleteInvalidate: ${it.size}")
@@ -120,10 +124,13 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
 
             is Loading -> {
                 Timber.tag("AAAAAAAAAAAAAAA").e("getOrderComplete: loading")
+                dialogLoading?.show(supportFragmentManager,"add post")
             }
 
             is Fail -> {
                 Timber.tag("AAAAAAAAAAAAAAA").e("getOrderComplete: Fail")
+                dialogLoading?.dismiss()
+                dialogLoading=null
             }
 
             else -> {
@@ -132,7 +139,7 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
         }
     }
     private fun updateStateAddRate(state: HistoryOrderViewState){
-        dialogLoading= Dialog_Loading.getInstance()
+
         when(state.stateRate){
             is Loading-> {
                 dialogLoading?.show(supportFragmentManager,"Loading Rate")

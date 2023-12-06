@@ -5,6 +5,9 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivityHomeBinding
@@ -17,155 +20,68 @@ import datn.fpoly.myapplication.ui.fragment.settingStore.setting.FragmentSetting
 import com.airbnb.mvrx.viewModel
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.ZoomOutPageTransformer
 import javax.inject.Inject
 
-class HomeActivity: BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Factory {
+class HomeActivity : BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Factory {
     @Inject
-     lateinit var homeUserFatory: HomeUserViewModel.Factory
+    lateinit var homeUserFatory: HomeUserViewModel.Factory
     private lateinit var adapterVp: AdapterViewPage
     private val listFragment = mutableListOf<Fragment>()
-    private val viewModel :HomeUserViewModel by viewModel()
+    private val viewModel: HomeUserViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(views.root)
-        setViewNavigation()
         viewModel.observeViewEvents {
 
         }
-        if(!Common.checkPermissionNotify(this)){
+        if (!Common.checkPermissionNotify(this)) {
             Common.requestPermissionNotify(this)
         }
+        initPage()
+        views.bottomnav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> views.vp2Home.setCurrentItem(0, true)
+                R.id.cart -> views.vp2Home.setCurrentItem(1, true)
+                R.id.order -> views.vp2Home.setCurrentItem(2, true)
+                R.id.post -> views.vp2Home.setCurrentItem(3, true)
+                R.id.setting -> views.vp2Home.setCurrentItem(4, true)
+            }
+            true
+        }
+
     }
 
+    private fun initPage() {
+        views.vp2Home.adapter = HomeUserPagerAdapter(supportFragmentManager, lifecycle)
+        views.vp2Home.setPageTransformer(ZoomOutPageTransformer())
+        views.vp2Home.isUserInputEnabled = false
+    }
 
-    fun setViewNavigation(){
-        listFragment.add(0, HomeUserFragment())
-        listFragment.add(1, CartFragment())
-        listFragment.add(2, FragmentOrder())
-        listFragment.add(3, PostClientFragment())
-        listFragment.add(4, FragmentSetting())
-        adapterVp = AdapterViewPage(listFragment, this)
-        views.vp2Home.adapter = adapterVp
-        views.vp2Home.isUserInputEnabled= false
-        views.vp2Home.setCurrentItem(0, true)
-        views.viewBgItem.visibility = View.VISIBLE
-        views.viewBgItem1.visibility = View.INVISIBLE
-        views.viewBgItem2.visibility = View.INVISIBLE
-        views.viewBgItem3.visibility = View.INVISIBLE
-        views.viewBgItem4.visibility = View.INVISIBLE
-        views.tvHome.setTextAppearance(R.style.item_bottom_avigation_custom_selected)
-        views.tvCart.setTextAppearance(R.style.item_bottom_avigation_custom)
-        views.tvOrder.setTextAppearance(R.style.item_bottom_avigation_custom)
-        views.tvPost.setTextAppearance(R.style.item_bottom_avigation_custom)
-        views.tvProfile.setTextAppearance(R.style.item_bottom_avigation_custom)
-        views.llItem1.setOnClickListener {
-            views.vp2Home.setCurrentItem(0, true)
-            views.viewBgItem.visibility = View.VISIBLE
-            views.viewBgItem1.visibility = View.INVISIBLE
-            views.viewBgItem2.visibility = View.INVISIBLE
-            views.viewBgItem3.visibility = View.INVISIBLE
-            views.viewBgItem4.visibility = View.INVISIBLE
-            animStart(views.viewBgItem)
-            views.tvHome.setTextAppearance(R.style.item_bottom_avigation_custom_selected)
-            views.tvCart.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvOrder.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvPost.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvProfile.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.icHome.setImageResource(R.drawable.home_selected)
-            views.icCart.setImageResource(R.drawable.document)
-            views.icOrder.setImageResource(R.drawable.ic_store)
-            views.icPost.setImageResource(R.drawable.chat)
-            views.icProfile.setImageResource(R.drawable.profile_gray)
-        }
-        views.llItem2.setOnClickListener {
-            views.vp2Home.setCurrentItem(1, true)
-            views.viewBgItem1.visibility = View.VISIBLE
-            views.viewBgItem.visibility = View.INVISIBLE
-            views.viewBgItem2.visibility = View.INVISIBLE
-            views.viewBgItem3.visibility = View.INVISIBLE
-            views.viewBgItem4.visibility = View.INVISIBLE
-            animStart(views.viewBgItem1)
-            views.tvHome.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvCart.setTextAppearance(R.style.item_bottom_avigation_custom_selected)
-            views.tvOrder.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvPost.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvProfile.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.icHome.setImageResource(R.drawable.home)
-            views.icCart.setImageResource(R.drawable.document_selected)
-            views.icOrder.setImageResource(R.drawable.ic_store)
-            views.icPost.setImageResource(R.drawable.chat)
-            views.icProfile.setImageResource(R.drawable.profile_gray)
-        }
-        views.llItem3.setOnClickListener {
-            views.vp2Home.setCurrentItem(2, true)
-            views.viewBgItem2.visibility = View.VISIBLE
-            views.viewBgItem1.visibility = View.INVISIBLE
-            views.viewBgItem.visibility = View.INVISIBLE
-            views.viewBgItem3.visibility = View.INVISIBLE
-            views.viewBgItem4.visibility = View.INVISIBLE
-            animStart(views.viewBgItem2)
-            views.tvHome.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvCart.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvOrder.setTextAppearance(R.style.item_bottom_avigation_custom_selected)
-            views.tvPost.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvProfile.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.icHome.setImageResource(R.drawable.home)
-            views.icCart.setImageResource(R.drawable.document)
-            views.icOrder.setImageResource(R.drawable.order_selected)
-            views.icPost.setImageResource(R.drawable.chat)
-            views.icProfile.setImageResource(R.drawable.profile_gray)
-        }
-        views.llItem4.setOnClickListener {
-            views.vp2Home.setCurrentItem(3, true)
-            views.viewBgItem3.visibility = View.VISIBLE
-            views.viewBgItem1.visibility = View.INVISIBLE
-            views.viewBgItem2.visibility = View.INVISIBLE
-            views.viewBgItem.visibility = View.INVISIBLE
-            views.viewBgItem4.visibility = View.INVISIBLE
-            animStart(views.viewBgItem3)
-            views.tvHome.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvCart.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvOrder.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvPost.setTextAppearance(R.style.item_bottom_avigation_custom_selected)
-            views.tvProfile.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.icHome.setImageResource(R.drawable.home)
-            views.icCart.setImageResource(R.drawable.document)
-            views.icOrder.setImageResource(R.drawable.ic_store)
-            views.icPost.setImageResource(R.drawable.chat_selected)
-            views.icProfile.setImageResource(R.drawable.profile_gray)
-        }
-        views.llItem5.setOnClickListener {
-            views.vp2Home.setCurrentItem(4, true)
-            views.viewBgItem4.visibility = View.VISIBLE
-            views.viewBgItem1.visibility = View.INVISIBLE
-            views.viewBgItem2.visibility = View.INVISIBLE
-            views.viewBgItem3.visibility = View.INVISIBLE
-            views.viewBgItem.visibility = View.INVISIBLE
-            animStart(views.viewBgItem4)
-            views.tvHome.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvCart.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvOrder.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvPost.setTextAppearance(R.style.item_bottom_avigation_custom)
-            views.tvProfile.setTextAppearance(R.style.item_bottom_avigation_custom_selected)
-            views.icHome.setImageResource(R.drawable.home)
-            views.icCart.setImageResource(R.drawable.document)
-            views.icOrder.setImageResource(R.drawable.ic_store)
-            views.icPost.setImageResource(R.drawable.chat)
-            views.icProfile.setImageResource(R.drawable.profile_selected)
+    private class HomeUserPagerAdapter(
+        fragmentManager: FragmentManager, lifecycle: Lifecycle
+    ) : FragmentStateAdapter(fragmentManager, lifecycle) {
+        override fun getItemCount(): Int = 5
+
+        override fun createFragment(position: Int): Fragment {
+            return when (position) {
+                0 -> HomeUserFragment()
+                1 -> CartFragment()
+                2 -> FragmentOrder()
+                3 -> PostClientFragment()
+                else -> FragmentSetting()
+            }
         }
     }
 
-    fun animStart(view: View){
+    fun animStart(view: View) {
         view.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_item_bot_na_custom))
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-//        finish()
-    }
     override fun getBinding(): ActivityHomeBinding = ActivityHomeBinding.inflate(layoutInflater)
-    override fun create(initialState: HomeViewState): HomeUserViewModel = homeUserFatory.create(initialState)
+    override fun create(initialState: HomeViewState): HomeUserViewModel =
+        homeUserFatory.create(initialState)
 
 }

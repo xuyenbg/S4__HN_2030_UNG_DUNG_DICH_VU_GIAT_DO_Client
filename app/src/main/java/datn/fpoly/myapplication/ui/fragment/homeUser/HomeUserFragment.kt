@@ -71,6 +71,13 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         super.onViewCreated(view, savedInstanceState)
         fusedLoaction = LocationServices.getFusedLocationProviderClient(requireActivity())
         adapter = SlideImageAdapter(views.vpSlideShow)
+        viewModel.handle(HomeViewAction.HomeActionCategory)
+        viewModel.handle(
+            HomeViewAction.HomeActionGetListStore(
+                Common.getMyLocationLatitude(requireContext()),
+                Common.getMyLocationLongitude(requireContext())
+            )
+        )
 
         adapterCate = AdapterCategory(6, false)
         views.rcvListCategory.adapter = adapterCate
@@ -123,7 +130,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         }
         initSlide()
         views.refLayout.setOnRefreshListener {
-            if (!views.refLayout.isRefreshing) {
+            if (views.refLayout.isRefreshing) {
                 viewModel.handle(HomeViewAction.HomeActionCategory)
                 viewModel.handle(
                     HomeViewAction.HomeActionGetListStore(
@@ -143,24 +150,6 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
             if (Common.checkPermission(requireContext())) {
                 getCurrentLocation()
             }
-        }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        account = Hawk.get<AccountModel>("Account", null)
-        viewModel.handle(HomeViewAction.HomeActionCategory)
-        if (Common.getMyLocationLatitude(requireContext()) != 0f && Common.getMyLocationLongitude(
-                requireContext()
-            ) != 0f
-        ) {
-            viewModel.handle(
-                HomeViewAction.HomeActionGetListStore(
-                    Common.getMyLocationLatitude(requireContext()),
-                    Common.getMyLocationLongitude(requireContext())
-                )
-            )
         }
 
     }
@@ -234,6 +223,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     fun getListCate(it: HomeViewState) {
         when (it.stateCategory) {
             is Success -> {
+                views.refLayout.isRefreshing = false
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: Success")
                 runBlocking {
                     Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: Success2")
@@ -242,7 +232,6 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
                         it.stateCategory.invoke()?.let {
                             views.shimmerCate.visibility = View.GONE
                             views.rcvListCategory.visibility = View.VISIBLE
-                            views.refLayout.isRefreshing = false
                             adapterCate.updateData(it)
                             Timber.tag("AAAAAAAAAAAAAA").e("invalidate: " + it.size)
                         }
@@ -259,6 +248,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
             }
 
             is Fail -> {
+                views.refLayout.isRefreshing = false
                 views.shimmerCate.visibility = View.GONE
                 views.rcvListCategory.visibility = View.VISIBLE
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: Fail")
@@ -280,6 +270,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
             }
 
             is Success -> {
+                views.refLayout.isRefreshing = false
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: Success")
                 runBlocking {
                     Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: Success2")
@@ -288,7 +279,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
                         state.stateStore.invoke()?.let {
                             views.shimmerStore.visibility = View.GONE
                             views.rcvListStore.visibility = View.VISIBLE
-                            views.refLayout.isRefreshing = false
+
                             adapterStore.setData(it)
                             Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: size" + it.size)
                         }
@@ -327,15 +318,6 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         adapter.updateData(imageList)
         views.vpSlideShow.adapter = adapter
 
-
-        // views.circle3.setViewPager(views.vpSlideShow)
-//        views.vpSlideShow.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-//            override fun onPageSelected(position: Int) {
-//                super.onPageSelected(position)
-//                handler.removeCallbacks(runnable)
-//                handler.postDelayed(runnable, 2000)
-//            }
-//        })
     }
 
     override fun onPause() {

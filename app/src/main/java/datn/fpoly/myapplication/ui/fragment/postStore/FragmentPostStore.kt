@@ -62,9 +62,6 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
         views.recyclerViewPostStore.addItemDecoration(itemDecoration)
         postClientAdapter.setListener(object : PostStoreAdapter.PostListener {
             override fun onClickPost(postModel: PostModel) {
-//                val intent = Intent(requireContext(), DetailStoreActivity::class.java)
-//                intent.putExtra(Common.KEY_ID_STORE, postModel.idStore.id)
-//                startActivity(intent)
             }
 
             override fun onClickEdit(postModel: PostModel) {
@@ -187,7 +184,7 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
         myDialog.setCancelable(true)
         myDialog.setCanceledOnTouchOutside(false)
         myDialog.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -207,11 +204,11 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.handle(HomeStoreViewAction.PostStoreActionList(idStore!!))
-        postClientAdapter.notifyDataSetChanged()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        viewModel.handle(HomeStoreViewAction.PostStoreActionList(idStore!!))
+//        postClientAdapter.notifyDataSetChanged()
+//    }
 }
 
 class ItemSpacingDecoration(private val spacing: Int) : RecyclerView.ItemDecoration() {
