@@ -56,7 +56,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
             getListService(it)
             getService(it)
         }
-        views.imgBack.setOnClickListener {
+        views.btnBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
         views.tvNameServiceTitle.text = "Chi Tiết"
@@ -69,13 +69,14 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
                 btnSubtraction.visibility = View.GONE
                 tvQuantity.visibility = View.GONE
                 btnAddition.visibility = View.GONE
+                textView7.visibility = View.GONE
             } else {
                 btnOrder.visibility = View.VISIBLE
                 btnAddCart.visibility = View.VISIBLE
             }
             btnShowShop.setOnClickListener {
-                val intent = Intent(this@DetailServiceActivity,DetailStoreActivity::class.java)
-                intent.putExtra(Common.KEY_ID_STORE,serviceExtend?.idStore?.id )
+                val intent = Intent(this@DetailServiceActivity, DetailStoreActivity::class.java)
+                intent.putExtra(Common.KEY_ID_STORE, serviceExtend?.idStore?.id)
                 startActivity(intent)
             }
             imgBuy.setOnClickListener {
@@ -113,7 +114,8 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
         })
         views.btnAddCart.setOnClickListener {
             for (index in 0 until adapterAttribute.listAttributeSelect.size) {
-                Timber.tag("AAAAAAAAAAA").e("onCreate: name: " + adapterAttribute.listAttributeSelect[index].name)
+                Timber.tag("AAAAAAAAAAA")
+                    .e("onCreate: name: " + adapterAttribute.listAttributeSelect[index].name)
             }
             if (serviceExtend != null) {
                 Timber.tag("USER").d(authRepo.getUser().toString())
