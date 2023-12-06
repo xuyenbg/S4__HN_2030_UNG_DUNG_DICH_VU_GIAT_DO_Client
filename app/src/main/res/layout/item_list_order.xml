@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="● Đang sử lý đơn"
+            android:text="● Đang xử lý đơn"
             android:textColor="@color/orange"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"

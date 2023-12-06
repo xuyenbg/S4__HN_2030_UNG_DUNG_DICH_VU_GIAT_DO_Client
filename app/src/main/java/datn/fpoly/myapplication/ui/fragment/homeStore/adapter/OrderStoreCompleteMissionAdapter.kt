@@ -9,6 +9,7 @@ import datn.fpoly.myapplication.utils.Utils
 import javax.inject.Inject
 
 class OrderStoreCompleteMissionAdapter @Inject constructor(val onBtnAction: (OrderResponse) -> Unit, val onClick : (OrderResponse)-> Unit) :
+
     RecyclerView.Adapter<OrderStoreCompleteMissionAdapter.OrderViewHolder>() {
     private val listOrder = mutableListOf<OrderResponse>();
 

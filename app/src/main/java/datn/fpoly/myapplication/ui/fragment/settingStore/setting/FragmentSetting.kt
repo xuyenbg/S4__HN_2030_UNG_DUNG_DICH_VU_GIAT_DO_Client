@@ -18,6 +18,7 @@ import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseFragment
 import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.databinding.FragmentProfileUserBinding
+import datn.fpoly.myapplication.ui.address.AddressActivity
 import datn.fpoly.myapplication.ui.favoriteStore.FavoriteStoreActivity
 import datn.fpoly.myapplication.ui.historyOrderUser.HistoryOrderActivity
 import datn.fpoly.myapplication.ui.login.SignInActivity
@@ -80,6 +81,9 @@ class FragmentSetting : BaseFragment<FragmentProfileUserBinding>() {
         }
         views.tvFavouriteStore.setOnClickListener {
             startActivity(Intent(requireContext(), FavoriteStoreActivity::class.java))
+        }
+        views.tvAddress.setOnClickListener {
+            startActivity(Intent(requireContext(),AddressActivity::class.java))
         }
         views.tvOrderHistory.setOnClickListener {
             startActivity(Intent(requireContext(), HistoryOrderActivity::class.java))

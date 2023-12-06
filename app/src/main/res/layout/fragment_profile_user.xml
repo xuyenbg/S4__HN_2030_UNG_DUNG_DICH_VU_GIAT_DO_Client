@@ -47,7 +47,7 @@
     <RelativeLayout
         android:id="@+id/relative_1"
         android:layout_width="340dp"
-        android:layout_height="230dp"
+        android:layout_height="290dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="20dp"
@@ -95,13 +95,54 @@
             android:layout_centerHorizontal="true"
             />
         <ImageView
+            android:id="@+id/img_address"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/icon_address_location"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/img_favourite_store"
+            />
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Địa chỉ"
+            android:textSize="16dp"
+            android:layout_marginStart="15dp"
+            android:textColor="@color/color_text_dark_blue"
+            android:textStyle="bold"
+            android:layout_toRightOf="@+id/img_address"
+            android:layout_alignTop="@+id/img_address"
+            />
+        <ImageView
+            android:id="@+id/img_back5"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/icon_back_profile"
+            android:layout_toRightOf="@+id/tv_address"
+            android:layout_alignTop="@+id/tv_address"
+            android:layout_alignLeft="@+id/img_back1"
+            android:layout_alignRight="@id/img_back1"
+            android:layout_below="@id/img_back1"
+            android:layout_marginTop="3dp"
+            />
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="2dp"
+            android:background="@color/gray_2"
+            android:layout_below="@+id/img_address"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            />
+        <ImageView
             android:id="@+id/img_order_history"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/icon_order_history_profile"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_below="@+id/img_favourite_store"
+            android:layout_below="@+id/img_address"
             />
         <TextView
             android:id="@+id/tv_order_history"
@@ -122,8 +163,8 @@
             android:src="@drawable/icon_back_profile"
             android:layout_toRightOf="@+id/tv_order_history"
             android:layout_alignTop="@+id/tv_order_history"
-            android:layout_alignLeft="@+id/img_back1"
-            android:layout_alignRight="@id/img_back1"
+            android:layout_alignLeft="@+id/img_back5"
+            android:layout_alignRight="@id/img_back5"
             android:layout_below="@id/img_back1"
             android:layout_marginTop="3dp"
             />
@@ -137,7 +178,7 @@
             />
 
         <ImageView
-            android:id="@+id/img_address"
+            android:id="@+id/img_profile"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_profile"
@@ -154,8 +195,8 @@
             android:layout_marginStart="15dp"
             android:textColor="@color/color_text_dark_blue"
             android:textStyle="bold"
-            android:layout_toRightOf="@+id/img_address"
-            android:layout_alignTop="@+id/img_address"
+            android:layout_toRightOf="@+id/img_profile"
+            android:layout_alignTop="@+id/img_profile"
             />
         <ImageView
             android:id="@+id/img_back3"
@@ -173,7 +214,7 @@
             android:layout_width="300dp"
             android:layout_height="2dp"
             android:background="@color/gray_2"
-            android:layout_below="@+id/img_address"
+            android:layout_below="@+id/img_profile"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
             />
@@ -184,7 +225,7 @@
             android:src="@drawable/icon_store"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_below="@+id/img_address"
+            android:layout_below="@+id/img_profile"
             />
         <TextView
             android:id="@+id/tv_register_store"

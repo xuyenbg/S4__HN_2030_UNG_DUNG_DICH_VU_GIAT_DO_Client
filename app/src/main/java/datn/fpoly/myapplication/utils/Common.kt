@@ -278,7 +278,7 @@ object Common {
     }
 
     fun Date.formatDateOrder(): String =
-        SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.ROOT).format(this)
+        SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ROOT).format(this)
 
     fun hideKeyboard(context: Context, view: View) {
         val inputMethodManager =
