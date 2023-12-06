@@ -43,6 +43,7 @@ import datn.fpoly.myapplication.ui.searchService.SearchServiceActivity
 import datn.fpoly.myapplication.ui.seeMore.SeeMoreActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.DataRaw
+import datn.fpoly.myapplication.utils.ItemSpacingDecoration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -59,7 +60,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     private var imageList: MutableList<Int> = mutableListOf()
     private lateinit var adapter: SlideImageAdapter
     private lateinit var fusedLoaction: FusedLocationProviderClient
-    private var account: AccountModel?=null
+    private var account: AccountModel? = null
 
     override fun getBinding(
         inflater: LayoutInflater,
@@ -73,6 +74,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
 
         adapterCate = AdapterCategory(6, false)
         views.rcvListCategory.adapter = adapterCate
+        views.rcvListStore.addItemDecoration(ItemSpacingDecoration(32))
         adapterCate.setListener(object : AdapterCategory.CategoryListener {
             override fun onClickCate(categoryModel: CategoryModel) {
                 categoryModel.id?.let { DataRaw.setDataIdCategory(it) }
@@ -137,14 +139,13 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
             ) == 0f
         ) {
             dialogGPS(requireContext())
-        }else{
-            if(!Common.checkPermission(requireContext())){
+        } else {
+            if (Common.checkPermission(requireContext())) {
                 getCurrentLocation()
             }
         }
 
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -163,6 +164,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         }
 
     }
+
     private fun getCurrentLocation() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -186,21 +188,29 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
 
                 }).addOnSuccessListener() {
                 if (it != null) {
-                   Common.setMyLocation(requireContext(), LatLng(it.latitude, it.longitude))
-                    viewModel.handle(HomeViewAction.HomeActionGetListStore(it.latitude.toFloat(),it.longitude.toFloat()))
+                    Common.setMyLocation(requireContext(), LatLng(it.latitude, it.longitude))
+                    viewModel.handle(
+                        HomeViewAction.HomeActionGetListStore(
+                            it.latitude.toFloat(),
+                            it.longitude.toFloat()
+                        )
+                    )
                 }
             }
         }
 
     }
-    private fun dialogGPS(context: Context){
+
+    private fun dialogGPS(context: Context) {
         val build = AlertDialog.Builder(context)
         build.setTitle("Thông báo")
         build.setMessage("Lấy thông tin vị trí")
-        build.setPositiveButton("Lấy vị trí", DialogInterface.OnClickListener { dialogInterface, i ->
-            val intent = Intent(context, PickPossitionInMapActivity::class.java)
-            requireActivity().startActivity(intent)
-        })
+        build.setPositiveButton(
+            "Lấy vị trí",
+            DialogInterface.OnClickListener { dialogInterface, i ->
+                val intent = Intent(context, PickPossitionInMapActivity::class.java)
+                requireActivity().startActivity(intent)
+            })
         build.setNegativeButton("Đóng", DialogInterface.OnClickListener { dialogInterface, i ->
             dialogInterface.dismiss()
             viewModel.handle(
@@ -215,6 +225,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
     }
+
     override fun invalidate(): Unit = withState(viewModel) {
         getListCate(it)
         getListStore(it)
@@ -229,9 +240,9 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
                     launch {
                         Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: Success3")
                         it.stateCategory.invoke()?.let {
-                            views.shimmerCate.visibility= View.GONE
-                            views.rcvListCategory.visibility=View.VISIBLE
-                            views.refLayout.isRefreshing= false
+                            views.shimmerCate.visibility = View.GONE
+                            views.rcvListCategory.visibility = View.VISIBLE
+                            views.refLayout.isRefreshing = false
                             adapterCate.updateData(it)
                             Timber.tag("AAAAAAAAAAAAAA").e("invalidate: " + it.size)
                         }
@@ -241,15 +252,15 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
             }
 
             is Loading -> {
-                views.shimmerCate.visibility= View.VISIBLE
+                views.shimmerCate.visibility = View.VISIBLE
                 views.shimmerCate.startShimmer()
-                views.rcvListCategory.visibility=View.INVISIBLE
+                views.rcvListCategory.visibility = View.INVISIBLE
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: loading")
             }
 
             is Fail -> {
-                views.shimmerCate.visibility= View.GONE
-                views.rcvListCategory.visibility=View.VISIBLE
+                views.shimmerCate.visibility = View.GONE
+                views.rcvListCategory.visibility = View.VISIBLE
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListCategory: Fail")
             }
 
@@ -262,8 +273,8 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     fun getListStore(state: HomeViewState) {
         when (state.stateStore) {
             is Loading -> {
-                views.shimmerStore.visibility=View.VISIBLE
-                views.rcvListStore.visibility=View.INVISIBLE
+                views.shimmerStore.visibility = View.VISIBLE
+                views.rcvListStore.visibility = View.INVISIBLE
                 views.shimmerStore.startShimmer()
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: loading")
             }
@@ -275,9 +286,9 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
                     launch {
                         Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: Success3")
                         state.stateStore.invoke()?.let {
-                            views.shimmerStore.visibility=View.GONE
-                            views.rcvListStore.visibility=View.VISIBLE
-                            views.refLayout.isRefreshing= false
+                            views.shimmerStore.visibility = View.GONE
+                            views.rcvListStore.visibility = View.VISIBLE
+                            views.refLayout.isRefreshing = false
                             adapterStore.setData(it)
                             Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: size" + it.size)
                         }
@@ -286,8 +297,8 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
             }
 
             is Fail -> {
-                views.shimmerStore.visibility=View.GONE
-                views.rcvListStore.visibility=View.VISIBLE
+                views.shimmerStore.visibility = View.GONE
+                views.rcvListStore.visibility = View.VISIBLE
                 Timber.tag("AAAAAAAAAAAAAAA").e("getListStore: fail")
             }
 

@@ -45,7 +45,12 @@ class CompleteMissionFragment : BaseFragment<FragmentCompleteMissionBinding>() {
         }
 
 
-        orderStoreAdapter = OrderStoreCompleteMissionAdapter (onBtnAction = {
+        orderStoreAdapter = OrderStoreCompleteMissionAdapter(onBtnAction = {
+            val intent = Intent(requireContext(), OrderDetailStoreActivity::class.java)
+            intent.putExtra(Common.KEY_ID_ORDER, it.id)
+            intent.putExtra("store", true)
+            requireContext().startActivity(intent)
+        }, onClick = {
             val intent = Intent(requireContext(), OrderDetailStoreActivity::class.java)
             intent.putExtra(Common.KEY_ID_ORDER, it.id)
             intent.putExtra("store", true)
@@ -57,6 +62,7 @@ class CompleteMissionFragment : BaseFragment<FragmentCompleteMissionBinding>() {
             requireContext().startActivity(intent)
 
         })
+
         views.recycleviewCompleteMission.adapter = orderStoreAdapter
         views.recycleviewCompleteMission.addItemDecoration(ItemSpacingDecoration(46))
     }
@@ -101,6 +107,7 @@ class CompleteMissionFragment : BaseFragment<FragmentCompleteMissionBinding>() {
             }
         }
     }
+
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?

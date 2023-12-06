@@ -74,6 +74,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 .maxResultSize(1080, 1080)
                 .start()
         }
+        views.toobar.icSearch.visibility = View.GONE
         adapterAttribute = AdapterPostAttribute()
         views.rcvListAttribute.adapter = adapterAttribute
         adapterAttribute.setListener(object : AdapterPostAttribute.PostAttributeListener {

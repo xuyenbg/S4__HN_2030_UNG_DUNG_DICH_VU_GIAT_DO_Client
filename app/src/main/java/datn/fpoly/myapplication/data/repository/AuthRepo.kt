@@ -23,22 +23,14 @@ class AuthRepo @Inject constructor(
         api.login(AcountLogin(phone, userId)).subscribeOn(Schedulers.io())
 
     fun register(
-        phone: String,
-        passwd: String,
-        fullname: String,
-        idRole: String,
-        favouriteStores: List<String>?
-    ): Observable<Response<ResponseBody>> = api.register(
-        AccountModel(
-            null,
-            phone,
-            passwd,
-            fullname,
-            phone,
-            idRole,
-            favouriteStores ?: arrayListOf(""),
-            null
-        )
+        phone: RequestBody,
+        passwd: RequestBody,
+        fullname: RequestBody,
+        idRole: RequestBody,
+        favouriteStores: RequestBody?,
+        avatar : MultipartBody.Part?
+    ): Observable<LoginResponse> = api.register(
+        phone,passwd,fullname,idRole,null,avatar
     ).subscribeOn(Schedulers.io())
 
     fun addFavoriteStore(

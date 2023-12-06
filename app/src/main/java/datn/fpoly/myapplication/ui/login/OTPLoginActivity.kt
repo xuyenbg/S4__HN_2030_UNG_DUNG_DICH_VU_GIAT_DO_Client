@@ -60,7 +60,8 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
     private var check = false
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var phoneNumber: String
-    private var isStatActivity= true
+    private var isStatActivity = true
+    var dialog: Dialog_Loading? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
@@ -71,7 +72,8 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
         super.initUiAndData()
 
         auth = FirebaseAuth.getInstance()
-
+        dialog = Dialog_Loading.getInstance()
+        auth.setLanguageCode("VI")
         OTP = intent.getStringExtra("OTP").toString()
         resendToken = intent.getParcelableExtra("resendToken")!!
         phoneNumber = intent.getStringExtra("phone")!!
@@ -94,15 +96,13 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                     val credential: PhoneAuthCredential = PhoneAuthProvider.getCredential(
                         OTP, typeOTP
                     )
-//                    views.progressPhone.visibility = View.VISIBLE
-                    Dialog_Loading.getInstance().show(supportFragmentManager, "LoginLoading")
+                    dialog?.show(supportFragmentManager, "LoginLoading")
                     signInWithPhoneAuthCredential(credential)
                 } else {
-                    Toast.makeText(this, "Vui lòng nhập lại OTP", Toast.LENGTH_SHORT).show()
-
+                    views.tvError.text = "Vui lòng nhập lại OTP"
                 }
             } else {
-                Toast.makeText(this, "Vui lòng nhập OTP", Toast.LENGTH_SHORT).show()
+                views.tvError.text = "Vui lòng nhập lại OTP"
             }
         }
         views.tvSendTo.setOnClickListener {
@@ -114,17 +114,19 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
     private fun login(uID: String) {
         viewModel.handle(LoginViewAction.LoginAction(phoneNumber, uID))
     }
-    private fun updateState(state: LoginViewState){
-        when(state.stateStore){
-            is Loading->{
+
+    private fun updateState(state: LoginViewState) {
+        when (state.stateStore) {
+            is Loading -> {
 
             }
-            is Success->{
+
+            is Success -> {
                 state.stateStore.invoke()?.let {
                     runBlocking {
                         launch {
-                            if(isStatActivity){
-                                isStatActivity= false
+                            if (isStatActivity) {
+                                isStatActivity = false
                                 Hawk.put(Common.KEY_STORE, it)
                                 startActivity(
                                     Intent(
@@ -139,10 +141,12 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                 }
 
             }
-            is Fail->{
 
+            is Fail -> {
+                views.tvError.text = "Server không phải hồi. Vui lòng thử lại !"
             }
-            else->{}
+
+            else -> {}
         }
     }
 
@@ -156,15 +160,16 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                             // account chứa cả đối tượng và message
                             val account = result
                             account.user.id?.let {
-                                FirebaseMessaging.getInstance().subscribeToTopic(it).addOnCompleteListener {
-                                    if (it.isSuccessful) {
-                                        Timber.tag("AAAAAAAAAAA")
-                                            .e("updateWithState: Đăng ký topic thàng công")
-                                    } else {
-                                        Timber.tag("AAAAAAAAAAA")
-                                            .e("updateWithState: Đăng ký topic thất bại")
+                                FirebaseMessaging.getInstance().subscribeToTopic(it)
+                                    .addOnCompleteListener {
+                                        if (it.isSuccessful) {
+                                            Timber.tag("AAAAAAAAAAA")
+                                                .e("updateWithState: Đăng ký topic thàng công")
+                                        } else {
+                                            Timber.tag("AAAAAAAAAAA")
+                                                .e("updateWithState: Đăng ký topic thất bại")
+                                        }
                                     }
-                                }
                             }
                             if (account.message == "Đăng nhập thành công") {
                                 authRepo.saveUser(accountResponse = account.user)
@@ -207,7 +212,8 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
 
                             } else {
                                 Log.d("Log In", "Sai tài khoản hoặc mật khẩu")
-
+                                dialog?.dismiss()
+                                dialog = null
                                 Toast.makeText(
                                     this@OTPLoginActivity,
                                     "Sai tài khoản hoặc mật khẩu",
@@ -227,6 +233,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
 
             is Fail -> {
                 Timber.tag("OTPLogin").e("updateWithState: ")
+                dialog?.dismiss()
             }
 
             else -> {}
@@ -265,10 +272,6 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
             }
         }
         countdownTimer.start()
-//        Handler(Looper.myLooper()!!).postDelayed(Runnable {
-//            views.tvSendTo.visibility = View.VISIBLE
-//            views.tvSendTo.isEnabled = true
-//        }, 60000)
     }
 
     private fun addTextChangeListener() {
@@ -330,7 +333,9 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
             } else if (e is FirebaseTooManyRequestsException) {
                 // The SMS quota for the project has been exceeded
                 Log.d("TAG", "onVerificationFailed: ${e.toString()}")
+                views.tvError.text = "SMS vượt quá lượt!"
             }
+            dialog?.dismiss()
         }
 
         override fun onCodeSent(
@@ -357,8 +362,10 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
 
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         // The verification code entered was invalid
+                        views.tvError.text = "Mã xác minh không hợp lệ!"
                     }
                     // Update UI
+                    dialog?.dismiss()
                 }
             }
     }
