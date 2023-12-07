@@ -156,6 +156,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
                         )
                     )
                     viewModel.updateCart(cart)
+                    Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show()
                 }
             }
         }

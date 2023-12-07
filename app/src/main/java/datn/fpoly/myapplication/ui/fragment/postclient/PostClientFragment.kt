@@ -23,6 +23,7 @@ import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
 import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.ItemSpacingDecoration
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -41,7 +42,7 @@ class PostClientFragment : BaseFragment<FragmentPostClientBinding>() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.handle(HomeViewAction.PostClientActionList)
         postClientAdapter = PostClientAdapter()
-        val itemDecoration = ItemSpacingDecoration(16)
+        val itemDecoration = ItemSpacingDecoration(42)
         views.recycleviewPost.addItemDecoration(itemDecoration)
         postClientAdapter.setListener(object : PostClientAdapter.PostListener {
             override fun onClickPost(postModel: PostModel) {
@@ -51,7 +52,7 @@ class PostClientFragment : BaseFragment<FragmentPostClientBinding>() {
             }
         })
         views.swipeToRefresh.setOnRefreshListener {
-            if(!views.swipeToRefresh.isRefreshing){
+            if(views.swipeToRefresh.isRefreshing){
                 viewModel.handle(HomeViewAction.PostClientActionList)
             }
         }
@@ -101,16 +102,5 @@ class PostClientFragment : BaseFragment<FragmentPostClientBinding>() {
 
             }
         }
-    }
-}
-
-class ItemSpacingDecoration(private val spacing: Int) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(
-        outRect: Rect,
-        view: View,
-        parent: RecyclerView,
-        state: RecyclerView.State
-    ) {
-        outRect.bottom = spacing // Đặt khoảng dưới theo giá trị spacing bạn muốn
     }
 }

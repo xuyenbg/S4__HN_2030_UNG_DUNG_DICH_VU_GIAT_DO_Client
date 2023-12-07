@@ -55,7 +55,7 @@ class OrderUncompingFragment : BaseFragment<FragmentOrderUpcompingBinding>() {
             }
         })
         views.swipeToRefresh.setOnRefreshListener {
-            if(!views.swipeToRefresh.isRefreshing){
+            if(views.swipeToRefresh.isRefreshing){
                 viewModel.handle(HomeViewAction.OrderActionGetList(account.id.toString()))
             }
         }

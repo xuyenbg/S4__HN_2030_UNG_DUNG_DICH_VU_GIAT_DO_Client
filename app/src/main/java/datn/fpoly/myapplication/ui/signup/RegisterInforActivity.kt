@@ -136,7 +136,7 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
                     launch {
                         state.stateSignUp.invoke().let { result ->
 
-                            if (result?.message.equals("Đăng nhập thành công")) {
+                            if (result?.message.equals("Đăng ký thành công")) {
                                 result?.user?.let {
                                     FirebaseMessaging.getInstance().subscribeToTopic(it.id!!)
                                         .addOnCompleteListener {
@@ -191,7 +191,6 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
                     }
                 }
                 dialogLoading?.dismiss()
-                dialogLoading = null
                 views.tvError.text = "Đăng ký thất bại"
             }
 

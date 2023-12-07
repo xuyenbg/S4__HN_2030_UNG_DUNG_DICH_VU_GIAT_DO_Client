@@ -2,7 +2,6 @@ package datn.fpoly.myapplication.ui.signup
 
 import android.content.ContentValues
 import android.content.Intent
-import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -14,15 +13,12 @@ import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
-import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivitySignUpBinding
 import datn.fpoly.myapplication.ui.home.HomeActivity
-import datn.fpoly.myapplication.ui.otp.AuthenticationOtpActivity
 import datn.fpoly.myapplication.utils.Dialog_Loading
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
     private lateinit var number: String
@@ -36,7 +32,9 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
         views.progressPhone.visibility = View.INVISIBLE
         auth = FirebaseAuth.getInstance()
 
-
+        views.btnBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
         views.btnContinue.setOnClickListener {
             number = views.phoneNumber.text.toString().trim()
             if (number.isNotEmpty()) {

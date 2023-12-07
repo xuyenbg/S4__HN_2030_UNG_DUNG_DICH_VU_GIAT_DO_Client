@@ -1,11 +1,9 @@
-package datn.fpoly.myapplication.ui.otp
+package datn.fpoly.myapplication.ui.signup
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
 import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -18,12 +16,9 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
-import datn.fpoly.myapplication.MainActivity
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivityAuthenticationOtpBinding
-import datn.fpoly.myapplication.ui.home.HomeActivity
-import datn.fpoly.myapplication.ui.signup.RegisterInforActivity
 import datn.fpoly.myapplication.utils.Dialog_Loading
 import java.util.concurrent.TimeUnit
 
@@ -190,11 +185,11 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
 //                    views.progressPhone.visibility = View.VISIBLE
                     val user = task.result?.user
                     Log.d("signInWithCredential", "signInWithPhoneAuthCredential: ${user?.uid}")
-                    Toast.makeText(this, "Thành Công", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this,RegisterInforActivity::class.java)
                     intent.putExtra("PHONE",phoneNumber)
                     intent.putExtra("UID", user?.uid)
                     startActivity(intent)
+                    finish()
                 } else {
                     // Sign in failed, display a message and update the UI
                     Log.w(ContentValues.TAG, "signInWithCredential:failure", task.exception)

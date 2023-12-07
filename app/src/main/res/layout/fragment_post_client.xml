@@ -34,14 +34,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:overScrollMode="never"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
             android:paddingTop="10dp"
             android:paddingBottom="@dimen/_16dp"
             android:scrollbars="none"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="1"
-            tools:itemCount="4"
             tools:listitem="@layout/item_post" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <com.facebook.shimmer.ShimmerFrameLayout

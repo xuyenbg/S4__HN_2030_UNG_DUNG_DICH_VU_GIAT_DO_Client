@@ -109,7 +109,7 @@
             android:name=".ui.signup.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.otp.AuthenticationOtpActivity"
+            android:name=".ui.signup.AuthenticationOtpActivity"
             android:exported="false" />
         <activity
             android:name=".ui.signup.RegisterInforActivity"
