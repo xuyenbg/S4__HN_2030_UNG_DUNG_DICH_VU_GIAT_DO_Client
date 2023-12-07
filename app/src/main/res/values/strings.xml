@@ -113,4 +113,7 @@
     <string name="adress">Địa chỉ</string>
     <string name="rate">Đánh giá</string>
     <string name="update">Cập nhật</string>
+    <string name="receive">Nhận đồ</string>
+    <string name="washed">Giặt xong</string>
+    <string name="delivery">Giao đồ - Hoàn thành</string>
 </resources>

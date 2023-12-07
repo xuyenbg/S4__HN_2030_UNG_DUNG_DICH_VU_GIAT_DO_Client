@@ -22,6 +22,7 @@ import datn.fpoly.myapplication.ui.fragment.postStore.FragmentPostStore
 import datn.fpoly.myapplication.ui.fragment.settingStore.setting.FragmentSetting
 import com.airbnb.mvrx.viewModel
 import com.orhanobut.hawk.Hawk
+import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.databinding.FragmentOrderStoreBinding
@@ -125,4 +126,13 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>(), HomeStoreVie
 
     override fun create(initialState: HomeStoreState): HomeStoreViewModel =
         homeStoreFatory.create(initialState)
+
+    override fun onResume() {
+        super.onResume()
+        val store =  Hawk.get<StoreModel>(Common.KEY_STORE)
+        viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDate(store.id!!, 0, "desc"))
+        viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateWashing(store.id!!, 1, "desc"))
+        viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateComplete(store.id!!, 2, "desc"))
+        viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateCompleteMission(store.id!!, 3, "desc"))
+    }
 }
