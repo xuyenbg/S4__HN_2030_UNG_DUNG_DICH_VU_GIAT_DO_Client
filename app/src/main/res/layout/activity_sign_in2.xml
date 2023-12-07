@@ -175,6 +175,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_button_color_primary_8"
             android:text="@string/next"
+            android:enabled="false"
             android:textColor="@color/white"
             android:textSize="14sp" />
     </LinearLayout>

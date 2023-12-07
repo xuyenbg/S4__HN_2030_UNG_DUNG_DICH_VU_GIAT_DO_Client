@@ -19,7 +19,7 @@
     <ImageView
         android:id="@+id/img_logo"
         android:layout_width="140dp"
-        android:layout_height="140dp"
+        android:layout_height="160dp"
         android:layout_marginTop="15dp"
         android:src="@drawable/icon_app"
         app:layout_constraintLeft_toLeftOf="parent"

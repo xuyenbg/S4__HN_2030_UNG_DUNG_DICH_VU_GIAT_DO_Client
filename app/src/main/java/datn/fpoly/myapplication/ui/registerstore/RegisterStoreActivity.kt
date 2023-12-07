@@ -100,7 +100,7 @@ class RegisterStoreActivity : BaseActivity<ActivityRegiterInforAccountStoreBindi
 
         val file = File(imageUri!!.path!!)
         val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val image = MultipartBody.Part.createFormData("imageQRCode", file.name, requestFile)
+        val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
         val namePart = name.toRequestBody("multipart/form-data".toMediaTypeOrNull())
 
@@ -145,7 +145,7 @@ class RegisterStoreActivity : BaseActivity<ActivityRegiterInforAccountStoreBindi
                             if (result.code() == 200) {
                                 Toast.makeText(
                                     this@RegisterStoreActivity,
-                                    "Thêm thành công",
+                                    "Đăng Kí Thành Công",
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 onBackPressedDispatcher.onBackPressed()
@@ -165,7 +165,6 @@ class RegisterStoreActivity : BaseActivity<ActivityRegiterInforAccountStoreBindi
 
             is Loading -> {
                 //Xoay tròn indicate
-                Timber.tag("AddPostActivity").d("loadiing: ")
                 dialogLoading?.show(supportFragmentManager, "Loading_store")
             }
 
