@@ -128,7 +128,7 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
                                 .d("orderCompleteInvalidate: ${it.size}")
                             orderAdapter.updateDataByStatus(
                                 it,
-                                listOf(3)
+                                listOf(2,3)
                             ) // Cập nhật danh sách đơn hàng đã hủy
                             views.rcvItemOrderComplete.adapter = orderAdapter
                             orderAdapter.notifyDataSetChanged()
