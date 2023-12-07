@@ -50,7 +50,6 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
         val idOrder = intent.getStringExtra(Common.KEY_ID_ORDER)
         viewModel.handle(OrderViewAction.GetOrderDetail(idOrder ?: "null"))
         viewModel.subscribe(this) {
-            views.progressCircular.root.visibility = if(it.isLoading()) View.VISIBLE else View.GONE
             updateWithState(it)
         }
         views.btnAction.setOnClickListener {
@@ -68,6 +67,8 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
     }
 
     private fun updateWithState(state: OrderViewState) {
+        views.progressCircular.root.visibility = if(state.isLoading()) View.VISIBLE else View.GONE
+
         when(state.stateOrderDetail){
             is Success -> {
                 order = state.stateOrderDetail.invoke()

@@ -18,5 +18,6 @@ data class OrderViewState (
         return stateOrderDetail is Loading
                 || stateUpdateOrder is Loading
                 || stateUploadImage is Loading
+                || stateUpdateStatus is Loading
     }
 }
