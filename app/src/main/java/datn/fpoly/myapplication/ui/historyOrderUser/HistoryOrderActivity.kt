@@ -26,6 +26,7 @@ import datn.fpoly.myapplication.ui.home.HomeViewState
 import datn.fpoly.myapplication.ui.home.order.adapter.OrderAdapter
 import datn.fpoly.myapplication.ui.order.OrderDetailActivity
 import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.DialogLoading
 import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -46,7 +47,6 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
         super.onCreate(savedInstanceState)
         viewModel.handle(HistoryOrderViewAction.GetListHistoryOrder(idUser))
         orderAdapter = OrderAdapter()
-        dialogLoading= Dialog_Loading.getInstance()
         views.rcvListOrder.adapter = orderAdapter
         orderAdapter.setListener(object : OrderAdapter.OrderListener {
             override fun onClickOrder(order: OrderExtend) {
@@ -105,11 +105,9 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
     private fun getListOrder(it: HistoryOrderViewState) {
         when (it.stateOrder) {
             is Success -> {
-
                 runBlocking {
                     launch {
-                        dialogLoading?.dismiss()
-                        dialogLoading=null
+                        DialogLoading.hideDialog()
                         it.stateOrder.invoke()?.let {
                             Timber.tag("OrderCompleteFragment")
                                 .d("orderCompleteInvalidate: ${it.size}")
@@ -123,14 +121,13 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
             }
 
             is Loading -> {
+                DialogLoading.showDialog(this)
                 Timber.tag("AAAAAAAAAAAAAAA").e("getOrderComplete: loading")
-                dialogLoading?.show(supportFragmentManager,"add post")
             }
 
             is Fail -> {
+                DialogLoading.hideDialog()
                 Timber.tag("AAAAAAAAAAAAAAA").e("getOrderComplete: Fail")
-                dialogLoading?.dismiss()
-                dialogLoading=null
             }
 
             else -> {
@@ -139,7 +136,7 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
         }
     }
     private fun updateStateAddRate(state: HistoryOrderViewState){
-
+        dialogLoading = Dialog_Loading.getInstance()
         when(state.stateRate){
             is Loading-> {
                 dialogLoading?.show(supportFragmentManager,"Loading Rate")
@@ -148,6 +145,7 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
             is Success->{
                 runBlocking {
                     launch {
+                        dialog.dismiss()
                         dialogLoading?.dismiss()
                         dialogLoading=null
                         Toast.makeText(this@HistoryOrderActivity, "Đánh giá thành công", Toast.LENGTH_SHORT).show()

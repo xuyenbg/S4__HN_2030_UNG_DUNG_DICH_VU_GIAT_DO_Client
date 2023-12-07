@@ -9,9 +9,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.*
 import com.bumptech.glide.Glide
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
@@ -28,11 +26,11 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.gson.Gson
 import datn.fpoly.myapplication.data.model.StoreModel
-import com.airbnb.mvrx.viewModel
 import datn.fpoly.myapplication.utils.DataRaw
-import datn.fpoly.myapplication.utils.Dialog_Loading
+import datn.fpoly.myapplication.utils.DialogLoading
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -46,7 +44,6 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
     lateinit var adapterAttribute: AdapterPostAttribute
     private var unit = ""
     private var limitPriceSale: Int = 0
-    private var dialog: Dialog_Loading? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
@@ -199,6 +196,15 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 }
                 views.edPriceSale.setText(modelUpdate.idSale?.value.toString())
             }
+            val listAttribute = modelUpdate?.attributeList
+            for (index in 0 until listAttribute?.size!!) {
+                adapterAttribute.insertItem(
+                    PostService.PostAttribute(
+                        listAttribute[index].name,
+                        listAttribute[index].price
+                    )
+                )
+            }
             when (modelUpdate?.unit) {
                 views.btnUnit1.text -> {
                     unit = views.btnUnit1.text.toString()
@@ -232,6 +238,9 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                     views.btnUnit4.isChecked = true
                 }
             }
+            modelUpdate.isActive?.let {
+                views.swIsActive.isSelected=it
+            }
             views.edNameService.setText(modelUpdate?.name)
             views.edPriceService.setText(modelUpdate?.price.toString())
             for (index in 0 until modelUpdate?.attributeList?.size!!) {
@@ -245,7 +254,11 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             Glide.with(views.imgSelectImage).load(Common.baseUrl + "" + modelUpdate.image)
                 .into(views.imgSelectImage)
             views.btnInsertService.setText("Lưu")
+            views.swIsActive.visibility=View.VISIBLE
+            views.tvIsActive.visibility=View.VISIBLE
         } else {
+            views.swIsActive.visibility=View.GONE
+            views.tvIsActive.visibility=View.GONE
             views.btnInsertService.setText("Thêm")
         }
 
@@ -387,7 +400,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             val priceServie = views.edPriceService.text.toString().trim()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val unit = unit.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val isActive = true.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val isActive = views.swIsActive.isSelected.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val stringMap = HashMap<String, PostService.PostAttribute>()
             listAttribute.forEachIndexed { index, item ->
                 stringMap["attributeList[$index]"] = item
@@ -478,7 +491,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             val priceServie = views.edPriceService.text.toString().trim()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val unit = unit.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val isActive = true.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val isActive = views.swIsActive.isSelected.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val stringMap = HashMap<String, PostService.PostAttribute>()
             listAttribute.forEachIndexed { index, item ->
                 stringMap["attributeList[$index]"] = item
@@ -550,25 +563,33 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
     }
 
     fun updateStatePost(state: AddServiceViewState) {
-        dialog = Dialog_Loading.getInstance()
+
         when (state.stateService) {
             is Loading -> {
-                dialog?.show(supportFragmentManager, "Loading Add Service")
+                DialogLoading.showDialog(this)
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Loading")
             }
 
             is Success -> {
-                state.stateService.invoke()?.let {
-                    Toast.makeText(this, "${it.message()}", Toast.LENGTH_SHORT).show()
-                    Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: " + it.message())
+                runBlocking {
+                    launch {
+                        DialogLoading.hideDialog()
+                        state.stateService.invoke()?.let {
+                            Toast.makeText(this@AddServiceActivity, "${it.message()}", Toast.LENGTH_SHORT).show()
+                            Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: " + it.message())
+                            setResult(Common.CODE_LOAD_DATA)
+                            onBackPressedDispatcher.onBackPressed()
+                        }
+                        state.stateService = Uninitialized
+
+                    }
                 }
-                setResult(Common.CODE_LOAD_DATA)
-                onBackPressedDispatcher.onBackPressed()
+
             }
 
             is Fail -> {
-                dialog?.dismiss()
-                dialog = null
+                DialogLoading.hideDialog()
+                state.stateService = Uninitialized
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Fail")
             }
 
@@ -580,21 +601,25 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
     fun updateStateUpdate(state: AddServiceViewState) {
         when (state.stateServiceUpdate) {
             is Loading -> {
-                Dialog_Loading.getInstance().show(supportFragmentManager, "Loading Add Service")
+                DialogLoading.showDialog(this)
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Loading")
             }
 
             is Success -> {
+                DialogLoading.hideDialog()
                 state.stateServiceUpdate.invoke()?.let {
                     Toast.makeText(this, "${it.message()}", Toast.LENGTH_SHORT).show()
                     Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: " + it.message())
+                    setResult(Common.CODE_LOAD_DATA)
+                    onBackPressedDispatcher.onBackPressed()
                 }
-                setResult(Common.CODE_LOAD_DATA)
-                onBackPressedDispatcher.onBackPressed()
+                state.stateServiceUpdate = Uninitialized
+
             }
 
             is Fail -> {
-                Dialog_Loading.getInstance().dismiss()
+                DialogLoading.hideDialog()
+                state.stateServiceUpdate = Uninitialized
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Fail")
             }
 

@@ -40,6 +40,9 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
         views.progressPhone.visibility = View.INVISIBLE
         addTextChangeListener()
         resendOTPTvVisibility()
+        views.btnBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
         views.btnVeri.setOnClickListener {
             val typeOTP = views.edOtp1.text.toString() + views.edOtp2.text.toString() +
                     views.edOtp3.text.toString() + views.edOtp4.text.toString() +

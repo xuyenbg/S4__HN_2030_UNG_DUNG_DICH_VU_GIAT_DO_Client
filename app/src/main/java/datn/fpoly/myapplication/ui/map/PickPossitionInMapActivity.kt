@@ -18,6 +18,8 @@ import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.databinding.ActivityPickPossitionInMapBinding
 import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.DialogLoading
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,7 +43,6 @@ class PickPossitionInMapActivity :AppCompatActivity(),
         binging = ActivityPickPossitionInMapBinding.inflate(layoutInflater)
         setContentView(binging.root)
         fusedLoaction = LocationServices.getFusedLocationProviderClient(this)
-        setPossition()
         binging.btnChossePossition.setOnClickListener {
             myLocation?.let{
                 dataAdress.longitude= it.longitude
@@ -66,9 +67,10 @@ class PickPossitionInMapActivity :AppCompatActivity(),
 
     override fun onRestart() {
         super.onRestart()
-        if(Common.checkPermission(this)){
-            getCurrentLocation()
-        }
+//        if(Common.checkPermission(this)){
+//            getCurrentLocation()
+//        }
+        requestGetCurrentLocation()
     }
 
     fun requestGetCurrentLocation() {
@@ -96,6 +98,7 @@ class PickPossitionInMapActivity :AppCompatActivity(),
     }
 
     private fun getCurrentLocation() {
+      DialogLoading.showDialog(this)
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -104,6 +107,7 @@ class PickPossitionInMapActivity :AppCompatActivity(),
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
+
             fusedLoaction.getCurrentLocation(
                 LocationRequest.QUALITY_HIGH_ACCURACY,
                 object : CancellationToken() {
@@ -118,6 +122,7 @@ class PickPossitionInMapActivity :AppCompatActivity(),
 
                 }).addOnSuccessListener() {
                 if (it != null) {
+                   DialogLoading.hideDialog()
                     myLocation = LatLng(it.latitude, it.longitude)
                     loadFragmentMap()
                     mapFragment.getMapAsync(this)
@@ -137,11 +142,6 @@ class PickPossitionInMapActivity :AppCompatActivity(),
     }
 
 
-    fun setPossition() {
-//        views.btnChossePossition.setOnClickListener {
-//
-//        }
-    }
 
 
     override fun onMapReady(p0: GoogleMap) {

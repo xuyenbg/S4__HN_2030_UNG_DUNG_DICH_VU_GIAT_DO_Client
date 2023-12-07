@@ -72,6 +72,12 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
         when(state.stateOrderDetail){
             is Success -> {
                 order = state.stateOrderDetail.invoke()
+                if(order?.status==0){
+                    views.btnActionCancel.visibility=View.VISIBLE
+
+                }else{
+                    views.btnActionCancel.visibility=View.GONE
+                }
                 views.nameStore.text = order?.idStore?.name ?: "-"
                 views.addressStore.text = order?.idStore?.idAddress?.address ?: "-"
                 views.storePhone.text = order?.idStore?.iduser?.phone ?: "-"
