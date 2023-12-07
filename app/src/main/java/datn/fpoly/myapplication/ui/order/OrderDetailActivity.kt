@@ -19,7 +19,6 @@ import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import timber.log.Timber
 import javax.inject.Inject
 
 class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderViewModel.Factory {
@@ -60,11 +59,11 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderVie
             views.labelNoteTotal.visibility=View.VISIBLE
         }
         if(intent.getBooleanExtra("store", false)){
-            views.btnActitonCancel.visibility=View.GONE
+            views.btnActionCancel.visibility=View.GONE
         }else{
-            views.btnActitonCancel.visibility=View.VISIBLE
+            views.btnActionCancel.visibility=View.VISIBLE
         }
-        views.btnActitonCancel.setOnClickListener {
+        views.btnActionCancel.setOnClickListener {
             orderExtend?.id?.let { it1 -> OrderViewAction.UpdateStatus(it1, 5) }
                 ?.let { it2 -> viewModel.handle(it2) }
         }
@@ -78,10 +77,10 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderVie
                     launch {
                         val order = state.stateOrderDetail.invoke()
                         orderExtend= order
-                        if(order?.status==0&&intent.getBooleanExtra("store", false)){
-                            views.btnActitonCancel.visibility=View.VISIBLE
+                        if(order?.status==0 && intent.getBooleanExtra("store", false)){
+                            views.btnActionCancel.visibility=View.VISIBLE
                         }else{
-                            views.btnActitonCancel.visibility=View.GONE
+                            views.btnActionCancel.visibility=View.GONE
                         }
                         views.nameStore.text = order?.idStore?.name ?: "-"
                         views.addressStore.text = order?.idStore?.idAddress?.address ?: "-"
@@ -107,8 +106,6 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderVie
                             views.tvServiceNumber.text = String.format("%d Dịch vụ", order.listItem.size)
                             views.total.text = order.total?.formatCurrency(null) ?: "- đ"
                         }
-
-
                     }
                 }
             }

@@ -2,7 +2,6 @@ package datn.fpoly.myapplication.ui.order
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.airbnb.mvrx.Fail
@@ -10,13 +9,13 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.viewModel
 import datn.fpoly.myapplication.AppApplication
+import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.databinding.ActivityOrderDetailBinding
 import datn.fpoly.myapplication.ui.order.adapter.AdapterItemOrderStore
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
-import datn.fpoly.myapplication.utils.Dialog_Loading
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -54,6 +53,18 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
             views.progressCircular.root.visibility = if(it.isLoading()) View.VISIBLE else View.GONE
             updateWithState(it)
         }
+        views.btnAction.setOnClickListener {
+            viewModel.handle(OrderViewAction.UpdateStatus(
+                idOrder = order?.id ?: "-",
+                status = order?.status?.plus(1) ?: -1
+            ))
+        }
+        views.btnActionCancel.setOnClickListener {
+            viewModel.handle(OrderViewAction.UpdateStatus(
+                idOrder = order?.id ?: "-",
+                status = 5
+            ))
+        }
     }
 
     private fun updateWithState(state: OrderViewState) {
@@ -87,6 +98,26 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
                     views.total.text = order!!.total?.formatCurrency(null) ?: "- đ"
                     state.stateOrderDetail = Uninitialized
                 }
+                when(order?.status){
+                    0 -> {
+                        views.btnAction.text = getString(R.string.receive)
+                    }
+                    1 -> {
+                        views.btnAction.text = getString(R.string.washed)
+                        views.btnActionCancel.visibility = View.GONE
+                    }
+                    2 -> {
+                        views.btnAction.text = getString(R.string.delivery)
+                    }
+                    3 -> {
+                        views.btnAction.visibility = View.GONE
+                        views.btnActionCancel.visibility = View.GONE
+                    }
+                    4 -> {
+                        views.btnAction.visibility = View.GONE
+                        views.btnActionCancel.visibility = View.GONE
+                    }
+                }
             }
             else -> {}
         }
@@ -113,6 +144,13 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
             }
             is Fail -> {
                 Toast.makeText(this, "Cập nhập đơn hàng không thành công, có lỗi xảy ra", Toast.LENGTH_SHORT).show()
+            }
+            else -> {}
+        }
+
+        when(state.stateUpdateStatus){
+            is Success -> {
+                finish()
             }
             else -> {}
         }

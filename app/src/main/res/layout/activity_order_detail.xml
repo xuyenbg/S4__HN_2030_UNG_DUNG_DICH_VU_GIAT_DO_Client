@@ -390,7 +390,7 @@
                         app:layout_constraintTop_toBottomOf="@id/label_note_total"
                         app:layout_constraintBottom_toBottomOf="parent"/>
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_actiton_cancel"
+                        android:id="@+id/btn_action_cancel"
                         android:layout_width="match_parent"
                         android:layout_height="36dp"
                         android:layout_marginTop="10dp"
