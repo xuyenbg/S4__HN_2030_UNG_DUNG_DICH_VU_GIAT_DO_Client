@@ -79,7 +79,7 @@ class OrderUncompingFragment : BaseFragment<FragmentOrderUpcompingBinding>() {
                             views.rcvItemOrderUncomping.visibility=View.VISIBLE
                             views.swipeToRefresh.isRefreshing= false
                             Timber.tag("OrderUncompingFragment").d("orderUncompingInvalidate: ${it.size}")
-                            orderAdapter.updateDataByStatus(it, listOf(0,1,2)) // Cập nhật danh sách đơn hàng đã hủy
+                            orderAdapter.updateDataByStatus(it, listOf(0,1)) // Cập nhật danh sách đơn hàng đã hủy
                             views.rcvItemOrderUncomping.adapter = orderAdapter
                             orderAdapter.notifyDataSetChanged()
                             Log.d("OrderUncompingFragment", "getListOrderUncomping: ${it.size}")
