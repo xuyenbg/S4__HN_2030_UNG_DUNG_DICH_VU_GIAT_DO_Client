@@ -26,8 +26,6 @@ import javax.inject.Inject
 class HomeActivity : BaseActivity<ActivityHomeBinding>(), HomeUserViewModel.Factory {
     @Inject
     lateinit var homeUserFatory: HomeUserViewModel.Factory
-    private lateinit var adapterVp: AdapterViewPage
-    private val listFragment = mutableListOf<Fragment>()
     private val viewModel: HomeUserViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {

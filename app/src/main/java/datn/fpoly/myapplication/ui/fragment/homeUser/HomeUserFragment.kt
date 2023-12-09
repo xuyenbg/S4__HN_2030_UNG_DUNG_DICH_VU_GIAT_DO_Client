@@ -16,6 +16,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import com.airbnb.mvrx.*
+import com.denzcoskun.imageslider.constants.ActionTypes
+import com.denzcoskun.imageslider.constants.AnimationTypes
+import com.denzcoskun.imageslider.constants.ScaleTypes
+import com.denzcoskun.imageslider.interfaces.ItemClickListener
+import com.denzcoskun.imageslider.interfaces.TouchListener
+import com.denzcoskun.imageslider.models.SlideModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -57,7 +63,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     private lateinit var adapterCate: AdapterCategory
     private lateinit var adapterStore: AdapterStore
     private lateinit var handler: Handler
-    private var imageList: MutableList<Int> = mutableListOf()
+    private var imageList: MutableList<SlideModel> = mutableListOf()
     private lateinit var adapter: SlideImageAdapter
     private lateinit var fusedLoaction: FusedLocationProviderClient
     private var account: AccountModel? = null
@@ -70,7 +76,6 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fusedLoaction = LocationServices.getFusedLocationProviderClient(requireActivity())
-        adapter = SlideImageAdapter(views.vpSlideShow)
         viewModel.handle(HomeViewAction.HomeActionCategory)
         viewModel.handle(
             HomeViewAction.HomeActionGetListStore(
@@ -300,30 +305,27 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
 
     }
 
-    private val runnable = Runnable {
-        if (views.vpSlideShow.currentItem == imageList.size - 1) {
-            views.vpSlideShow.currentItem = 0
-        } else {
-            views.vpSlideShow.currentItem = views.vpSlideShow.currentItem + 1
-        }
-    }
 
     private fun initSlide() {
-        handler = Handler(Looper.getMainLooper())
-        imageList.add(datn.fpoly.myapplication.R.drawable.imageslide_1)
-        imageList.add(datn.fpoly.myapplication.R.drawable.imageslide_2)
-        imageList.add(datn.fpoly.myapplication.R.drawable.imageslide3)
-        imageList.add(datn.fpoly.myapplication.R.drawable.imageslide_4)
-//        adapter = SlideImageAdapter(views.vpSlideShow)
-        adapter.updateData(imageList)
-        views.vpSlideShow.adapter = adapter
+
+        imageList.add(SlideModel("https://asiatechjsc.vn/cdn/shop/articles/7ac3212def22e3c7b4b6c6805cb01bf5.jpg?v=1610419220", "Siêu tiện dụng."))
+        imageList.add(SlideModel("https://channel.mediacdn.vn/2019/9/9/photo-2-15680177604931126060018.jpg", "Climate change is moving very fast."))
+        imageList.add(SlideModel("https://giatlatokyo.com/wp-content/uploads/2018/09/dich-vu-giat-kho-la-hoi.jpg", "helo du you mother fuck"))
+        views.vpSlideShow.setImageList(imageList, ScaleTypes.CENTER_CROP)
+
+        views.vpSlideShow.setSlideAnimation(AnimationTypes.ZOOM_OUT)
+        views.vpSlideShow.setTouchListener(object : TouchListener {
+            override fun onTouched(touched: ActionTypes, position: Int) {
+                if (touched == ActionTypes.UP){
+                    views.vpSlideShow.stopSliding()
+                } else if (touched == ActionTypes.DOWN ) {
+                    views.vpSlideShow.startSliding(2000)
+                }
+            }
+        })
 
     }
 
-    override fun onPause() {
-        super.onPause()
-        handler.removeCallbacks(runnable)
-    }
 }
 
 

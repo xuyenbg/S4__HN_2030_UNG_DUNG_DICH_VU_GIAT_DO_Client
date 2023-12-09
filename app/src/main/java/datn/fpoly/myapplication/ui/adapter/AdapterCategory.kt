@@ -5,9 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bumptech.glide.Glide
+import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.CategoryModel
 import datn.fpoly.myapplication.databinding.ItemCategoryLlinearBinding
 import datn.fpoly.myapplication.databinding.ItemCategoryServiceBinding
+import datn.fpoly.myapplication.utils.Common
 
 class AdapterCategory(var limits: Int, val linearEnable: Boolean) :
     Adapter<ViewHolder>() {
@@ -65,7 +68,6 @@ class AdapterCategory(var limits: Int, val linearEnable: Boolean) :
                     listener?.onClickCate(item)
                 }
             }
-
         }
     }
 
@@ -73,6 +75,7 @@ class AdapterCategory(var limits: Int, val linearEnable: Boolean) :
         ViewHolder(binding.root) {
         fun bind(item: CategoryModel) {
             binding.tvCategoryService.text = item.name
+            Glide.with(itemView).load(Common.baseUrl+item.image).placeholder(R.drawable.image_category).error(R.drawable.image_category).into(binding.imgCategory)
 
         }
     }
@@ -81,6 +84,8 @@ class AdapterCategory(var limits: Int, val linearEnable: Boolean) :
         ViewHolder(binding.root) {
         fun bind(item: CategoryModel) {
             binding.tvCategoryService.text = item.name
+            Glide.with(itemView).load(Common.baseUrl+item.image).placeholder(R.drawable.image_category).error(R.drawable.image_category).into(binding.imgCategory)
+
         }
     }
 
