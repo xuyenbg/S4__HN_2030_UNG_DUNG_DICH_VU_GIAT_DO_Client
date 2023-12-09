@@ -6,7 +6,7 @@
         android:title="Wash Now" />
     <item
         android:id="@+id/cart"
-        android:icon="@drawable/document"
+        android:icon="@drawable/ic_cart"
         android:title="Giỏ hàng" />
     <item
         android:id="@+id/order"

@@ -22,11 +22,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-            <androidx.viewpager2.widget.ViewPager2
+            <com.denzcoskun.imageslider.ImageSlider
                 android:id="@+id/vp_slide_show"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="240dp"
+                app:iss_delay="2000"
+                app:iss_auto_cycle="true"
+                app:iss_placeholder="@android:color/transparent"
+                app:iss_error_image="@android:color/darker_gray"
+                app:iss_corner_radius="5"
+                app:iss_selected_dot="@drawable/bg_indicator"
+                app:iss_period="2000"
+                app:iss_text_align="CENTER"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
