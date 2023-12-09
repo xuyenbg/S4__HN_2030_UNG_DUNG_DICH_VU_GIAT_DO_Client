@@ -3,10 +3,7 @@ package datn.fpoly.myapplication.ui.listService
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.viewModel
+import com.airbnb.mvrx.*
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
@@ -33,7 +30,7 @@ class ListServiceActivity : BaseActivity<ActivityListServiceBinding>(), ListServ
         views.tvNoti.visibility=View.GONE
         views.imgNoti.visibility=View.GONE
         viewModel.handle(ListServiceViewAction.GetListServiceByCategory(DataRaw.getDataIdCategory()))
-        adapter = AdapterService(false)
+        adapter = AdapterService(false, true)
         views.rcvList.adapter= adapter
         adapter.setListenner(object :AdapterService.ServiceListenner{
             override fun ServiceOnClick(item: ServiceExtend, position: Int) {
@@ -81,6 +78,7 @@ class ListServiceActivity : BaseActivity<ActivityListServiceBinding>(), ListServ
                         }
                     }
                 }
+                state.stateService=Uninitialized
             }
             is Loading ->{
                 views.shimmer.visibility= View.VISIBLE
@@ -91,6 +89,7 @@ class ListServiceActivity : BaseActivity<ActivityListServiceBinding>(), ListServ
             is Fail -> {
                 views.shimmer.visibility= View.GONE
                 views.rcvList.visibility=View.VISIBLE
+                state.stateService=Uninitialized
                 Timber.tag("AAAAAAAAA").e("getListService: Call Fail")
             }
             else->{

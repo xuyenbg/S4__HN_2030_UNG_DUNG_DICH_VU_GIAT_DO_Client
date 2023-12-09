@@ -180,6 +180,7 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
             is Fail->{
                 DialogLoading.hideDialog()
                 dialog.dismiss()
+                Toast.makeText(requireContext(), "Đánh giá thất bại", Toast.LENGTH_SHORT).show()
                 Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:fail ")
             }
             else->{}

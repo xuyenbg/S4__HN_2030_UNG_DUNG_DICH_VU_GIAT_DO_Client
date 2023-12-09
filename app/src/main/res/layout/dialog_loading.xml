@@ -28,8 +28,7 @@
             android:id="@+id/tv_loading_ads"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:text="Đang tải...."
+            android:text="Loading...."
             android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="@color/white"

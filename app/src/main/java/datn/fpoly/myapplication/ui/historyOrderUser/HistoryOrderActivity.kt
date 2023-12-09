@@ -136,25 +136,25 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
         }
     }
     private fun updateStateAddRate(state: HistoryOrderViewState){
-        dialogLoading = Dialog_Loading.getInstance()
         when(state.stateRate){
             is Loading-> {
-                dialogLoading?.show(supportFragmentManager,"Loading Rate")
+               DialogLoading.showDialog(this@HistoryOrderActivity)
                 Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:loading ")
             }
             is Success->{
                 runBlocking {
                     launch {
                         dialog.dismiss()
-                        dialogLoading?.dismiss()
-                        dialogLoading=null
+                        DialogLoading.hideDialog()
                         Toast.makeText(this@HistoryOrderActivity, "Đánh giá thành công", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             is Fail->{
-                dialogLoading?.dismiss()
-                dialogLoading=null
+                dialog.dismiss()
+                DialogLoading.hideDialog()
+                Toast.makeText(this@HistoryOrderActivity, "Đánh giá thất bại", Toast.LENGTH_SHORT).show()
+
                 Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:fail ")
             }
             else->{}

@@ -2,13 +2,11 @@ package datn.fpoly.myapplication.ui.service
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.viewModel
+import com.airbnb.mvrx.*
 import com.bumptech.glide.Glide
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
@@ -32,6 +30,7 @@ import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
+import java.text.DecimalFormat
 import javax.inject.Inject
 
 class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
@@ -83,7 +82,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
                 startActivity(Intent(this@DetailServiceActivity, HomeActivity::class.java))
             }
         }
-        adapterService = AdapterService(false)
+        adapterService = AdapterService(false, false)
         views.rcvService.adapter = adapterService
         viewModel.getCart().observe(this) {
             if (it != null) {
@@ -104,9 +103,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
         Log.d("DetailServiceActivity", "onCreate: $serviceExtend")
         adapterAttribute = AdapterAttribute()
         views.rcvItemAttribute.adapter = adapterAttribute
-        serviceExtend?.attributeList?.let {
-            adapterAttribute.setData(it)
-        }
+
         adapterAttribute.setListenner(object : AdapterAttribute.AttributeListenner {
             override fun onClickItem(attributeModel: AttributeModel) {
 
@@ -174,7 +171,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
             val list = mutableListOf<ItemServiceBase>()
             list.add((ItemServiceBase(
                 views.tvQuantity.text.toString().toDouble(),
-                (serviceExtend?.price?.times((views.tvQuantity.text.toString().toInt()))),
+                getTotalItem(),
                 null,
                 serviceExtend?.id,
                 serviceExtend,
@@ -186,7 +183,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
             val orderBase = OrderBase(
                 authRepo.getUser()?.id,
                 serviceExtend?.idStore?.id,
-                (serviceExtend?.price?.times((views.tvQuantity.text.toString().toInt()))),
+                getTotalItem(),
                 "",
                 "",
                 "",
@@ -207,10 +204,26 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
     }
 
     private fun getTotalItem(): Double {
-        var priceAttr = 0.0
-        adapterAttribute.listAttributeSelect.forEach { attr -> priceAttr += attr.price }
-        total = (serviceExtend!!.price!! + priceAttr) * quality
-        return total
+        if(serviceExtend?.idSale!=null){
+            if(serviceExtend?.idSale?.unit.equals("%")){
+                var priceAttr = 0.0
+                adapterAttribute.listAttributeSelect.forEach { attr -> priceAttr += attr.price }
+                total = ((serviceExtend!!.price!!-(serviceExtend?.price?.times(serviceExtend?.idSale?.value!!)!!)) + priceAttr) * quality
+                return total
+            }else{
+                var priceAttr = 0.0
+                adapterAttribute.listAttributeSelect.forEach { attr -> priceAttr += attr.price }
+                total = ((serviceExtend!!.price!!- serviceExtend?.idSale?.value!!) + priceAttr) * quality
+                return total
+            }
+
+        }else{
+            var priceAttr = 0.0
+            adapterAttribute.listAttributeSelect.forEach { attr -> priceAttr += attr.price }
+            total = (serviceExtend!!.price!! + priceAttr) * quality
+            return total
+        }
+
     }
 
     override fun onResume() {
@@ -233,6 +246,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
                     launch {
                         state.stateService.invoke()?.let {
                             adapterService.setData(it)
+                            state.stateService=Uninitialized
                             Timber.tag("AAAAAAAAA")
                                 .e("getListService: list service size: " + it.size)
                         }
@@ -245,6 +259,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
             }
 
             is Fail -> {
+                state.stateService=Uninitialized
                 Timber.tag("AAAAAAAAA").e("getListService: Call Fail")
             }
 
@@ -255,6 +270,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
     }
 
     private fun getService(state: DetailServiceViewState) {
+        val decemDecimalFormatFormat = DecimalFormat("#.#")
         when (state.stateServiceByid) {
             is Loading -> {
 //                Dialog_Loading.getInstance().show(this, "Loading")
@@ -267,9 +283,23 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
                         state.stateServiceByid.invoke()?.let {
                             serviceExtend = it
                             views.tvNameService.text = serviceExtend?.name
-                            views.tvPrice.text =
-                                serviceExtend?.price?.formatCurrency(unit = serviceExtend?.unit)
-                                    ?: ""
+                            if (serviceExtend?.idSale == null) {
+                                views.tvPrice.text =
+                                    serviceExtend?.price?.formatCurrency(unit = serviceExtend?.unit)
+                                        ?: ""
+                            } else {
+                                views.tvPrice.setText(
+                                    Html.fromHtml(
+                                        "<span style=\"text-decoration: line-through;\">${decemDecimalFormatFormat.format(serviceExtend!!.price)} ${serviceExtend?.unit}</span> <span style=\"color: #FA0F0F;\">${
+                                            if (serviceExtend!!.idSale?.unit.equals("%")) {
+                                               decemDecimalFormatFormat.format( serviceExtend!!.price?.minus((serviceExtend!!.price!! * serviceExtend!!.idSale?.value!!)))
+                                            } else {
+                                               decemDecimalFormatFormat.format( (serviceExtend?.price?.minus(serviceExtend!!.idSale?.value!!)))
+                                            }
+                                        } ${serviceExtend?.unit}</span>"
+                                    )
+                                )
+                            }
                             views.tvQuantity.text = quality.toInt().toString()
                             Glide.with(this@DetailServiceActivity)
                                 .load(Common.baseUrl + serviceExtend?.image)
@@ -289,15 +319,20 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
                                 }
                             }
                             views.tvAttribute.text = nameAttribute
+                            serviceExtend?.attributeList?.let {
+                                adapterAttribute.setData(it)
+                            }
                         }
 //                        Dialog_Loading.getInstance().dismiss()
                     }
+                    state.stateServiceByid=Uninitialized
                 }
                 Timber.tag("AAAAAAAAAAAAA").e("getService: Success")
 
             }
 
             is Fail -> {
+                state.stateServiceByid=Uninitialized
 //                Dialog_Loading.getInstance().dismiss()
                 Timber.tag("AAAAAAAAAAAAA").e("getService: Fail")
             }

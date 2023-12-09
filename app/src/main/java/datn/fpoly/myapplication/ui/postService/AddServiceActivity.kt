@@ -72,7 +72,8 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 .start()
         }
         views.toobar.icSearch.visibility = View.GONE
-        adapterAttribute = AdapterPostAttribute()
+        adapterAttribute =
+            AdapterPostAttribute(intent.getBooleanExtra(Common.KEY_UPDATE_SERVICE, false))
         views.rcvListAttribute.adapter = adapterAttribute
         adapterAttribute.setListener(object : AdapterPostAttribute.PostAttributeListener {
             override fun onDelete(item: PostService.PostAttribute, index: Int) {
@@ -239,7 +240,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 }
             }
             modelUpdate.isActive?.let {
-                views.swIsActive.isSelected=it
+                views.swIsActive.isSelected = it
             }
             views.edNameService.setText(modelUpdate?.name)
             views.edPriceService.setText(modelUpdate?.price.toString())
@@ -254,11 +255,11 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             Glide.with(views.imgSelectImage).load(Common.baseUrl + "" + modelUpdate.image)
                 .into(views.imgSelectImage)
             views.btnInsertService.setText("Lưu")
-            views.swIsActive.visibility=View.VISIBLE
-            views.tvIsActive.visibility=View.VISIBLE
+            views.swIsActive.visibility = View.VISIBLE
+            views.tvIsActive.visibility = View.VISIBLE
         } else {
-            views.swIsActive.visibility=View.GONE
-            views.tvIsActive.visibility=View.GONE
+            views.swIsActive.visibility = View.GONE
+            views.tvIsActive.visibility = View.GONE
             views.btnInsertService.setText("Thêm")
         }
 
@@ -267,7 +268,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
     private fun validate(): Boolean {
         var isValidate = false
         if (views.edNameService.text.toString().isNotEmpty() && views.edPriceService.text.toString()
-                .isNotEmpty() && imageUri != null
+                .isNotEmpty()
         ) {
             if (views.edPriceSale.text.toString().isEmpty()) {
                 isValidate = true
@@ -288,6 +289,11 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                     if (views.edPriceSale.text.toString().toDouble() < 0) {
                         isValidate = false
                         views.tvErrorPriceSale.text = "Giá trị không được nhỏ hơn 0"
+                    } else if (views.edPriceSale.text.toString()
+                            .toDouble() > views.edPriceService.text.toString().toDouble()
+                    ) {
+                        isValidate = false
+                        views.tvErrorPriceSale.text = "Giá sale không được lớn hơn giá của dịch vụ"
                     } else {
                         views.tvErrorPriceSale.text = ""
                         isValidate = true
@@ -314,12 +320,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 isValidate = true
                 views.tvErrorPriceService.text = ""
             }
-            if (imageUri == null) {
-                isValidate = false
-                Toast.makeText(this, "Bạn chưa chọn ảnh", Toast.LENGTH_SHORT).show()
-            } else {
-                isValidate = true
-            }
+
         }
         return isValidate
     }
@@ -348,6 +349,11 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                     if (views.edPriceSale.text.toString().toDouble() < 0) {
                         isValidate = false
                         views.tvErrorPriceSale.text = "Giá trị không được nhỏ hơn 0"
+                    } else if (views.edPriceSale.text.toString()
+                            .toDouble() > views.edPriceService.text.toString().toDouble()
+                    ) {
+                        isValidate = false
+                        views.tvErrorPriceSale.text = "Giá sale không được lớn hơn giá của dịch vụ"
                     } else {
                         views.tvErrorPriceSale.text = ""
                         isValidate = true
@@ -400,29 +406,57 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             val priceServie = views.edPriceService.text.toString().trim()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val unit = unit.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val isActive = views.swIsActive.isSelected.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val isActive = views.swIsActive.isSelected.toString()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val stringMap = HashMap<String, PostService.PostAttribute>()
             listAttribute.forEachIndexed { index, item ->
                 stringMap["attributeList[$index]"] = item
             }
-            idStore?.let {
-                AddServiceViewAction.AddService(
-                    image,
-                    name,
-                    priceServie,
-                    stringMap,
-                    isActive,
-                    unit,
-                    idCate,
-                    it,
-                    unitSale,
-                    valueSale
-                )
-            }?.let {
-                viewModel.handle(
-                    it
-                )
+            Log.e("AAAAAAAAAA", "postService:unitSale " + unitSale)
+            Log.e("AAAAAAAAAA", "postService:valueSale " + valueSale)
+
+            if (views.spinnerUnitSale.selectedItem.equals("Chọn đơn vị") && views.edPriceSale.text.toString()
+                    .trim().isEmpty()
+            ) {
+                idStore?.let {
+                    AddServiceViewAction.AddService(
+                        image,
+                        name,
+                        priceServie,
+                        stringMap,
+                        isActive,
+                        unit,
+                        idCate,
+                        it,
+                        null,
+                        null
+                    )
+                }?.let {
+                    viewModel.handle(
+                        it
+                    )
+                }
+            } else {
+                idStore?.let {
+                    AddServiceViewAction.AddService(
+                        image,
+                        name,
+                        priceServie,
+                        stringMap,
+                        isActive,
+                        unit,
+                        idCate,
+                        it,
+                        unitSale,
+                        valueSale
+                    )
+                }?.let {
+                    viewModel.handle(
+                        it
+                    )
+                }
             }
+
         } else {
             val name = views.edNameService.text.toString().trim()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())
@@ -446,23 +480,48 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             listAttribute.forEachIndexed { index, item ->
                 stringMap["attributeList[$index]"] = item
             }
-            idStore?.let {
-                AddServiceViewAction.AddService(
-                    null,
-                    name,
-                    priceServie,
-                    stringMap,
-                    isActive,
-                    unit,
-                    idCate,
-                    it,
-                    unitSale,
-                    valueSale
-                )
-            }?.let {
-                viewModel.handle(
-                    it
-                )
+            Log.e("AAAAAAAAAA", "postService:unitSale " + unitSale)
+            Log.e("AAAAAAAAAA", "postService:valueSale " + valueSale)
+            if (views.spinnerUnitSale.selectedItem.equals("Chọn đơn vị") && views.edPriceSale.text.toString()
+                    .trim().isEmpty()
+            ) {
+                idStore?.let {
+                    AddServiceViewAction.AddService(
+                        null,
+                        name,
+                        priceServie,
+                        stringMap,
+                        isActive,
+                        unit,
+                        idCate,
+                        it,
+                        null,
+                        null
+                    )
+                }?.let {
+                    viewModel.handle(
+                        it
+                    )
+                }
+            } else {
+                idStore?.let {
+                    AddServiceViewAction.AddService(
+                        null,
+                        name,
+                        priceServie,
+                        stringMap,
+                        isActive,
+                        unit,
+                        idCate,
+                        it,
+                        unitSale,
+                        valueSale
+                    )
+                }?.let {
+                    viewModel.handle(
+                        it
+                    )
+                }
             }
         }
 
@@ -491,30 +550,56 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             val priceServie = views.edPriceService.text.toString().trim()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val unit = unit.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val isActive = views.swIsActive.isSelected.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val isActive = views.swIsActive.isSelected.toString()
+                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val stringMap = HashMap<String, PostService.PostAttribute>()
             listAttribute.forEachIndexed { index, item ->
                 stringMap["attributeList[$index]"] = item
             }
-            idStore.let {
-                AddServiceViewAction.UpdateService(
-                    idService,
-                    image,
-                    name,
-                    priceServie,
-                    stringMap,
-                    isActive,
-                    unit,
-                    idCate,
-                    it,
-                    unitSale,
-                    valueSale
-                )
-            }?.let {
-                viewModel.handle(
-                    it
-                )
+            if (views.spinnerUnitSale.selectedItem.equals("Chọn đơn vị") && views.edPriceSale.text.toString()
+                    .trim().isEmpty()
+            ) {
+                idStore.let {
+                    AddServiceViewAction.UpdateService(
+                        idService,
+                        image,
+                        name,
+                        priceServie,
+                        stringMap,
+                        isActive,
+                        unit,
+                        idCate,
+                        it,
+                        null,
+                        null
+                    )
+                }?.let {
+                    viewModel.handle(
+                        it
+                    )
+                }
+            } else {
+                idStore.let {
+                    AddServiceViewAction.UpdateService(
+                        idService,
+                        image,
+                        name,
+                        priceServie,
+                        stringMap,
+                        isActive,
+                        unit,
+                        idCate,
+                        it,
+                        unitSale,
+                        valueSale
+                    )
+                }?.let {
+                    viewModel.handle(
+                        it
+                    )
+                }
             }
+
         } else {
             val name = views.edNameService.text.toString().trim()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())
@@ -538,24 +623,48 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             listAttribute.forEachIndexed { index, item ->
                 stringMap["attributeList[$index]"] = item
             }
-            idStore.let {
-                AddServiceViewAction.UpdateService(
-                    idService,
-                    null,
-                    name,
-                    priceServie,
-                    stringMap,
-                    isActive,
-                    unit,
-                    idCate,
-                    it,
-                    unitSale,
-                    valueSale
-                )
-            }?.let {
-                viewModel.handle(
-                    it
-                )
+            if (views.spinnerUnitSale.selectedItem.equals("Chọn đơn vị") && views.edPriceSale.text.toString()
+                    .trim().isEmpty()
+            ) {
+                idStore.let {
+                    AddServiceViewAction.UpdateService(
+                        idService,
+                        null,
+                        name,
+                        priceServie,
+                        stringMap,
+                        isActive,
+                        unit,
+                        idCate,
+                        it,
+                        null,
+                        null
+                    )
+                }?.let {
+                    viewModel.handle(
+                        it
+                    )
+                }
+            } else {
+                idStore.let {
+                    AddServiceViewAction.UpdateService(
+                        idService,
+                        null,
+                        name,
+                        priceServie,
+                        stringMap,
+                        isActive,
+                        unit,
+                        idCate,
+                        it,
+                        unitSale,
+                        valueSale
+                    )
+                }?.let {
+                    viewModel.handle(
+                        it
+                    )
+                }
             }
         }
 
@@ -575,7 +684,11 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                     launch {
                         DialogLoading.hideDialog()
                         state.stateService.invoke()?.let {
-                            Toast.makeText(this@AddServiceActivity, "${it.message()}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@AddServiceActivity,
+                                "${it.message()}",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: " + it.message())
                             setResult(Common.CODE_LOAD_DATA)
                             onBackPressedDispatcher.onBackPressed()
