@@ -25,7 +25,7 @@ import javax.inject.Singleton
 class RemoteDataSource {
     companion object {
         const val BASE_URL =
-            "https://s4-hn-2030-ung-dung-dich-vu-giat-do.onrender.com/"
+            "http://192.168.0.108:3000/"
         const val BASE_URL_IMAGE =
             "https://s4-hn-2030-ung-dung-dich-vu-giat-do.onrender.com/"
         private const val DEFAULT_USER_AGENT = "QLBH-Android"

@@ -115,6 +115,15 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
             intent.putExtra(Common.KEY_ID_USER, storeModel?.iduser?.id)
             requireContext().startActivity(intent)
         }
+        views.swipeToRefresh.setOnRefreshListener {
+            if(views.swipeToRefresh.isRefreshing){
+                idStore?.let { HomeStoreViewAction.GetStatisticalByToday(it) }?.let { viewModel.handle(it) }
+                idStore?.let { HomeStoreViewAction.GetStatisticalByMonth(it, month.toInt()) }
+                    ?.let { viewModel.handle(it) }
+                idStore?.let { HomeStoreViewAction.GetStatisticalByWeek(it, week) }
+                    ?.let { viewModel.handle(it) }
+            }
+        }
 
     }
 

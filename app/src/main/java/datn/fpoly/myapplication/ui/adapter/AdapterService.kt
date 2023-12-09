@@ -1,6 +1,7 @@
 package datn.fpoly.myapplication.ui.adapter
 
 import android.content.Context
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +13,10 @@ import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.ItemServiceBinding
 import datn.fpoly.myapplication.utils.Common
+import java.text.DecimalFormat
 import java.util.Locale
 
-class AdapterService(val isStore: Boolean) : Adapter<AdapterService.ViewholderItemService>() {
+class AdapterService(val isStore: Boolean, val checkName: Boolean) : Adapter<AdapterService.ViewholderItemService>() {
     private val listService = mutableListOf<ServiceExtend>()
     var ListFiltered = mutableListOf<ServiceExtend>()
 
@@ -53,6 +55,7 @@ class AdapterService(val isStore: Boolean) : Adapter<AdapterService.ViewholderIt
 
     inner class ViewholderItemService(var binding: ItemServiceBinding) : ViewHolder(binding.root) {
         fun bind(item: ServiceExtend) {
+            val decemDecimalFormatFormat = DecimalFormat("#.#")
             binding.tvNameService.text = item.name
             binding.tvPrice.text = "" + item.price + "đ/" + item.unit
             if (isStore) {
@@ -63,6 +66,18 @@ class AdapterService(val isStore: Boolean) : Adapter<AdapterService.ViewholderIt
                 binding.btnEdit.visibility = View.INVISIBLE
                 Glide.with(binding.btnEdit).load(R.drawable.img_cart).error(R.drawable.img_service)
                     .into(binding.btnEdit)
+                if(checkName){
+                    binding.tvPrice.setText(decemDecimalFormatFormat.format(item.price)+" "+item.unit)
+                }else{
+                    if(item.idSale!=null){
+                        binding.tvPrice.setText(Html.fromHtml("<span style=\"text-decoration: line-through; font-size: 8px;\">${decemDecimalFormatFormat.format(item.price)} ${item.unit}</span> <span style=\"color: #FA0F0F;\">${if(item.idSale?.unit.equals("%")){
+                            decemDecimalFormatFormat.format( item.price?.minus((item.price!! *( item.idSale?.value!!/100))))
+                        }else{decemDecimalFormatFormat.format((item.price?.minus(item.idSale?.value!!)))}} ${item.unit}</span>"))
+                    }else{
+                        binding.tvPrice.setText(decemDecimalFormatFormat.format(item.price)+" "+item.unit)
+                    }
+                }
+
             }
             Glide.with(binding.root).load(Common.baseUrl + item.image).error(R.drawable.img_service)
                 .into(binding.imageService)

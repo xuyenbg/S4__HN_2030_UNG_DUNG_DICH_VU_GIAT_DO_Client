@@ -73,7 +73,7 @@ class ServicesStoreFragment : BaseFragment<FragmentServicesStoreBinding>() {
             views.toolBar.toobar.visibility = View.VISIBLE
         }
 
-        adapter = AdapterService(true)
+        adapter = AdapterService(true, false)
         views.rcvListService.adapter = adapter
         adapter.setListenner(object : AdapterService.ServiceListenner {
             override fun ServiceOnClick(item: ServiceExtend, position: Int) {
@@ -144,8 +144,8 @@ class ServicesStoreFragment : BaseFragment<FragmentServicesStoreBinding>() {
                         }
                         Timber.tag("AAAAAAAAAAAAAAA").e("getListService:Success ")
                     }
-                }
 
+                }
             }
 
             is Fail -> {

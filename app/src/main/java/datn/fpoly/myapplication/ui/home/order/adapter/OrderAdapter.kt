@@ -81,9 +81,9 @@ class OrderAdapter @Inject constructor() :
                     }
 
                     else if (itemOrder.status == 1) {
-                        tvStatus0.visibility=View.INVISIBLE
+                        tvStatus0.visibility = View.INVISIBLE
 
-                    
+
                         tvStatus3.visibility = View.VISIBLE
                         tvStatus1.visibility = View.INVISIBLE
 
@@ -93,22 +93,24 @@ class OrderAdapter @Inject constructor() :
                         tvStatus4.visibility = View.INVISIBLE
                         tvStatus5.visibility = View.INVISIBLE
                         btnReOrder.visibility = View.INVISIBLE
-                    } else 
-                    if (itemOrder.status == 2) {
+
+                    } else if (itemOrder.status == 2) {
                         tvStatus5.visibility = View.VISIBLE
                         tvStatus1.visibility = View.INVISIBLE
                         tvStatus2.visibility = View.INVISIBLE
                         tvStatus4.visibility = View.INVISIBLE
                         tvStatus3.visibility = View.INVISIBLE
                         btnReOrder.visibility = View.INVISIBLE
-                    }else if (itemOrder.status == 2) {
-                        tvStatus0.visibility=View.INVISIBLE
-                        tvStatus3.visibility = View.INVISIBLE
-                        tvStatus1.visibility = View.INVISIBLE
-                        tvStatus2.visibility = View.VISIBLE
-                        tvStatus4.visibility = View.INVISIBLE
-                        btnReOrder.visibility = View.INVISIBLE
-                    }else if (itemOrder.status == 3) {
+                    }
+//                    else if (itemOrder.status == 2) {
+//                        tvStatus0.visibility=View.INVISIBLE
+//                        tvStatus3.visibility = View.INVISIBLE
+//                        tvStatus1.visibility = View.INVISIBLE
+//                        tvStatus2.visibility = View.VISIBLE
+//                        tvStatus4.visibility = View.INVISIBLE
+//                        btnReOrder.visibility = View.INVISIBLE
+//                    }
+                    else if (itemOrder.status == 3) {
                         tvStatus0.visibility=View.INVISIBLE
                         tvStatus1.visibility = View.INVISIBLE
                         tvStatus2.visibility = View.INVISIBLE

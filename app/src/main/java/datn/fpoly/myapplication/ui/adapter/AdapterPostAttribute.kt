@@ -1,13 +1,14 @@
 package datn.fpoly.myapplication.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import datn.fpoly.myapplication.data.model.post.PostService
 import datn.fpoly.myapplication.databinding.ItemExtraServiceBinding
 
-class AdapterPostAttribute(): Adapter<AdapterPostAttribute.ViewHolderItemAttributePost>() {
+class AdapterPostAttribute(val isUpdate: Boolean): Adapter<AdapterPostAttribute.ViewHolderItemAttributePost>() {
     private val litsAttribute = mutableListOf<PostService.PostAttribute>()
     private var attributeListener: PostAttributeListener?=null
     fun getList(): MutableList<PostService.PostAttribute> = litsAttribute
@@ -34,6 +35,11 @@ class AdapterPostAttribute(): Adapter<AdapterPostAttribute.ViewHolderItemAttribu
         val index = position
         val itemAttribute = litsAttribute[index]
         holder.bind(itemAttribute)
+        if(isUpdate){
+            holder.binding.btnDelete.visibility= View.INVISIBLE
+        }else{
+            holder.binding.btnDelete.visibility= View.VISIBLE
+        }
         holder.binding.btnDelete.setOnClickListener {
             attributeListener?.onDelete(itemAttribute, index)
         }

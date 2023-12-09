@@ -71,7 +71,7 @@ class SearchServiceActivity : BaseActivity<ActivitySearchServiceBinding>(), Sear
             }
             return@setOnEditorActionListener false
         }
-        adapterService = AdapterService(false)
+        adapterService = AdapterService(false, false)
         views.rcvListSearch.adapter= adapterService
         adapterService.setListenner(object : AdapterService.ServiceListenner{
             override fun ServiceOnClick(item: ServiceExtend, position: Int) {
@@ -117,11 +117,13 @@ class SearchServiceActivity : BaseActivity<ActivitySearchServiceBinding>(), Sear
                         views.rcvListSearch.visibility=View.GONE
                     }
                 }
+                state.stateSearchService=Uninitialized
 
 
             }
             is Fail->{
                 views.shimmer.visibility=View.GONE
+                state.stateSearchService=Uninitialized
                 Timber.e("Fail search")
 
             }
