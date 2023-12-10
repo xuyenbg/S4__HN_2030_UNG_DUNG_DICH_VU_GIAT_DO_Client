@@ -1,6 +1,7 @@
 package datn.fpoly.myapplication.ui.fragment.settingStore
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -78,6 +79,10 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
 
             startActivity(intent)
 //            DataRaw.animStart(views.tvOrderHistory, requireContext())
+        }
+        views.tvTermsAndPolicies.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.freeprivacypolicy.com/live/aa3aeb2d-c7c4-429d-8ffe-cbf8bc59c16e"))
+            startActivity(intent)
         }
         views.tvStore.setOnClickListener {
             val intent = Intent(requireContext(), MyShopActivity::class.java)

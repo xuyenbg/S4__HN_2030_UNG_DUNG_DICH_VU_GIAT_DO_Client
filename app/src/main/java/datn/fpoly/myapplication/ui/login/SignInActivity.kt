@@ -3,6 +3,7 @@ package datn.fpoly.myapplication.ui.login
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.FirebaseException
@@ -50,8 +51,11 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
             }
         }
         views.cbShop.setOnCheckedChangeListener { _, isChecked ->
-            // Cập nhật trạng thái của button dựa trên checkbox
            checkStrore = isChecked
+        }
+        views.tvRules.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.freeprivacypolicy.com/live/aa3aeb2d-c7c4-429d-8ffe-cbf8bc59c16e"))
+            startActivity(intent)
         }
         Log.d("SignInActivity", "checkstore: $checkStrore")
         views.btnSignUp.setOnClickListener {

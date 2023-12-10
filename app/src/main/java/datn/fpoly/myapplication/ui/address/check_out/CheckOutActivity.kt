@@ -62,6 +62,7 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
         views.total.text = cart?.total?.formatCurrency(null) ?: "- đ"
         adapterItemCart = cart?.listItem?.let { AdapterItemCart(this, it, eventClick = {}) }
         views.recyclerView.adapter = adapterItemCart
+
 //        viewModel.getCart().observe(this) {
 //            if (it != null && it.listItem.isNotEmpty()) {
 //
