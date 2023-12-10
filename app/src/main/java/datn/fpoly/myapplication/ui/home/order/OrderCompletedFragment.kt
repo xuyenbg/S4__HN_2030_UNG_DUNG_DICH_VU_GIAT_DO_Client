@@ -122,19 +122,20 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
             is Success -> {
                 runBlocking {
                     launch {
-                        it.stateOrder.invoke()?.let {
+                        it.stateOrder.invoke()?.let { orders ->
+                            val sortedOrders = orders.sortedByDescending { order -> order.createAt }
                             views.shimmerLoading.visibility=View.GONE
                             views.rcvItemOrderComplete.visibility=View.VISIBLE
                             views.swipeToRefresh.isRefreshing= false
                             Timber.tag("OrderCompleteFragment")
-                                .d("orderCompleteInvalidate: ${it.size}")
+                                .d("orderCompleteInvalidate: ${sortedOrders.size}")
                             orderAdapter.updateDataByStatus(
-                                it,
+                                sortedOrders,
                                 listOf(2,3)
                             ) // Cập nhật danh sách đơn hàng đã hủy
                             views.rcvItemOrderComplete.adapter = orderAdapter
                             orderAdapter.notifyDataSetChanged()
-                            Log.d("OrderCompleteFragment", "getListOrderComplete: ${it.size}")
+                            Log.d("OrderCompleteFragment", "getListOrderComplete: ${sortedOrders.size}")
                         }
                     }
                 }
