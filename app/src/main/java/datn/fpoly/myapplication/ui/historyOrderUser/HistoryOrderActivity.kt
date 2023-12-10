@@ -146,6 +146,8 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
                     launch {
                         dialog.dismiss()
                         DialogLoading.hideDialog()
+                        orderAdapter.holderOrder?.binding?.btnReOrder?.setText("Đã đánh giá")
+                        orderAdapter.holderOrder?.binding?.btnReOrder?.setBackgroundResource(R.drawable.shape_item_btn_4)
                         Toast.makeText(this@HistoryOrderActivity, "Đánh giá thành công", Toast.LENGTH_SHORT).show()
                     }
                 }

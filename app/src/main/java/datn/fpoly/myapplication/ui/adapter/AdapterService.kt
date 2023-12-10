@@ -55,9 +55,10 @@ class AdapterService(val isStore: Boolean, val checkName: Boolean) : Adapter<Ada
 
     inner class ViewholderItemService(var binding: ItemServiceBinding) : ViewHolder(binding.root) {
         fun bind(item: ServiceExtend) {
-            val decemDecimalFormatFormat = DecimalFormat("#.#")
+            val decemDecimalFormatFormat = DecimalFormat("#")
             binding.tvNameService.text = item.name
             binding.tvPrice.text = "" + item.price + "đ/" + item.unit
+            binding.tvPrice.isSelected=true
             if (isStore) {
                 Glide.with(binding.btnEdit).load(R.drawable.ic_edit).error(R.drawable.img_service)
                     .into(binding.btnEdit)
@@ -67,12 +68,12 @@ class AdapterService(val isStore: Boolean, val checkName: Boolean) : Adapter<Ada
                 Glide.with(binding.btnEdit).load(R.drawable.img_cart).error(R.drawable.img_service)
                     .into(binding.btnEdit)
                 if(checkName){
-                    binding.tvPrice.setText(decemDecimalFormatFormat.format(item.price)+" "+item.unit)
+                    binding.tvPrice.setText(decemDecimalFormatFormat.format(item.price)+" VNĐ/"+item.unit)
                 }else{
                     if(item.idSale!=null){
-                        binding.tvPrice.setText(Html.fromHtml("<span style=\"text-decoration: line-through; font-size: 8px;\">${decemDecimalFormatFormat.format(item.price)} ${item.unit}</span> <span style=\"color: #FA0F0F;\">${if(item.idSale?.unit.equals("%")){
+                        binding.tvPrice.setText(Html.fromHtml("<span style=\"text-decoration: line-through; font-size: 8px;\">${decemDecimalFormatFormat.format(item.price)} VNĐ/${item.unit} </span>  <br> <span style=\"color: #FA0F0F;\">${if(item.idSale?.unit.equals("%")){
                             decemDecimalFormatFormat.format( item.price?.minus((item.price!! *( item.idSale?.value!!/100))))
-                        }else{decemDecimalFormatFormat.format((item.price?.minus(item.idSale?.value!!)))}} ${item.unit}</span>"))
+                        }else{decemDecimalFormatFormat.format((item.price?.minus(item.idSale?.value!!)))}} VNĐ/${item.unit}</span>"))
                     }else{
                         binding.tvPrice.setText(decemDecimalFormatFormat.format(item.price)+" "+item.unit)
                     }

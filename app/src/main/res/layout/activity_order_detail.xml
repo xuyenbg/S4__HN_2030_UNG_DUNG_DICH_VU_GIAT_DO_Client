@@ -392,7 +392,7 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_action_cancel"
                         android:layout_width="match_parent"
-                        android:layout_height="36dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="Hủy đơn hàng"
                         android:textAllCaps="false"

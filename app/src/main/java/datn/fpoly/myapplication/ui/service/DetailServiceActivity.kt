@@ -208,7 +208,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
             if(serviceExtend?.idSale?.unit.equals("%")){
                 var priceAttr = 0.0
                 adapterAttribute.listAttributeSelect.forEach { attr -> priceAttr += attr.price }
-                total = ((serviceExtend!!.price!!-(serviceExtend?.price?.times(serviceExtend?.idSale?.value!!)!!)) + priceAttr) * quality
+                total = ((serviceExtend!!.price!!-(serviceExtend?.price?.times(serviceExtend?.idSale?.value!!/100)!!)) + priceAttr) * quality
                 return total
             }else{
                 var priceAttr = 0.0
@@ -246,7 +246,6 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
                     launch {
                         state.stateService.invoke()?.let {
                             adapterService.setData(it)
-                            state.stateService=Uninitialized
                             Timber.tag("AAAAAAAAA")
                                 .e("getListService: list service size: " + it.size)
                         }
@@ -259,7 +258,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
             }
 
             is Fail -> {
-                state.stateService=Uninitialized
+
                 Timber.tag("AAAAAAAAA").e("getListService: Call Fail")
             }
 
@@ -270,7 +269,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
     }
 
     private fun getService(state: DetailServiceViewState) {
-        val decemDecimalFormatFormat = DecimalFormat("#.#")
+        val decemDecimalFormatFormat = DecimalFormat("#")
         when (state.stateServiceByid) {
             is Loading -> {
 //                Dialog_Loading.getInstance().show(this, "Loading")
@@ -290,13 +289,13 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
                             } else {
                                 views.tvPrice.setText(
                                     Html.fromHtml(
-                                        "<span style=\"text-decoration: line-through;\">${decemDecimalFormatFormat.format(serviceExtend!!.price)} ${serviceExtend?.unit}</span> <span style=\"color: #FA0F0F;\">${
+                                        "<span style=\"text-decoration: line-through;\">${decemDecimalFormatFormat.format(serviceExtend!!.price)} VNĐ/${serviceExtend?.unit}</span> <span style=\"color: #FA0F0F;\">${
                                             if (serviceExtend!!.idSale?.unit.equals("%")) {
-                                               decemDecimalFormatFormat.format( serviceExtend!!.price?.minus((serviceExtend!!.price!! * serviceExtend!!.idSale?.value!!)))
+                                               decemDecimalFormatFormat.format( serviceExtend!!.price?.minus((serviceExtend!!.price!! * serviceExtend!!.idSale?.value!!/100)))
                                             } else {
                                                decemDecimalFormatFormat.format( (serviceExtend?.price?.minus(serviceExtend!!.idSale?.value!!)))
                                             }
-                                        } ${serviceExtend?.unit}</span>"
+                                        } VNĐ/${serviceExtend?.unit}</span>"
                                     )
                                 )
                             }
@@ -332,8 +331,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
             }
 
             is Fail -> {
-                state.stateServiceByid=Uninitialized
-//                Dialog_Loading.getInstance().dismiss()
+
                 Timber.tag("AAAAAAAAAAAAA").e("getService: Fail")
             }
 

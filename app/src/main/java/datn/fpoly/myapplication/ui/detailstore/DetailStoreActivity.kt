@@ -95,7 +95,7 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
                             views.shimmer.visibility = View.GONE
                             views.rcvDetailStore.visibility = View.VISIBLE
                             adapterService.setData(it)
-                            state.stateService=Uninitialized
+
                             Timber.tag("AAAAAAAAA").e("getListService: list service size: "+it.size )
                         }
                     }
@@ -111,7 +111,7 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
             is Fail-> {
                 views.shimmer.visibility=View.GONE
                 views.rcvDetailStore.visibility=View.VISIBLE
-                state.stateService=Uninitialized
+
                 Timber.tag("AAAAAAAAA").e("getListService: Call Fail")
             }
 

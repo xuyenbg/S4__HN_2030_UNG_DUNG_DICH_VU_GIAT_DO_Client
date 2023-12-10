@@ -157,6 +157,7 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
             }
 
             is Success -> {
+                views.swipeToRefresh.isRefreshing = false
                 state.stateOpendCloseStore.invoke()?.let {
                     if (isOpend) {
                         storeModel?.status = 1
@@ -187,6 +188,7 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
             }
 
             is Success -> {
+                views.swipeToRefresh.isRefreshing = false
                 state.stateStatisticalByToday.invoke()?.let {
                     views.priceToday.text = Utils.formatVND(it.total)
                 }
@@ -207,6 +209,7 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
             }
 
             is Success -> {
+                views.swipeToRefresh.isRefreshing = false
                 state.stateStatisticalByMonth.invoke()?.let {
                     views.priceMonth.text = Utils.formatVND(it.total)
                 }
@@ -226,6 +229,7 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
             }
 
             is Success -> {
+                views.swipeToRefresh.isRefreshing = false
                 state.stateStatisticalByWeek.invoke()?.let {
                     views.priceWeek.text = Utils.formatVND(it.total)
                 }
