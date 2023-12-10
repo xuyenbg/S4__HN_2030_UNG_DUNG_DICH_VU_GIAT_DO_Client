@@ -34,7 +34,7 @@ class ServiceRepo @Inject constructor(
         image: MultipartBody.Part?,  // Phần dữ liệu của hình ảnh
         name: RequestBody,  // Tên sản phẩm
         price: RequestBody,  // Giá sản phẩm
-        attributeList: Map<String, PostService.PostAttribute>,  // Danh sách thuộc tính sản phẩm
+        attributeList: Map<String, PostService.PostAttribute>?,  // Danh sách thuộc tính sản phẩm
         isActive: RequestBody,  // Trạng thái kích hoạt
         unit: RequestBody,  // Đơn vị sản phẩm
         idCategory: RequestBody,  // ID danh mục
@@ -60,7 +60,7 @@ class ServiceRepo @Inject constructor(
         image: MultipartBody.Part?,  // Phần dữ liệu của hình ảnh
         name: RequestBody,  // Tên sản phẩm
         price: RequestBody,  // Giá sản phẩm
-        attributeList: Map<String, PostService.PostAttribute>,  // Danh sách thuộc tính sản phẩm
+        attributeList: Map<String, PostService.PostAttribute>?,  // Danh sách thuộc tính sản phẩm
         isActive: RequestBody,  // Trạng thái kích hoạt
         unit: RequestBody,  // Đơn vị sản phẩm
         idCategory: RequestBody,  // ID danh mục

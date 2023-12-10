@@ -10,7 +10,7 @@ sealed class AddServiceViewAction : ViewAction {
         val image: MultipartBody.Part?,  // Phần dữ liệu của hình ảnh
         val name: RequestBody,  // Tên sản phẩm
         val price: RequestBody,  // Giá sản phẩm
-        val attributeList: Map<String, PostService.PostAttribute>,  // Danh sách thuộc tính sản phẩm
+        val attributeList: Map<String, PostService.PostAttribute>?,  // Danh sách thuộc tính sản phẩm
         val isActive: RequestBody,  // Trạng thái kích hoạt
         val unit: RequestBody,  // Đơn vị sản phẩm
         val idCategory: RequestBody,  // ID danh mục
@@ -24,7 +24,7 @@ sealed class AddServiceViewAction : ViewAction {
         val image: MultipartBody.Part?,  // Phần dữ liệu của hình ảnh
         val name: RequestBody,  // Tên sản phẩm
         val price: RequestBody,  // Giá sản phẩm
-        val attributeList: Map<String, PostService.PostAttribute>,  // Danh sách thuộc tính sản phẩm
+        val attributeList: Map<String, PostService.PostAttribute>?,  // Danh sách thuộc tính sản phẩm
         val isActive: RequestBody,  // Trạng thái kích hoạt
         val unit: RequestBody,  // Đơn vị sản phẩm
         val idCategory: RequestBody,  // ID danh mục

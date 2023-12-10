@@ -60,8 +60,8 @@ class AdapterService(val isStore: Boolean, val checkName: Boolean) : Adapter<Ada
             binding.tvPrice.text = "" + item.price + "đ/" + item.unit
             binding.tvPrice.isSelected=true
             if (isStore) {
-                Glide.with(binding.btnEdit).load(R.drawable.ic_edit).error(R.drawable.img_service)
-                    .into(binding.btnEdit)
+//                Glide.with(binding.btnEdit).load(R.drawable.ic_edit).error(R.drawable.img_service)
+//                    .into(binding.btnEdit)
                 binding.btnEdit.visibility = View.VISIBLE
             } else {
                 binding.btnEdit.visibility = View.INVISIBLE
