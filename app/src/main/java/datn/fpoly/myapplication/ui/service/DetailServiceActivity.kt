@@ -325,7 +325,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
                         }
 //                        Dialog_Loading.getInstance().dismiss()
                     }
-                    state.stateServiceByid=Uninitialized
+//                    state.stateServiceByid=Uninitialized
                 }
                 Timber.tag("AAAAAAAAAAAAA").e("getService: Success")
 
