@@ -4,6 +4,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import com.google.firebase.FirebaseApp
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.di.AppComponent
 import datn.fpoly.myapplication.di.DaggerAppComponent
@@ -33,6 +34,7 @@ open class AppApplication: Application() {
         appComponent.inject(this)
         Hawk.init(this).build()
         createNotificationChannel()
+        FirebaseApp.initializeApp(this)
     }
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

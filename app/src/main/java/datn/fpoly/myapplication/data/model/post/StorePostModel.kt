@@ -20,6 +20,6 @@ class StorePostModel(
     var rate: Double=0.0,
     @SerializedName("transportTypeList")
     var transportTypeList: MutableList<String>?=null,
-    @SerializedName("imageQRCode")
+    @SerializedName("image")
     var imageQACode : String?=null
 ) : Serializable

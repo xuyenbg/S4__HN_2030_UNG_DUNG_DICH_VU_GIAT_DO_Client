@@ -12,7 +12,7 @@ import javax.inject.Inject
 class HistoryAdapter @Inject constructor() :
     RecyclerView.Adapter<HistoryAdapter.ViewHolderItemPost>() {
     private val listHistory = mutableListOf<OrderResponse>()
-    private var postlistener: HistoryListener? = null
+    var onClicked : ((OrderResponse) -> Unit)?=null
 
     fun updateData(list: List<OrderResponse>) {
         this.listHistory.clear()
@@ -20,9 +20,6 @@ class HistoryAdapter @Inject constructor() :
         notifyDataSetChanged()
     }
 
-    fun setListener(listener: HistoryListener) {
-        this.postlistener = listener
-    }
 
     inner class ViewHolderItemPost(val binding: ItemListHistoryStoreBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -42,7 +39,7 @@ class HistoryAdapter @Inject constructor() :
                     tvTime.text = Utils.formatDateOrder(itemHistory.updateAt)
 
                     btnDetail.setOnClickListener {
-                        postlistener?.onClickDetail(itemHistory)
+                        onClicked?.invoke(itemHistory)
                     }
                 }
 
@@ -54,7 +51,4 @@ class HistoryAdapter @Inject constructor() :
         return listHistory.size
     }
 
-    interface HistoryListener {
-        fun onClickDetail(orderResponse: OrderResponse)
-    }
 }
