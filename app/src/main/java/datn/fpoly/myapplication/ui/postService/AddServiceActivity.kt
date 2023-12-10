@@ -693,7 +693,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                             setResult(Common.CODE_LOAD_DATA)
                             onBackPressedDispatcher.onBackPressed()
                         }
-                        state.stateService = Uninitialized
+
 
                     }
                 }
@@ -702,7 +702,6 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
 
             is Fail -> {
                 DialogLoading.hideDialog()
-                state.stateService = Uninitialized
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Fail")
             }
 

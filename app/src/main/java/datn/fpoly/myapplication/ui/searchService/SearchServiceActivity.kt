@@ -117,13 +117,11 @@ class SearchServiceActivity : BaseActivity<ActivitySearchServiceBinding>(), Sear
                         views.rcvListSearch.visibility=View.GONE
                     }
                 }
-                state.stateSearchService=Uninitialized
-
 
             }
             is Fail->{
                 views.shimmer.visibility=View.GONE
-                state.stateSearchService=Uninitialized
+
                 Timber.e("Fail search")
 
             }

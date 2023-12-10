@@ -78,7 +78,6 @@ class ListServiceActivity : BaseActivity<ActivityListServiceBinding>(), ListServ
                         }
                     }
                 }
-                state.stateService=Uninitialized
             }
             is Loading ->{
                 views.shimmer.visibility= View.VISIBLE
@@ -89,7 +88,7 @@ class ListServiceActivity : BaseActivity<ActivityListServiceBinding>(), ListServ
             is Fail -> {
                 views.shimmer.visibility= View.GONE
                 views.rcvList.visibility=View.VISIBLE
-                state.stateService=Uninitialized
+
                 Timber.tag("AAAAAAAAA").e("getListService: Call Fail")
             }
             else->{

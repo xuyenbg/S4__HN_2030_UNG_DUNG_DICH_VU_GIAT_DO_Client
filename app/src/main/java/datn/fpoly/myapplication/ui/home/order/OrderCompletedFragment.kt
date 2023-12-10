@@ -108,13 +108,11 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
         super.invalidate()
         getListOrder(it)
         updateStateAddRate(it)
-
     }
 
     override fun onResume(): Unit = withState(viewModel) {
         super.onResume()
         getListOrder(it)
-        updateStateAddRate(it)
     }
 
     private fun getListOrder(it: HomeViewState) {

@@ -94,12 +94,12 @@ class ListServiceByNameActivity : BaseActivity<ActivityListServiceByNameBinding>
                         }
                     }
                 }
-                state.stateService=Uninitialized
+
             }
             is Fail->{
                 views.shimmer.visibility= View.GONE
                 views.rcvListService.visibility= View.VISIBLE
-                state.stateService=Uninitialized
+
 //                Dialog_Loading.getInstance().dismiss()
             }
             else->{}
