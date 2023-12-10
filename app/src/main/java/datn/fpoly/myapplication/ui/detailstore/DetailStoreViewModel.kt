@@ -29,6 +29,9 @@ class DetailStoreViewModel @AssistedInject constructor(
             is DetailStoreViewAction.GetListRateByStore->{
                 litsRateByStore(action.idStore)
             }
+            is DetailStoreViewAction.GetDetailUser->{
+                getDetailUser(action.idUser)
+            }
         }
     }
     fun getListServiceByStore(id: String){
@@ -46,6 +49,10 @@ class DetailStoreViewModel @AssistedInject constructor(
     fun litsRateByStore(idStore: String){
         setState { copy(stateListRateStore = Loading()) }
         repoRate.getListRateByStore(idStore).execute { copy(stateListRateStore = it) }
+    }
+    fun getDetailUser(id: String){
+        setState { copy(stateDetailAccount= Loading()) }
+        repoAuth.getDetailUser(id).execute { copy(stateDetailAccount = it) }
     }
 
     @AssistedFactory

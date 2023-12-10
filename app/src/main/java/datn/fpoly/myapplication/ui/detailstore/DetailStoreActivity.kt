@@ -18,6 +18,7 @@ import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.databinding.ActivityDetailStoreBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterRate
 import datn.fpoly.myapplication.ui.adapter.AdapterService
+import datn.fpoly.myapplication.ui.favoriteStore.FavoriteStoreViewState
 import datn.fpoly.myapplication.ui.service.DetailServiceActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Dialog_Loading
@@ -55,6 +56,7 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
             getListService(it)
             getStore(it)
             getListRate(it)
+            getDetailUser(it)
         }
 
         views.rcvDetailStore.adapter = adapterService
@@ -73,12 +75,21 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
 
         accountModel.favoriteStores = ArrayList()
         (accountModel.favoriteStores as ArrayList<String>)?.add(store.toString())
+        views.imgAddFavoriteStore.setOnClickListener {
 
-        views.imgAddFavoriteStore.setOnClickListener(View.OnClickListener {
-            viewModel.addFavoriteStore(idUser, accountModel)
-            Toast.makeText(this, "Đã thêm cửa hàng vào danh sách yêu thích", Toast.LENGTH_SHORT)
-                .show()
-        })
+
+            val updatedImgResource = views.imgAddFavoriteStore.drawable
+
+            if (updatedImgResource.constantState == resources.getDrawable(R.drawable.ic_favorite_1).constantState) {
+                Toast.makeText(this, "Đã thêm cửa hàng vào danh sách yêu thích", Toast.LENGTH_SHORT).show()
+                views.imgAddFavoriteStore2.visibility = View.VISIBLE
+                views.imgAddFavoriteStore.visibility = View.INVISIBLE
+                viewModel.addFavoriteStore(idUser, accountModel)
+            } else {
+//                Toast.makeText(this, "Cửa hàng này đã có trong danh sách yêu thích", Toast.LENGTH_SHORT).show()
+            }
+        }
+        viewModel.handle(DetailStoreViewAction.GetDetailUser(idUser))
 
         adapterRate = AdapterRate()
         views.rcvRates.adapter = adapterRate
@@ -186,6 +197,36 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
 
             else -> {}
         }
+    }
+    fun getDetailUser(state: DetailStoreViewState){
+        when(state.stateDetailAccount){
+            is Success->{
+                runBlocking {
+                    launch {
+                        state.stateDetailAccount.invoke()?.let {account ->
+                            val favoriteStores = account.favoriteStores
+                            var store = intent.getStringExtra(Common.KEY_ID_STORE)
+                            val isStoreFavorited = favoriteStores?.any { storeExtend -> storeExtend.id== store.toString()  } ?: false
+                            if(isStoreFavorited){
+                                views.imgAddFavoriteStore.setImageResource(R.drawable.ic_favorite_2)
+                            }else{
+                                views.imgAddFavoriteStore.setImageResource(R.drawable.ic_favorite_1)
+                            }
+                        }
+                    }
+                }
+            }
+            is Loading ->{
+                Timber.tag("AAAAAAAAA").e("getDetailUser: Loading")
+            }
+            is Fail -> {
+                Timber.tag("AAAAAAAAA").e("getDetailUser: Call Fail")
+            }
+            else->{
+
+            }
+        }
+
     }
 
     override fun getBinding(): ActivityDetailStoreBinding =

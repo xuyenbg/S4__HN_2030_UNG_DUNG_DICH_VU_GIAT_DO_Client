@@ -76,7 +76,7 @@ class OrderCancelledFragment : BaseFragment<FragmentOrderCancelledBinding>() {
 
         })
         views.swipeToRefresh.setOnRefreshListener {
-            if(!views.swipeToRefresh.isRefreshing){
+            if(views.swipeToRefresh.isRefreshing){
                 viewModel.handle(HomeViewAction.OrderActionGetList(account.id.toString()))
             }
         }
@@ -98,16 +98,17 @@ class OrderCancelledFragment : BaseFragment<FragmentOrderCancelledBinding>() {
             is Success -> {
                 runBlocking {
                     launch {
-                        it.stateOrder.invoke()?.let {
+                        it.stateOrder.invoke()?.let { orders ->
+                            val sortedOrders = orders.sortedByDescending { order -> order.createAt }
                           // Cập nhật danh sách đơn hàng đã hủy
                             views.rcvItemOrderCancelled.visibility=View.VISIBLE
                             views.shimmerLoading.visibility=View.GONE
                             views.swipeToRefresh.isRefreshing= false
-                            Timber.tag("OrderCancelledFragment").d("orderCancelledInvalidate: ${it.size}")
-                            orderAdapter.updateDataByStatus(it, listOf(5)) // Cập nhật danh sách đơn hàng đã hủy
+                            Timber.tag("OrderCancelledFragment").d("orderCancelledInvalidate: ${sortedOrders.size}")
+                            orderAdapter.updateDataByStatus(sortedOrders, listOf(5)) // Cập nhật danh sách đơn hàng đã hủy
                             views.rcvItemOrderCancelled.adapter = orderAdapter
                             orderAdapter.notifyDataSetChanged()
-                            Log.d("OrderCancelledFragment", "getListOrderCancelled: ${it.size}")
+                            Log.d("OrderCancelledFragment", "getListOrderCancelled: ${sortedOrders.size}")
                         }
                     }
                 }

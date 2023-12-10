@@ -74,15 +74,16 @@ class OrderUncompingFragment : BaseFragment<FragmentOrderUpcompingBinding>() {
             is Success -> {
                 runBlocking {
                     launch {
-                        it.stateOrder.invoke()?.let {
-                            views.shimmerLoading.visibility=View.GONE
-                            views.rcvItemOrderUncomping.visibility=View.VISIBLE
-                            views.swipeToRefresh.isRefreshing= false
-                            Timber.tag("OrderUncompingFragment").d("orderUncompingInvalidate: ${it.size}")
-                            orderAdapter.updateDataByStatus(it, listOf(0,1)) // Cập nhật danh sách đơn hàng đã hủy
+                        it.stateOrder.invoke()?.let { orders ->
+                            val sortedOrders = orders.sortedByDescending { order -> order.createAt }
+                            views.shimmerLoading.visibility = View.GONE
+                            views.rcvItemOrderUncomping.visibility = View.VISIBLE
+                            views.swipeToRefresh.isRefreshing = false
+                            Timber.tag("OrderUncompingFragment").d("orderUncompingInvalidate: ${sortedOrders.size}")
+                            orderAdapter.updateDataByStatus(sortedOrders, listOf(0, 1)) // Cập nhật danh sách đơn hàng đã hủy
                             views.rcvItemOrderUncomping.adapter = orderAdapter
                             orderAdapter.notifyDataSetChanged()
-                            Log.d("OrderUncompingFragment", "getListOrderUncomping: ${it.size}")
+                            Log.d("OrderUncompingFragment", "getListOrderUncomping: ${sortedOrders.size}")
                         }
                     }
                 }

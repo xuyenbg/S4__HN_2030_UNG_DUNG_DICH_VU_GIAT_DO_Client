@@ -41,7 +41,7 @@ class RemoteDataSource {
             .setLenient()
             .create()
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BASE_URL_IMAGE)
             .client(getRetrofitClient())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

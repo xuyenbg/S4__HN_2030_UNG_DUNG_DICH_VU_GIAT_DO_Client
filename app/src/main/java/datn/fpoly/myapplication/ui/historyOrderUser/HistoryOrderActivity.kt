@@ -108,13 +108,14 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
                 runBlocking {
                     launch {
                         DialogLoading.hideDialog()
-                        it.stateOrder.invoke()?.let {
+                        it.stateOrder.invoke()?.let { orders ->
+                            val sortedOrders = orders.sortedByDescending { order -> order.createAt }
                             Timber.tag("OrderCompleteFragment")
-                                .d("orderCompleteInvalidate: ${it.size}")
-                            orderAdapter.updateDataByStatus(it, listOf(3,4))
+                                .d("orderCompleteInvalidate: ${sortedOrders.size}")
+                            orderAdapter.updateDataByStatus(sortedOrders, listOf(3,4))
                             views.rcvListOrder.adapter = orderAdapter
                             orderAdapter.notifyDataSetChanged()
-                            Log.d("OrderCompleteFragment", "getListOrderComplete: ${it.size}")
+                            Log.d("OrderCompleteFragment", "getListOrderComplete: ${sortedOrders.size}")
                         }
                     }
                 }
