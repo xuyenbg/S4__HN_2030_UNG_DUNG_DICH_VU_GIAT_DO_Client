@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 import com.bumptech.glide.Glide
+import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.post.PostModel
 import datn.fpoly.myapplication.databinding.ItemPostBinding
 import datn.fpoly.myapplication.utils.Common
@@ -51,8 +52,13 @@ class PostClientAdapter @Inject constructor() :
                     tvContent.text = itemPost.content
                     tvDate.text = Common.convertISO8601ToCustomFormat(itemPost.date)
                     Glide.with(holder.itemView.context)
-                        .load(Common.baseUrl + itemPost.image)
+                        .load(Common.baseUrl + itemPost.image).placeholder(R.drawable.image_post).
+                        error(R.drawable.image_post)
                         .into(imagePostClient)
+                    Glide.with(holder.itemView.context)
+                        .load(Common.baseUrl + itemPost.idStore.imageQACode).placeholder(R.drawable.avatar_profile).
+                            error(R.drawable.avatar_profile)
+                        .into(imageAvt)
                 }
             }
         }

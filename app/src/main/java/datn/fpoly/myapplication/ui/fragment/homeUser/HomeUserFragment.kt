@@ -10,7 +10,7 @@ import android.content.pm.PackageManager
 import android.location.LocationRequest
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +19,6 @@ import com.airbnb.mvrx.*
 import com.denzcoskun.imageslider.constants.ActionTypes
 import com.denzcoskun.imageslider.constants.AnimationTypes
 import com.denzcoskun.imageslider.constants.ScaleTypes
-import com.denzcoskun.imageslider.interfaces.ItemClickListener
 import com.denzcoskun.imageslider.interfaces.TouchListener
 import com.denzcoskun.imageslider.models.SlideModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -31,7 +30,6 @@ import com.google.android.gms.tasks.OnTokenCanceledListener
 import datn.fpoly.myapplication.core.BaseFragment
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.CategoryModel
-import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.data.model.StoreNearplaceModel
 import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.databinding.FragmentHomeUserBinding
@@ -50,8 +48,7 @@ import datn.fpoly.myapplication.ui.seeMore.SeeMoreActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.DataRaw
 import datn.fpoly.myapplication.utils.ItemSpacingDecoration
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import datn.fpoly.myapplication.utils.RemoteConfig
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -62,9 +59,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var adapterCate: AdapterCategory
     private lateinit var adapterStore: AdapterStore
-    private lateinit var handler: Handler
     private var imageList: MutableList<SlideModel> = mutableListOf()
-    private lateinit var adapter: SlideImageAdapter
     private lateinit var fusedLoaction: FusedLocationProviderClient
     private var account: AccountModel? = null
 
@@ -307,23 +302,24 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
 
 
     private fun initSlide() {
-
-        imageList.add(SlideModel("https://asiatechjsc.vn/cdn/shop/articles/7ac3212def22e3c7b4b6c6805cb01bf5.jpg?v=1610419220", "Siêu tiện dụng."))
-        imageList.add(SlideModel("https://channel.mediacdn.vn/2019/9/9/photo-2-15680177604931126060018.jpg", "Climate change is moving very fast."))
-        imageList.add(SlideModel("https://giatlatokyo.com/wp-content/uploads/2018/09/dich-vu-giat-kho-la-hoi.jpg", "helo du you mother fuck"))
-        views.vpSlideShow.setImageList(imageList, ScaleTypes.CENTER_CROP)
-
-        views.vpSlideShow.setSlideAnimation(AnimationTypes.ZOOM_OUT)
-        views.vpSlideShow.setTouchListener(object : TouchListener {
-            override fun onTouched(touched: ActionTypes, position: Int) {
-                if (touched == ActionTypes.UP){
-                    views.vpSlideShow.stopSliding()
-                } else if (touched == ActionTypes.DOWN ) {
-                    views.vpSlideShow.startSliding(2000)
-                }
+        RemoteConfig.getListImage {
+            it.forEach { image ->
+                val cleanImageUrl = image.trim()
+                val slide = SlideModel(cleanImageUrl)
+                imageList.add(slide)
             }
-        })
-
+            views.vpSlideShow.setImageList(imageList, ScaleTypes.CENTER_CROP)
+            views.vpSlideShow.setSlideAnimation(AnimationTypes.ZOOM_OUT)
+            views.vpSlideShow.setTouchListener(object : TouchListener {
+                override fun onTouched(touched: ActionTypes, position: Int) {
+                    if (touched == ActionTypes.UP) {
+                        views.vpSlideShow.stopSliding()
+                    } else if (touched == ActionTypes.DOWN) {
+                        views.vpSlideShow.startSliding(2000)
+                    }
+                }
+            })
+        }
     }
 
 }
