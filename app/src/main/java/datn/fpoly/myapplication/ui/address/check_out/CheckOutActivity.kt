@@ -50,10 +50,11 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
         super.onResume()
         viewModel.handle(CheckOutViewAction.GetListAddress)
     }
+
     override fun initUiAndData() {
         super.initUiAndData()
         viewModel.subscribe(this) {
-            views.progressCircular.root.visibility = if(it.isLoading()) View.VISIBLE else View.GONE
+            views.progressCircular.root.visibility = if (it.isLoading()) View.VISIBLE else View.GONE
             updateWithState(it)
         }
         viewModel.handle(CheckOutViewAction.GetListAddress)
@@ -74,6 +75,10 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
         views.changeAddress.setOnClickListener {
             startActivity(Intent(this@CheckOutActivity, AddressActivity::class.java))
         }
+
+        cart?.listItem?.size?.let {
+            views.tvServiceNumber.text = "" + it + "Dịch vụ"
+        }
         views.toolbar.btnNotification.visibility = View.INVISIBLE
         views.btnAction.text = "Xác nhận"
         views.btnAction.setOnClickListener {
@@ -81,8 +86,9 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
                 cart.idAddress = address?.id
                 cart.note = views.note.text.toString()
                 cart.methodPaymentType = "Thanh toán tiền mặt"
-                cart.transportType = if(views.radioShip.isChecked) "Shipper" else "Mang tới cửa hàng"
-                cart.feeDelivery = if(views.radioShip.isChecked) 30000.0 else 0.0
+                cart.transportType =
+                    if (views.radioShip.isChecked) "Shipper" else "Mang tới cửa hàng"
+                cart.feeDelivery = if (views.radioShip.isChecked) 30000.0 else 0.0
                 cart.isPaid = false
                 cart.status = 0
                 viewModel.handle(CheckOutViewAction.InsertOrder(cart))
@@ -91,7 +97,7 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
     }
 
     private fun updateWithState(state: CheckOutViewState) {
-        when(state.stateGetStoreById){
+        when (state.stateGetStoreById) {
             is Success -> {
                 runBlocking {
                     launch {
@@ -105,7 +111,7 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
             }
             else -> {}
         }
-        when(state.stateInsertOrder){
+        when (state.stateInsertOrder) {
             is Success -> {
                 runBlocking {
                     launch {
@@ -115,18 +121,19 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
                     }
                 }
             }
-            is Fail ->{
+            is Fail -> {
                 Toast.makeText(this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show()
             }
 
             else -> {}
         }
-        when(state.stateGetListAddress){
+        when (state.stateGetListAddress) {
             is Success -> {
                 runBlocking {
                     launch {
                         val list = state.stateGetListAddress.invoke()
-                        val addressList = state.stateGetListAddress.invoke()?.filter { address -> address.isDefault == true }
+                        val addressList = state.stateGetListAddress.invoke()
+                            ?.filter { address -> address.isDefault == true }
                         Timber.tag("addressList").d(list.toString())
                         if (!addressList.isNullOrEmpty()) {
                             address = addressList.first()
