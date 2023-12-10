@@ -8,7 +8,6 @@ import android.widget.Toast
 import com.airbnb.mvrx.*
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
-import datn.fpoly.myapplication.databinding.ActivityDetailStoreBinding12
 import com.airbnb.mvrx.viewModel
 import com.bumptech.glide.Glide
 import com.orhanobut.hawk.Hawk
@@ -16,6 +15,7 @@ import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.data.model.account.AccountModel
+import datn.fpoly.myapplication.databinding.ActivityDetailStoreBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterRate
 import datn.fpoly.myapplication.ui.adapter.AdapterService
 import datn.fpoly.myapplication.ui.service.DetailServiceActivity
