@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.*
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
-import datn.fpoly.myapplication.databinding.ActivityDetailStoreBinding
+import datn.fpoly.myapplication.databinding.ActivityDetailStoreBinding12
 import com.airbnb.mvrx.viewModel
 import com.bumptech.glide.Glide
 import com.orhanobut.hawk.Hawk
@@ -39,8 +37,8 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
-        adapterService = AdapterService(false)
-        val account = Hawk.get<AccountModel>("Account", null)
+        adapterService = AdapterService(false, false)
+        val account = Hawk.get<AccountModel>("Account",null)
         var store = intent.getStringExtra(Common.KEY_ID_STORE)
         var idUser = account.id.toString()
         val accountModel = AccountModel()
@@ -97,8 +95,8 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
                             views.shimmer.visibility = View.GONE
                             views.rcvDetailStore.visibility = View.VISIBLE
                             adapterService.setData(it)
-                            Timber.tag("AAAAAAAAA")
-                                .e("getListService: list service size: " + it.size)
+                            state.stateService=Uninitialized
+                            Timber.tag("AAAAAAAAA").e("getListService: list service size: "+it.size )
                         }
                     }
                 }
@@ -110,10 +108,10 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
                 views.shimmer.startShimmer()
                 Timber.tag("AAAAAAAAA").e("getListService: Loading")
             }
-
-            is Fail -> {
-                views.shimmer.visibility = View.GONE
-                views.rcvDetailStore.visibility = View.VISIBLE
+            is Fail-> {
+                views.shimmer.visibility=View.GONE
+                views.rcvDetailStore.visibility=View.VISIBLE
+                state.stateService=Uninitialized
                 Timber.tag("AAAAAAAAA").e("getListService: Call Fail")
             }
 
@@ -131,12 +129,15 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
                         state.stateStore.invoke()?.let { itemStoreDetail ->
                             views.tvNameStore.text = itemStoreDetail.name
                             views.tvAddress.text = itemStoreDetail.idAddress?.address
-                            views.tvRate.text = itemStoreDetail.rate.toString()
-                            views.tvPhone.text = itemStoreDetail.iduser?.phone
+          
                             Glide.with(this@DetailStoreActivity).load(itemStoreDetail.imageQACode)
                                 .placeholder(
                                     R.drawable.avatar_profile
                                 ).error(R.drawable.avatar_profile).into(views.imgAvatar)
+
+                            views.tvRate.text= itemStoreDetail.rate.toString()
+                            views.tvPhone.text= itemStoreDetail.iduser?.phone
+                            state.stateStore = Uninitialized
                         }
                     }
                 }
@@ -147,9 +148,8 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
 
                 Timber.tag("AAAAAAAAA").e("getListService: Loading")
             }
-
-            is Fail -> {
-
+            is Fail-> {
+                state.stateStore = Uninitialized
                 Timber.tag("AAAAAAAAA").e("getListService: Call Fail")
             }
 
@@ -174,12 +174,13 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
                     views.shimmerRate.visibility = View.GONE
                     views.rcvRates.visibility = View.VISIBLE
                     adapterRate.initData(it)
+                    state.stateListRateStore= Uninitialized
                 }
             }
-
-            is Fail -> {
-                views.shimmerRate.visibility = View.GONE
-                views.rcvRates.visibility = View.VISIBLE
+            is Fail->{
+                views.shimmerRate.visibility=View.GONE
+                views.rcvRates.visibility=View.VISIBLE
+                state.stateListRateStore= Uninitialized
                 Timber.tag("AAAAAAAAAAAA").e("getListRate: Fail ")
             }
 

@@ -38,6 +38,11 @@ class NotificationActivity : BaseActivity<ActivityNotificationBinding>(), Notify
         views.imgBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
+        views.swipeToRefresh.setOnRefreshListener {
+            if(views.swipeToRefresh.isRefreshing){
+                idUser?.let { NotifycationViewAction.GetListNotifyById(it) }?.let { viewModel.handle(it) }
+            }
+        }
 
     }
     private fun updateState(state: NotifycationViewState){
@@ -53,6 +58,7 @@ class NotificationActivity : BaseActivity<ActivityNotificationBinding>(), Notify
                        state.stateNotify.invoke()?.let {
                            views.shimmner.visibility= View.GONE
                            views.rcvNotification.visibility=View.VISIBLE
+                           views.swipeToRefresh.isRefreshing=false
                            adapterNoti.initData(it)
                        }
 
@@ -62,6 +68,7 @@ class NotificationActivity : BaseActivity<ActivityNotificationBinding>(), Notify
             is Fail->{
                 views.shimmner.visibility= View.GONE
                 views.rcvNotification.visibility=View.VISIBLE
+                views.swipeToRefresh.isRefreshing=false
             }
             else->{}
         }

@@ -28,6 +28,7 @@ import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
 import datn.fpoly.myapplication.ui.order.OrderDetailActivity
 import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.DialogLoading
 import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -37,7 +38,7 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
     private val viewModel: HomeUserViewModel by activityViewModel()
     private lateinit var orderAdapter: OrderAdapter
     lateinit var dialog: Dialog
-    private var dialogLoading : Dialog_Loading?=null
+
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -63,7 +64,7 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
             }
         })
         views.swipeToRefresh.setOnRefreshListener {
-            if(!views.swipeToRefresh.isRefreshing){
+            if(views.swipeToRefresh.isRefreshing){
                 viewModel.handle(HomeViewAction.OrderActionGetList(account.id.toString()))
             }
         }
@@ -106,6 +107,7 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
     override fun invalidate(): Unit = withState(viewModel) {
         super.invalidate()
         getListOrder(it)
+        updateStateAddRate(it)
 
     }
 
@@ -158,22 +160,27 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
     }
 
     private fun updateStateAddRate(state: HomeViewState){
-        dialogLoading= Dialog_Loading.getInstance()
+
         when(state.stateRate){
             is Loading-> {
-               dialogLoading?.show(childFragmentManager, "Loading Rate")
+                    DialogLoading.showDialog(requireContext())
                 Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:loading ")
             }
             is Success->{
-                dialogLoading?.dismiss()
-                dialogLoading=null
-                dialog.dismiss()
-                Toast.makeText(requireContext(), "Đánh giá thành công", Toast.LENGTH_SHORT).show()
+                runBlocking {
+                    launch {
+                        DialogLoading.hideDialog()
+                        dialog.dismiss()
+                        Toast.makeText(requireContext(), "Đánh giá thành công", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
 
             }
             is Fail->{
-                dialogLoading?.dismiss()
-                dialogLoading=null
+                DialogLoading.hideDialog()
+                dialog.dismiss()
+                Toast.makeText(requireContext(), "Đánh giá thất bại", Toast.LENGTH_SHORT).show()
                 Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:fail ")
             }
             else->{}

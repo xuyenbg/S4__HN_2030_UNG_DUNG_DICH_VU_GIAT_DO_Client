@@ -4,10 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.viewModel
+import com.airbnb.mvrx.*
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
@@ -43,7 +40,7 @@ class ListServiceByNameActivity : BaseActivity<ActivityListServiceByNameBinding>
         }
         views.tvTitle.text = intent.getStringExtra(Common.KEY_NAME_SERVICE)
 
-        adapterService = AdapterService(false)
+        adapterService = AdapterService(false, false)
         views.rcvListService.adapter = adapterService
         adapterService.setListenner(object : AdapterService.ServiceListenner{
             override fun ServiceOnClick(item: ServiceExtend, position: Int) {
@@ -97,10 +94,12 @@ class ListServiceByNameActivity : BaseActivity<ActivityListServiceByNameBinding>
                         }
                     }
                 }
+                state.stateService=Uninitialized
             }
             is Fail->{
                 views.shimmer.visibility= View.GONE
                 views.rcvListService.visibility= View.VISIBLE
+                state.stateService=Uninitialized
 //                Dialog_Loading.getInstance().dismiss()
             }
             else->{}
