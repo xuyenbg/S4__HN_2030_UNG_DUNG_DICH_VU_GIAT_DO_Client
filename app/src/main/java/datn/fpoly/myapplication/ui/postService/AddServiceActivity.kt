@@ -120,6 +120,9 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
         views.spinnerUnitSale.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 when (p2) {
+                    0->{
+                        views.edPriceSale.setText("")
+                    }
                     1 -> {
                         limitPriceSale = 100
                     }
@@ -134,6 +137,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
 
             }
         }
+
         views.btnUnit1.setOnClickListener {
             unit = views.btnUnit1.text.toString()
             views.btnUnit1.isChecked = true
@@ -198,15 +202,12 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 views.edPriceSale.setText(modelUpdate.idSale?.value.toString())
             }
             val listAttribute = modelUpdate?.attributeList
+            val listAttributePost = mutableListOf<PostService.PostAttribute>()
             for (index in 0 until listAttribute?.size!!) {
-                adapterAttribute.insertItem(
-                    PostService.PostAttribute(
-                        listAttribute[index].name,
-                        listAttribute[index].price
-                    )
-                )
+                listAttributePost.add(PostService.PostAttribute(listAttribute[index].name, listAttribute[index].price))
             }
-            when (modelUpdate?.unit) {
+            adapterAttribute.initAttribute(listAttributePost)
+            when (modelUpdate.unit) {
                 views.btnUnit1.text -> {
                     unit = views.btnUnit1.text.toString()
                     views.btnUnit1.isChecked = true
@@ -242,22 +243,16 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             modelUpdate.isActive?.let {
                 views.swIsActive.isSelected = it
             }
-            views.edNameService.setText(modelUpdate?.name)
-            views.edPriceService.setText(modelUpdate?.price.toString())
-            for (index in 0 until modelUpdate?.attributeList?.size!!) {
-                adapterAttribute.insertItem(
-                    PostService.PostAttribute(
-                        modelUpdate.attributeList!![index].name,
-                        modelUpdate.attributeList!![index].price
-                    )
-                )
-            }
-            Glide.with(views.imgSelectImage).load(Common.baseUrl + "" + modelUpdate.image)
+            views.edNameService.setText(modelUpdate.name)
+            views.edPriceService.setText(modelUpdate.price.toString())
+            Glide.with(views.imgSelectImage).load(Common.baseUrl + "" + modelUpdate.image).error(datn.fpoly.myapplication.R.drawable.add_image)
                 .into(views.imgSelectImage)
             views.btnInsertService.setText("Lưu")
+            views.swIsActive.isChecked= modelUpdate.isActive!!
             views.swIsActive.visibility = View.VISIBLE
             views.tvIsActive.visibility = View.VISIBLE
         } else {
+            unit = views.btnUnit1.text.toString()
             views.swIsActive.visibility = View.GONE
             views.tvIsActive.visibility = View.GONE
             views.btnInsertService.setText("Thêm")
@@ -304,22 +299,18 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             views.tvErrorNameService.text = ""
         } else {
             if (views.edNameService.text.toString().trim().isEmpty()) {
-                isValidate = false
                 views.tvErrorNameService.text = "Tên dịch vụ không được để trống"
             } else {
-                isValidate = true
                 views.tvErrorNameService.text = ""
             }
             if (views.edPriceService.text.toString().isEmpty()) {
-                isValidate = false
                 views.tvErrorPriceService.text = "Giá dịch vụ không được để trống"
             } else if (views.edPriceService.text.toString().toDouble() < 0) {
-                isValidate = false
                 views.tvErrorPriceService.text = "Giá dịch vụ không được nhỏ hơn 0"
             } else {
-                isValidate = true
                 views.tvErrorPriceService.text = ""
             }
+            isValidate = false
 
         }
         return isValidate
@@ -364,22 +355,19 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             views.tvErrorNameService.text = ""
         } else {
             if (views.edNameService.text.toString().trim().isEmpty()) {
-                isValidate = false
                 views.tvErrorNameService.text = "Tên dịch vụ không được để trống"
             } else {
-                isValidate = true
                 views.tvErrorNameService.text = ""
             }
             if (views.edPriceService.text.toString().isEmpty()) {
-                isValidate = false
+
                 views.tvErrorPriceService.text = "Giá dịch vụ không được để trống"
             } else if (views.edPriceService.text.toString().toDouble() < 0) {
-                isValidate = false
                 views.tvErrorPriceService.text = "Giá dịch vụ không được nhỏ hơn 0"
             } else {
-                isValidate = true
                 views.tvErrorPriceService.text = ""
             }
+            isValidate = false
         }
         return isValidate
     }
@@ -412,11 +400,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             listAttribute.forEachIndexed { index, item ->
                 stringMap["attributeList[$index]"] = item
             }
-            Log.e("AAAAAAAAAA", "postService:unitSale " + unitSale)
-            Log.e("AAAAAAAAAA", "postService:valueSale " + valueSale)
-
-            if (views.spinnerUnitSale.selectedItem.equals("Chọn đơn vị") && views.edPriceSale.text.toString()
-                    .trim().isEmpty()
+            if (views.spinnerUnitSale.selectedItemPosition==0
             ) {
                 idStore?.let {
                     AddServiceViewAction.AddService(
@@ -482,9 +466,8 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             }
             Log.e("AAAAAAAAAA", "postService:unitSale " + unitSale)
             Log.e("AAAAAAAAAA", "postService:valueSale " + valueSale)
-            if (views.spinnerUnitSale.selectedItem.equals("Chọn đơn vị") && views.edPriceSale.text.toString()
-                    .trim().isEmpty()
-            ) {
+            if (views.spinnerUnitSale.selectedItemPosition==0) {
+                Log.e("AAAAAAAAAAAAAAAA", "postService: sale null" )
                 idStore?.let {
                     AddServiceViewAction.AddService(
                         null,
@@ -504,6 +487,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                     )
                 }
             } else {
+                Log.e("AAAAAAAAAAAAAAAA", "postService: sale not null" )
                 idStore?.let {
                     AddServiceViewAction.AddService(
                         null,
@@ -523,6 +507,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                     )
                 }
             }
+
         }
 
 
@@ -533,8 +518,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             val file = File(imageUri!!.path!!) // Chuyển URI thành File
             val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
             val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
-            val name = views.edNameService.text.toString().trim()
-                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val name = views.edNameService.text.toString().trim().toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val cate = views.spinnerCate.selectedItem as CategoryModel
             val idCate =
                 cate.id.toString().trim().toRequestBody("multipart/form-data".toMediaTypeOrNull())
@@ -556,9 +540,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             listAttribute.forEachIndexed { index, item ->
                 stringMap["attributeList[$index]"] = item
             }
-            if (views.spinnerUnitSale.selectedItem.equals("Chọn đơn vị") && views.edPriceSale.text.toString()
-                    .trim().isEmpty()
-            ) {
+            if (views.spinnerUnitSale.selectedItemPosition==0) {
                 idStore.let {
                     AddServiceViewAction.UpdateService(
                         idService,
@@ -601,8 +583,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             }
 
         } else {
-            val name = views.edNameService.text.toString().trim()
-                .toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val name = views.edNameService.text.toString().trim().toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val cate = views.spinnerCate.selectedItem as CategoryModel
             val idCate =
                 cate.id.toString().trim().toRequestBody("multipart/form-data".toMediaTypeOrNull())
@@ -618,14 +599,12 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             val priceServie = views.edPriceService.text.toString().trim()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val unit = unit.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val isActive = true.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val isActive = views.swIsActive.isSelected.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val stringMap = HashMap<String, PostService.PostAttribute>()
             listAttribute.forEachIndexed { index, item ->
                 stringMap["attributeList[$index]"] = item
             }
-            if (views.spinnerUnitSale.selectedItem.equals("Chọn đơn vị") && views.edPriceSale.text.toString()
-                    .trim().isEmpty()
-            ) {
+            if (views.spinnerUnitSale.selectedItemPosition==0) {
                 idStore.let {
                     AddServiceViewAction.UpdateService(
                         idService,
@@ -666,6 +645,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                     )
                 }
             }
+
         }
 
 
@@ -686,10 +666,9 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                         state.stateService.invoke()?.let {
                             Toast.makeText(
                                 this@AddServiceActivity,
-                                "${it.message()}",
+                                "Thêm dịch vụ thành công",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: " + it.message())
                             setResult(Common.CODE_LOAD_DATA)
                             onBackPressedDispatcher.onBackPressed()
                         }
@@ -704,7 +683,6 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 DialogLoading.hideDialog()
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Fail")
             }
-
             else -> {}
         }
 
@@ -718,20 +696,21 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             }
 
             is Success -> {
-                DialogLoading.hideDialog()
-                state.stateServiceUpdate.invoke()?.let {
-                    Toast.makeText(this, "${it.message()}", Toast.LENGTH_SHORT).show()
-                    Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: " + it.message())
-                    setResult(Common.CODE_LOAD_DATA)
-                    onBackPressedDispatcher.onBackPressed()
+                runBlocking {
+                    launch {
+                        DialogLoading.hideDialog()
+                        state.stateServiceUpdate.invoke()?.let {
+                            Toast.makeText(this@AddServiceActivity, "Cập nhật dịch vụ thành công", Toast.LENGTH_SHORT).show()
+                            setResult(Common.CODE_LOAD_DATA)
+                            onBackPressedDispatcher.onBackPressed()
+                        }
+                    }
                 }
-                state.stateServiceUpdate = Uninitialized
 
             }
 
             is Fail -> {
                 DialogLoading.hideDialog()
-                state.stateServiceUpdate = Uninitialized
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Fail")
             }
 

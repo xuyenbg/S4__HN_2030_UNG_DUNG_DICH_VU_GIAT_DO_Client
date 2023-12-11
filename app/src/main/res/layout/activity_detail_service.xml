@@ -8,10 +8,11 @@
 
     <ImageView
         android:id="@+id/btn_back"
-        android:layout_width="14dp"
-        android:layout_height="20dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
+        android:padding="8dp"
         android:src="@drawable/icon_back_profile_3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -102,7 +103,6 @@
                 android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="200dp"
                 android:layout_marginTop="8dp"
                 android:text="15.000"
                 android:textSize="14sp"

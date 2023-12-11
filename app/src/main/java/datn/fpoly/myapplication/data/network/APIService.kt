@@ -28,7 +28,7 @@ interface APIService {
         @Part image: MultipartBody.Part?,  // Phần dữ liệu của hình ảnh
         @Part("name") name: RequestBody,  // Tên sản phẩm
         @Part("price") price: RequestBody,  // Giá sản phẩm
-        @PartMap attributeList:Map<String, PostService.PostAttribute>,  // Danh sách thuộc tính sản phẩm
+        @PartMap attributeList:Map<String, PostService.PostAttribute>?,  // Danh sách thuộc tính sản phẩm
         @Part("isActive") isActive: RequestBody,  // Trạng thái kích hoạt
         @Part("unit") unit: RequestBody,  // Đơn vị sản phẩm
         @Part("idCategory") idCategory: RequestBody,  // ID danh mục

@@ -57,12 +57,18 @@ class AdapterService(val isStore: Boolean, val checkName: Boolean) : Adapter<Ada
         fun bind(item: ServiceExtend) {
             val decemDecimalFormatFormat = DecimalFormat("#")
             binding.tvNameService.text = item.name
-            binding.tvPrice.text = "" + item.price + "đ/" + item.unit
             binding.tvPrice.isSelected=true
             if (isStore) {
                 Glide.with(binding.btnEdit).load(R.drawable.ic_edit).error(R.drawable.img_service)
                     .into(binding.btnEdit)
                 binding.btnEdit.visibility = View.VISIBLE
+                if(item.idSale!=null){
+                    binding.tvPrice.setText(Html.fromHtml("<span style=\"text-decoration: line-through; font-size: 8px;\">${decemDecimalFormatFormat.format(item.price)} VNĐ/${item.unit} </span>  <br> <span style=\"color: #FA0F0F;\">${if(item.idSale?.unit.equals("%")){
+                        decemDecimalFormatFormat.format( item.price?.minus((item.price!! *( item.idSale?.value!!/100))))
+                    }else{decemDecimalFormatFormat.format((item.price?.minus(item.idSale?.value!!)))}} VNĐ/${item.unit}</span>"))
+                }else{
+                    binding.tvPrice.setText(decemDecimalFormatFormat.format(item.price)+" "+item.unit)
+                }
             } else {
                 binding.btnEdit.visibility = View.INVISIBLE
                 Glide.with(binding.btnEdit).load(R.drawable.img_cart).error(R.drawable.img_service)
@@ -78,8 +84,8 @@ class AdapterService(val isStore: Boolean, val checkName: Boolean) : Adapter<Ada
                         binding.tvPrice.setText(decemDecimalFormatFormat.format(item.price)+" "+item.unit)
                     }
                 }
-
             }
+
             Glide.with(binding.root).load(Common.baseUrl + item.image).error(R.drawable.img_service)
                 .into(binding.imageService)
 
