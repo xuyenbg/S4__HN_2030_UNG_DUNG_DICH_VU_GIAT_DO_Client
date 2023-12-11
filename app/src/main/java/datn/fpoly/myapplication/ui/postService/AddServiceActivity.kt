@@ -245,7 +245,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             }
             views.edNameService.setText(modelUpdate.name)
             views.edPriceService.setText(modelUpdate.price.toString())
-            Glide.with(views.imgSelectImage).load(Common.baseUrl + "" + modelUpdate.image)
+            Glide.with(views.imgSelectImage).load(Common.baseUrl + "" + modelUpdate.image).error(datn.fpoly.myapplication.R.drawable.add_image)
                 .into(views.imgSelectImage)
             views.btnInsertService.setText("Lưu")
             views.swIsActive.isChecked= modelUpdate.isActive!!

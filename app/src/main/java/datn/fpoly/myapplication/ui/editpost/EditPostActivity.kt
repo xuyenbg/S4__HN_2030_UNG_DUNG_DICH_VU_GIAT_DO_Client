@@ -76,9 +76,9 @@ class EditPostActivity : BaseActivity<ActivityEditPostBinding>(), EditPostViewMo
                 imagePost.visibility = View.GONE
             } else {
                 imagePost.visibility = View.VISIBLE
-                Glide.with(this@EditPostActivity).load(Common.baseUrl + postModel?.image)
-                    .placeholder(R.drawable.loading_error).into(imagePost)
             }
+            Glide.with(this@EditPostActivity).load(Common.baseUrl + postModel?.image)
+                .placeholder(R.drawable.loading_error).into(imagePost)
             toobar.icSearch.visibility = View.GONE
 
         }
@@ -208,6 +208,7 @@ class EditPostActivity : BaseActivity<ActivityEditPostBinding>(), EditPostViewMo
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
             imageUri = data!!.data
+            views.imagePost.visibility = View.VISIBLE
             Glide.with(this).load(imageUri).into(views.imagePost)
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()

@@ -55,6 +55,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
             getListService(it)
             getService(it)
         }
+
         views.btnBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -79,7 +80,11 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
                 startActivity(intent)
             }
             imgBuy.setOnClickListener {
-                startActivity(Intent(this@DetailServiceActivity, HomeActivity::class.java))
+                startActivity(
+                    Intent(this@DetailServiceActivity, HomeActivity::class.java).setFlags(
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    )
+                )
             }
         }
         adapterService = AdapterService(false, false)
@@ -204,20 +209,22 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
     }
 
     private fun getTotalItem(): Double {
-        if(serviceExtend?.idSale!=null){
-            if(serviceExtend?.idSale?.unit.equals("%")){
+        if (serviceExtend?.idSale != null) {
+            if (serviceExtend?.idSale?.unit.equals("%")) {
                 var priceAttr = 0.0
                 adapterAttribute.listAttributeSelect.forEach { attr -> priceAttr += attr.price }
-                total = ((serviceExtend!!.price!!-(serviceExtend?.price?.times(serviceExtend?.idSale?.value!!/100)!!)) + priceAttr) * quality
+                total =
+                    ((serviceExtend!!.price!! - (serviceExtend?.price?.times(serviceExtend?.idSale?.value!! / 100)!!)) + priceAttr) * quality
                 return total
-            }else{
+            } else {
                 var priceAttr = 0.0
                 adapterAttribute.listAttributeSelect.forEach { attr -> priceAttr += attr.price }
-                total = ((serviceExtend!!.price!!- serviceExtend?.idSale?.value!!) + priceAttr) * quality
+                total =
+                    ((serviceExtend!!.price!! - serviceExtend?.idSale?.value!!) + priceAttr) * quality
                 return total
             }
 
-        }else{
+        } else {
             var priceAttr = 0.0
             adapterAttribute.listAttributeSelect.forEach { attr -> priceAttr += attr.price }
             total = (serviceExtend!!.price!! + priceAttr) * quality
@@ -289,11 +296,23 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
                             } else {
                                 views.tvPrice.setText(
                                     Html.fromHtml(
-                                        "<span style=\"text-decoration: line-through;\">${decemDecimalFormatFormat.format(serviceExtend!!.price)} VNĐ/${serviceExtend?.unit}</span> <span style=\"color: #FA0F0F;\">${
+                                        "<span style=\"text-decoration: line-through;\">${
+                                            decemDecimalFormatFormat.format(
+                                                serviceExtend!!.price
+                                            )
+                                        } VNĐ/${serviceExtend?.unit}</span> <span style=\"color: #FA0F0F;\">${
                                             if (serviceExtend!!.idSale?.unit.equals("%")) {
-                                               decemDecimalFormatFormat.format( serviceExtend!!.price?.minus((serviceExtend!!.price!! * serviceExtend!!.idSale?.value!!/100)))
+                                                decemDecimalFormatFormat.format(
+                                                    serviceExtend!!.price?.minus(
+                                                        (serviceExtend!!.price!! * serviceExtend!!.idSale?.value!! / 100)
+                                                    )
+                                                )
                                             } else {
-                                               decemDecimalFormatFormat.format( (serviceExtend?.price?.minus(serviceExtend!!.idSale?.value!!)))
+                                                decemDecimalFormatFormat.format(
+                                                    (serviceExtend?.price?.minus(
+                                                        serviceExtend!!.idSale?.value!!
+                                                    ))
+                                                )
                                             }
                                         } VNĐ/${serviceExtend?.unit}</span>"
                                     )

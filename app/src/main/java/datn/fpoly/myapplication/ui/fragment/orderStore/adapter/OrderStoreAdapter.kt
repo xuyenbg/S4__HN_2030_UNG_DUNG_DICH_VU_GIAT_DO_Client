@@ -40,7 +40,7 @@ class OrderStoreAdapter(
                 holder.binding.apply {
                     tvOrderId.text = "#${itemOrder.id}"
                     tvFullName.text = itemOrder.idUser?.fullname
-                    tvTime.text = Utils.formatDateOrder(itemOrder.updateAt)
+                    tvTime.text = Utils.formatDateOrder(itemOrder.createAt)
                     tvStatusName.text = "Đã xong"
                     btnAction.text = "Xong"
                     btnAction.setOnClickListener {

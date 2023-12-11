@@ -45,15 +45,20 @@ class AdapterItemCart(
                 binding.serviceName.text = it.name
                 binding.price.text = it.price?.formatCurrency(it.unit) ?: "-"
 //                binding.priceService.text = it.price?.formatCurrency(null) ?: "-"
-                binding.priceService.setText( Html.fromHtml(
-                    "<span style=\"text-decoration: line-through;\">${decemDecimalFormatFormat.format(it.price)}</span> <span style=\"color: #FA0F0F;\">${
-                        if (it.idSale?.unit.equals("%")) {
-                            decemDecimalFormatFormat.format( it.price?.minus((it.price!! * it.idSale?.value!!/100)))
-                        } else {
-                            decemDecimalFormatFormat.format( (it.price?.minus(it.idSale?.value!!)))
-                        }
-                    }</span>"
-                ))
+                if(it.idSale!=null){
+                    binding.priceService.setText( Html.fromHtml(
+                        "<span style=\"text-decoration: line-through;\">${decemDecimalFormatFormat.format(it.price)}</span> <span style=\"color: #FA0F0F;\">${
+                            if (it.idSale?.unit.equals("%")) {
+                                decemDecimalFormatFormat.format( it.price?.minus((it.price!! * it.idSale?.value!!/100)))
+                            } else {
+                                decemDecimalFormatFormat.format( (it.price?.minus(it.idSale?.value!!)))
+                            }
+                        }</span>"
+                    ))
+                }else{
+                    binding.priceService.setText(decemDecimalFormatFormat.format(it.price))
+                }
+
                 binding.groupAddOn.visibility = if (it.attributeList?.isNotEmpty() == true) View.VISIBLE else View.GONE
             }
             if (!item.attributeListExtend.isNullOrEmpty()) {

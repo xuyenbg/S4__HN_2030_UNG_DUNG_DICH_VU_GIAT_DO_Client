@@ -81,7 +81,7 @@ class ServicesStoreFragment : BaseFragment<FragmentServicesStoreBinding>() {
                 intent.putExtra("isStore", true)
                 intent.putExtra(Common.KEY_ID_SERVICE, item.id)
                 intent.putExtra(Common.KEY_ID_STORE, item.idStore?.id)
-                startActivity(intent)
+                requireContext().startActivity(intent)
             }
 
             override fun EditService(serviceExtend: ServiceExtend) {

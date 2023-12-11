@@ -118,7 +118,12 @@ class OrderStoreFragment : BaseFragment<FragmentOrderStoreBinding>() {
             intent.putExtra(Common.KEY_ID_ORDER, it.id)
             intent.putExtra("store", true)
             requireContext().startActivity(intent)
-        }, itemOnclick = {})
+        }, itemOnclick = {
+            val intent = Intent(requireContext(), OrderDetailStoreActivity::class.java)
+            intent.putExtra(Common.KEY_ID_ORDER, it.id)
+            intent.putExtra("store", true)
+            requireContext().startActivity(intent)
+        })
         views.listOrderStore.adapter = orderStoreAdapter
         views.listOrderStore.addItemDecoration(ItemSpacingDecoration(32))
 
