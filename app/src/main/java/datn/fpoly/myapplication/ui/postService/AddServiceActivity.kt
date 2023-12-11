@@ -400,9 +400,6 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             listAttribute.forEachIndexed { index, item ->
                 stringMap["attributeList[$index]"] = item
             }
-            Log.e("AAAAAAAAAA", "postService:unitSale " + unitSale)
-            Log.e("AAAAAAAAAA", "postService:valueSale " + valueSale)
-
             if (views.spinnerUnitSale.selectedItemPosition==0
             ) {
                 idStore?.let {
@@ -607,8 +604,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             listAttribute.forEachIndexed { index, item ->
                 stringMap["attributeList[$index]"] = item
             }
-            if (views.spinnerUnitSale.selectedItemPosition==0
-            ) {
+            if (views.spinnerUnitSale.selectedItemPosition==0) {
                 idStore.let {
                     AddServiceViewAction.UpdateService(
                         idService,
@@ -687,7 +683,6 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 DialogLoading.hideDialog()
                 Timber.tag("AAAAAAAAAAAAAA").e("updateStatePost: Fail")
             }
-
             else -> {}
         }
 

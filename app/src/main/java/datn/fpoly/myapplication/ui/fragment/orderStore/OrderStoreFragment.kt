@@ -2,6 +2,7 @@ package datn.fpoly.myapplication.ui.fragment.orderStore
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.text.Editable
@@ -29,11 +30,15 @@ import datn.fpoly.myapplication.ui.home.HomeViewState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewModel
+import datn.fpoly.myapplication.ui.order.OrderDetailStoreActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.ItemSpacingDecoration
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class OrderStoreFragment : BaseFragment<FragmentOrderStoreBinding>() {
@@ -63,19 +68,24 @@ class OrderStoreFragment : BaseFragment<FragmentOrderStoreBinding>() {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
+        views.btnEndDate.isEnabled= false
         views.btnStartDate.setOnClickListener {
             DatePickerDialog(
                 requireContext(), { datePicker, i, i2, i3 ->
-                    views.tvDateStart.text = "$i-$i2-$i3"
+                    views.tvDateStart.text = "$i-${i2+1}-$i3"
+                    views.btnEndDate.isEnabled =true
                 }, year, month, day
             ).show()
         }
         views.btnEndDate.setOnClickListener {
-            DatePickerDialog(
+           val datePick= DatePickerDialog(
                 requireContext(), { datePicker, i, i2, i3 ->
-                    views.tvDateEnd.text = "$i-$i2-$i3"
+                    views.tvDateEnd.text = "$i-${i2+1}-$i3"
                 }, year, month, day
-            ).show()
+            )
+            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            datePick.datePicker.minDate= simpleDateFormat.parse(views.tvDateStart.text.toString().trim()).time
+            datePick.show()
         }
         views.apply {
 
@@ -104,7 +114,10 @@ class OrderStoreFragment : BaseFragment<FragmentOrderStoreBinding>() {
             views.edSearch.setText("")
         }
         orderStoreAdapter = OrderStoreAdapter(onBtnAction = {
-
+            val intent = Intent(requireContext(), OrderDetailStoreActivity::class.java)
+            intent.putExtra(Common.KEY_ID_ORDER, it.id)
+            intent.putExtra("store", true)
+            requireContext().startActivity(intent)
         }, itemOnclick = {})
         views.listOrderStore.adapter = orderStoreAdapter
         views.listOrderStore.addItemDecoration(ItemSpacingDecoration(32))
