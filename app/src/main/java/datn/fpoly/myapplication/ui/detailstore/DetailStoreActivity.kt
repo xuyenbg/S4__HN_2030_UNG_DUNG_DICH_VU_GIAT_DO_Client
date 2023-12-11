@@ -141,7 +141,7 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
                             views.tvNameStore.text = itemStoreDetail.name
                             views.tvAddress.text = itemStoreDetail.idAddress?.address
           
-                            Glide.with(this@DetailStoreActivity).load(itemStoreDetail.imageQACode)
+                            Glide.with(this@DetailStoreActivity).load(Common.baseUrl+itemStoreDetail.imageQACode)
                                 .placeholder(
                                     R.drawable.avatar_profile
                                 ).error(R.drawable.avatar_profile).into(views.imgAvatar)
