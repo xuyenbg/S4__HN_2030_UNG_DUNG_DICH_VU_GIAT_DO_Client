@@ -142,7 +142,7 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
             val intent = Intent(this@SignInActivity, OTPLoginActivity::class.java)
             intent.putExtra("OTP", verificationId)
             intent.putExtra("resendToken", token)
-            intent.putExtra("phone", number)
+            intent.putExtra("phone", views.phoneNumber.text.toString())
             intent.putExtra("CHECKSTORE", checkStrore)
             startActivity(intent)
         }
