@@ -122,6 +122,7 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
                     ?.let { viewModel.handle(it) }
                 idStore?.let { HomeStoreViewAction.GetStatisticalByWeek(it, week) }
                     ?.let { viewModel.handle(it) }
+
             }
         }
 

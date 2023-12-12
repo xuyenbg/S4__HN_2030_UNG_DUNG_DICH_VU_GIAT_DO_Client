@@ -64,8 +64,9 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
                             FirebaseAuth.getInstance().signOut()
                             Hawk.delete("Account");
                             Hawk.put("CheckLogin", false)
+                            Hawk.delete("Manage")
                             startActivity(Intent(requireContext(), SignInActivity::class.java))
-                        }, 3000)
+                        }, 1500)
                     }
 
                 }
