@@ -11,6 +11,7 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
 import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
@@ -62,7 +63,11 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
         uid = intent.getStringExtra("UID")
         dialogLoading = Dialog_Loading.getInstance()
         views.btnRegiterAccount.setOnClickListener {
-            register()
+            if (views.edFullname.text.toString().isEmpty()) {
+                views.tvError.text = "Vui lòng nhập tên.!"
+            } else {
+                register()
+            }
         }
         signUpViewModel.subscribe(this) {
             updateWithState(it)
@@ -168,11 +173,14 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
                                     ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                 )
                                 dialogLoading?.dismiss()
-                                dialogLoading = null
                             } else {
                                 views.tvError.text = "Số điện thoại đã được sử dụng"
                                 dialogLoading?.dismiss()
-                                dialogLoading = null
+                                val snack = Snackbar.make(views.root, " được sử dụng", Snackbar.LENGTH_SHORT)
+                                snack.setAction("Ok") {
+                                    startActivity(Intent(this@RegisterInforActivity, SignUpActivity::class.java))
+                                }
+                                snack.show()
                             }
                         }
                     }
@@ -191,7 +199,7 @@ class RegisterInforActivity : BaseActivity<ActivityRegiterInforAccountUserBindin
                     }
                 }
                 dialogLoading?.dismiss()
-                views.tvError.text = "Đăng ký thất bại"
+                views.tvError.text = "Số điện thoại đã được sử dụng"
             }
 
             else -> {}

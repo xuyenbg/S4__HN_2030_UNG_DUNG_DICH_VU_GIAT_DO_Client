@@ -20,18 +20,18 @@ import datn.fpoly.myapplication.utils.Dialog_Loading
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
+class SignUpActivity : BaseActivity<ActivitySignUpBinding>() {
     private lateinit var number: String
     private lateinit var auth: FirebaseAuth
+    private var dialog_: Dialog_Loading? = null
     override fun getBinding(): ActivitySignUpBinding {
         return ActivitySignUpBinding.inflate(layoutInflater)
     }
 
     override fun initUiAndData() {
         super.initUiAndData()
-        views.progressPhone.visibility = View.INVISIBLE
         auth = FirebaseAuth.getInstance()
-
+        dialog_ = Dialog_Loading.getInstance()
         views.btnBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -40,8 +40,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
             if (number.isNotEmpty()) {
                 if (number.length == 10) {
                     number = "+84$number"
-//                    views.progressPhone.visibility = View.VISIBLE
-                    Dialog_Loading.getInstance().show(supportFragmentManager,"SignUpLoading")
+                   dialog_?.show(supportFragmentManager, "SignUpLoading")
 
                     val options = PhoneAuthOptions.newBuilder(auth)
                         .setPhoneNumber(number) // Phone number to verify
@@ -65,17 +64,17 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(ContentValues.TAG, "signInWithCredential:success")
-                    Toast.makeText(this, "Thành Công", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this, HomeActivity::class.java))
                 } else {
                     // Sign in failed, display a message and update the UI
                     Log.w(ContentValues.TAG, "signInWithCredential:failure", task.exception)
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         // The verification code entered was invalid
+                        views.inputPhoneNumber.error = "OTP không hợp lệ.!"
                     }
                     // Update UI
                 }
-//                views.progressPhone.visibility = View.INVISIBLE
+                dialog_?.dismiss()
             }
     }
 
@@ -107,7 +106,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
                 // reCAPTCHA verification attempted with null Activity
             }
 //            views.progressPhone.visibility = View.VISIBLE
-            Dialog_Loading.getInstance().show(supportFragmentManager,"SignUpLoading")
+            dialog_?.dismiss()
             // Show a message and update the UI
         }
 
@@ -120,6 +119,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(){
             // by combining the code with a verification ID
             // Save verification ID and resending token so we can use them later
             Timber.d("OTP", verificationId)
+            dialog_?.dismiss()
             val intent = Intent(this@SignUpActivity, AuthenticationOtpActivity::class.java)
             intent.putExtra("OTP", verificationId)
             intent.putExtra("resendToken", token)

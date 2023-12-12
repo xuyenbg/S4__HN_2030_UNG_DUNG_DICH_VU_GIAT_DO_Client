@@ -96,7 +96,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                     val credential: PhoneAuthCredential = PhoneAuthProvider.getCredential(
                         OTP, typeOTP
                     )
-                    dialog?.show(supportFragmentManager, "LoginLoading")
+
                     signInWithPhoneAuthCredential(credential)
                 } else {
                     views.tvError.text = "Vui lòng nhập lại OTP"
@@ -228,6 +228,7 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
 
             is Loading -> {
                 //Xoay tròn indicate
+                dialog?.show(supportFragmentManager, "LoginLoading")
 
             }
 

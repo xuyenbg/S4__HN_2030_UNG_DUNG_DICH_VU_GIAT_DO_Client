@@ -108,7 +108,6 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
 
     fun dismissDialog(){
         dialogLogin?.dismiss()
-        dialogLogin = null
     }
 
     private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {

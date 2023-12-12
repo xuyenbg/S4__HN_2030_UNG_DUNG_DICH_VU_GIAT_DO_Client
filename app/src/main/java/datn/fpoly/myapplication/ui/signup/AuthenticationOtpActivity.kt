@@ -27,6 +27,7 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
     private lateinit var OTP: String
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var phoneNumber: String
+    private var dialog: Dialog_Loading? = null
     override fun getBinding(): ActivityAuthenticationOtpBinding {
         return ActivityAuthenticationOtpBinding.inflate(layoutInflater)
     }
@@ -37,7 +38,7 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
         OTP = intent.getStringExtra("OTP").toString()
         resendToken = intent.getParcelableExtra("resendToken")!!
         phoneNumber = intent.getStringExtra("phone")!!
-        views.progressPhone.visibility = View.INVISIBLE
+        dialog = Dialog_Loading.getInstance()
         addTextChangeListener()
         resendOTPTvVisibility()
         views.btnBack.setOnClickListener {
@@ -55,7 +56,7 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
                         OTP, typeOTP
                     )
 //                    views.progressPhone.visibility = View.VISIBLE
-                    Dialog_Loading.getInstance().show(supportFragmentManager,"SignUpLoading")
+                    dialog?.show(supportFragmentManager, "SignUpLoading")
                     signInWithPhoneAuthCredential(credential)
                 } else {
                     Toast.makeText(this, "Vui lòng nhập lại OTP", Toast.LENGTH_SHORT).show()
@@ -165,6 +166,7 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
 //            views.progressPhone.visibility = View.VISIBLE
 //            dialogLoading.show(supportFragmentManager, "LoadingAccount")
             // Show a message and update the UI
+            dialog?.dismiss()
         }
 
         override fun onCodeSent(
@@ -185,11 +187,12 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-//                    views.progressPhone.visibility = View.VISIBLE
+//                    views.progressPhone.visibility = View.
+                    dialog?.dismiss()
                     val user = task.result?.user
                     Log.d("signInWithCredential", "signInWithPhoneAuthCredential: ${user?.uid}")
-                    val intent = Intent(this,RegisterInforActivity::class.java)
-                    intent.putExtra("PHONE",phoneNumber)
+                    val intent = Intent(this, RegisterInforActivity::class.java)
+                    intent.putExtra("PHONE", phoneNumber)
                     intent.putExtra("UID", user?.uid)
                     startActivity(intent)
                     finish()
@@ -199,6 +202,8 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
 
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         // The verification code entered was invalid
+                        dialog?.dismiss()
+                        views.tvError.text = "OTP không đúng.!"
                     }
                     // Update UI
                 }
