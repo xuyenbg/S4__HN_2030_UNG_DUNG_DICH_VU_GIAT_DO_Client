@@ -68,6 +68,7 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
             validate()
         }
         views.toobar.icBack.setOnClickListener {
+            setResult(Common.CODE_LOAD_DATA)
             onBackPressedDispatcher.onBackPressed()
         }
         views.toobar.icSearch.visibility = View.GONE
@@ -156,7 +157,8 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
                                     "Thêm thành công",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                finish()
+                                setResult(Common.CODE_LOAD_DATA)
+                                onBackPressedDispatcher.onBackPressed()
                             } else {
                                 Toast.makeText(this@AddPostActivity, "Thất Bại", Toast.LENGTH_SHORT)
                                     .show()

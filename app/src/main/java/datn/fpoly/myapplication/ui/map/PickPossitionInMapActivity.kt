@@ -183,9 +183,7 @@ class PickPossitionInMapActivity :AppCompatActivity(),
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == RESULT_OK) {
-            requestGetCurrentLocation()
-        }
+        requestGetCurrentLocation()
     }
 
 }

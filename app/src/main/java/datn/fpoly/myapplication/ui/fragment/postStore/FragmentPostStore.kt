@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
+import com.bumptech.glide.Glide
 import datn.fpoly.myapplication.core.BaseFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.orhanobut.hawk.Hawk
@@ -45,6 +47,12 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
     private val viewModel: HomeStoreViewModel by activityViewModel()
     private lateinit var postClientAdapter: PostStoreAdapter
     private var idStore: String? = null
+    private val startActivityResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Common.CODE_LOAD_DATA) {
+                viewModel.handle(HomeStoreViewAction.PostStoreActionList(idStore!!))
+            }
+        }
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -55,7 +63,7 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
         idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
         viewModel.handle(HomeStoreViewAction.PostStoreActionList(idStore!!))
         views.btnAddPost.setOnClickListener {
-            startActivity(Intent(requireContext(), AddPostActivity::class.java))
+            startActivityResult.launch(Intent(requireContext(), AddPostActivity::class.java))
         }
         postClientAdapter = PostStoreAdapter()
         val itemDecoration = ItemSpacingDecoration(32)
@@ -158,7 +166,7 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
         view.findViewById<LinearLayout>(R.id.liner_edit).setOnClickListener {
             val intent = Intent(requireContext(), EditPostActivity::class.java)
             intent.putExtra(Common.KEY_POST, postModel)
-            startActivity(intent)
+            startActivityResult.launch(intent)
             dialog.dismiss()
         }
 

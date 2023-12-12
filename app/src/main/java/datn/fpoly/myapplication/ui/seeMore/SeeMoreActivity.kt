@@ -26,25 +26,26 @@ class SeeMoreActivity : BaseActivity<ActivitySeeMoreBinding>() {
         views.btnBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-        when(intent.getIntExtra(Common.KEY_SEE_MORE, 0)){
-            1->{
+        when (intent.getIntExtra(Common.KEY_SEE_MORE, 0)) {
+            1 -> {
                 setUpViewListCategory()
 
             }
-            2->{
+            2 -> {
                 setUpViewListStore()
 
             }
-            else->{}
+            else -> {}
 
         }
     }
-    private fun setUpViewListCategory(){
+
+    private fun setUpViewListCategory() {
         views.tvTitle.setText("Danh sách Loại dịch vụ")
         adapterCate = AdapterCategory(0, true)
         views.rcvList.adapter = adapterCate
         adapterCate.updateData(DataRaw.getDataCategory())
-        adapterCate.setListener(object : AdapterCategory.CategoryListener{
+        adapterCate.setListener(object : AdapterCategory.CategoryListener {
             override fun onClickCate(categoryModel: CategoryModel) {
                 categoryModel.id?.let { DataRaw.setDataIdCategory(it) }
                 startActivity(
@@ -56,18 +57,24 @@ class SeeMoreActivity : BaseActivity<ActivitySeeMoreBinding>() {
             }
         })
     }
-    private fun setUpViewListStore(){
+
+    private fun setUpViewListStore() {
         views.tvTitle.setText("Danh sách Cửa Hàng")
-        val layoutManager =GridLayoutManager(this, 2)
+        val layoutManager = GridLayoutManager(this, 2)
         views.rcvList.layoutManager = layoutManager
         adapterStore = AdapterStore(0)
         views.rcvList.adapter = adapterStore
         views.rcvList.addItemDecoration(ItemSpacingDecoration(32))
         adapterStore.setData(DataRaw.getDataStore())
-        adapterStore.setListener(object : AdapterStore.StoreListener{
+        adapterStore.setListener(object : AdapterStore.StoreListener {
             override fun onClickStoreListener(storeModel: StoreNearplaceModel) {
                 Hawk.put(Common.KEY_STORE_DETAIL, storeModel)
-                startActivity(Intent(this@SeeMoreActivity, DetailStoreActivity::class.java))
+                startActivity(
+                    Intent(
+                        this@SeeMoreActivity,
+                        DetailStoreActivity::class.java
+                    ).putExtra(Common.KEY_ID_STORE, storeModel.id)
+                )
             }
         })
     }
