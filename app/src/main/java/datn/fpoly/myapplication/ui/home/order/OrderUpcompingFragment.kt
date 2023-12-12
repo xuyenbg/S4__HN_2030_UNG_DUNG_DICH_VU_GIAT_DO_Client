@@ -23,6 +23,7 @@ import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
 import datn.fpoly.myapplication.ui.home.HomeViewState
 import datn.fpoly.myapplication.ui.order.OrderDetailActivity
+import datn.fpoly.myapplication.ui.order.OrderDetailHistoryActivity
 import datn.fpoly.myapplication.utils.Common
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -45,7 +46,7 @@ class OrderUncompingFragment : BaseFragment<FragmentOrderUpcompingBinding>() {
         views.rcvItemOrderUncomping.addItemDecoration(itemDecoration)
         orderAdapter.setListener(object : OrderAdapter.OrderListener{
             override fun onClickOrder(order: OrderExtend) {
-                val intent = Intent(context,OrderDetailActivity::class.java)
+                val intent = Intent(context, OrderDetailHistoryActivity::class.java)
                 intent.putExtra(Common.KEY_ID_ORDER,order.id)
                 startActivity(intent)
             }

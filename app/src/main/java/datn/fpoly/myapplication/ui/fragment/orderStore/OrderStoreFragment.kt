@@ -30,6 +30,7 @@ import datn.fpoly.myapplication.ui.home.HomeViewState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewModel
+import datn.fpoly.myapplication.ui.order.OrderDetailHistoryActivity
 import datn.fpoly.myapplication.ui.order.OrderDetailStoreActivity
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.ItemSpacingDecoration
@@ -114,12 +115,12 @@ class OrderStoreFragment : BaseFragment<FragmentOrderStoreBinding>() {
             views.edSearch.setText("")
         }
         orderStoreAdapter = OrderStoreAdapter(onBtnAction = {
-            val intent = Intent(requireContext(), OrderDetailStoreActivity::class.java)
+            val intent = Intent(requireContext(), OrderDetailHistoryActivity::class.java)
             intent.putExtra(Common.KEY_ID_ORDER, it.id)
             intent.putExtra("store", true)
             requireContext().startActivity(intent)
         }, itemOnclick = {
-            val intent = Intent(requireContext(), OrderDetailStoreActivity::class.java)
+            val intent = Intent(requireContext(), OrderDetailHistoryActivity::class.java)
             intent.putExtra(Common.KEY_ID_ORDER, it.id)
             intent.putExtra("store", true)
             requireContext().startActivity(intent)
