@@ -108,7 +108,6 @@ class MyShopActivity : BaseActivity<ActivityMyShopBinding>(), MyShopViewModel.Fa
         latiu = PickPossitionInMapActivity.dataAdress.latitude
         longtiu = PickPossitionInMapActivity.dataAdress.longitude
         views.tvAddressShop.setText(address)
-        Log.d("onResume", "onCreate: $latiu $longtiu")
     }
 
     private fun validate() {
@@ -222,6 +221,7 @@ class MyShopActivity : BaseActivity<ActivityMyShopBinding>(), MyShopViewModel.Fa
                         state.statUpdateStore.invoke()?.let {
 
                             Hawk.put(Common.KEY_STORE, it)
+                            setResult(Common.CODE_LOAD_DATA)
                             onBackPressedDispatcher.onBackPressed()
                             finish()
                             Toast.makeText(

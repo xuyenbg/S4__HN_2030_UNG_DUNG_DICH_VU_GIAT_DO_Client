@@ -61,11 +61,11 @@ class SplashsActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.F
             view.onApplyWindowInsets(windowInsets)
         }
         fusedLoaction = LocationServices.getFusedLocationProviderClient(this)
-//        if (Common.checkPermission(this)) {
-//            CoroutineScope(Dispatchers.IO).launch {
-//                getCurrentLocation()
-//            }
-//        }
+        if (Common.checkPermission(this)) {
+            CoroutineScope(Dispatchers.IO).launch {
+                getCurrentLocation()
+            }
+        }
         val account  = user.getUser()
         val manege : Int = Hawk.get("Manage",0)
         val isLogin= Hawk.get<Boolean>("CheckLogin")

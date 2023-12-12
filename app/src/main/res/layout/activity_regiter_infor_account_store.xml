@@ -208,6 +208,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="56dp"
                 android:layout_marginTop="17dp"
+                android:visibility="gone"
                 android:text="@string/current_possition"
                 android:textColor="@color/colorPriamry"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -220,6 +221,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="28dp"
                 android:text="@string/or"
+                android:visibility="gone"
                 android:textColor="@color/color_gray3"
                 app:layout_constraintLeft_toRightOf="@+id/tv_current_possition"
                 app:layout_constraintTop_toTopOf="@+id/tv_current_possition" />
@@ -231,6 +233,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
                 android:text="@string/pick_possition_in_map"
+                android:layout_marginTop="14dp"
                 android:textColor="@color/colorPriamry"
                 app:layout_constraintLeft_toRightOf="@+id/TextView3"
                 app:layout_constraintTop_toTopOf="@+id/tv_current_possition" />
@@ -247,7 +250,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_current_possition">
+                app:layout_constraintTop_toBottomOf="@+id/tv_pick_possition_in_map">
 
                 <LinearLayout
                     android:layout_width="match_parent"

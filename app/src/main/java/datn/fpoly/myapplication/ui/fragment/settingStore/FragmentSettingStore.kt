@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
@@ -42,6 +43,20 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
     private var countUnconfimred = 0
     private var countConfirmed = 0
     private var storeModel: StoreModel? = null
+    var idStore=""
+    private val startActivityResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Common.CODE_LOAD_DATA) {
+                storeModel = Hawk.get(Common.KEY_STORE)
+                views.tvFullname.text = storeModel?.name
+                Glide.with(views.imgAvatar).load(Common.baseUrl + storeModel?.imageQACode)
+                    .error(R.drawable.avatar_profile)
+                    .into(views.imgAvatar)
+                idStore?.let { HomeStoreViewAction.GetDataOrderStore(it, "desc") }
+                    ?.let { viewModel.handle(it) }
+            }
+        }
+
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -49,9 +64,14 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id
+        idStore = Hawk.get<StoreModel>(Common.KEY_STORE).id.toString()
         idStore?.let { HomeStoreViewAction.GetDataOrderStore(it, "desc") }
             ?.let { viewModel.handle(it) }
+        storeModel = Hawk.get(Common.KEY_STORE)
+        views.tvFullname.text = storeModel?.name
+        Glide.with(views.imgAvatar).load(Common.baseUrl + storeModel?.imageQACode)
+            .error(R.drawable.avatar_profile)
+            .into(views.imgAvatar)
         views.btnLogOut.setOnClickListener {
             Dialog_Loading.getInstance().show(childFragmentManager, "Loading_logour")
             val handler = Handler(Looper.getMainLooper())
@@ -59,7 +79,7 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(
                     it1
                 ).addOnCompleteListener {
-                    if(it.isSuccessful){
+                    if (it.isSuccessful) {
                         handler.postDelayed({
                             FirebaseAuth.getInstance().signOut()
                             Hawk.delete("Account");
@@ -77,30 +97,30 @@ class FragmentSettingStore : BaseFragment<FragmentProfileStoreBinding>() {
             intent.putExtra("KEY_HIS", listOrderStore)
             Log.d("FragmentSettingStore", "onViewCreated: $listOrderStore")
 
-            startActivity(intent)
-//            DataRaw.animStart(views.tvOrderHistory, requireContext())
+            startActivityResult.launch(intent)
+
         }
         views.tvTermsAndPolicies.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.freeprivacypolicy.com/live/aa3aeb2d-c7c4-429d-8ffe-cbf8bc59c16e"))
-            startActivity(intent)
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://www.freeprivacypolicy.com/live/aa3aeb2d-c7c4-429d-8ffe-cbf8bc59c16e")
+            )
+            startActivityResult.launch(intent)
         }
         views.tvStore.setOnClickListener {
             val intent = Intent(requireContext(), MyShopActivity::class.java)
-            startActivity(intent)
+            startActivityResult.launch(intent)
         }
         views.tvNotifications.setOnClickListener {
             val intent = Intent(requireContext(), NotificationActivity::class.java)
             intent.putExtra(Common.KEY_ID_USER, storeModel?.iduser?.id)
-            requireContext().startActivity(intent)
+            startActivityResult.launch(intent)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        storeModel = Hawk.get(Common.KEY_STORE)
-        views.tvFullname.text = storeModel?.name
-        Glide.with(views.imgAvatar).load(storeModel?.imageQACode).error(R.drawable.avatar_profile)
-            .into(views.imgAvatar)
+
     }
 
     override fun invalidate(): Unit = withState(viewModel) {

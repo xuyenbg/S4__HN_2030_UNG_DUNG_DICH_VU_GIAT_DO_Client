@@ -39,6 +39,7 @@ class HistoryStoreActivity : BaseActivity<ActivityHistoryStoreBinding>() {
         views.apply {
             toobar.title.text = "Lịch Sử Đơn Hàng"
             toobar.btnBack.setOnClickListener {
+                setResult(Common.CODE_LOAD_DATA)
                 onBackPressedDispatcher.onBackPressed()
             }
             toobar.btnNotification.visibility = View.GONE

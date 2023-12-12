@@ -52,7 +52,6 @@ class FragmentSetting : BaseFragment<FragmentProfileUserBinding>() {
                         if(it.isSuccessful){
                             handler.postDelayed({
                                 FirebaseAuth.getInstance().signOut()
-
                                 Hawk.delete("Account");
                                 Hawk.put("CheckLogin", false)
                                 startActivity(Intent(requireContext(), SignInActivity::class.java))
@@ -64,10 +63,7 @@ class FragmentSetting : BaseFragment<FragmentProfileUserBinding>() {
 
 
         }
-        views.tvFullname.text = account?.fullname
-        Glide.with(views.imgAvatar).load(Common.baseUrl + account?.avatar)
-            .error(ContextCompat.getDrawable(requireContext(), R.drawable.avatar_profile))
-            .into(views.imgAvatar)
+
         views.tvRegisterStore.setOnClickListener {
             if (account?.idRole == "6522666361b6e95df121642d") {
                 Toast.makeText(
@@ -101,6 +97,10 @@ class FragmentSetting : BaseFragment<FragmentProfileUserBinding>() {
     override fun onResume() {
         super.onResume()
         account = Hawk.get<AccountModel>("Account", null)
+        views.tvFullname.text = account?.fullname
+        Glide.with(views.imgAvatar).load(Common.baseUrl + account?.avatar)
+            .error(R.drawable.avatar_profile)
+            .into(views.imgAvatar)
     }
 
 }

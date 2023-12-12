@@ -91,6 +91,7 @@ class EditPostActivity : BaseActivity<ActivityEditPostBinding>(), EditPostViewMo
 
         }
         views.toobar.icBack.setOnClickListener {
+            setResult(Common.CODE_LOAD_DATA)
             onBackPressedDispatcher.onBackPressed()
         }
         views.toobar.tvTitleTooobal.text = "Sửa Bài Viết"
@@ -177,6 +178,7 @@ class EditPostActivity : BaseActivity<ActivityEditPostBinding>(), EditPostViewMo
                                     "Sửa thành công",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                setResult(Common.CODE_LOAD_DATA)
                                 onBackPressedDispatcher.onBackPressed()
                             } else {
                                 Toast.makeText(

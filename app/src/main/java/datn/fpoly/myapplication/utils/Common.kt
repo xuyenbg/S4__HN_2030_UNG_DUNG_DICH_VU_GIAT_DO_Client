@@ -1,5 +1,6 @@
 package datn.fpoly.myapplication.utils
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
@@ -13,6 +14,7 @@ import android.location.Geocoder
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +27,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.activity.ComponentActivity
+import androidx.annotation.RequiresApi
 import com.google.android.gms.maps.model.LatLng
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.databinding.DialogGpsBinding
@@ -58,7 +61,7 @@ object Common {
     val KEY_LONGITUDE = "MY_LONGITUDE"
     val KEY_CART = "cart_order"
     val KEY_ID_USER = "idUser"
-
+    val REQUEST_CODE_PICIMAGE=888
 
     fun ComponentActivity.registerStartForActivityResult(onResult: (ActivityResult) -> Unit): ActivityResultLauncher<Intent> {
         return registerForActivityResult(ActivityResultContracts.StartActivityForResult(), onResult)
@@ -132,6 +135,28 @@ object Common {
             context,
             android.Manifest.permission.POST_NOTIFICATIONS
         )
+    fun checkPermisstionCamera(context: Context): Boolean {
+        return ActivityCompat.checkSelfPermission(context,Manifest.permission.CAMERA )==PackageManager.PERMISSION_GRANTED
+    }
+    fun checkPermisstionMedia(context: Context): Boolean {
+        if(Build.VERSION.SDK_INT==Build.VERSION_CODES.TIRAMISU){
+            return ActivityCompat.checkSelfPermission(context,Manifest.permission.READ_MEDIA_IMAGES )==PackageManager.PERMISSION_GRANTED
+        }else{
+            return ActivityCompat.checkSelfPermission(context,Manifest.permission.WRITE_EXTERNAL_STORAGE )==PackageManager.PERMISSION_GRANTED
+        }
+    }
+    fun requestPermisstionPIckImage(context: Context){
+        if(Build.VERSION.SDK_INT==Build.VERSION_CODES.TIRAMISU){
+            ActivityCompat.requestPermissions(context as Activity,
+                arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES), REQUEST_CODE_PICIMAGE
+            )
+        }else{
+            ActivityCompat.requestPermissions(context as Activity,
+                arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE_PICIMAGE
+            )
+        }
+    }
+
 
     fun isGpsEnabled(context: Context): Boolean {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
