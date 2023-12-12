@@ -47,6 +47,7 @@ class EditPostActivity : BaseActivity<ActivityEditPostBinding>(), EditPostViewMo
 
     private var imageUri: Uri? = null
     private var isValidate = 0
+    private var dialog: Dialog_Loading? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
@@ -55,6 +56,7 @@ class EditPostActivity : BaseActivity<ActivityEditPostBinding>(), EditPostViewMo
 
     override fun initUiAndData() {
         super.initUiAndData()
+        dialog = Dialog_Loading.getInstance()
         viewModel.subscribe(this) {
             updateWithState(it)
         }
@@ -84,7 +86,6 @@ class EditPostActivity : BaseActivity<ActivityEditPostBinding>(), EditPostViewMo
         }
         views.btnPost.setOnClickListener {
             validate()
-            Log.d("EditPostActivity", "initUiAndData: ${views.edTitleEdit.text.toString()}")
             if (isValidate == 0) {
                 validate()
             }
@@ -101,7 +102,6 @@ class EditPostActivity : BaseActivity<ActivityEditPostBinding>(), EditPostViewMo
                 .isNotEmpty() && views.edContentEdit.text.toString().trim()
                 .isNotEmpty()
         ) {
-            Dialog_Loading.getInstance().show(supportFragmentManager, "Loading add post")
             editPost()
             views.tvErrorTitle.text = ""
             views.tvErrorContent.text = ""
@@ -129,8 +129,6 @@ class EditPostActivity : BaseActivity<ActivityEditPostBinding>(), EditPostViewMo
         val content = views.edContentEdit.text.toString()
 
         if (imageUri != null) {
-            Dialog_Loading.getInstance().show(supportFragmentManager, "Loading edit post")
-
             val file = File(imageUri!!.path!!) // Chuyển URI thành File
 
             val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
@@ -147,8 +145,6 @@ class EditPostActivity : BaseActivity<ActivityEditPostBinding>(), EditPostViewMo
                 )
             )
         } else {
-            Dialog_Loading.getInstance().show(supportFragmentManager, "Loading edit post")
-
             val title_1 = title.toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val content_1 = content.toRequestBody("multipart/form-data".toMediaTypeOrNull())
             viewModel.handle(
@@ -169,6 +165,7 @@ class EditPostActivity : BaseActivity<ActivityEditPostBinding>(), EditPostViewMo
             is Success -> {
                 runBlocking {
                     launch {
+                        dialog?.dismiss()
                         state.stateEditPost.invoke()?.let { result ->
                             Timber.tag("updateWithState").d("updateWithState: " + result.message())
                             if (result.code() == 200) {
@@ -193,11 +190,12 @@ class EditPostActivity : BaseActivity<ActivityEditPostBinding>(), EditPostViewMo
 
             is Loading -> {
                 //Xoay tròn indicate
-                Timber.tag("AddPostActivity").d("loadiing: ")
+                dialog?.show(supportFragmentManager, "Loading add post")
+
             }
 
             is Fail -> {
-                Timber.tag("AddPostActivity").e("Error: ")
+                dialog?.dismiss()
             }
 
             else -> {}
@@ -213,11 +211,9 @@ class EditPostActivity : BaseActivity<ActivityEditPostBinding>(), EditPostViewMo
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun create(initialState: EditPostViewState) = editPostFactory.create(initialState)
-
-
 }

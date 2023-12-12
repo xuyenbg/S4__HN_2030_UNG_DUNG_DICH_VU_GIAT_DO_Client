@@ -144,8 +144,6 @@ class AddPostActivity : BaseActivity<ActivityAddPostBinding>(), AddPostViewModel
     }
 
     private fun updateWithState(state: AddPostViewState) {
-
-        Timber.tag("AddPostActivity").d("chậgdhasjd: ")
         when (state.stateAddPost) {
             is Success -> {
                 runBlocking {
