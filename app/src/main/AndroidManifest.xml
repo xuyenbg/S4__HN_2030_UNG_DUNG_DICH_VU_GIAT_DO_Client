@@ -130,6 +130,9 @@
             android:name=".ui.order.OrderDetailStoreActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.order.OrderDetailHistoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.login.SignInActivity"
             android:exported="false" />
         <activity
