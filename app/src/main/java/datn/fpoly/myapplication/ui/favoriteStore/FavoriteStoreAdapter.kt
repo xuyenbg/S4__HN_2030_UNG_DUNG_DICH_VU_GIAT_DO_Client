@@ -7,11 +7,12 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.StoreExtend
-import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.databinding.ItemListFavoriteStoreBinding
 import javax.inject.Inject
 
-class FavoriteStoreAdapter@Inject constructor():
+class FavoriteStoreAdapter@Inject constructor(
+    var onClickItem: (store:StoreExtend) -> Unit
+):
     RecyclerView.Adapter<FavoriteStoreAdapter.FavoriteStoreViewHolder>() {
     private val listFavoriteStore = mutableListOf<StoreExtend>()
     private var favoriteListener: FavoriteListener? = null
@@ -35,6 +36,7 @@ class FavoriteStoreAdapter@Inject constructor():
 
 
     override fun onBindViewHolder(holder: FavoriteStoreViewHolder, position: Int) {
+        holder.itemView.setOnClickListener { onClickItem(listFavoriteStore[position]) }
         if(holder is FavoriteStoreViewHolder){
             if(listFavoriteStore.isNotEmpty()){
                 val itemFavorite = listFavoriteStore[position]

@@ -1,7 +1,6 @@
 package datn.fpoly.myapplication.ui.order
 
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -12,7 +11,7 @@ import com.airbnb.mvrx.viewModel
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
-import datn.fpoly.myapplication.data.model.OrderExtend
+import datn.fpoly.myapplication.data.model.OrderExtendHistory
 import datn.fpoly.myapplication.databinding.ActivityOrderDetailBinding
 import datn.fpoly.myapplication.ui.order.adapter.AdapterItemOrderStore
 import datn.fpoly.myapplication.utils.Common
@@ -31,7 +30,7 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
 
     private var posItem: Int? = null
 
-    var order:OrderExtend? = null
+    var order: OrderExtendHistory? = null
 
     override fun getBinding(): ActivityOrderDetailBinding {
         return ActivityOrderDetailBinding.inflate(layoutInflater)

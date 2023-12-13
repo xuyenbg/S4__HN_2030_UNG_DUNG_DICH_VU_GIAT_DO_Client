@@ -13,6 +13,7 @@ import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.ItemServiceBinding
 import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.Common.formatCurrency
 import java.text.DecimalFormat
 import java.util.Locale
 
@@ -74,14 +75,15 @@ class AdapterService(val isStore: Boolean, val checkName: Boolean) : Adapter<Ada
                 Glide.with(binding.btnEdit).load(R.drawable.img_cart).error(R.drawable.img_service)
                     .into(binding.btnEdit)
                 if(checkName){
-                    binding.tvPrice.setText(decemDecimalFormatFormat.format(item.price)+" VNĐ/"+item.unit)
+                    binding.tvPrice.text = item.price?.formatCurrency(item.unit)
                 }else{
                     if(item.idSale!=null){
-                        binding.tvPrice.setText(Html.fromHtml("<span style=\"text-decoration: line-through; font-size: 8px;\">${decemDecimalFormatFormat.format(item.price)} VNĐ/${item.unit} </span>  <br> <span style=\"color: #FA0F0F;\">${if(item.idSale?.unit.equals("%")){
-                            decemDecimalFormatFormat.format( item.price?.minus((item.price!! *( item.idSale?.value!!/100))))
-                        }else{decemDecimalFormatFormat.format((item.price?.minus(item.idSale?.value!!)))}} VNĐ/${item.unit}</span>"))
+                        binding.tvPrice.text = Html.fromHtml("<span style=\"text-decoration: line-through; font-size: 8px;\">${item.price?.formatCurrency(item.unit)} </span>  <br> <span style=\"color: #FA0F0F;\">${if(item.idSale?.unit.equals("%")){
+                            item.price?.minus((item.price!! *( item.idSale?.value!!/100)))?.formatCurrency(item.unit)
+                        }else{
+                            item.price?.minus(item.idSale?.value!!)?.formatCurrency(item.unit)}} </span>",Html.FROM_HTML_MODE_COMPACT)
                     }else{
-                        binding.tvPrice.setText(decemDecimalFormatFormat.format(item.price)+" "+item.unit)
+                        binding.tvPrice.text = item.price?.formatCurrency(item.unit)
                     }
                 }
             }

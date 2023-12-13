@@ -9,18 +9,13 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.viewModel
 import datn.fpoly.myapplication.AppApplication
-import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.OrderExtend
+import datn.fpoly.myapplication.data.model.OrderExtendHistory
 import datn.fpoly.myapplication.databinding.ActivityOrderDetailBinding
 import datn.fpoly.myapplication.ui.order.adapter.AdapterItemOrderHistory
-import datn.fpoly.myapplication.ui.order.adapter.AdapterItemOrderStore
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
 import javax.inject.Inject
 
 class OrderDetailHistoryActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderViewModel.Factory {
@@ -31,7 +26,7 @@ class OrderDetailHistoryActivity : BaseActivity<ActivityOrderDetailBinding>(), O
 
     private var posItem: Int? = null
 
-    var order:OrderExtend? = null
+    var order: OrderExtendHistory? = null
 
     override fun getBinding(): ActivityOrderDetailBinding {
         return ActivityOrderDetailBinding.inflate(layoutInflater)

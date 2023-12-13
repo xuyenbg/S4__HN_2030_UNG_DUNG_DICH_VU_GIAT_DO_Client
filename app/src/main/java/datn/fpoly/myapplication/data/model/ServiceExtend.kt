@@ -2,7 +2,7 @@ package datn.fpoly.myapplication.data.model
 
 import com.google.gson.annotations.SerializedName
 
-class ServiceExtend(
+data class ServiceExtend(
     @SerializedName("_id")
     var id: String? = null,
     @SerializedName("name")

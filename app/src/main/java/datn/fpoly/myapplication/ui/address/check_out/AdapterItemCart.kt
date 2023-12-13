@@ -40,25 +40,19 @@ class AdapterItemCart(
 
     inner class ViewHolderItemStore(val binding: ItemCartItemBinding) : ViewHolder(binding.root) {
         fun bind(item: ItemServiceBase, context: Context) {
-            val decemDecimalFormatFormat = DecimalFormat("#")
             item.service?.let {
                 binding.serviceName.text = it.name
                 binding.price.text = it.price?.formatCurrency(it.unit) ?: "-"
-//                binding.priceService.text = it.price?.formatCurrency(null) ?: "-"
-                if(it.idSale!=null){
-                    binding.priceService.setText( Html.fromHtml(
-                        "<span style=\"text-decoration: line-through;\">${decemDecimalFormatFormat.format(it.price)}</span> <span style=\"color: #FA0F0F;\">${
-                            if (it.idSale?.unit.equals("%")) {
-                                decemDecimalFormatFormat.format( it.price?.minus((it.price!! * it.idSale?.value!!/100)))
-                            } else {
-                                decemDecimalFormatFormat.format( (it.price?.minus(it.idSale?.value!!)))
-                            }
-                        }</span>"
-                    ))
-                }else{
-                    binding.priceService.setText(decemDecimalFormatFormat.format(it.price))
+                binding.priceService.text = it.price?.formatCurrency(null)
+                binding.discount.text = if(it.idSale != null){
+                    if (it.idSale?.unit.equals("%")) {
+                        (it.price!! * it.idSale?.value!!/100).formatCurrency(null)
+                    }else{
+                        it.idSale?.value!!.formatCurrency(null)
+                    }
+                } else{
+                    "0 đ"
                 }
-
                 binding.groupAddOn.visibility = if (it.attributeList?.isNotEmpty() == true) View.VISIBLE else View.GONE
             }
             if (!item.attributeListExtend.isNullOrEmpty()) {

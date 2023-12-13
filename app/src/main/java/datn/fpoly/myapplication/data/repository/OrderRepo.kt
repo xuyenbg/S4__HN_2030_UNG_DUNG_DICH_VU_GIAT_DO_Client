@@ -2,6 +2,7 @@ package datn.fpoly.myapplication.data.repository
 
 import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.model.OrderExtend
+import datn.fpoly.myapplication.data.model.OrderExtendHistory
 import datn.fpoly.myapplication.data.model.StatisticalModel
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.data.network.APIOrder
@@ -28,7 +29,7 @@ class OrderRepo @Inject constructor(
     fun insertOrder(orderBase: OrderBase): Observable<Unit> =
         api.insertOrder(orderBase).subscribeOn(Schedulers.io())
 
-    fun getOrderDetail(idOrder: String): Observable<OrderExtend> =
+    fun getOrderDetail(idOrder: String): Observable<OrderExtendHistory> =
         api.getOrderDetail(idOrder).subscribeOn(Schedulers.io())
 
     fun getOrderDateStoreWait(

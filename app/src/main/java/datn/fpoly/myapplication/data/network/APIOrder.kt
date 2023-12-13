@@ -2,6 +2,7 @@ package datn.fpoly.myapplication.data.network
 
 import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.model.OrderExtend
+import datn.fpoly.myapplication.data.model.OrderExtendHistory
 import datn.fpoly.myapplication.data.model.StatisticalModel
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import io.reactivex.Observable
@@ -46,7 +47,7 @@ interface APIOrder {
     fun getListOrder(@Path("idUser") idUser: String): Observable<MutableList<OrderExtend>>
 
     @GET("api/order/order-detail/{idOrder}")
-    fun getOrderDetail(@Path("idOrder") idOrder: String): Observable<OrderExtend>
+    fun getOrderDetail(@Path("idOrder") idOrder: String): Observable<OrderExtendHistory>
 
     @GET("api/order/list-order-today-by-idstore-status/{idStore}")
     fun getListOrderDateStore(

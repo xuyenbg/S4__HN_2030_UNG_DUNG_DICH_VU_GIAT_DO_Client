@@ -12,6 +12,7 @@ import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.ItemServiceBase
 import datn.fpoly.myapplication.data.model.OrderExtend
+import datn.fpoly.myapplication.data.model.OrderExtendHistory
 import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.databinding.ActivityOrderDetailBinding
 import datn.fpoly.myapplication.ui.address.check_out.AdapterItemCart
@@ -26,7 +27,7 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(), OrderVie
     lateinit var orderViewModelFactory: OrderViewModel.Factory
 
     private val viewModel: OrderViewModel by viewModel()
-    private var orderExtend: OrderExtend?=null
+    private var orderExtend: OrderExtendHistory?=null
 
     override fun getBinding(): ActivityOrderDetailBinding {
         return ActivityOrderDetailBinding.inflate(layoutInflater)

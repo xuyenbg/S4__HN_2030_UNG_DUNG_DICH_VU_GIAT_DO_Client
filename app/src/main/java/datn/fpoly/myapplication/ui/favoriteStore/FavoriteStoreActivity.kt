@@ -1,5 +1,6 @@
 package datn.fpoly.myapplication.ui.favoriteStore
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import com.airbnb.mvrx.Fail
@@ -11,6 +12,8 @@ import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.databinding.ActivityFavoriteStoreBinding
+import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
+import datn.fpoly.myapplication.utils.Common
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -27,7 +30,11 @@ class FavoriteStoreActivity : BaseActivity<ActivityFavoriteStoreBinding>(),Favor
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
         viewModel.handle(FavoriteStoreViewAction.GetDetailUser(idUser))
-        adapter = FavoriteStoreAdapter()
+        adapter = FavoriteStoreAdapter(){
+            val intent = Intent(this, DetailStoreActivity::class.java)
+            intent.putExtra(Common.KEY_ID_STORE,it.id)
+            startActivity(intent)
+        }
 
 
         views.rcvListFavoriteStore.adapter = adapter

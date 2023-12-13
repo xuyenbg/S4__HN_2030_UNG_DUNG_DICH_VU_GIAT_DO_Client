@@ -47,9 +47,21 @@ class AdapterItemOrderHistory(
                 binding.price.text = it.price?.formatCurrency(it.unit) ?: "-"
                 binding.priceService.text = it.price?.formatCurrency(null) ?: "-"
                 binding.groupAddOn.visibility = if (it.attributeList?.isNotEmpty() == true) View.VISIBLE else View.GONE
+                binding.discount.text = if(it.idSale != null){
+                    if (it.idSale?.unit.equals("%")) {
+                        (it.price!! * it.idSale?.value!!/100).formatCurrency(null)
+                    }else{
+                        it.idSale?.value!!.formatCurrency(null)
+                    }
+                } else{
+                    "0 đ"
+                }
             }
             if (!item.attributeListExtend.isNullOrEmpty()) {
+                binding.groupAddOn.visibility = View.VISIBLE
                 binding.recyclerViewAddOn.adapter = AdapterAddOn(context, item.attributeListExtend!!)
+            }else{
+                binding.groupAddOn.visibility = View.GONE
             }
             binding.total.text = item.total?.formatCurrency(null) ?: "-"
             Glide.with(context).load(RemoteDataSource.BASE_URL_IMAGE + item.service?.image).error(R.drawable.image_no_pick).into(binding.image)
@@ -62,8 +74,9 @@ class AdapterItemOrderHistory(
                     .override(binding.pickImage.width, binding.pickImage.width)
                     .error(R.drawable.image_no_pick)
                     .into(binding.pickImage)
-                binding.groupWeight.visibility = View.VISIBLE
+                binding.numberKg.setText(item.number.toString())
                 binding.groupNumber.visibility = View.GONE
+                binding.groupWeight.visibility = View.VISIBLE
             }else{
                 binding.groupPickImage.visibility = View.GONE
                 binding.groupWeight.visibility = View.GONE
@@ -71,8 +84,8 @@ class AdapterItemOrderHistory(
                 binding.number2.text = String.format("SL: %d %s",(item.number ?: 0.0).toInt(), item.service!!.unit)
             }
             binding.number.text = String.format("%d %s",(item.number ?: 0.0).toInt(), item.service!!.unit)
-            binding.numberKg.setText(item.number.toString())
             binding.expand.visibility = View.GONE
+            binding.dividerBottom.visibility = View.GONE
         }
     }
 }
