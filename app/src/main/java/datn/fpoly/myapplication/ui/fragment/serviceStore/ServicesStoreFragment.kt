@@ -76,7 +76,7 @@ class ServicesStoreFragment : BaseFragment<FragmentServicesStoreBinding>() {
         adapter = AdapterService(true, false)
         views.rcvListService.adapter = adapter
         adapter.setListenner(object : AdapterService.ServiceListenner {
-            override fun ServiceOnClick(item: ServiceExtend, position: Int) {
+            override fun serviceOnClick(item: ServiceExtend, position: Int) {
                 val intent = Intent(requireContext(), DetailServiceActivity::class.java)
                 intent.putExtra("isStore", true)
                 intent.putExtra(Common.KEY_ID_SERVICE, item.id)
@@ -84,7 +84,7 @@ class ServicesStoreFragment : BaseFragment<FragmentServicesStoreBinding>() {
                 requireContext().startActivity(intent)
             }
 
-            override fun EditService(serviceExtend: ServiceExtend) {
+            override fun editService(serviceExtend: ServiceExtend) {
                 DataRaw.setModelUpdateService(serviceExtend)
                 startActivityResult.launch(
                     Intent(

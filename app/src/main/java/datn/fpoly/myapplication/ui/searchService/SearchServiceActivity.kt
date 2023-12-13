@@ -74,13 +74,13 @@ class SearchServiceActivity : BaseActivity<ActivitySearchServiceBinding>(), Sear
         adapterService = AdapterService(false, false)
         views.rcvListSearch.adapter= adapterService
         adapterService.setListenner(object : AdapterService.ServiceListenner{
-            override fun ServiceOnClick(item: ServiceExtend, position: Int) {
+            override fun serviceOnClick(item: ServiceExtend, position: Int) {
                 val intent = Intent(this@SearchServiceActivity, DetailServiceActivity::class.java)
                 intent.putExtra(Common.KEY_ID_SERVICE, item.id)
                 startActivity(intent)
             }
 
-            override fun EditService(serviceExtend: ServiceExtend) {
+            override fun editService(serviceExtend: ServiceExtend) {
 
             }
         })

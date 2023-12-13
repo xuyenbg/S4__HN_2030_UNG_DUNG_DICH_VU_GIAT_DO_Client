@@ -10,11 +10,9 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.ServiceExtend
-import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.databinding.ItemServiceBinding
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
-import java.text.DecimalFormat
 import java.util.Locale
 
 class AdapterService(val isStore: Boolean, val checkName: Boolean) : Adapter<AdapterService.ViewholderItemService>() {
@@ -46,17 +44,16 @@ class AdapterService(val isStore: Boolean, val checkName: Boolean) : Adapter<Ada
         val itemService = listService[index]
         holder.bind(itemService)
         holder.itemView.setOnClickListener {
-            serviceListenner?.ServiceOnClick(itemService, index)
+            serviceListenner?.serviceOnClick(itemService, index)
         }
         holder.binding.btnEdit.setOnClickListener {
-            serviceListenner?.EditService(itemService)
+            serviceListenner?.editService(itemService)
         }
 
     }
 
     inner class ViewholderItemService(var binding: ItemServiceBinding) : ViewHolder(binding.root) {
         fun bind(item: ServiceExtend) {
-            val decemDecimalFormatFormat = DecimalFormat("#")
             binding.tvNameService.text = item.name
             binding.tvPrice.isSelected=true
             if (isStore) {
@@ -64,11 +61,12 @@ class AdapterService(val isStore: Boolean, val checkName: Boolean) : Adapter<Ada
                     .into(binding.btnEdit)
                 binding.btnEdit.visibility = View.VISIBLE
                 if(item.idSale!=null){
-                    binding.tvPrice.setText(Html.fromHtml("<span style=\"text-decoration: line-through; font-size: 8px;\">${decemDecimalFormatFormat.format(item.price)} VNĐ/${item.unit} </span>  <br> <span style=\"color: #FA0F0F;\">${if(item.idSale?.unit.equals("%")){
-                        decemDecimalFormatFormat.format( item.price?.minus((item.price!! *( item.idSale?.value!!/100))))
-                    }else{decemDecimalFormatFormat.format((item.price?.minus(item.idSale?.value!!)))}} VNĐ/${item.unit}</span>"))
+                    binding.tvPrice.text = Html.fromHtml("<span style=\"text-decoration: line-through; font-size: 8px;\">${item.price?.formatCurrency(item.unit)}</span>  <br> <span style=\"color: #FA0F0F;\">${if(item.idSale?.unit.equals("%")){
+                        item.price?.minus((item.price!! *( item.idSale?.value!!/100)))?.formatCurrency(item.unit)
+                    }else{
+                        item.price?.minus(item.idSale?.value!!)?.formatCurrency(item.unit)}}</span>")
                 }else{
-                    binding.tvPrice.setText(decemDecimalFormatFormat.format(item.price)+" "+item.unit)
+                    binding.tvPrice.text = item.price?.formatCurrency(item.unit)
                 }
             } else {
                 binding.btnEdit.visibility = View.INVISIBLE
@@ -98,7 +96,7 @@ class AdapterService(val isStore: Boolean, val checkName: Boolean) : Adapter<Ada
         var charText = charText
         charText = charText.lowercase(Locale.getDefault())
         listService.clear()
-        if (charText.length == 0) {
+        if (charText.isEmpty()) {
             listService.addAll(ListFiltered)
         } else {
             for (s in ListFiltered) {
@@ -113,7 +111,7 @@ class AdapterService(val isStore: Boolean, val checkName: Boolean) : Adapter<Ada
     }
 
     interface ServiceListenner {
-        fun ServiceOnClick(item: ServiceExtend, position: Int)
-        fun EditService(serviceExtend: ServiceExtend)
+        fun serviceOnClick(item: ServiceExtend, position: Int)
+        fun editService(serviceExtend: ServiceExtend)
     }
 }

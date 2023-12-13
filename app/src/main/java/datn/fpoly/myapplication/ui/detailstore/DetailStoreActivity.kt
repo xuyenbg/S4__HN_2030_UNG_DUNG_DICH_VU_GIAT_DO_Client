@@ -61,14 +61,14 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
 
         views.rcvDetailStore.adapter = adapterService
         adapterService.setListenner(object : AdapterService.ServiceListenner {
-            override fun ServiceOnClick(item: ServiceExtend, position: Int) {
+            override fun serviceOnClick(item: ServiceExtend, position: Int) {
 //                Hawk.put(Common.KEY_SERVICE_DETAIL, item)
                 val intent = Intent(this@DetailStoreActivity, DetailServiceActivity::class.java)
                 intent.putExtra(Common.KEY_ID_SERVICE, item.id)
                 startActivity(intent)
             }
 
-            override fun EditService(serviceExtend: ServiceExtend) {
+            override fun editService(serviceExtend: ServiceExtend) {
 
             }
         })

@@ -95,14 +95,14 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
             }
         }
         adapterService.setListenner(object : AdapterService.ServiceListenner {
-            override fun ServiceOnClick(item: ServiceExtend, position: Int) {
+            override fun serviceOnClick(item: ServiceExtend, position: Int) {
                 val intent = Intent(this@DetailServiceActivity, DetailServiceActivity::class.java)
                 intent.putExtra(Common.KEY_ID_SERVICE, item.id)
                 startActivity(intent)
                 finish()
             }
 
-            override fun EditService(serviceExtend: ServiceExtend) {}
+            override fun editService(serviceExtend: ServiceExtend) {}
         })
         views.tvNameService.text = serviceExtend?.name
         Log.d("DetailServiceActivity", "onCreate: $serviceExtend")

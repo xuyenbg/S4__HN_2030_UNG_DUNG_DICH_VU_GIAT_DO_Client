@@ -33,13 +33,13 @@ class ListServiceActivity : BaseActivity<ActivityListServiceBinding>(), ListServ
         adapter = AdapterService(false, true)
         views.rcvList.adapter= adapter
         adapter.setListenner(object :AdapterService.ServiceListenner{
-            override fun ServiceOnClick(item: ServiceExtend, position: Int) {
+            override fun serviceOnClick(item: ServiceExtend, position: Int) {
                 val intent = Intent(this@ListServiceActivity, ListServiceByNameActivity::class.java)
                 intent.putExtra(Common.KEY_NAME_SERVICE, item.name)
                 startActivity(intent)
             }
 
-            override fun EditService(serviceExtend: ServiceExtend) {
+            override fun editService(serviceExtend: ServiceExtend) {
 
             }
         })
