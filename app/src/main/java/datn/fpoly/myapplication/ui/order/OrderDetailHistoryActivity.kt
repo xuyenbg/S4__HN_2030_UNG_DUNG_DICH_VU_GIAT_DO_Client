@@ -50,6 +50,10 @@ class OrderDetailHistoryActivity : BaseActivity<ActivityOrderDetailBinding>(), O
         }
         views.btnAction.visibility = View.GONE
         views.btnActionCancel.visibility = View.GONE
+
+        views.btnActionCancel.setOnClickListener {
+            viewModel.handle(OrderViewAction.UpdateStatus(idOrder?:"",5))
+        }
     }
 
     private fun updateWithState(state: OrderViewState) {
@@ -72,7 +76,11 @@ class OrderDetailHistoryActivity : BaseActivity<ActivityOrderDetailBinding>(), O
                     views.total.text = order!!.total?.formatCurrency(null) ?: "- đ"
                     state.stateOrderDetail = Uninitialized
                 }
-
+              if (order?.status==0) {
+                  views.btnActionCancel.visibility = View.VISIBLE
+              } else {
+                  views.btnActionCancel.visibility = View.GONE
+              }
             }
             else -> {}
         }
@@ -80,7 +88,7 @@ class OrderDetailHistoryActivity : BaseActivity<ActivityOrderDetailBinding>(), O
         when(state.stateUpdateOrder){
             is Success -> {
                 viewModel.handle(OrderViewAction.GetOrderDetail(order?.id ?: "-"))
-                state.stateUpdateOrder = Uninitialized
+//                state.stateUpdateOrder = Uninitialized
             }
             is Fail -> {
                 Toast.makeText(this, "Cập nhập đơn hàng không thành công, có lỗi xảy ra", Toast.LENGTH_SHORT).show()

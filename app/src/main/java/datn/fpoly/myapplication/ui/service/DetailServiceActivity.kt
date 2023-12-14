@@ -297,24 +297,17 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
                                 views.tvPrice.setText(
                                     Html.fromHtml(
                                         "<span style=\"text-decoration: line-through;\">${
-                                            decemDecimalFormatFormat.format(
-                                                serviceExtend!!.price
-                                            )
-                                        } VNĐ/${serviceExtend?.unit}</span> <span style=\"color: #FA0F0F;\">${
+                                            serviceExtend?.price?.toInt()?.formatCurrency(null)
+                                        }/ ${serviceExtend?.unit}</span> <span style=\"color: #FA0F0F;\">${
                                             if (serviceExtend!!.idSale?.unit.equals("%")) {
-                                                decemDecimalFormatFormat.format(
-                                                    serviceExtend!!.price?.minus(
-                                                        (serviceExtend!!.price!! * serviceExtend!!.idSale?.value!! / 100)
-                                                    )
-                                                )
+                                                serviceExtend!!.price?.minus((serviceExtend!!.price!! * serviceExtend!!.idSale?.value!! / 100))
+                                                    ?.toInt()?.formatCurrency(null)
                                             } else {
-                                                decemDecimalFormatFormat.format(
-                                                    (serviceExtend?.price?.minus(
-                                                        serviceExtend!!.idSale?.value!!
-                                                    ))
-                                                )
+                                                (serviceExtend?.price?.minus(serviceExtend!!.idSale?.value!!))?.toInt()
+                                                    ?.formatCurrency(null)
+
                                             }
-                                        } VNĐ/${serviceExtend?.unit}</span>"
+                                        } /${serviceExtend?.unit}</span>"
                                     )
                                 )
                             }

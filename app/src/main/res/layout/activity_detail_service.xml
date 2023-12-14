@@ -24,6 +24,8 @@
         app:layout_constraintTop_toTopOf="@+id/btn_back"
         app:layout_constraintBottom_toBottomOf="@+id/btn_back"
         tools:text="Áo dài"
+        android:textSize="@dimen/_16sp"
+        android:textStyle="bold"
         android:layout_marginStart="@dimen/_16dp"
         />
     <androidx.appcompat.widget.AppCompatButton

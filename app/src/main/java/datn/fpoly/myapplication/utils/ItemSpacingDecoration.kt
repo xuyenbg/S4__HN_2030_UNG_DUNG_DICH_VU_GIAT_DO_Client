@@ -14,6 +14,5 @@ class ItemSpacingDecoration(private val spacing: Int) : RecyclerView.ItemDecorat
         outRect.bottom = spacing
         outRect.left = spacing/2
         outRect.right = spacing/2
-        // Đặt khoảng dưới theo giá trị spacing bạn muốn
     }
 }

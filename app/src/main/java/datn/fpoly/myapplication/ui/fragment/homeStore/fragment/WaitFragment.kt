@@ -112,8 +112,8 @@ class WaitFragment : BaseFragment<FragmentWaitBinding>() {
                     launch {
                         it.stateUpdateStatus.invoke()?.let {
                             if (it.code()==200) {
-                                val viewPager: ViewPager2? = requireActivity().findViewById(R.id.list_order)
-                                viewPager?.currentItem = 1
+//                                val viewPager: ViewPager2? = requireActivity().findViewById(R.id.list_order)
+//                                viewPager?.currentItem = 1
                             }
                         }
                     }

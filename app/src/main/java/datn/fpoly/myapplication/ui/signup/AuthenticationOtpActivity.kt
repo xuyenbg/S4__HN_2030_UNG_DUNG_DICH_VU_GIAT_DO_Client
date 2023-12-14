@@ -202,9 +202,9 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
 
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         // The verification code entered was invalid
-                        dialog?.dismiss()
-                        views.tvError.text = "OTP không đúng.!"
                     }
+                    dialog?.dismiss()
+                    views.tvError.text = "OTP không đúng.!"
                     // Update UI
                 }
             }

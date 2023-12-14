@@ -241,14 +241,14 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
                 }
             }
             modelUpdate.isActive?.let {
-                views.swIsActive.isSelected = it
+                views.swIsActive.isChecked = it
             }
             views.edNameService.setText(modelUpdate.name)
             views.edPriceService.setText(modelUpdate.price.toString())
             Glide.with(views.imgSelectImage).load(Common.baseUrl + "" + modelUpdate.image).error(datn.fpoly.myapplication.R.drawable.add_image)
                 .into(views.imgSelectImage)
             views.btnInsertService.setText("Lưu")
-            views.swIsActive.isChecked= modelUpdate.isActive!!
+//            views.swIsActive.isChecked= modelUpdate.isActive!!
             views.swIsActive.visibility = View.VISIBLE
             views.tvIsActive.visibility = View.VISIBLE
         } else {
@@ -394,7 +394,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             val priceServie = views.edPriceService.text.toString().trim()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val unit = unit.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val isActive = views.swIsActive.isSelected.toString()
+            val isActive = views.swIsActive.isChecked.toString()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val stringMap = HashMap<String, PostService.PostAttribute>()
             listAttribute.forEachIndexed { index, item ->
@@ -534,7 +534,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             val priceServie = views.edPriceService.text.toString().trim()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val unit = unit.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val isActive = views.swIsActive.isSelected.toString()
+            val isActive = views.swIsActive.isChecked.toString()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val stringMap = HashMap<String, PostService.PostAttribute>()
             listAttribute.forEachIndexed { index, item ->
@@ -599,7 +599,7 @@ class AddServiceActivity : BaseActivity<ActivityAddSeviceStoreBinding>(),
             val priceServie = views.edPriceService.text.toString().trim()
                 .toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val unit = unit.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val isActive = views.swIsActive.isSelected.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val isActive = views.swIsActive.isChecked.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
             val stringMap = HashMap<String, PostService.PostAttribute>()
             listAttribute.forEachIndexed { index, item ->
                 stringMap["attributeList[$index]"] = item
