@@ -22,6 +22,7 @@ import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.databinding.ActivityMyProfileBinding
 import datn.fpoly.myapplication.ui.myshop.MyShopViewModel
 import datn.fpoly.myapplication.utils.Common
+import datn.fpoly.myapplication.utils.Dialog_Loading
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -37,9 +38,12 @@ class MyProfileActivity : BaseActivity<ActivityMyProfileBinding>() ,MyProfileVie
     private val viewModel: MyProfileViewModel by viewModel()
     private var account: AccountModel?=null
     private var imageUri: Uri?=null
+    private var dialog : Dialog_Loading?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
+        dialog = Dialog_Loading.getInstance()
         views.tvName.isEnabled = false
         views.icAvtshop.isEnabled= false
         views.tvErrorContent.visibility=View.INVISIBLE
@@ -95,9 +99,11 @@ class MyProfileActivity : BaseActivity<ActivityMyProfileBinding>() ,MyProfileVie
         when(state.stateUpdateProfile){
             is Loading-> {
                 Timber.tag("AAAAAAAAAAAA").e("updateStateProfile: Loading")
+                dialog?.show(supportFragmentManager,"update user")
             }
             is Success-> {
                 Timber.tag("AAAAAAAAAAAA").e("updateStateProfile: Success")
+                dialog?.dismiss()
                 state.stateUpdateProfile.invoke()?.let {
                     onBackPressedDispatcher.onBackPressed()
                     Hawk.put("Account", it.user)
@@ -106,6 +112,7 @@ class MyProfileActivity : BaseActivity<ActivityMyProfileBinding>() ,MyProfileVie
             }
             is Fail-> {
                 Timber.tag("AAAAAAAAAAAA").e("updateStateProfile: Fail")
+                dialog?.dismiss()
             }
             else->{}
         }
@@ -146,7 +153,6 @@ class MyProfileActivity : BaseActivity<ActivityMyProfileBinding>() ,MyProfileVie
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
         }
     }
 }

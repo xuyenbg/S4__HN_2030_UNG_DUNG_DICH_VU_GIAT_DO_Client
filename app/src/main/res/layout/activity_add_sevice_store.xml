@@ -81,7 +81,7 @@
             <Spinner
                 android:id="@+id/spinner_cate"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/boder_edittex"
@@ -264,6 +264,7 @@
                     android:checked="true"
                     android:gravity="center"
                     android:text="KG"
+                    android:textStyle="bold"
                     android:textColor="@color/radio_selector" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
@@ -275,6 +276,7 @@
                     android:button="@android:color/transparent"
                     android:gravity="center"
                     android:text="Chiếc"
+                    android:textColor="@color/radio_selector"
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
@@ -286,6 +288,7 @@
                     android:button="@android:color/transparent"
                     android:gravity="center"
                     android:text="Đôi"
+                    android:textColor="@color/radio_selector"
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
@@ -297,6 +300,7 @@
                     android:button="@android:color/transparent"
                     android:gravity="center"
                     android:text="Gói"
+                    android:textColor="@color/radio_selector"
                     android:textStyle="bold" />
             </RadioGroup>
 

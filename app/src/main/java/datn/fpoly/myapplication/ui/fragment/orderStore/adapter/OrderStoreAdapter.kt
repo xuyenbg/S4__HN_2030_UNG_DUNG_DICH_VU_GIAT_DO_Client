@@ -19,6 +19,7 @@ class OrderStoreAdapter(
     fun updateData(list: MutableList<OrderResponse>) {
         this.listOrder.clear()
         this.listOrder.addAll(list)
+        ListFiltered.clear()
         ListFiltered.addAll(listOrder)
         notifyDataSetChanged()
     }

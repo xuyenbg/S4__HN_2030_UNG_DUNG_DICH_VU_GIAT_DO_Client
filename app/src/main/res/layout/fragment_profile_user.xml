@@ -42,6 +42,7 @@
         android:layout_alignTop="@+id/tv_fullname"
         android:layout_marginTop="6dp"
         android:layout_marginStart="5dp"
+        android:visibility="gone"
         android:layout_marginEnd="20dp"
         android:layout_toRightOf="@+id/tv_fullname"
         android:src="@drawable/icon_back_profile_2" />

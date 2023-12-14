@@ -110,9 +110,9 @@ class WashingFragment : BaseFragment<FragmentWashingBinding>() {
 
                             if (it.code() == 200) {
 
-                                val viewPager: ViewPager2 =
-                                    requireActivity().findViewById(R.id.list_order)
-                                viewPager.currentItem = 2
+//                                val viewPager: ViewPager2 =
+//                                    requireActivity().findViewById(R.id.list_order)
+//                                viewPager.currentItem = 2
                             }
                         }
                     }

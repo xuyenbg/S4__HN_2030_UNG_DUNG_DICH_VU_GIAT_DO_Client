@@ -356,7 +356,6 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                     Timber.tag("OTPLoginActivity").d("initUiAndData: ${phoneNumber}")
                     Timber.tag("OTPLoginActivity").d("initUiAndData:uid ${user?.uid}")
                     login(user!!.uid)
-//                    Dialog_Loading.getInstance().show(supportFragmentManager,"LoginLoading")
                 } else {
                     // Sign in failed, display a message and update the UI
                     Log.w(ContentValues.TAG, "signInWithCredential:failure", task.exception)

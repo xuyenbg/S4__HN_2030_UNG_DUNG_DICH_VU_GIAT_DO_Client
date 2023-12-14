@@ -70,7 +70,7 @@ class SplashsActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.F
         val manege : Int = Hawk.get("Manage",0)
         val isLogin= Hawk.get<Boolean>("CheckLogin")
         viewModel.subscribe(this){
-            if(account!=null&&isLogin){
+            if(account!=null && isLogin){
                 if(manege==0){
                     updateStateGetAccount(it)
                 }else if(manege==1){
@@ -79,7 +79,7 @@ class SplashsActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.F
             }
         }
 
-        if(account!=null&&isLogin){
+        if(account!=null && isLogin){
             if(manege==0){
                 account.id?.let { SplashViewAction.getUser(it) }?.let { viewModel.handle(it) }
             }else if(manege==1){

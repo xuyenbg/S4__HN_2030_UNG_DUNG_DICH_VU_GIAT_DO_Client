@@ -2,26 +2,26 @@ package datn.fpoly.myapplication.ui.detailstore
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.airbnb.mvrx.*
-import datn.fpoly.myapplication.AppApplication
-import datn.fpoly.myapplication.core.BaseActivity
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.viewModel
 import com.bumptech.glide.Glide
 import com.orhanobut.hawk.Hawk
+import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
+import datn.fpoly.myapplication.core.BaseActivity
 import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.databinding.ActivityDetailStoreBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterRate
 import datn.fpoly.myapplication.ui.adapter.AdapterService
-import datn.fpoly.myapplication.ui.favoriteStore.FavoriteStoreViewState
 import datn.fpoly.myapplication.ui.service.DetailServiceActivity
 import datn.fpoly.myapplication.utils.Common
-import datn.fpoly.myapplication.utils.Dialog_Loading
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -35,11 +35,12 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
     private lateinit var itemStoreDetail: StoreModel
     private lateinit var adapterService: AdapterService
     private lateinit var adapterRate: AdapterRate
+    var isStoreFavorited: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
         adapterService = AdapterService(false, false)
-        val account = Hawk.get<AccountModel>("Account",null)
+        val account = Hawk.get<AccountModel>("Account", null)
         var store = intent.getStringExtra(Common.KEY_ID_STORE)
         var idUser = account.id.toString()
         val accountModel = AccountModel()
@@ -77,16 +78,21 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
         (accountModel.favoriteStores as ArrayList<String>)?.add(store.toString())
         views.imgAddFavoriteStore.setOnClickListener {
 
-
+//            Toast.makeText(this, "ddđ", Toast.LENGTH_SHORT).show()
             val updatedImgResource = views.imgAddFavoriteStore.drawable
 
-            if (updatedImgResource.constantState == resources.getDrawable(R.drawable.ic_favorite_1).constantState) {
-                Toast.makeText(this, "Đã thêm cửa hàng vào danh sách yêu thích", Toast.LENGTH_SHORT).show()
+            if (!isStoreFavorited) {
+                Toast.makeText(this, "Đã thêm cửa hàng vào danh sách yêu thích", Toast.LENGTH_SHORT)
+                    .show()
                 views.imgAddFavoriteStore2.visibility = View.VISIBLE
                 views.imgAddFavoriteStore.visibility = View.INVISIBLE
                 viewModel.addFavoriteStore(idUser, accountModel)
             } else {
-//                Toast.makeText(this, "Cửa hàng này đã có trong danh sách yêu thích", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Cửa hàng này đã có trong danh sách yêu thích",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         viewModel.handle(DetailStoreViewAction.GetDetailUser(idUser))
@@ -107,7 +113,8 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
                             views.rcvDetailStore.visibility = View.VISIBLE
                             adapterService.setData(it)
 
-                            Timber.tag("AAAAAAAAA").e("getListService: list service size: "+it.size )
+                            Timber.tag("AAAAAAAAA")
+                                .e("getListService: list service size: " + it.size)
                         }
                     }
                 }
@@ -119,9 +126,10 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
                 views.shimmer.startShimmer()
                 Timber.tag("AAAAAAAAA").e("getListService: Loading")
             }
-            is Fail-> {
-                views.shimmer.visibility=View.GONE
-                views.rcvDetailStore.visibility=View.VISIBLE
+
+            is Fail -> {
+                views.shimmer.visibility = View.GONE
+                views.rcvDetailStore.visibility = View.VISIBLE
 
                 Timber.tag("AAAAAAAAA").e("getListService: Call Fail")
             }
@@ -140,14 +148,15 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
                         state.stateStore.invoke()?.let { itemStoreDetail ->
                             views.tvNameStore.text = itemStoreDetail.name
                             views.tvAddress.text = itemStoreDetail.idAddress?.address
-          
-                            Glide.with(this@DetailStoreActivity).load(Common.baseUrl+itemStoreDetail.imageQACode)
+
+                            Glide.with(this@DetailStoreActivity)
+                                .load(Common.baseUrl + itemStoreDetail.imageQACode)
                                 .placeholder(
                                     R.drawable.avatar_profile
                                 ).error(R.drawable.avatar_profile).into(views.imgAvatar)
 
-                            views.tvRate.text= itemStoreDetail.rate.toString()
-                            views.tvPhone.text= itemStoreDetail.iduser?.phone
+                            views.tvRate.text = itemStoreDetail.rate.toString()
+                            views.tvPhone.text = itemStoreDetail.iduser?.phone
                             state.stateStore = Uninitialized
                         }
                     }
@@ -159,7 +168,8 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
 
                 Timber.tag("AAAAAAAAA").e("getListService: Loading")
             }
-            is Fail-> {
+
+            is Fail -> {
                 state.stateStore = Uninitialized
                 Timber.tag("AAAAAAAAA").e("getListService: Call Fail")
             }
@@ -185,44 +195,51 @@ class DetailStoreActivity : BaseActivity<ActivityDetailStoreBinding>(),
                     views.shimmerRate.visibility = View.GONE
                     views.rcvRates.visibility = View.VISIBLE
                     adapterRate.initData(it)
-                    state.stateListRateStore= Uninitialized
+                    state.stateListRateStore = Uninitialized
                 }
             }
-            is Fail->{
-                views.shimmerRate.visibility=View.GONE
-                views.rcvRates.visibility=View.VISIBLE
-                state.stateListRateStore= Uninitialized
+
+            is Fail -> {
+                views.shimmerRate.visibility = View.GONE
+                views.rcvRates.visibility = View.VISIBLE
+                state.stateListRateStore = Uninitialized
                 Timber.tag("AAAAAAAAAAAA").e("getListRate: Fail ")
             }
 
             else -> {}
         }
     }
-    fun getDetailUser(state: DetailStoreViewState){
-        when(state.stateDetailAccount){
-            is Success->{
+
+    fun getDetailUser(state: DetailStoreViewState) {
+        when (state.stateDetailAccount) {
+            is Success -> {
                 runBlocking {
                     launch {
-                        state.stateDetailAccount.invoke()?.let {account ->
+                        state.stateDetailAccount.invoke()?.let { account ->
                             val favoriteStores = account.favoriteStores
                             var store = intent.getStringExtra(Common.KEY_ID_STORE)
-                            val isStoreFavorited = favoriteStores?.any { storeExtend -> storeExtend.id== store.toString()  } ?: false
-                            if(isStoreFavorited){
+                            isStoreFavorited =
+                                favoriteStores?.any { storeExtend -> storeExtend.id == store.toString() }
+                                    ?: false
+                            if (isStoreFavorited) {
                                 views.imgAddFavoriteStore.setImageResource(R.drawable.ic_favorite_2)
-                            }else{
+                            } else {
                                 views.imgAddFavoriteStore.setImageResource(R.drawable.ic_favorite_1)
                             }
                         }
                     }
                 }
             }
-            is Loading ->{
+
+            is Loading -> {
                 Timber.tag("AAAAAAAAA").e("getDetailUser: Loading")
             }
+
             is Fail -> {
                 Timber.tag("AAAAAAAAA").e("getDetailUser: Call Fail")
             }
-            else->{
+
+            else -> {
 
             }
         }
