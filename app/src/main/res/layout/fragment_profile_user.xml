@@ -14,11 +14,12 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         >
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_avatar"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/round_avt_cirle"
             android:src="@drawable/avatar_profile"
             android:layout_gravity="center"
             />

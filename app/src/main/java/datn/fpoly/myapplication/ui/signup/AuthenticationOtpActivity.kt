@@ -35,6 +35,7 @@ class AuthenticationOtpActivity : BaseActivity<ActivityAuthenticationOtpBinding>
     override fun initUiAndData() {
         super.initUiAndData()
         auth = FirebaseAuth.getInstance()
+        auth.setLanguageCode("VI")
         OTP = intent.getStringExtra("OTP").toString()
         resendToken = intent.getParcelableExtra("resendToken")!!
         phoneNumber = intent.getStringExtra("phone")!!

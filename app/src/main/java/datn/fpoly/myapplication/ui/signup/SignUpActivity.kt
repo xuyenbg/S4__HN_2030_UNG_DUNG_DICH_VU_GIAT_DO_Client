@@ -70,7 +70,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>() {
                     Log.w(ContentValues.TAG, "signInWithCredential:failure", task.exception)
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         // The verification code entered was invalid
-                        views.inputPhoneNumber.error = "OTP không hợp lệ.!"
+                        views.inputPhoneNumber.error = "OTP không hợp lệ hoặc đã hết hạn.!"
                     }
                     // Update UI
                 }
