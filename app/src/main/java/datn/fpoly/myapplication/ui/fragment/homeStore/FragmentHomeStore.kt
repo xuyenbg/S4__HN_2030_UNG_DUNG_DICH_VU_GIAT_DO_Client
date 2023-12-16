@@ -19,6 +19,7 @@ import com.google.android.material.tabs.TabLayout
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.data.model.StoreModel
 import datn.fpoly.myapplication.databinding.FragmentHomeLaundryBinding
+import datn.fpoly.myapplication.ui.detailedstatistics.DetailedStatisticsActivity
 import datn.fpoly.myapplication.ui.fragment.homeStore.adapter.TabLayoutAdapter
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreState
 import datn.fpoly.myapplication.ui.homeStore.HomeStoreViewAction
@@ -124,6 +125,9 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
                     ?.let { viewModel.handle(it) }
 
             }
+        }
+        views.tvStatisticsDetail.setOnClickListener {
+            startActivity(Intent(requireContext(),DetailedStatisticsActivity::class.java))
         }
 
     }

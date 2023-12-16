@@ -4,6 +4,7 @@ import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.data.model.OrderExtendHistory
 import datn.fpoly.myapplication.data.model.StatisticalModel
+import datn.fpoly.myapplication.data.model.StatisticsModel
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import io.reactivex.Observable
 import okhttp3.ResponseBody
@@ -66,7 +67,7 @@ interface APIOrder {
 
     @GET("api/order/total-order-by-currentdate/{idStore}")
     fun getStatisticalByToday(
-    @Path("idStore") idStore: String,
+        @Path("idStore") idStore: String,
     ): Observable<StatisticalModel>
 
     @GET("api/order/total-order-by-week-month/{idStore}")
@@ -74,9 +75,15 @@ interface APIOrder {
         @Path("idStore") idStore: String,
         @Query("month") month: Int
     ): Observable<StatisticalModel>
+
     @GET("api/order/total-order-by-week-month/{idStore}")
     fun getStatisticalByWeek(
         @Path("idStore") idStore: String,
         @Query("week") week: Int
     ): Observable<StatisticalModel>
+
+    @GET("api/order/thong-ke-theo-tuan/{idStore}")
+    fun getDetailStatistical(
+        @Path("idStore") idStore: String,
+    ) : Observable<MutableList<StatisticsModel>>
 }
