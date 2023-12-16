@@ -17,7 +17,7 @@ data class HomeStoreState(
     var statePostStore: Async<MutableList<PostModel>> = Uninitialized,
     var stateCate: Async<MutableList<CategoryModel>> = Uninitialized,
     var stateGetStore: Async<StoreModel> = Uninitialized,
-    val stateDelete: Async<Response<ResponseBody>> = Uninitialized,
+    var stateDelete: Async<Response<ResponseBody>> = Uninitialized,
     val stateGetOrderStore: Async<MutableList<OrderResponse>> = Uninitialized,
     val stateGetListService: Async<MutableList<ServiceExtend>> = Uninitialized,
     val stateGetOrderDateStore: Async<MutableList<OrderResponse>> = Uninitialized,

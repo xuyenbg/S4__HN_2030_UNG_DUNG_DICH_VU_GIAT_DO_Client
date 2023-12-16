@@ -10,11 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams
 import android.widget.Toast
-import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.activityViewModel
-import com.airbnb.mvrx.withState
+import com.airbnb.mvrx.*
 import datn.fpoly.myapplication.core.BaseFragment
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.R
@@ -172,14 +168,15 @@ class OrderCompletedFragment : BaseFragment<FragmentOrderCompletedBinding>() {
                         DialogLoading.hideDialog()
                         dialog.dismiss()
                         Toast.makeText(requireContext(), "Đánh giá thành công", Toast.LENGTH_SHORT).show()
+                        state.stateRate = Uninitialized
                     }
                 }
-
 
             }
             is Fail->{
                 DialogLoading.hideDialog()
                 dialog.dismiss()
+                state.stateRate = Uninitialized
                 Toast.makeText(requireContext(), "Đánh giá thất bại", Toast.LENGTH_SHORT).show()
                 Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:fail ")
             }

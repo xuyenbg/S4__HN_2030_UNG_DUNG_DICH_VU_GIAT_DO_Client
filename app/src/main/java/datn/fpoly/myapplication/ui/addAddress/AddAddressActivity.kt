@@ -81,6 +81,7 @@ class AddAddressActivity : BaseActivity<ActivityAddNewAddressBinding>(),AddAddre
                 }
                 Toast.makeText(this@AddAddressActivity, "Thêm thành công", Toast.LENGTH_SHORT).show()
                 onBackPressedDispatcher.onBackPressed()
+                state.stateAddAddress= Uninitialized
             }
             is Loading ->{
                 Timber.tag("AAAAAAAAA").e("addAddress: Loading")
@@ -89,6 +90,7 @@ class AddAddressActivity : BaseActivity<ActivityAddNewAddressBinding>(),AddAddre
                 Timber.tag("AAAAAAAAA").e("addAddress: Call Fail")
                 Toast.makeText(this@AddAddressActivity, "Thêm thành công", Toast.LENGTH_SHORT).show()
                 onBackPressedDispatcher.onBackPressed()
+                state.stateAddAddress= Uninitialized
             }
             else->{
 

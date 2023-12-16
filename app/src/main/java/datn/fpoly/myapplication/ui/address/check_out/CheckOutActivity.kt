@@ -123,6 +123,7 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
                 }
             }
             is Fail -> {
+                state.stateInsertOrder = Uninitialized
                 Toast.makeText(this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show()
             }
 

@@ -62,7 +62,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
     private var imageList: MutableList<SlideModel> = mutableListOf()
     private lateinit var fusedLoaction: FusedLocationProviderClient
     private var account: AccountModel? = null
-
+    private var mContext :Context?=null
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -78,7 +78,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
                 Common.getMyLocationLongitude(requireContext())
             )
         )
-
+        mContext= requireContext()
         adapterCate = AdapterCategory(6, false)
         views.rcvListCategory.adapter = adapterCate
         views.rcvListStore.addItemDecoration(ItemSpacingDecoration(32))
@@ -154,6 +154,11 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        account = Hawk.get("Account")
+    }
+
     private fun getCurrentLocation() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -177,7 +182,7 @@ class HomeUserFragment : BaseFragment<FragmentHomeUserBinding>() {
 
                 }).addOnSuccessListener() {
                 if (it != null) {
-                    Common.setMyLocation(requireContext(), LatLng(it.latitude, it.longitude))
+                    mContext?.let { it1 -> Common.setMyLocation(it1, LatLng(it.latitude, it.longitude)) }
                     viewModel.handle(
                         HomeViewAction.HomeActionGetListStore(
                             it.latitude.toFloat(),

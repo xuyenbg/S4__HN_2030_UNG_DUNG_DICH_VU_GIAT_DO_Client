@@ -9,10 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.WindowManager
 import android.widget.Toast
-import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.viewModel
+import com.airbnb.mvrx.*
 import com.orhanobut.hawk.Hawk
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
@@ -150,6 +147,7 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
                         orderAdapter.holderOrder?.binding?.btnReOrder?.setText("Đã đánh giá")
                         orderAdapter.holderOrder?.binding?.btnReOrder?.setBackgroundResource(R.drawable.shape_item_btn_4)
                         Toast.makeText(this@HistoryOrderActivity, "Đánh giá thành công", Toast.LENGTH_SHORT).show()
+                        state.stateRate = Uninitialized
                     }
                 }
             }
@@ -157,7 +155,7 @@ class HistoryOrderActivity : BaseActivity<ActivityHistoryOrderBinding>(),History
                 dialog.dismiss()
                 DialogLoading.hideDialog()
                 Toast.makeText(this@HistoryOrderActivity, "Đánh giá thất bại", Toast.LENGTH_SHORT).show()
-
+                state.stateRate = Uninitialized
                 Timber.tag("AAAAAAAAAAAA").e("updateStateAddRate:fail ")
             }
             else->{}
