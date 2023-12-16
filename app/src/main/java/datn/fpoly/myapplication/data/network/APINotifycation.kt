@@ -7,6 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface APINotifycation {
-    @GET("api/notification//list-by-iduser/{idUser}")
+    @GET("api/notification/list-by-iduser/{idUser}")
     fun getListNotiById(@Path("idUser") idUser: String): Observable<MutableList<NotifycationModel>>
 }

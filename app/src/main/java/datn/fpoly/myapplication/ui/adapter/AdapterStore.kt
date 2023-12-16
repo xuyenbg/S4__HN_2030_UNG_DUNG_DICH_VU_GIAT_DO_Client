@@ -1,6 +1,7 @@
 package datn.fpoly.myapplication.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -70,7 +71,7 @@ class AdapterStore(val limit: Int) : Adapter<AdapterStore.ViewHolderItemStore>()
             }else{
                 binding.tvDistance.text="Cách khoảng: "+(item.distance)+"m"
             }
-
+            binding.tvDistance.visibility= View.INVISIBLE
         }
     }
 

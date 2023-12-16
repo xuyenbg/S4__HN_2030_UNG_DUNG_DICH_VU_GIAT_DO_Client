@@ -17,11 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.Success
-import com.airbnb.mvrx.activityViewModel
-import com.airbnb.mvrx.withState
+import com.airbnb.mvrx.*
 import com.bumptech.glide.Glide
 import datn.fpoly.myapplication.core.BaseFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -139,6 +135,7 @@ class FragmentPostStore : BaseFragment<ActivityPostStoreBinding>() {
                                     .show()
                             }
                         }
+                        it.stateDelete= Uninitialized
                     }
 
                 }

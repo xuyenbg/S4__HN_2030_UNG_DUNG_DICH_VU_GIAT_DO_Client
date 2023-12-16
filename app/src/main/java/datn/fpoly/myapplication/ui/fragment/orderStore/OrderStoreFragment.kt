@@ -62,6 +62,10 @@ class OrderStoreFragment : BaseFragment<FragmentOrderStoreBinding>() {
             ?.let { viewModel.handle(it) }
         calendar = Calendar.getInstance()
         initView()
+        views.swipeToRefresh.setOnRefreshListener {
+            idStore?.let { HomeStoreViewAction.GetDataOrderStore(it, "desc") }
+                ?.let { viewModel.handle(it) }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -161,7 +165,7 @@ class OrderStoreFragment : BaseFragment<FragmentOrderStoreBinding>() {
                 runBlocking {
                     launch {
                         it.stateGetOrderStore.invoke()?.let {
-
+                            views.swipeToRefresh.isRefreshing= false
                             val allListOrder = mutableListOf<OrderResponse>()
                             if (it.filter { it.status == 4 }.isNullOrEmpty()) {
                                 views.layoutCartEmpty.root.visibility = View.VISIBLE

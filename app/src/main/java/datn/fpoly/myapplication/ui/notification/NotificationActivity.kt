@@ -2,6 +2,7 @@ package datn.fpoly.myapplication.ui.notification
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
@@ -28,6 +29,7 @@ class NotificationActivity : BaseActivity<ActivityNotificationBinding>(), Notify
         (applicationContext as AppApplication).appComponent.inject(this);
         super.onCreate(savedInstanceState)
         val idUser = intent.getStringExtra(Common.KEY_ID_USER)
+        Log.e("AAAAAAAAAAAA", "onCreate: "+idUser )
         idUser?.let { NotifycationViewAction.GetListNotifyById(it) }?.let { viewModel.handle(it) }
         viewModel.subscribe(this){
             updateState(it)

@@ -132,6 +132,12 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        storeModel = Hawk.get<StoreModel>(Common.KEY_STORE)
+
+    }
+
     private fun dialogMessage(context: Context) {
         val build = AlertDialog.Builder(context)
         build.setMessage("Bạn chưa mở cửa hàng. Hãy vui lòng mở cửa hàng trở lại")
