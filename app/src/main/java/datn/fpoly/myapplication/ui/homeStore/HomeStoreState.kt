@@ -40,7 +40,6 @@ data class HomeStoreState(
                 || stateGetStore is Loading
                 || stateDelete is Loading
                 || stateGetOrderStore is Loading
-                || stateGetListService is Loading
                 || stateGetOrderDateStore is Loading
                 || stateGetOrderDateStoreWashing is Loading
                 || stateGetOrderDateStoreComplete is Loading
