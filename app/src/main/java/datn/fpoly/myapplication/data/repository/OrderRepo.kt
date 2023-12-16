@@ -4,6 +4,7 @@ import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.data.model.OrderExtendHistory
 import datn.fpoly.myapplication.data.model.StatisticalModel
+import datn.fpoly.myapplication.data.model.StatisticsModel
 import datn.fpoly.myapplication.data.model.orderList.OrderResponse
 import datn.fpoly.myapplication.data.network.APIOrder
 import io.reactivex.Observable
@@ -66,4 +67,7 @@ class OrderRepo @Inject constructor(
         api.getStatisticalByMonth(idStore, month).subscribeOn(Schedulers.io())
     fun getStatisticalByWeek(idStore: String, week: Int): Observable<StatisticalModel> =
         api.getStatisticalByWeek(idStore, week).subscribeOn(Schedulers.io())
+
+    fun getStatisticalDetail(idStore: String): Observable<MutableList<StatisticsModel>> =
+        api.getDetailStatistical(idStore).subscribeOn(Schedulers.io())
 }
