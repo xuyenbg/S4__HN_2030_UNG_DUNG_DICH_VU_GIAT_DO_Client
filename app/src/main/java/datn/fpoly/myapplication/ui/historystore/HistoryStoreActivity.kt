@@ -30,7 +30,7 @@ class HistoryStoreActivity : BaseActivity<ActivityHistoryStoreBinding>() {
         super.initUiAndData()
         val listHist = intent.getSerializableExtra("KEY_HIS") as List<OrderResponse>?
         if (listHist != null) {
-            historyAdapter.updateData(listHist.filter { it.status == 4 || it.status==4 })
+            historyAdapter.updateData(listHist.filter { it.status == 3 || it.status==4 })
             views.tvNoneHis.visibility = View.GONE
         } else {
             views.tvNoneHis.visibility = View.VISIBLE
