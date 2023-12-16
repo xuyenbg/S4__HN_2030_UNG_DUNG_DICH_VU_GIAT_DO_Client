@@ -49,6 +49,10 @@ data class HomeStoreState(
                 || stateUpdateStatusWashing is Loading
                 || stateUpdateStatusComplete is Loading
                 || stateOpendCloseStore is Loading
-    }
+                || stateFilterOrder is Loading
+                || stateStatisticalByToday is Loading
+                || stateStatisticalByMonth is Loading
+                || stateStatisticalByWeek is Loading
+     }
 }
 

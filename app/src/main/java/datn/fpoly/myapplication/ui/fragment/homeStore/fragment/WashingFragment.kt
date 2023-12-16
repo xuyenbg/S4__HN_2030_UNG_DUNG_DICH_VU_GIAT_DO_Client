@@ -40,6 +40,7 @@ class WashingFragment : BaseFragment<FragmentWashingBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        idStore = Hawk.get<StoreModel>(Common.KEY_STORE)?.id
         orderStoreAdapter = OrderStoreWashingAdapter(onBtnAction = {
             viewModel.handle(HomeStoreViewAction.UpdateStatusWashing(it.id, 2))
             viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateWashing(idStore!!, 1, "desc"))

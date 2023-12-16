@@ -123,7 +123,12 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
                     ?.let { viewModel.handle(it) }
                 idStore?.let { HomeStoreViewAction.GetStatisticalByWeek(it, week) }
                     ?.let { viewModel.handle(it) }
-
+                if (idStore != null){
+                    viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDate(idStore, 0, "desc"))
+                    viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateWashing(idStore, 1, "desc"))
+                    viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateComplete(idStore, 2, "desc"))
+                    viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateCompleteMission(idStore, 3, "desc"))
+                }
             }
         }
         views.tvStatisticsDetail.setOnClickListener {

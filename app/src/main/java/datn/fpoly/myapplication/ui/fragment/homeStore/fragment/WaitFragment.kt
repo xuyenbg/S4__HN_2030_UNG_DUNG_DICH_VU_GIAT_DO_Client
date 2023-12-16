@@ -48,7 +48,6 @@ class WaitFragment : BaseFragment<FragmentWaitBinding>() {
         }
 
         orderStoreAdapter = OrderStoreWaitAdapter(onBtnAction = {
-            Toast.makeText(requireContext(), "Hoàn Thành", Toast.LENGTH_SHORT).show()
             viewModel.handle(HomeStoreViewAction.UpdateStatus(it.id, 1))
             viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDate(idStore!!, 0, "desc"))
             viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateWashing(idStore!!, 1, "desc"))
