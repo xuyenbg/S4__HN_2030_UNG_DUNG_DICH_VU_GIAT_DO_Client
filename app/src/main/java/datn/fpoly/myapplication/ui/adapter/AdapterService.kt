@@ -24,6 +24,7 @@ class AdapterService(val isStore: Boolean, val checkName: Boolean) : Adapter<Ada
     fun setData(list: MutableList<ServiceExtend>) {
         this.listService.clear()
         this.listService.addAll(list)
+        ListFiltered.clear()
         ListFiltered.addAll(list)
         notifyDataSetChanged()
     }
