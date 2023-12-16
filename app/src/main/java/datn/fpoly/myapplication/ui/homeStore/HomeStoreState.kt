@@ -20,13 +20,13 @@ data class HomeStoreState(
     var stateDelete: Async<Response<ResponseBody>> = Uninitialized,
     val stateGetOrderStore: Async<MutableList<OrderResponse>> = Uninitialized,
     val stateGetListService: Async<MutableList<ServiceExtend>> = Uninitialized,
-    val stateGetOrderDateStore: Async<MutableList<OrderResponse>> = Uninitialized,
-    val stateGetOrderDateStoreWashing: Async<MutableList<OrderResponse>> = Uninitialized,
+    var stateGetOrderDateStore: Async<MutableList<OrderResponse>> = Uninitialized,
+    var stateGetOrderDateStoreWashing: Async<MutableList<OrderResponse>> = Uninitialized,
     val stateGetOrderDateStoreComplete: Async<MutableList<OrderResponse>> = Uninitialized,
-    val stateGetOrderDateStoreCompleteMission: Async<MutableList<OrderResponse>> = Uninitialized,
+    var stateGetOrderDateStoreCompleteMission: Async<MutableList<OrderResponse>> = Uninitialized,
     val stateUpdateStatus: Async<Response<ResponseBody>> = Uninitialized,
     val stateUpdateStatusWashing: Async<Response<ResponseBody>> = Uninitialized,
-    val stateUpdateStatusComplete: Async<Response<ResponseBody>> = Uninitialized,
+    var stateUpdateStatusComplete: Async<Response<ResponseBody>> = Uninitialized,
     val stateOpendCloseStore : Async<Response<ResponseBody>> = Uninitialized,
     val stateFilterOrder : Async<MutableList<OrderResponse>> = Uninitialized,
     val stateStatisticalByToday : Async<StatisticalModel> = Uninitialized,
@@ -49,6 +49,10 @@ data class HomeStoreState(
                 || stateUpdateStatusWashing is Loading
                 || stateUpdateStatusComplete is Loading
                 || stateOpendCloseStore is Loading
-    }
+                || stateFilterOrder is Loading
+                || stateStatisticalByToday is Loading
+                || stateStatisticalByMonth is Loading
+                || stateStatisticalByWeek is Loading
+     }
 }
 

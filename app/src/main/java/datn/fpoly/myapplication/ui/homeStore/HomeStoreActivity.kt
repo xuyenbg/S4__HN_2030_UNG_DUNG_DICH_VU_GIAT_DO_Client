@@ -61,6 +61,7 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>(), HomeStoreVie
         viewModel.handle(HomeStoreViewAction.GetListCategory)
         viewModel.subscribe(this) {
             getDataCate(it)
+            views.progressCircular.root.visibility = if (it.isLoading()) View.VISIBLE else View.GONE
         }
         if (!Common.checkPermissionNotify(this)) {
             Common.requestPermissionNotify(this)
@@ -130,9 +131,11 @@ class HomeStoreActivity : BaseActivity<ActivityHomeStoreBinding>(), HomeStoreVie
     override fun onResume() {
         super.onResume()
         val store =  Hawk.get<StoreModel>(Common.KEY_STORE)
-        viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDate(store.id!!, 0, "desc"))
-        viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateWashing(store.id!!, 1, "desc"))
-        viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateComplete(store.id!!, 2, "desc"))
-        viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateCompleteMission(store.id!!, 3, "desc"))
+        if(store.id != null){
+            viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDate(store.id!!, 0, "desc"))
+            viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateWashing(store.id!!, 1, "desc"))
+            viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateComplete(store.id!!, 2, "desc"))
+            viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateCompleteMission(store.id!!, 3, "desc"))
+        }
     }
 }

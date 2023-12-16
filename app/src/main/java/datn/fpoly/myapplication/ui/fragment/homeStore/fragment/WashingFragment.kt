@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import datn.fpoly.myapplication.core.BaseFragment
@@ -40,7 +41,6 @@ class WashingFragment : BaseFragment<FragmentWashingBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         idStore = Hawk.get<StoreModel>(Common.KEY_STORE)?.id
-        viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateWashing(idStore!!, 1, "desc"))
         orderStoreAdapter = OrderStoreWashingAdapter(onBtnAction = {
             viewModel.handle(HomeStoreViewAction.UpdateStatusWashing(it.id, 2))
             viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateWashing(idStore!!, 1, "desc"))
@@ -75,7 +75,7 @@ class WashingFragment : BaseFragment<FragmentWashingBinding>() {
             is Success -> {
                 runBlocking {
                     launch {
-                        it.stateGetOrderDateStoreWashing.invoke().let {
+                        it.stateGetOrderDateStoreWashing.invoke()?.let {
                             orderStoreAdapter.updateData(it)
 //                            views.recycleviewWashing.adapter = postClientAdapter
 
@@ -115,6 +115,7 @@ class WashingFragment : BaseFragment<FragmentWashingBinding>() {
 //                                viewPager.currentItem = 2
                             }
                         }
+                        it.stateGetOrderDateStoreWashing = Uninitialized
                     }
 
                 }

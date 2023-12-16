@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import datn.fpoly.myapplication.core.BaseFragment
@@ -47,7 +48,6 @@ class WaitFragment : BaseFragment<FragmentWaitBinding>() {
         }
 
         orderStoreAdapter = OrderStoreWaitAdapter(onBtnAction = {
-            Toast.makeText(requireContext(), "Hoàn Thành", Toast.LENGTH_SHORT).show()
             viewModel.handle(HomeStoreViewAction.UpdateStatus(it.id, 1))
             viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDate(idStore!!, 0, "desc"))
             viewModel.handle(HomeStoreViewAction.GetDataOrderStoreDateWashing(idStore!!, 1, "desc"))
@@ -87,6 +87,7 @@ class WaitFragment : BaseFragment<FragmentWaitBinding>() {
 //                                views.labelListEmpty.visibility = View.GONE
                             }
                         }
+                        it.stateGetOrderDateStore = Uninitialized
                     }
 
                 }

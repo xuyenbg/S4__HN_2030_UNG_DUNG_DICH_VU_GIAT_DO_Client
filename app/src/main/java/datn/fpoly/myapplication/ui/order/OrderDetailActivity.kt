@@ -15,7 +15,7 @@ import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.data.model.OrderExtendHistory
 import datn.fpoly.myapplication.data.model.ServiceExtend
 import datn.fpoly.myapplication.databinding.ActivityOrderDetailBinding
-import datn.fpoly.myapplication.ui.address.check_out.AdapterItemCart
+import datn.fpoly.myapplication.ui.check_out.AdapterItemCart
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 import kotlinx.coroutines.launch

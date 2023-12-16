@@ -12,8 +12,8 @@ import com.airbnb.mvrx.withState
 import datn.fpoly.myapplication.core.BaseFragment
 import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.databinding.FragmentCartBinding
-import datn.fpoly.myapplication.ui.address.check_out.AdapterItemCart
-import datn.fpoly.myapplication.ui.address.check_out.CheckOutActivity
+import datn.fpoly.myapplication.ui.check_out.AdapterItemCart
+import datn.fpoly.myapplication.ui.check_out.CheckOutActivity
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
