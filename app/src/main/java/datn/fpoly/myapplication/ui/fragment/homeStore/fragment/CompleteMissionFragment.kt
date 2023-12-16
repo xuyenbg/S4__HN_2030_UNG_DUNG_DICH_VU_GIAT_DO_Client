@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import datn.fpoly.myapplication.core.BaseFragment
@@ -34,15 +35,6 @@ class CompleteMissionFragment : BaseFragment<FragmentCompleteMissionBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         idStore = Hawk.get<StoreModel>(Common.KEY_STORE)?.id
-        if (idStore != null) {
-            viewModel.handle(
-                HomeStoreViewAction.GetDataOrderStoreDateCompleteMission(
-                    idStore!!,
-                    3,
-                    "desc"
-                )
-            )
-        }
 
 
         orderStoreAdapter = OrderStoreCompleteMissionAdapter(onBtnAction = {
@@ -83,6 +75,7 @@ class CompleteMissionFragment : BaseFragment<FragmentCompleteMissionBinding>() {
 //                                views.labelListEmpty.visibility = View.GONE
                             }
                         }
+                        it.stateGetOrderDateStoreCompleteMission = Uninitialized
                     }
 
                 }
