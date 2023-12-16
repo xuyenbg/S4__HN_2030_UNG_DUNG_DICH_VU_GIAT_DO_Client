@@ -140,6 +140,7 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
     override fun onResume() {
         super.onResume()
         storeModel = Hawk.get<StoreModel>(Common.KEY_STORE)
+        views.swOpendClose.isChecked = storeModel?.status == 1
 
     }
 
@@ -175,14 +176,23 @@ class FragmentHomeStore : BaseFragment<FragmentHomeLaundryBinding>() {
             is Success -> {
                 views.swipeToRefresh.isRefreshing = false
                 state.stateOpendCloseStore.invoke()?.let {
+                    val store= StoreModel()
+                    store.id= storeModel?.id
+                    store.imageQACode= storeModel?.imageQACode
+                    store.iduser= storeModel?.iduser
+                    store.name = storeModel?.name
+                    store.idAddress = storeModel?.idAddress
+                    store.rate= storeModel?.rate
+                    store.transportTypeList = storeModel?.transportTypeList
                     if (isOpend) {
-                        storeModel?.status = 1
+                        store?.status = 1
                     } else {
-                        storeModel?.status = 0
+                        store?.status = 0
                     }
-                    Hawk.put(Common.KEY_STORE, storeModel)
-                    views.swOpendClose.isSelected = isOpend
-                    Timber.tag("AAAAAAAAA").e("updateStateOpendClose: Success ")
+                    Hawk.put(Common.KEY_STORE, store)
+                    views.swOpendClose.isChecked = isOpend
+                    state.stateOpendCloseStore= Uninitialized
+                    Timber.tag("AAAAAAAAA").e("updateStateOpendClose: Success "+Hawk.get<StoreModel>(Common.KEY_STORE).status)
                 }
             }
 

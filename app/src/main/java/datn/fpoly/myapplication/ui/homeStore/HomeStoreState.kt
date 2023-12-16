@@ -27,7 +27,7 @@ data class HomeStoreState(
     val stateUpdateStatus: Async<Response<ResponseBody>> = Uninitialized,
     val stateUpdateStatusWashing: Async<Response<ResponseBody>> = Uninitialized,
     var stateUpdateStatusComplete: Async<Response<ResponseBody>> = Uninitialized,
-    val stateOpendCloseStore : Async<Response<ResponseBody>> = Uninitialized,
+    var stateOpendCloseStore : Async<Response<ResponseBody>> = Uninitialized,
     val stateFilterOrder : Async<MutableList<OrderResponse>> = Uninitialized,
     val stateStatisticalByToday : Async<StatisticalModel> = Uninitialized,
     val stateStatisticalByMonth : Async<StatisticalModel> = Uninitialized,

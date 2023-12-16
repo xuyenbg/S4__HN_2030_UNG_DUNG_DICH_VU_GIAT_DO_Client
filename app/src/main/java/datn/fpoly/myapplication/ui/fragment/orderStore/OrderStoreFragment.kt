@@ -73,23 +73,24 @@ class OrderStoreFragment : BaseFragment<FragmentOrderStoreBinding>() {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        views.btnEndDate.isEnabled= false
+        views.btnEndDate.isEnabled = false
         views.btnStartDate.setOnClickListener {
             DatePickerDialog(
                 requireContext(), { datePicker, i, i2, i3 ->
-                    views.tvDateStart.text = "$i-${i2+1}-$i3"
-                    views.btnEndDate.isEnabled =true
+                    views.tvDateStart.text = "$i-${i2 + 1}-$i3"
+                    views.btnEndDate.isEnabled = true
                 }, year, month, day
             ).show()
         }
         views.btnEndDate.setOnClickListener {
-           val datePick= DatePickerDialog(
+            val datePick = DatePickerDialog(
                 requireContext(), { datePicker, i, i2, i3 ->
-                    views.tvDateEnd.text = "$i-${i2+1}-$i3"
+                    views.tvDateEnd.text = "$i-${i2 + 1}-$i3"
                 }, year, month, day
             )
             val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            datePick.datePicker.minDate= simpleDateFormat.parse(views.tvDateStart.text.toString().trim()).time
+            datePick.datePicker.minDate =
+                simpleDateFormat.parse(views.tvDateStart.text.toString().trim()).time
             datePick.show()
         }
         views.apply {
@@ -165,15 +166,15 @@ class OrderStoreFragment : BaseFragment<FragmentOrderStoreBinding>() {
                 runBlocking {
                     launch {
                         it.stateGetOrderStore.invoke()?.let {
-                            views.swipeToRefresh.isRefreshing= false
+                            views.swipeToRefresh.isRefreshing = false
                             val allListOrder = mutableListOf<OrderResponse>()
-                            if (it.filter { it.status == 4 }.isNullOrEmpty()) {
+                            if (it.filter { it.status == 4 || it.status == 3 }.isNullOrEmpty()) {
                                 views.layoutCartEmpty.root.visibility = View.VISIBLE
                                 views.layoutCartEmpty.tvTitle.text = "Không có đơn hàng nào"
                             } else {
                                 views.layoutCartEmpty.root.visibility = View.GONE
                             }
-                            allListOrder.addAll(it.filter { it.status==3 || it.status==4})
+                            allListOrder.addAll(it.filter { it.status == 3 || it.status == 4 })
                             orderStoreAdapter.updateData(allListOrder)
                         }
                     }
