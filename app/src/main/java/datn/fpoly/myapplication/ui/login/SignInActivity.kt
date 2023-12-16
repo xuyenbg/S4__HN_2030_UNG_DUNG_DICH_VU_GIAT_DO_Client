@@ -138,6 +138,7 @@ class SignInActivity : BaseActivity<ActivitySignIn2Binding>() {
         ) {
             checkStrore = views.cbShop.isChecked
             Timber.d("OTP", verificationId)
+            dialogLogin?.dismiss()
             val intent = Intent(this@SignInActivity, OTPLoginActivity::class.java)
             intent.putExtra("OTP", verificationId)
             intent.putExtra("resendToken", token)

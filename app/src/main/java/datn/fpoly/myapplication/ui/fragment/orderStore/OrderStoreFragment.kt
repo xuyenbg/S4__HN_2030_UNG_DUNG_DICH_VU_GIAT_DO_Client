@@ -173,7 +173,7 @@ class OrderStoreFragment : BaseFragment<FragmentOrderStoreBinding>() {
                             } else {
                                 views.layoutCartEmpty.root.visibility = View.GONE
                             }
-                            allListOrder.addAll(it.filter { it.status == 4 })
+                            allListOrder.addAll(it.filter { it.status==3 || it.status==4})
                             orderStoreAdapter.updateData(allListOrder)
                         }
                     }
