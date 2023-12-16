@@ -1,4 +1,4 @@
-package datn.fpoly.myapplication.ui.address.check_out
+package datn.fpoly.myapplication.ui.check_out
 
 import datn.fpoly.myapplication.core.ViewAction
 import datn.fpoly.myapplication.data.model.OrderBase

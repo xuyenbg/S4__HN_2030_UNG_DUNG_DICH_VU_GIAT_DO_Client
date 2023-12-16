@@ -1,7 +1,6 @@
-package datn.fpoly.myapplication.ui.address.check_out
+package datn.fpoly.myapplication.ui.check_out
 
 
-import android.app.Notification.CarExtender
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -83,16 +82,20 @@ class CheckOutActivity : BaseActivity<ActivityCheckOutBinding>(), CheckOutViewMo
         views.toolbar.btnNotification.visibility = View.INVISIBLE
         views.btnAction.text = "Xác nhận"
         views.btnAction.setOnClickListener {
-            cart?.let { cart ->
-                cart.idAddress = address?.id
-                cart.note = views.note.text.toString()
-                cart.methodPaymentType = "Thanh toán tiền mặt"
-                cart.transportType =
-                    if (views.radioShip.isChecked) "Shipper" else "Mang tới cửa hàng"
-                cart.feeDelivery = if (views.radioShip.isChecked) 30000.0 else 0.0
-                cart.isPaid = false
-                cart.status = 0
-                viewModel.handle(CheckOutViewAction.InsertOrder(cart))
+            if (address?.id != null){
+                cart?.let { cart ->
+                    cart.idAddress = address?.id
+                    cart.note = views.note.text.toString()
+                    cart.methodPaymentType = "Thanh toán tiền mặt"
+                    cart.transportType =
+                        if (views.radioShip.isChecked) "Shipper" else "Mang tới cửa hàng"
+                    cart.feeDelivery = if (views.radioShip.isChecked) 30000.0 else 0.0
+                    cart.isPaid = false
+                    cart.status = 0
+                    viewModel.handle(CheckOutViewAction.InsertOrder(cart))
+                }
+            }else{
+                Toast.makeText(this, "Vui lòng chọn địa chỉ của bạn", Toast.LENGTH_SHORT).show()
             }
         }
     }

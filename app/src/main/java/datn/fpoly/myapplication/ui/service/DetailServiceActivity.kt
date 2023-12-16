@@ -21,7 +21,7 @@ import datn.fpoly.myapplication.data.repository.AuthRepo
 import datn.fpoly.myapplication.databinding.ActivityDetailServiceBinding
 import datn.fpoly.myapplication.ui.adapter.AdapterAttribute
 import datn.fpoly.myapplication.ui.adapter.AdapterService
-import datn.fpoly.myapplication.ui.address.check_out.CheckOutActivity
+import datn.fpoly.myapplication.ui.check_out.CheckOutActivity
 import datn.fpoly.myapplication.ui.detailstore.DetailStoreActivity
 import datn.fpoly.myapplication.ui.home.HomeActivity
 import datn.fpoly.myapplication.utils.Common

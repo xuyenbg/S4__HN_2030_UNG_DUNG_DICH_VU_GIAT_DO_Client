@@ -19,7 +19,7 @@ import datn.fpoly.myapplication.data.model.OrderBase
 import datn.fpoly.myapplication.data.model.OrderExtend
 import datn.fpoly.myapplication.data.model.account.AccountModel
 import datn.fpoly.myapplication.databinding.FragmentOrderCancelledBinding
-import datn.fpoly.myapplication.ui.address.check_out.CheckOutActivity
+import datn.fpoly.myapplication.ui.check_out.CheckOutActivity
 import datn.fpoly.myapplication.ui.home.order.adapter.OrderAdapter
 import datn.fpoly.myapplication.ui.home.HomeUserViewModel
 import datn.fpoly.myapplication.ui.home.HomeViewAction
