@@ -78,6 +78,7 @@ class SplashsActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.F
                 }
             }
         }
+//        viewModel.handle(SplashViewAction.getUser("657b1ebdedfc5013df9d19dd"))
 
         if(account!=null && isLogin){
             if(manege==0){

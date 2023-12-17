@@ -227,7 +227,7 @@ class DetailServiceActivity : BaseActivity<ActivityDetailServiceBinding>(),
         } else {
             var priceAttr = 0.0
             adapterAttribute.listAttributeSelect.forEach { attr -> priceAttr += attr.price }
-            total = (serviceExtend!!.price!! + priceAttr) * quality
+            total = (serviceExtend?.price!! + priceAttr) * quality
             return total
         }
 
