@@ -40,8 +40,10 @@
             <TextView
                 android:id="@+id/tv_name_store"
                 style="@style/text_font_inter_semi_bold"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:text="Bố Giặt"
                 android:textColor="@color/color_text_black"
                 android:textSize="14sp" />

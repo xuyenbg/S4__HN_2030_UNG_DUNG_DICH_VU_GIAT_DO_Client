@@ -70,7 +70,6 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
 
     override fun initUiAndData() {
         super.initUiAndData()
-
         auth = FirebaseAuth.getInstance()
         dialog = Dialog_Loading.getInstance()
         auth.setLanguageCode("VI")
@@ -335,8 +334,9 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                 // The SMS quota for the project has been exceeded
                 Log.d("TAG", "onVerificationFailed: ${e.toString()}")
                 views.tvError.text = "SMS vượt quá lượt!"
+                dialog?.dismiss()
             }
-            dialog?.dismiss()
+
         }
 
         override fun onCodeSent(
@@ -365,7 +365,6 @@ class OTPLoginActivity : BaseActivity<ActivityOtpLoginBinding>(), LoginViewModel
                         views.tvError.text = "Mã xác minh không hợp lệ!"
                     }
                     // Update UI
-                    dialog?.dismiss()
                 }
             }
     }

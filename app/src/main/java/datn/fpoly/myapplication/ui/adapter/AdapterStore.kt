@@ -71,7 +71,7 @@ class AdapterStore(val limit: Int) : Adapter<AdapterStore.ViewHolderItemStore>()
             }else{
                 binding.tvDistance.text="Cách khoảng: "+(item.distance)+"m"
             }
-            binding.tvDistance.visibility= View.INVISIBLE
+            binding.tvDistance.visibility= View.GONE
         }
     }
 
