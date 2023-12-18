@@ -12,6 +12,7 @@ import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.data.model.ItemServiceBase
 import datn.fpoly.myapplication.databinding.ItemCartItemBinding
 import datn.fpoly.myapplication.ui.home.cart.AdapterAddOn
+import datn.fpoly.myapplication.utils.Common
 import datn.fpoly.myapplication.utils.Common.formatCurrency
 import java.text.DecimalFormat
 
@@ -59,7 +60,7 @@ class AdapterItemCart(
                 binding.recyclerViewAddOn.adapter = AdapterAddOn(context, item.attributeListExtend!!)
             }
             binding.total.text = item.total?.formatCurrency(null) ?: "-"
-            Glide.with(context).load(item.service?.image).error(R.drawable.image_no_pick).into(binding.image)
+            Glide.with(context).load(Common.baseUrl+item.service?.image).error(R.drawable.image_no_pick).into(binding.image)
             binding.number2.text = String.format("SL: %d %s",(item.number ?: 0.0).toInt(), item.service!!.unit)
             binding.number.text = String.format("%d %s",(item.number ?: 0.0).toInt(), item.service!!.unit)
             binding.numberKg.setText( String.format("%.1f",(item.number ?: 0.0).toDouble()))
