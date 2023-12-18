@@ -105,8 +105,12 @@ class MyShopActivity : BaseActivity<ActivityMyShopBinding>(), MyShopViewModel.Fa
     override fun onResume() {
         super.onResume()
         address = PickPossitionInMapActivity.dataAdress.pick_address
-        latiu = PickPossitionInMapActivity.dataAdress.latitude
-        longtiu = PickPossitionInMapActivity.dataAdress.longitude
+//        latiu = PickPossitionInMapActivity.dataAdress.latitude
+//        longtiu = PickPossitionInMapActivity.dataAdress.longitude
+
+        latiu = Common.getMyLocationLatitude(this).toDouble()
+        longtiu = Common.getMyLocationLongitude(this).toDouble()
+        Log.e("AAAAAAAAAAAA", "onResume: "+latiu+":"+longtiu )
         views.tvAddressShop.setText(address)
     }
 

@@ -1,6 +1,7 @@
 package datn.fpoly.myapplication.ui.order
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -8,6 +9,8 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.viewModel
+import com.bumptech.glide.Glide
+import com.github.dhaval2404.imagepicker.ImagePicker
 import datn.fpoly.myapplication.AppApplication
 import datn.fpoly.myapplication.R
 import datn.fpoly.myapplication.core.BaseActivity
@@ -31,6 +34,7 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
     private var posItem: Int? = null
 
     var order: OrderExtendHistory? = null
+    private lateinit var adapter: AdapterItemOrderStore
 
     override fun getBinding(): ActivityOrderDetailBinding {
         return ActivityOrderDetailBinding.inflate(layoutInflater)
@@ -64,6 +68,34 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
                 status = 5
             ))
         }
+        adapter =  AdapterItemOrderStore(this@OrderDetailStoreActivity,
+            onFillWeight = { weight,pos ->
+                posItem = pos
+                order!!.listItem[pos].number = weight
+                order!!.updateTotal(pos)
+                handleUpdateOrder()
+            },
+            pickImage = { imageUri, pos ->
+                posItem = pos
+                val file = File(imageUri.path ?: "-") // Chuyển URI thành File
+                val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
+                viewModel.handle(OrderViewAction.UploadImage(image))
+            }) {}
+        adapter.setPickImageListenner(object : AdapterItemOrderStore.PickImageListenner{
+            override fun pickImage(position: Int) {
+                posItem=position
+                if(Common.checkPermisstionMedia(this@OrderDetailStoreActivity)&&Common.checkPermisstionCamera(this@OrderDetailStoreActivity)){
+                    ImagePicker.with(this@OrderDetailStoreActivity)
+                        .crop()
+                        .compress(1024)
+                        .maxResultSize(1080, 1080)
+                        .start()
+                }else{
+                    Common.requestPermisstionPIckImage(this@OrderDetailStoreActivity)
+                }
+            }
+        })
     }
 
     private fun updateWithState(state: OrderViewState) {
@@ -87,20 +119,8 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
                 views.radioShip.text = order?.transportType ?: "-"
                 views.note.setText(order?.note ?: "")
                 if(order?.listItem != null && order!!.listItem.isNotEmpty()){
-                    views.recyclerView.adapter = AdapterItemOrderStore(this@OrderDetailStoreActivity,order!!.toListItemBase(),
-                        onFillWeight = { weight,pos ->
-                            posItem = pos
-                            order!!.listItem[pos].number = weight
-                            order!!.updateTotal(pos)
-                            handleUpdateOrder()
-                        },
-                        pickImage = { imageUri, pos ->
-                            posItem = pos
-                            val file = File(imageUri.path ?: "-") // Chuyển URI thành File
-                            val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                            val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
-                            viewModel.handle(OrderViewAction.UploadImage(image))
-                        }) {}
+                    adapter.setListItemService(order!!.toListItemBase())
+                    views.recyclerView.adapter =adapter
                     views.tvServiceNumber.text = String.format("%d Dịch vụ", order!!.listItem.size)
                     views.total.text = order!!.total?.formatCurrency(null) ?: "- đ"
                     state.stateOrderDetail = Uninitialized
@@ -168,4 +188,17 @@ class OrderDetailStoreActivity : BaseActivity<ActivityOrderDetailBinding>(), Ord
     }
 
     override fun create(initialState: OrderViewState) = orderViewModelFactory.create(initialState)
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            val file = data!!.data!!.path?.let { File(it) } // Chuyển URI thành File
+            val requestFile = file!!.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
+            viewModel.handle(OrderViewAction.UploadImage(image))
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+        } else {
+        }
+    }
 }

@@ -28,12 +28,14 @@ import gun0912.tedimagepicker.builder.TedImagePicker
 
 class AdapterItemOrderStore(
     private val context: Context,
-    private val list: MutableList<ItemServiceBase>,
+//    private val list: MutableList<ItemServiceBase>,
     val onFillWeight: (Double, Int) -> Unit,
     val pickImage: (Uri, Int) -> Unit,
     val onClick: (ItemServiceBase) -> Unit
 ) : Adapter<AdapterItemOrderStore.ViewHolderItemStore>() {
 
+    private var pickImageListenner: PickImageListenner?=null
+    private val listItemService= mutableListOf<ItemServiceBase>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderItemStore =
         ViewHolderItemStore(
             ItemCartItemBinding.inflate(
@@ -42,14 +44,23 @@ class AdapterItemOrderStore(
                 false
             )
         )
+    fun setListItemService(list:MutableList<ItemServiceBase>){
+        this.listItemService.clear()
+        this.listItemService.addAll(list)
+        notifyDataSetChanged()
+    }
+
 
     override fun getItemCount(): Int {
-        return list.size
+        return listItemService.size
+    }
+    fun setPickImageListenner(listenner: PickImageListenner){
+        this.pickImageListenner= listenner
     }
 
     override fun onBindViewHolder(holder: ViewHolderItemStore, position: Int) {
-        if (list.isNotEmpty()) {
-            val item = list[position]
+        if (listItemService.isNotEmpty()) {
+            val item = listItemService[position]
             holder.bind(item = item, context = context, position = position)
             holder.itemView.setOnClickListener {
                 onClick(item)
@@ -104,7 +115,7 @@ class AdapterItemOrderStore(
                 }
             }
             val imagePick: String? =
-                if (list[position].image?.contains("file") == false) RemoteDataSource.BASE_URL_IMAGE + list[position].image else list[position].image
+                if (listItemService[position].image?.contains("file") == false) RemoteDataSource.BASE_URL_IMAGE + listItemService[position].image else listItemService[position].image
             Glide.with(context)
                 .load(imagePick)
                 .centerCrop()
@@ -123,25 +134,25 @@ class AdapterItemOrderStore(
                 override fun onPermissionDenied(deniedPermissions: List<String>) {}
             }
             binding.pickImage.setOnClickListener {
-
+                pickImageListenner?.pickImage(position)
                 //Yều cầu cấp quyền truy cập camera, bộ nhớ máy
-                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
-                    TedPermission.create()
-                        .setPermissionListener(permissionListener)
-                        .setPermissions(
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.READ_MEDIA_IMAGES
-                        )
-                        .check()
-                } else {
-                    TedPermission.create()
-                        .setPermissionListener(permissionListener)
-                        .setPermissions(
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.READ_EXTERNAL_STORAGE
-                        )
-                        .check()
-                }
+//                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
+//                    TedPermission.create()
+//                        .setPermissionListener(permissionListener)
+//                        .setPermissions(
+//                            Manifest.permission.CAMERA,
+//                            Manifest.permission.READ_MEDIA_IMAGES
+//                        )
+//                        .check()
+//                } else {
+//                    TedPermission.create()
+//                        .setPermissionListener(permissionListener)
+//                        .setPermissions(
+//                            Manifest.permission.CAMERA,
+//                            Manifest.permission.READ_EXTERNAL_STORAGE
+//                        )
+//                        .check()
+//                }
 
 
             }
@@ -178,5 +189,8 @@ class AdapterItemOrderStore(
                 }
             }
         }
+    }
+    interface PickImageListenner{
+        fun pickImage(position: Int)
     }
 }
